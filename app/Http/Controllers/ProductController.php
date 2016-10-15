@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateProductRequest;
 
 use App\Product;
 use App\Category;
+use App\Unit;
 
 class ProductController extends Controller
 {
@@ -19,7 +20,9 @@ class ProductController extends Controller
     protected $product_image = NULL;
     protected $product_image_to_be_deleted = '';
 
-
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function index()
     {
  
@@ -36,8 +39,10 @@ class ProductController extends Controller
     public function create()
     {
         $category_options = Category::lists('name', 'id');
+        $unit_options = Unit::lists('name', 'id');
         return view('product.create')
-            ->with('category_options', $category_options);
+            ->with('category_options', $category_options)
+            ->with('unit_options', $unit_options);
     }
 
     /**
@@ -56,6 +61,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->image = $this->product_image;
         $product->category_id = $request->category_id;
+        $product->unit_id = $request->unit_id;
         $product->save();
         return redirect('product');
 
@@ -86,9 +92,11 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $category_options = Category::lists('name', 'id');
+        $unit_options = Unit::lists('name', 'id');
         return view('product.edit')
             ->with('product', $product)
-            ->with('category_options', $category_options);
+            ->with('category_options', $category_options)
+            ->with('unit_options', $unit_options);
     }
 
     /**
@@ -114,6 +122,7 @@ class ProductController extends Controller
         $product->code = $request->code;
         $product->name = $request->name;
         $product->category_id = $request->category_id;
+        $product->unit_id = $request->unit_id;
         $product->image = $this->product_image;
         $product->save();
 

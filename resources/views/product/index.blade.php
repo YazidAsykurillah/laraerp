@@ -37,15 +37,17 @@
                 <th style="width:10%;">Code</th>
                 <th>Product Name</th>
                 <th style="width:20%;">Category</th>
-                <th style="width:10%;text-align:center;">Aksi</th>
+                <th style="width:10%;">Unit</th>
+                <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">
               <tr>
-                <th></th>
+                <th style="width:5%;"></th>
                 <th>Code</th>
                 <th>Product Name</th>
                 <th>Category</th>
+                <th style="width:10%;">Unit</th>
                 <th></th>     
               </tr>
             </thead>
@@ -72,10 +74,10 @@
           <h4 class="modal-title" id="modal-delete-productLabel">Konfirmasi</h4>
         </div>
         <div class="modal-body">
-          Anda akan menghapus produk <b id="product-name-to-delete"></b>
+          You are going to remove product&nbsp;<b id="product-name-to-delete"></b>
           <br/>
           <p class="text text-danger">
-            <i class="fa fa-info-circle"></i>&nbsp;Proses menghapus tidak bisa dibatalkan
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
           <input type="hidden" id="product_id" name="product_id">
         </div>
@@ -103,6 +105,7 @@
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'category_id', name: 'category_id' },
+        { data: 'unit_id', name: 'unit_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
 
@@ -120,32 +123,33 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 4) {
+          if ($(this).index() != 0 && $(this).index() != 5) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
           if ($(this).index() == 3) {
                   
-                  var category_selections_builder ='<select class="form-control" data-id="' + $(this).index() + '">';
-                      category_selections_builder+='<option value="">-- All Categories --</option>';
-                        @foreach($category_selections as $category)
-                          category_selections_builder+='<option value="{{ $category->id }}">{{ $category->name }}</option>';
-                        @endforeach
-                      category_selections_builder+='</select>';
-                    
-                    $(this).html(category_selections_builder);
-                }
+            var category_selections_builder ='<select class="form-control" data-id="' + $(this).index() + '">';
+                category_selections_builder+='<option value="">-- All Categories --</option>';
+                  @foreach($category_selections as $category)
+                    category_selections_builder+='<option value="{{ $category->id }}">{{ $category->name }}</option>';
+                  @endforeach
+                category_selections_builder+='</select>';
+              
+              $(this).html(category_selections_builder);
+          }
+          
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
+      tableProduct.columns($(this).data('id')).search(this.value).draw();
+    });
+    $('#searchid select').change(function () {
+      if($(this).val() == ""){
+        tableProduct.columns($(this).data('id')).search('').draw();
+      }
+      else{
         tableProduct.columns($(this).data('id')).search(this.value).draw();
-      });
-      $('#searchid select').change(function () {
-        if($(this).val() == ""){
-          tableProduct.columns($(this).data('id')).search('').draw();
-        }
-        else{
-          tableProduct.columns($(this).data('id')).search(this.value).draw();
-        }
+      }
     });
     //ENDBlock search input and select
 

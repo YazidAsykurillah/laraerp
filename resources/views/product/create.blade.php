@@ -51,6 +51,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('unit_id') ? ' has-error' : '' }}">
+            {!! Form::label('unit_id', 'Name', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {{ Form::select('unit_id', $unit_options, null, ['class'=>'form-control', 'placeholder'=>'Select unit', 'id'=>'unit_id']) }}
+              @if ($errors->has('unit_id'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('unit_id') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           
         </div><!-- /.box-body -->
       </div>

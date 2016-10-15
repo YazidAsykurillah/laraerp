@@ -27,6 +27,7 @@ class UpdateProductRequest extends Request
             'code'=>'required|unique:products,code,'.$this->route('product'),
             'name'=>'required|unique:products,name,'.$this->route('product'),
             'category_id'=>'required|exists:categories,id',
+            'unit_id'=>'required|exists:units,id',
             'image'=>'mimes:jpg,png,jpeg'
         ];
     }

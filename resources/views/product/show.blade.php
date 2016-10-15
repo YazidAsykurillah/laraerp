@@ -61,6 +61,12 @@
               </div>
               <p></p>
               <div class="row">
+                <div class="col-sm-2">Unit</div>
+                <div class="col-sm-1">:</div>
+                <div class="col-sm-3">{{ $product->unit->name }}</div>
+              </div>
+              <p></p>
+              <div class="row">
                 <div class="col-sm-2">Created At</div>
                 <div class="col-sm-1">:</div>
                 <div class="col-sm-3">{{ $product->created_at }}</div>

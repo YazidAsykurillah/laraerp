@@ -27,6 +27,7 @@ class StoreProductRequest extends Request
             'code'=>'required|unique:products,code',
             'name'=>'required|unique:products,name',
             'category_id'=>'required|exists:categories,id',
+            'unit_id'=>'required|exists:units,id',
             'image'=>'mimes:jpg,png,jpeg'
         ];
     }

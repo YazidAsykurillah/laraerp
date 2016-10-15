@@ -17,7 +17,6 @@ class DatatablesController extends Controller
     }
     public function getProducts(){
     	$products = Product::all();
-        $start = '0';
     	return Datatables::of($products)
     		->addColumn('#', function($products){
               return '#';
@@ -31,6 +30,9 @@ class DatatablesController extends Controller
     		->editColumn('category_id', function($products){
             	return $products->category->name;
         	})
+            ->editColumn('unit_id', function($products){
+                return $products->unit->name;
+            })
     		->addColumn('actions', function($products){
     			$actions_html  ='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
     			$actions_html .=	'<i class="fa fa-edit"></i>';
