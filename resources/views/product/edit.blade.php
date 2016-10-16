@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Produk
+    Product
 @endsection
 
 @section('page_header')
   <h1>
-    Produk
-    <small>Tambah Produk</small>
+    Product
+    <small>Edit Product</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Produk</a></li>
-    <li class="active"><i></i> Create</li>
+    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Product</a></li>
+    <li class="active"><i></i> Edit</li>
   </ol>
 @endsection
 
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('unit_id') ? ' has-error' : '' }}">
-            {!! Form::label('unit_id', 'Name', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('unit_id', 'Unit', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               {{ Form::select('unit_id', $unit_options, null, ['class'=>'form-control', 'placeholder'=>'Select unit', 'id'=>'unit_id']) }}
               @if ($errors->has('unit_id'))

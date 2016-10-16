@@ -130,7 +130,7 @@ class ProductController extends Controller
         \File::delete(public_path().'/img/products/'.$this->product_image_to_be_deleted);
         \File::delete(public_path().'/img/products/thumb_'.$this->product_image_to_be_deleted);
 
-        return redirect('product')
+        return redirect('product/'.$id.'/edit')
         ->with('successMessage', "Product has been updated");
         
     }

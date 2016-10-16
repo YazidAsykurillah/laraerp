@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Produk</a></li>
+    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Produc</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -99,9 +99,7 @@
       serverSide : true,
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
-        { data: '#', name: '#', searchable:false, orderable:false, render:function(data, type, row){
-          return data;
-        } },
+        {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'category_id', name: 'category_id' },
@@ -109,10 +107,11 @@
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
 
+
     });
 
     // Delete button handler
-    $('#table-product').DataTable().on('click', '.btn-delete-product', function (e) { 
+    tableProduct.on('click', '.btn-delete-product', function (e) { 
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#product_id').val(id);
@@ -153,12 +152,12 @@
     });
     //ENDBlock search input and select
 
-    //build number list
+    /*//build row number
     tableProduct.on( 'order.dt search.dt', function () {
         tableProduct.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = i+1;
         } );
-    } ).draw();
+    } ).draw();*/
     
   </script>
 @endsection
