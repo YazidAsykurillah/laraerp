@@ -62,6 +62,8 @@ class ProductController extends Controller
         $product->image = $this->product_image;
         $product->category_id = $request->category_id;
         $product->unit_id = $request->unit_id;
+        $product->stock = $request->stock;
+        $product->minimum_stock = $request->minimum_stock;
         $product->save();
         return redirect('product');
 
@@ -124,6 +126,8 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->unit_id = $request->unit_id;
         $product->image = $this->product_image;
+        $product->stock = $request->stock;
+        $product->minimum_stock = $request->minimum_stock;
         $product->save();
 
         //delete old product image and the thumbnail from the server if any

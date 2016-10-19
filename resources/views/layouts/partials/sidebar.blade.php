@@ -41,9 +41,9 @@
           <span>Purchase</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="#"><i class="fa fa-circle-o"></i> Penerimaan</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Retur</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -52,9 +52,9 @@
           <span>Sales</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="#"><i class="fa fa-circle-o"></i> Surat Jalan</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Sales Order</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Retur</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -64,7 +64,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Penyesuaian</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -84,7 +84,8 @@
           <span>Master Data</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Kategori Produk</a></li>
+          <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
+          <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Famili Produk</a></li>
         </ul>
       </li>

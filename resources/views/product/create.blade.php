@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Produk
+  Product
 @endsection
 
 @section('page_header')
   <h1>
-    Produk
-    <small>Tambah Produk</small>
+    Product
+    <small>Add New Product</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Produk</a></li>
+    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
     <li class="active"><i></i> Create</li>
   </ol>
 @endsection
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('unit_id') ? ' has-error' : '' }}">
-            {!! Form::label('unit_id', 'Name', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('unit_id', 'Unit', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               {{ Form::select('unit_id', $unit_options, null, ['class'=>'form-control', 'placeholder'=>'Select unit', 'id'=>'unit_id']) }}
               @if ($errors->has('unit_id'))
@@ -102,6 +102,45 @@
     </div>
   </div>
 
+  <!--ROW Stock Information-->
+  <div class="row">
+    <div class="col-md-8">
+      <!--BOX Stock Informations-->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Stock Informations</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <div class="form-group{{ $errors->has('stock') ? ' has-error' : '' }}">
+            {!! Form::label('stock', 'Stock', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::text('stock',null,['class'=>'form-control', 'placeholder'=>'Stock of the product', 'id'=>'stock']) !!}
+              @if ($errors->has('stock'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('stock') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('minimum_stock') ? ' has-error' : '' }}">
+            {!! Form::label('minimum_stock', 'Minimum Stock', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::text('minimum_stock',null,['class'=>'form-control', 'placeholder'=>'Minimum stock availability', 'id'=>'minimum_stock']) !!}
+              @if ($errors->has('minimum_stock'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('minimum_stock') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          
+        </div><!-- /.box-body -->
+      </div>
+      <!--ENDBOX Stock Informations-->
+    </div>
+  </div>
+  <!--ENDROW Stock Information-->
+  <!--ROW Submission-->
   <div class="row">
     <div class="col-md-8">
       <!--BOX submission buttons-->
@@ -123,6 +162,7 @@
       <!--ENDBOX submission buttons-->
     </div>
   </div>
+  <!--ENDROW Submission-->
   {!! Form::close() !!}
 @endsection
 

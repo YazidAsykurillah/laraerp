@@ -26,6 +26,10 @@ Route::resource('category', 'CategoryController');
 Route::post('deleteProduct', 'ProductController@destroy');
 Route::resource('product', 'ProductController');
 
+//Suppliers
+Route::resource('supplier', 'SupplierController');
+
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
+	'getSuppliers'=>'datatables.getSuppliers',
 ]);

@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Yajra\Datatables\Datatables;
 
 use App\Product;
+use App\Supplier;
 
 class DatatablesController extends Controller
 {
@@ -21,7 +22,9 @@ class DatatablesController extends Controller
             'code',
             'name',
             'category_id',
-            'unit_id'
+            'unit_id',
+            'stock',
+            'minimum_stock'
         ]);
         $datatables = Datatables::of($products)
             ->editColumn('code', function($products){
@@ -34,7 +37,30 @@ class DatatablesController extends Controller
                 return $products->category->name;
             })
             ->editColumn('unit_id', function($products){
-                return $products->unit->name;
+                if($products->unit_id != NULL){
+                    return $products->unit->name;    
+                }
+                return 'Undefined unit';
+                
+            })
+            ->editColumn('stock', function($products){
+                $minimum_stock = $products->minimum_stock;
+                $stock_html = '';
+                if($products->stock == '0'){
+                    $stock_html = '<text class="text text-danger">0</text>';
+                }
+                else if($products->stock == $minimum_stock){
+                    $stock_html = '<text class="text text-warning">'.$products->stock.'</text>';
+                }
+                else if($products->stock < $minimum_stock){
+                    $stock_html = '<text class="text text-warning">'.$products->stock.'</text>';
+                }
+                else{
+                    $stock_html = '<text class="text text-info">'.$products->stock.'</text>';
+                }
+
+                return $stock_html;
+                
             })
             ->addColumn('actions', function($products){
                     $actions_html  ='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
@@ -51,6 +77,37 @@ class DatatablesController extends Controller
 
         return $datatables->make(true);
     
+    }
+
+
+    public function getSuppliers(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $suppliers = Supplier::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'pic_name',
+            'primary_email',
+            'primary_phone_number',
+        ]);
+
+        $data_suppliers = Datatables::of($suppliers)
+            ->addColumn('actions', function($suppliers){
+                    $actions_html  ='<a href="'.url('supplier/'.$suppliers->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-supplier" data-id="'.$suppliers->id.'" data-text="'.$suppliers->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_suppliers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_suppliers->make(true);
 
     }
     

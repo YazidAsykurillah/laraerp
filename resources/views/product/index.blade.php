@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Produc</a></li>
+    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -38,6 +38,7 @@
                 <th>Product Name</th>
                 <th style="width:20%;">Category</th>
                 <th style="width:10%;">Unit</th>
+                <th style="width:10%;">Stock</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -48,6 +49,7 @@
                 <th>Product Name</th>
                 <th>Category</th>
                 <th style="width:10%;">Unit</th>
+                <th style="width:10%;"></th>
                 <th></th>     
               </tr>
             </thead>
@@ -104,6 +106,7 @@
         { data: 'name', name: 'name' },
         { data: 'category_id', name: 'category_id' },
         { data: 'unit_id', name: 'unit_id'},
+        { data: 'stock', name: 'stock'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
 

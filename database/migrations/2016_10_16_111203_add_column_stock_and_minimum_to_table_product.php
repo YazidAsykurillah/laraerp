@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUnitIdToProducts extends Migration
+class AddColumnStockAndMinimumToTableProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class AddUnitIdToProducts extends Migration
     public function up()
     {
         Schema::table('products', function($table){
-            $table->integer('unit_id')->nullable();
+            $table->integer('stock')->default(0);
+            $table->integer('minimum_stock')->nullable();
         });
     }
 
@@ -25,7 +26,8 @@ class AddUnitIdToProducts extends Migration
     public function down()
     {
         Schema::table('products', function($table){
-            $table->dropColumn(['unit_id']);
+            $table->dropColumn('stock');
+            $table->dropColumn('minimum_stock');
         });
     }
 }

@@ -10,7 +10,7 @@ use App\Unit;
 class Product extends Model
 {
     protected $table = 'products';
-    protected $fillable = ['code', 'name', 'category_id', 'image', 'unit_id'];
+    protected $fillable = ['code', 'name', 'category_id', 'image', 'unit_id', 'stock', 'minimum_stock'];
 
     //relation to Category
     public function category(){

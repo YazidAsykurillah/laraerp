@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Product</a></li>
+    <li><a href="{{ URL::to('product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
     <li class="active"><i></i>{{ $product->code }}</li>
   </ol>
 @endsection
@@ -41,7 +41,7 @@
                 </a>
               @endif
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
               <div class="row">
                 <div class="col-sm-2">Code</div>
                 <div class="col-sm-1">:</div>
@@ -64,6 +64,28 @@
                 <div class="col-sm-2">Unit</div>
                 <div class="col-sm-1">:</div>
                 <div class="col-sm-3">{{ $product->unit->name }}</div>
+              </div>
+              <p></p>
+              <div class="row">
+                <div class="col-sm-2">Stock</div>
+                <div class="col-sm-1">:</div>
+                <div class="col-sm-3">{{ $product->stock }}</div>
+              </div>
+              <p></p>
+              <div class="row">
+                <div class="col-sm-2">Availability</div>
+                <div class="col-sm-1">:</div>
+                <div class="col-sm-3">
+                  @if($product->stock == 0)
+                    <button class="btn btn-danger btn-sm">Empty</button>
+                  @elseif($product->stock == $product->minimum_stock)
+                    <button class="btn btn-warning">Critical</button>
+                  @elseif($product->stock < $product->minimum_stock)
+                    <button class="btn btn-info">Need an order</button>
+                  @else
+                    <button class="btn btn-success">Available</button>
+                  @endif
+                </div>
               </div>
               <p></p>
               <div class="row">
