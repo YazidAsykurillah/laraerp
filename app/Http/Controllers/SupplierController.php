@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+//Form requests
+use App\Http\Requests\StoreSupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
+
 use App\Supplier;
 
 class SupplierController extends Controller
@@ -20,25 +24,24 @@ class SupplierController extends Controller
         return view('supplier.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
-        //
+        return view('supplier.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    
+    public function store(StoreSupplierRequest $request)
     {
-        //
+        $supplier = new Supplier;
+        $supplier->code = $request->code;
+        $supplier->name = $request->name;
+        $supplier->address = $request->address;
+        $supplier->pic_name = $request->pic_name;
+        $supplier->primary_email = $request->primary_email;
+        $supplier->primary_phone_number = $request->primary_phone_number;
+        $supplier->save();
+        return redirect('supplier');
     }
 
     /**
@@ -49,7 +52,9 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        return view('supplier.show')
+            ->with('supplier', $supplier);
     }
 
     /**
@@ -60,7 +65,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        return view('supplier.edit')
+            ->with('supplier', $supplier);
     }
 
     /**
@@ -70,9 +77,18 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSupplierRequest $request, $id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        $supplier->code = $request->code;
+        $supplier->name = $request->name;
+        $supplier->address = $request->address;
+        $supplier->pic_name = $request->pic_name;
+        $supplier->primary_email = $request->primary_email;
+        $supplier->primary_phone_number = $request->primary_phone_number;
+        $supplier->save();
+        return redirect('supplier')
+            ->with('successMessage', "$supplier->name has been updated");
     }
 
     /**
@@ -81,8 +97,11 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $supplier = Supplier::findOrFail($request->supplier_id);
+        $supplier->delete();
+        return redirect('supplier')
+            ->with('successMessage', "$supplier->name has been deleted");
     }
 }

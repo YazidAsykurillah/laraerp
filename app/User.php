@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\User;
+use App\PurchaseOrder;
+
+
 class User extends Authenticatable
 {
     /**
@@ -23,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function purchase_order()
+    {
+        return $this->hasMany('App\PurchaseOrder', 'creator');
+    }
 }

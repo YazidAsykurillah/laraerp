@@ -27,9 +27,14 @@ Route::post('deleteProduct', 'ProductController@destroy');
 Route::resource('product', 'ProductController');
 
 //Suppliers
+Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
+
+//Purchase orders
+Route::resource('purchase-order', 'PurchaseOrderController');
 
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
+	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
 ]);
