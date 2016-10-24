@@ -31,6 +31,8 @@ Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
 //Purchase orders
+//Save Purchase Order
+Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
 Route::resource('purchase-order', 'PurchaseOrderController');
 
 Route::controller('datatables', 'DatatablesController',[

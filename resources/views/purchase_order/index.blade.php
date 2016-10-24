@@ -104,14 +104,12 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
-        { data: 'supplier_id', name: 'supplier_id' },
-        { data: 'creator', name: 'creator.name' },
+        { data: 'supplier_id', name: 'supplier.name' },
+        { data: 'creator', name: 'created_by.name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
-
-
     });
 
     // Delete button handler
@@ -125,7 +123,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 5) {
+          if ($(this).index() != 0 && $(this).index() != 6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
           

@@ -126,15 +126,12 @@ class DatatablesController extends Controller
 
     public function getPurchaseOrders(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
-        $purchase_orders = PurchaseOrder::select([
-            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id',
-            'code',
-            'supplier_id',
-            'creator',
-            'status',
-            'created_at',
-        ]);
+        $purchase_orders = PurchaseOrder::with('supplier', 'created_by')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_orders.*',
+            ]
+        );
 
         $data_purchase_orders = Datatables::of($purchase_orders)
             ->editColumn('supplier_id', function($purchase_orders){
@@ -144,21 +141,23 @@ class DatatablesController extends Controller
                 return $purchase_orders->created_by->name;
             })
             ->addColumn('actions', function($purchase_orders){
-                    $actions_html  ='<a href="'.url('purchase-order/'.$purchase_orders->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-                    
-                    return $actions_html;
+                $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('purchase-order/'.$purchase_orders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+                
+                return $actions_html;
             });
 
-        if ($keyword = $request->get('search')['value']) {
+        /*if ($keyword = $request->get('search')['value']) {
             $data_purchase_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }
+        }*/
         
-
         return $data_purchase_orders->make(true);
 
     }

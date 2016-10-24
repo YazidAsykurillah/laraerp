@@ -31,6 +31,6 @@ class User extends Authenticatable
 
     public function purchase_order()
     {
-        return $this->hasMany('App\PurchaseOrder', 'creator');
+        return $this->hasMany('App\PurchaseOrder');
     }
 }

@@ -25,7 +25,10 @@
 
 
     <!-- jquery datatables-->
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    {!! Html::style('css/datatables/jquery.dataTables.css') !!}
+      <!--
+      <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+      -->
     
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -102,14 +105,17 @@
     {!! Html::script('js/jquery-1.12.4.js') !!}
 
     <!-- DataTables -->
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    {!! Html::script('js/datatables/jquery.dataTables.js') !!}
+      <!--
+      <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+      -->
+    
 
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('js/bootstrap/bootstrap.js') !!}
 
     <!-- Admin LTE Core JavaScript -->
     {!! Html::script('js/admin-lte/app.js') !!}
-
 
     <!-- Additional javascript -->
     @yield('additional_scripts')

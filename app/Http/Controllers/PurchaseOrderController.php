@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Http\Requests\StorePurchaseOrderRequest;
+
 use App\PurchaseOrder;
+use App\Supplier;
 
 class PurchaseOrderController extends Controller
 {
@@ -27,7 +30,9 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        //
+        $supplier_options = Supplier::lists('name', 'id');
+        return view('purchase_order.create')
+            ->with('supplier_options', $supplier_options);
     }
 
     /**
@@ -36,9 +41,39 @@ class PurchaseOrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePurchaseOrderRequest $request)
     {
-        //
+        if($request->ajax()){
+
+            $max_po_id = \DB::table('purchase_orders')->max('id');
+            $next_po_id = $max_po_id+1;
+            $code = 'PO-'.$next_po_id;
+
+            $data = [
+                'code'=>$code,
+                'supplier_id'=>$request->supplier_id,
+                'notes'=>$request->notes,
+                'creator'=>\Auth::user()->id
+            ];
+
+            $save = PurchaseOrder::create($data);
+            $purchase_order_id = $save->id;
+
+            $purchase_order = PurchaseOrder::find($purchase_order_id);
+
+            //Build sync data to store the relation w/ products
+            $syncData = [];
+            foreach($request->product_id as $key=>$value){
+                   $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>$request->price[$key]];
+            }
+            //sync the products
+            $purchase_order->products()->sync($syncData);
+
+            $response = [
+                'msg'=>'storePurchaseOrderOk',
+            ];
+            return response()->json($response);
+        }
     }
 
     /**

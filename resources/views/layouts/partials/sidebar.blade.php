@@ -73,9 +73,9 @@
           <span>Finance</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="#"><i class="fa fa-circle-o"></i> Penerimaan</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Retur</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Bank</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Ledger</a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -86,7 +86,6 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Famili Produk</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\User;
+use App\Product;
 
 class PurchaseOrder extends Model
 {
@@ -24,4 +25,8 @@ class PurchaseOrder extends Model
     	return $this->belongsTo('App\User', 'creator');
     }
 
+    public function products()
+    {
+        return $this->belongsToMany('App\Product')->withPivot('quantity','price');
+    }
 }
