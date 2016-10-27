@@ -32,7 +32,7 @@ class DatatablesController extends Controller
         ]);
         $datatables = Datatables::of($products)
             ->editColumn('code', function($products){
-                $code_html  ='<a href="'.url('product/'.$products->id).'" class="btn btn-link btn-xs" title="Click to see the detail">';
+                $code_html  ='<a href="'.url('product/'.$products->id).'" class="btn btn-link btn-xs" target="_" title="Click to see the detail">';
                 $code_html .=   '<i class="fa fa-link">&nbsp;'.$products->code.'</i>';
                 $code_html .='</a>&nbsp;';
                 return $code_html;

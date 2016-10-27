@@ -71,6 +71,7 @@ class PurchaseOrderController extends Controller
 
             $response = [
                 'msg'=>'storePurchaseOrderOk',
+                'purchase_order_id'=>$purchase_order_id
             ];
             return response()->json($response);
         }

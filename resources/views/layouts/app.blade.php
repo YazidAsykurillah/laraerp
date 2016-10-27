@@ -26,6 +26,9 @@
 
     <!-- jquery datatables-->
     {!! Html::style('css/datatables/jquery.dataTables.css') !!}
+
+    <!--Alertify-->
+    {!! Html::style('css/alertify/alertify.css') !!}
       <!--
       <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
       -->
@@ -116,6 +119,8 @@
 
     <!-- Admin LTE Core JavaScript -->
     {!! Html::script('js/admin-lte/app.js') !!}
+
+    {!! Html::script('js/alertify/alertify.js') !!}
 
     <!-- Additional javascript -->
     @yield('additional_scripts')

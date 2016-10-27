@@ -24,7 +24,9 @@ class StorePurchaseOrderRequest extends Request
     public function rules()
     {
         return [
-            // 'supplier_id'=>'required|integer',
+            'supplier_id'=>'required|integer',
+            'product_id'=>'required|exists:products,id',
+            'quantity'=>'required|array'
         ];
     }
 }

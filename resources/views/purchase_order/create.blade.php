@@ -257,14 +257,20 @@
         beforeSend : function(){},
         success : function(response){
             if(response.msg == 'storePurchaseOrderOk'){
-                window.location.reload();
+                window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
             }
             else{
                 console.log(response);
             }
         },
         error:function(data){
-          console.log(data);
+          var htmlErrors = '<p>Error : </p>';
+          errors = data.responseJSON;
+          $.each(errors, function(index, value){
+            htmlErrors+= '<p>'+value+'</p>';
+          });
+          alertify.set('notifier', 'delay',0);
+          alertify.error(htmlErrors);
       }
     });
   });
