@@ -13,7 +13,7 @@ class PurchaseOrder extends Model
 {
     protected $table = 'purchase_orders';
 
-    protected $fillable = ['code', 'supplier_id', 'creator', 'status'];
+    protected $fillable = ['code', 'supplier_id', 'creator', 'status', 'notes'];
 
     public function supplier()
     {
@@ -27,6 +27,6 @@ class PurchaseOrder extends Model
 
     public function products()
     {
-        return $this->belongsToMany('App\Product')->withPivot('quantity','price');
+        return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'purchase_order_id');
     }
 }

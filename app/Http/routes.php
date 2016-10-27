@@ -33,6 +33,8 @@ Route::resource('supplier', 'SupplierController');
 //Purchase orders
 //Save Purchase Order
 Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
+//Update
+Route::put('UpdatePurchaseOrder', 'PurchaseOrderController@update');
 Route::resource('purchase-order', 'PurchaseOrderController');
 
 Route::controller('datatables', 'DatatablesController',[

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Http\Requests\StorePurchaseOrderRequest;
+use App\Http\Requests\UpdatePurchaseOrderRequest;
 
 use App\PurchaseOrder;
 use App\Supplier;
@@ -42,7 +43,7 @@ class PurchaseOrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorePurchaseOrderRequest $request)
-    {
+    {   
         if($request->ajax()){
 
             $max_po_id = \DB::table('purchase_orders')->max('id');
@@ -83,9 +84,20 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    protected function count_total_price($purchase_order)
+    {
+        $sum_price = \DB::table('product_purchase_order')
+                    ->where('purchase_order_id', $purchase_order->id)
+                    ->sum('price');
+        return $sum_price;
+    }
     public function show($id)
     {
-        //
+        $purchase_order = PurchaseOrder::findOrFail($id);
+        $total_price = $this->count_total_price($purchase_order);
+        return view('purchase_order.show')
+            ->with('purchase_order', $purchase_order)
+            ->with('total_price', $total_price);
     }
 
     /**
@@ -96,7 +108,13 @@ class PurchaseOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $purchase_order = PurchaseOrder::findOrFail($id);
+        $supplier_options = Supplier::lists('name', 'id');
+        $total_price = $this->count_total_price($purchase_order);
+        return view('purchase_order.edit')
+            ->with('purchase_order', $purchase_order)
+            ->with('total_price', $total_price)
+            ->with('supplier_options', $supplier_options);
     }
 
     /**
@@ -106,9 +124,32 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePurchaseOrderRequest $request)
     {
-        //
+        if($request->ajax()){
+            
+            $id = $request->id;
+            $purchase_order = PurchaseOrder::findOrFail($id);
+            $purchase_order->supplier_id = $request->supplier_id;
+            $purchase_order->notes = $request->notes;
+            $update = $purchase_order->save();
+
+            //Build sync data to update PO relation w/ products
+            $syncData = [];
+            foreach($request->product_id as $key=>$value){
+                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>$request->price[$key]];
+            }
+
+            //sync the products
+            $purchase_order->products()->syncWithoutDetaching($syncData);
+
+            $response = [
+                'msg'=>'updatePurchaseOrderOk',
+                'purchase_order_id'=>$id
+            ];
+            return response()->json($response);
+        }
+        
     }
 
     /**

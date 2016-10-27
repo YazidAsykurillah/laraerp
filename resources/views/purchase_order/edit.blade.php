@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Purchase Order
+  Edit Purchase Order
 @endsection
 
 @section('page_header')
   <h1>
     Purchase Order
-    <small>Create Purchase Order</small>
+    <small>Edit Purchase Order</small>
   </h1>
 @endsection
 
@@ -15,13 +15,13 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
-    <li class="active"><i></i>Create</li>
+    <li class="active"><i></i>Edit</li>
   </ol>
 @endsection
 
 @section('content')
   <!-- Row Products-->
-  {!! Form::open(['route'=>'purchase-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-order']) !!}
+  {!! Form::model($purchase_order, ['route'=>['purchase-order.update', $purchase_order->id], 'id'=>'form-edit-purchase-order', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
@@ -34,15 +34,43 @@
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <tr>
-                <th style="width:40%">Product Name</th>
-                <th style="width:20%">Quantity</th>
-                <th style="width:20%">Unit</th>
-                <th style="width:20%">Price</th>
-              </tr>
-              <tr id="tr-no-product-selected">
-                <td colspan="4">No product selected</td>
-              </tr>
+              <thead>
+                <tr>
+                  <th style="width:40%">Product Name</th>
+                  <th style="width:20%">Quantity</th>
+                  <th style="width:20%">Unit</th>
+                  <th style="width:20%">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($purchase_order->products->count() > 0)
+                  @foreach($purchase_order->products as $product)
+                  <tr id="tr_product_{{$product->id}}">
+                    <td>
+                      <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
+                      {{ $product->name }}
+                    </td>
+                    <td>
+                      <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
+                    </td>
+                    <td>{{ $product->unit->name }}</td>
+                    <td>
+                      <input type="text" class="price form-control" name="price[]" style="" value="{{ $product->pivot->price }}" />
+                    </td>
+                  </tr>
+                  @endforeach
+                @else
+                <tr id="tr-no-product-selected">
+                  <td>There are no product</td>
+                </tr>
+                @endif
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="3">Total Price</th>
+                  <th>{{ $total_price }}</th>
+                </tr>
+              </tfoot>
             </table>
           </div>
 
@@ -96,6 +124,7 @@
                 <button type="submit" class="btn btn-info" id="btn-submit-product">
                   <i class="fa fa-save"></i>&nbsp;Submit
                 </button>
+                <input type="hidden" name="id" value="{{ $purchase_order->id }}" />
               </div>
             </div>
           
@@ -165,7 +194,7 @@
   <script type="text/javascript">
     
     var selected = [];
-
+    
     var tableProduct =  $('#table-product').DataTable({
       processing :true,
       serverSide : true,
@@ -174,13 +203,22 @@
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
-        
       ],
+      
+      initComplete:function(){
+        
+        /*@foreach($purchase_order->products as $product)
+          selected.push({{$product->id}});
+        @endforeach*/
+        console.log(selected);
+      },
       rowCallback: function(row, data){
+        
         if($.inArray(data.DT_RowId, selected) !== -1){
           $(row).addClass('selected');
         }
-      }
+
+      },
 
     });
 
@@ -213,6 +251,7 @@
         }
  
         $(this).toggleClass('selected');
+
         
     } );
 
@@ -251,16 +290,16 @@
 
   <script type="text/javascript">
 
-  $('#form-create-purchase-order').on('submit', function(event){
+  $('#form-edit-purchase-order').on('submit', function(event){
     event.preventDefault();
     var data = $(this).serialize();
     $.ajax({
-        url: '{!!URL::to('storePurchaseOrder')!!}',
+        url: '{!!URL::to('UpdatePurchaseOrder')!!}',
         type : 'POST',
         data : $(this).serialize(),
         beforeSend : function(){},
         success : function(response){
-            if(response.msg == 'storePurchaseOrderOk'){
+            if(response.msg == 'updatePurchaseOrderOk'){
                 window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
             }
             else{
