@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePurchaseOrderProductTable extends Migration
+class CreateInvoicePurchaseOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,9 @@ class CreatePurchaseOrderProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_purchase_order', function($table){
-            $table->integer('product_id');
+        Schema::create('invoice_purchase_order', function(Blueprint $table){
+            $table->integer('invoice_id');
             $table->integer('purchase_order_id');
-            $table->integer('quantity');
-            $table->decimal('price', 8, 2);
-            //$table->integer('price');
         });
     }
 
@@ -28,6 +25,6 @@ class CreatePurchaseOrderProductTable extends Migration
      */
     public function down()
     {
-        Schema::drop('product_purchase_order');
+        Schema::drop('invoice_purchase_order');
     }
 }

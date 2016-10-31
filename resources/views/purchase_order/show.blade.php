@@ -25,7 +25,7 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">{{ $purchase_order->code }}</h3>
+          <h3 class="box-title"> {{ $purchase_order->code }}</h3>
           
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -46,11 +46,11 @@
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->pivot->quantity }}</td>
                     <td>{{ $product->unit->name }}</td>
-                    <td>{{ $product->pivot->price }}</td>
+                    <td>{{ number_format($product->pivot->price, 2, ".", ",") }}</td>
                   </tr>
+                <tr>
                   @endforeach
                 @else
-                <tr>
                   <td>There are no product</td>
                 </tr>
                 @endif
@@ -58,30 +58,48 @@
               <tfoot>
                 <tr>
                   <th colspan="3">Total Price</th>
-                  <th>{{ $total_price }}</th>
+                  <th>{{ number_format($total_price, 2, ".", ",") }}</th>
                 </tr>
               </tfoot>
             </table>
 
           </div>
           <div class="row">
+            <div class="col-md-3">Supplier</div>
+            <div class="col-md-9">
+              {{ $purchase_order->supplier->name }}
+            </div>
+          </div>
+          <br/>
+          <div class="row">
             <div class="col-md-3">Notes</div>
-            <div class="col-md-3">
+            <div class="col-md-9">
               {!! nl2br($purchase_order->notes) !!}
             </div>
-            
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
               <i class="fa fa-calendar" title="Date created"></i>&nbsp;{{ $purchase_order->created_at }}
             </div>
-            <div class="col-md-3">
-              <i class="fa fa-user" title="Date created"></i>&nbsp;{{ $purchase_order->created_by->name }}
+            <div class="col-md-4">
+              <i class="fa fa-user" title="Purchase order creator"></i>&nbsp;{{ $purchase_order->created_by->name }}
             </div>
-            <div class="col-md-3">
-              <i class="fa fa-comment-o" title="Date created"></i>&nbsp;{{ $purchase_order->status }}
+            <div class="col-md-4">
+              
+              @if($purchase_order->status == 'posted')
+                <p>
+                  <i class="fa fa-comment-o" title="Status"></i>&nbsp;Posted
+                </p>
+                <p>
+                  <a href="#" class="btn btn-primary">
+                    Input invoice
+                  </a>
+                </p>
+              @else
+                Paid
+              @endif
             </div>
           </div>
         </div>

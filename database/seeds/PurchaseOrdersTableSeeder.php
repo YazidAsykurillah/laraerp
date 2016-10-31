@@ -15,9 +15,9 @@ class PurchaseOrdersTableSeeder extends Seeder
         //also delete pivot table with product
         \DB::table('product_purchase_order')->delete();
         $data = [
-        	['id'=>1, 'code'=>'PO-1', 'supplier_id'=>1, 'creator'=>1, 'status'=>'posted'],
-        	['id'=>2, 'code'=>'PO-2', 'supplier_id'=>1, 'creator'=>1, 'status'=>'posted'],
-        	['id'=>3, 'code'=>'PO-3', 'supplier_id'=>2, 'creator'=>1, 'status'=>'posted'],
+        	['id'=>1, 'code'=>'PO-1', 'supplier_id'=>1, 'creator'=>1, 'status'=>'posted', 'created_at'=>date('Y-m-d H:i:s'), 'updated_at'=>date('Y-m-d H:i:s')],
+        	['id'=>2, 'code'=>'PO-2', 'supplier_id'=>1, 'creator'=>1, 'status'=>'posted', 'created_at'=>date('Y-m-d H:i:s'), 'updated_at'=>date('Y-m-d H:i:s')],
+        	['id'=>3, 'code'=>'PO-3', 'supplier_id'=>2, 'creator'=>1, 'status'=>'posted', 'created_at'=>date('Y-m-d H:i:s'), 'updated_at'=>date('Y-m-d H:i:s')],
         ];
 
         \DB::table('purchase_orders')->insert($data);

@@ -65,7 +65,7 @@ class PurchaseOrderController extends Controller
             //Build sync data to store the relation w/ products
             $syncData = [];
             foreach($request->product_id as $key=>$value){
-                   $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>$request->price[$key]];
+                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
             }
             //sync the products
             $purchase_order->products()->sync($syncData);
@@ -137,7 +137,7 @@ class PurchaseOrderController extends Controller
             //Build sync data to update PO relation w/ products
             $syncData = [];
             foreach($request->product_id as $key=>$value){
-                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>$request->price[$key]];
+                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
             }
 
             //sync the products

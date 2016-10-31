@@ -155,6 +155,9 @@
 
 
 @section('additional_scripts')
+  <!--Auto numeric plugin-->
+  {!! Html::script('js/autoNumeric.js') !!}
+
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();
@@ -169,6 +172,7 @@
     var tableProduct =  $('#table-product').DataTable({
       processing :true,
       serverSide : true,
+      pageLength:10,
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
@@ -177,7 +181,7 @@
         
       ],
       rowCallback: function(row, data){
-        if($.inArray(data.DT_RowId, selected) !== -1){
+        if($.inArray(data.id, selected) !== -1){
           $(row).addClass('selected');
         }
       }
@@ -207,6 +211,10 @@
                 '</td>'+
               '</tr>'
             );
+            $('.price').autoNumeric('init',{
+              aSep:',',
+              aDec:'.'
+            });
         } else {
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
@@ -228,9 +236,9 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 5) {
-              $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
-          }
+      if ($(this).index() != 0 && $(this).index() != 5) {
+          $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+      }
           
     });
     //Block search input and select
@@ -258,14 +266,18 @@
         url: '{!!URL::to('storePurchaseOrder')!!}',
         type : 'POST',
         data : $(this).serialize(),
-        beforeSend : function(){},
+        beforeSend : function(){
+          $('#btn-submit-product').prop('disabled', true);
+          //$('#btn-submit-product').hide();
+        },
         success : function(response){
-            if(response.msg == 'storePurchaseOrderOk'){
-                window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
-            }
-            else{
-                console.log(response);
-            }
+          if(response.msg == 'storePurchaseOrderOk'){
+              window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
+          }
+          else{
+            $('#btn-submit-product').prop('disabled', false);
+            console.log(response);
+          }
         },
         error:function(data){
           var htmlErrors = '<p>Error : </p>';
@@ -275,6 +287,7 @@
           });
           alertify.set('notifier', 'delay',0);
           alertify.error(htmlErrors);
+          $('#btn-submit-product').prop('disabled', false);
       }
     });
   });

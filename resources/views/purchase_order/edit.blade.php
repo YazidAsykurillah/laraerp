@@ -68,7 +68,7 @@
               <tfoot>
                 <tr>
                   <th colspan="3">Total Price</th>
-                  <th>{{ $total_price }}</th>
+                  <th id="total_price">{{ $total_price }}</th>
                 </tr>
               </tfoot>
             </table>
@@ -184,6 +184,9 @@
 
 
 @section('additional_scripts')
+  <!--Auto numeric plugin-->
+  {!! Html::script('js/autoNumeric.js') !!}
+
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();
@@ -194,30 +197,28 @@
   <script type="text/javascript">
     
     var selected = [];
-    
+    //initially push selected products to var selected
+    @foreach($purchase_order->products as $product)
+      selected.push({{$product->id}});
+    @endforeach
+    //ENDinitially push selected products to var selected
     var tableProduct =  $('#table-product').DataTable({
       processing :true,
       serverSide : true,
+      pageLength : 10,
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
       ],
-      
-      initComplete:function(){
-        
-        /*@foreach($purchase_order->products as $product)
-          selected.push({{$product->id}});
-        @endforeach*/
-        console.log(selected);
-      },
       rowCallback: function(row, data){
-        
-        if($.inArray(data.DT_RowId, selected) !== -1){
+        if($.inArray(data.id, selected) !== -1){
           $(row).addClass('selected');
         }
-
+      },
+      initComplete:function(){
+        //console.log(selected);
       },
 
     });
@@ -245,6 +246,18 @@
                 '</td>'+
               '</tr>'
             );
+            $('.price').autoNumeric('init',{
+                aSep : ',',
+                aDec : '.'
+            });
+            $('#total_price').autoNumeric('init',{
+              aSep : ',',
+              aDec : '.'
+            });
+            $('.price').on('keyup', function(){
+              countTotalPrice();
+            });
+
         } else {
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
@@ -252,7 +265,6 @@
  
         $(this).toggleClass('selected');
 
-        
     } );
 
     $('#btn-set-product').on('click', function(){
@@ -267,10 +279,9 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 5) {
-              $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
-          }
-          
+      if ($(this).index() != 0 && $(this).index() != 5) {
+          $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+      }
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
@@ -316,6 +327,36 @@
           alertify.error(htmlErrors);
       }
     });
+  });
+  </script>
+
+
+  <script type="text/javascript">
+  $('.price').autoNumeric('init',{
+      aSep : ',',
+      aDec : '.'
+  });
+  $('#total_price').autoNumeric('init',{
+    aSep : ',',
+    aDec : '.'
+  });
+  //Handle total price value to show
+  var total_price_arr = [];
+  function currencyFormat (num) {
+    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  }
+
+  function countTotalPrice(){
+    total_price_arr = [];
+    $('.price').each(function(){
+      total_price_arr.push($(this).val().replace(',',''));
+    });
+    map_total_price = total_price_arr.map(Number);
+    result = map_total_price.reduce(function(a,b){return a+b},0);
+    $('#total_price').html(currencyFormat(result));
+  }
+  $('.price').on('keyup', function(){
+    countTotalPrice();
   });
   </script>
 @endSection
