@@ -28,14 +28,14 @@
 							<td>{{ $product->name }}</td>
 							<td>{{ $product->pivot->quantity }}</td>
 							<td>{{ $product->unit->name }}</td>
-							<td>{{ $product->pivot->price }}</td>
+							<td>{{ number_format($product->pivot->price) }}</td>
 						</tr>
 						@endforeach
 					</tbody>
 					<tfoot>
 						<tr>
 							<th colspan="3">Total</th>
-							<th> {{ $total_price }}</th>
+							<th> {{ number_format($total_price) }}</th>
 						</tr>
 					</tfoot>
 					

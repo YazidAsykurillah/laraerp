@@ -17,7 +17,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->string('code')->unique();
             $table->integer('supplier_id');
             $table->integer('creator');
-            $table->enum('status',['posted', 'paid'])->default('posted');
+            $table->enum('status',['posted', 'paid', 'accepted'])->default('posted');
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ class ProductsTableSeeder extends Seeder
     {
         \DB::table('products')->delete();
         $data = [
-        	['id'=>1, 'code'=>'P-01', 'name'=>'Product 1', 'category_id'=>1],
-        	['id'=>2, 'code'=>'P-02', 'name'=>'Product 2', 'category_id'=>1],
+        	['id'=>1, 'code'=>'P-01', 'name'=>'Product 1', 'category_id'=>1, 'unit_id'=>1],
+        	['id'=>2, 'code'=>'P-02', 'name'=>'Product 2', 'category_id'=>1, 'unit_id'=>2],
         ];
 
        \DB::table('products')->insert($data);
