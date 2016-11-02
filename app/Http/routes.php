@@ -31,11 +31,13 @@ Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
 //Purchase orders
-//Save Purchase Order
-Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
-//Update
-Route::put('UpdatePurchaseOrder', 'PurchaseOrderController@update');
-Route::resource('purchase-order', 'PurchaseOrderController');
+	//Print
+	Route::get('purchase-order/{id}/print', 'PurchaseOrderController@print');
+	//Save Purchase Order
+	Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
+	//Update
+	Route::put('UpdatePurchaseOrder', 'PurchaseOrderController@update');
+	Route::resource('purchase-order', 'PurchaseOrderController');
 
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',

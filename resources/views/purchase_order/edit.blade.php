@@ -308,12 +308,15 @@
         url: '{!!URL::to('UpdatePurchaseOrder')!!}',
         type : 'POST',
         data : $(this).serialize(),
-        beforeSend : function(){},
+        beforeSend : function(){
+          $('#btn-submit-product').prop('disabled', true);
+        },
         success : function(response){
             if(response.msg == 'updatePurchaseOrderOk'){
                 window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
             }
             else{
+              $('#btn-submit-product').prop('disabled', false);
                 console.log(response);
             }
         },
@@ -323,6 +326,7 @@
           $.each(errors, function(index, value){
             htmlErrors+= '<p>'+value+'</p>';
           });
+          $('#btn-submit-product').prop('disabled', false);
           alertify.set('notifier', 'delay',0);
           alertify.error(htmlErrors);
       }

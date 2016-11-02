@@ -140,8 +140,10 @@ class PurchaseOrderController extends Controller
                 $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
             }
 
-            //sync the products
-            $purchase_order->products()->syncWithoutDetaching($syncData);
+            //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing
+            \DB::table('product_purchase_order')->where('purchase_order_id','=',$id)->delete();
+            //Now time to sync the products
+            $purchase_order->products()->sync($syncData);
 
             $response = [
                 'msg'=>'updatePurchaseOrderOk',
@@ -161,5 +163,14 @@ class PurchaseOrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function print(Request $request){
+
+        $data['purchase_order'] = PurchaseOrder::findOrFail($request->id);
+        $data['total_price'] = $this->count_total_price($data['purchase_order']);
+        
+        $pdf = \PDF::loadView('pdf.purchase_order', $data);
+        return $pdf->stream('purchase_order.pdf');
     }
 }
