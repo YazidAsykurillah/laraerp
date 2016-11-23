@@ -14,8 +14,11 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table){
             $table->increments('id');
+            $table->enum('type', ['sales', 'purchase'])->default('sales');
             $table->string('code')->unique();
             $table->integer('created_by');
+            $table->date('due_date');
+            $table->boolean('is_completed')->default(FALSE);
             $table->timestamps();
         });
     }
