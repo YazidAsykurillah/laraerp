@@ -67,7 +67,7 @@ class PurchaseOrderController extends Controller
             foreach($request->product_id as $key=>$value){
                 $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
             }
-            //sync the products
+            //sync the purchase order product relation
             $purchase_order->products()->sync($syncData);
 
             $response = [
@@ -91,6 +91,7 @@ class PurchaseOrderController extends Controller
                     ->sum('price');
         return $sum_price;
     }
+    
     public function show($id)
     {
         $purchase_order = PurchaseOrder::findOrFail($id);

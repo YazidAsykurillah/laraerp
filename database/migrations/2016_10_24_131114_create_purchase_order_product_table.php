@@ -16,7 +16,7 @@ class CreatePurchaseOrderProductTable extends Migration
             $table->integer('product_id');
             $table->integer('purchase_order_id');
             $table->integer('quantity');
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 20, 2);
             //$table->integer('price');
         });
     }

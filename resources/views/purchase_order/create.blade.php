@@ -188,7 +188,7 @@
 
     });
 
-    tableProduct.on('click', 'tr', function () {
+    tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
         var index = $.inArray(id, selected);
@@ -258,39 +258,40 @@
   </script>
 
   <script type="text/javascript">
-
-  $('#form-create-purchase-order').on('submit', function(event){
-    event.preventDefault();
-    var data = $(this).serialize();
-    $.ajax({
-        url: '{!!URL::to('storePurchaseOrder')!!}',
-        type : 'POST',
-        data : $(this).serialize(),
-        beforeSend : function(){
-          $('#btn-submit-product').prop('disabled', true);
-          //$('#btn-submit-product').hide();
-        },
-        success : function(response){
-          if(response.msg == 'storePurchaseOrderOk'){
-              window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
-          }
-          else{
+  //Block handle form create purchase order submission
+    $('#form-create-purchase-order').on('submit', function(event){
+      event.preventDefault();
+      var data = $(this).serialize();
+      $.ajax({
+          url: '{!!URL::to('storePurchaseOrder')!!}',
+          type : 'POST',
+          data : $(this).serialize(),
+          beforeSend : function(){
+            $('#btn-submit-product').prop('disabled', true);
+            //$('#btn-submit-product').hide();
+          },
+          success : function(response){
+            if(response.msg == 'storePurchaseOrderOk'){
+                window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
+            }
+            else{
+              $('#btn-submit-product').prop('disabled', false);
+              console.log(response);
+            }
+          },
+          error:function(data){
+            var htmlErrors = '<p>Error : </p>';
+            errors = data.responseJSON;
+            $.each(errors, function(index, value){
+              htmlErrors+= '<p>'+value+'</p>';
+            });
+            alertify.set('notifier', 'delay',0);
+            alertify.error(htmlErrors);
             $('#btn-submit-product').prop('disabled', false);
-            console.log(response);
-          }
-        },
-        error:function(data){
-          var htmlErrors = '<p>Error : </p>';
-          errors = data.responseJSON;
-          $.each(errors, function(index, value){
-            htmlErrors+= '<p>'+value+'</p>';
-          });
-          alertify.set('notifier', 'delay',0);
-          alertify.error(htmlErrors);
-          $('#btn-submit-product').prop('disabled', false);
-      }
+        }
+      });
     });
-  });
+  //ENDBlock handle form create purchase order submission
   </script>
 @endSection
 

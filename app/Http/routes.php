@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::any('/show_product', function(){
+	$product = \DB::table('products')->get();
+	return json_encode($product);
+});
+
 Route::auth();
 
 Route::get('/home', 'HomeController@index');

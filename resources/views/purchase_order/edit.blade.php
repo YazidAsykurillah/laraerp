@@ -209,8 +209,8 @@
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'code', name: 'code' },
-        { data: 'name', name: 'name' },
+        {data: 'code', name: 'code' },
+        {data: 'name', name: 'name' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -301,67 +301,71 @@
 
   <script type="text/javascript">
 
-  $('#form-edit-purchase-order').on('submit', function(event){
-    event.preventDefault();
-    var data = $(this).serialize();
-    $.ajax({
-        url: '{!!URL::to('UpdatePurchaseOrder')!!}',
-        type : 'POST',
-        data : $(this).serialize(),
-        beforeSend : function(){
-          $('#btn-submit-product').prop('disabled', true);
-        },
-        success : function(response){
-            if(response.msg == 'updatePurchaseOrderOk'){
-                window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
-            }
-            else{
-              $('#btn-submit-product').prop('disabled', false);
-                console.log(response);
-            }
-        },
-        error:function(data){
-          var htmlErrors = '<p>Error : </p>';
-          errors = data.responseJSON;
-          $.each(errors, function(index, value){
-            htmlErrors+= '<p>'+value+'</p>';
-          });
-          $('#btn-submit-product').prop('disabled', false);
-          alertify.set('notifier', 'delay',0);
-          alertify.error(htmlErrors);
-      }
+    $('#form-edit-purchase-order').on('submit', function(event){
+      event.preventDefault();
+      var data = $(this).serialize();
+      $.ajax({
+          url: '{!!URL::to('UpdatePurchaseOrder')!!}',
+          type : 'POST',
+          data : $(this).serialize(),
+          beforeSend : function(){
+            $('#btn-submit-product').prop('disabled', true);
+          },
+          success : function(response){
+              if(response.msg == 'updatePurchaseOrderOk'){
+                  window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
+              }
+              else{
+                $('#btn-submit-product').prop('disabled', false);
+                  console.log(response);
+              }
+          },
+          error:function(data){
+            var htmlErrors = '<p>Error : </p>';
+            errors = data.responseJSON;
+            $.each(errors, function(index, value){
+              htmlErrors+= '<p>'+value+'</p>';
+            });
+            $('#btn-submit-product').prop('disabled', false);
+            alertify.set('notifier', 'delay',0);
+            alertify.error(htmlErrors);
+        }
+      });
     });
-  });
   </script>
 
 
   <script type="text/javascript">
-  $('.price').autoNumeric('init',{
+    $('.price').autoNumeric('init',{
+        aSep : ',',
+        aDec : '.'
+    });
+    $('#total_price').autoNumeric('init',{
       aSep : ',',
       aDec : '.'
-  });
-  $('#total_price').autoNumeric('init',{
-    aSep : ',',
-    aDec : '.'
-  });
-  //Handle total price value to show
-  var total_price_arr = [];
-  function currencyFormat (num) {
-    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-  }
-
-  function countTotalPrice(){
-    total_price_arr = [];
-    $('.price').each(function(){
-      total_price_arr.push($(this).val().replace(',',''));
     });
-    map_total_price = total_price_arr.map(Number);
-    result = map_total_price.reduce(function(a,b){return a+b},0);
-    $('#total_price').html(currencyFormat(result));
-  }
-  $('.price').on('keyup', function(){
-    countTotalPrice();
-  });
+    //Handle total price value to show
+    //var total_price_arr = [];
+    function currencyFormat (num) {
+      return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      console.log( num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+    }
+
+    function countTotalPrice(){
+      total_price_arr = [];
+      $('.price').each(function(){
+        
+        total_price_arr.push($(this).val().replace(/,/g, ''));
+      });
+      map_total_price = total_price_arr.map(Number);
+      result = map_total_price.reduce(function(a,b){return a+b},0);
+      $('#total_price').html(currencyFormat(result));
+      //console.log(total_price_arr);
+    }
+    $('.price').on('keyup', function(){
+      
+      countTotalPrice();
+    });
   </script>
 @endSection
 
