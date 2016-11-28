@@ -166,7 +166,7 @@ class PurchaseOrderController extends Controller
         //
     }
 
-    public function print(Request $request){
+    public function printPdf(Request $request){
 
         $data['purchase_order'] = PurchaseOrder::findOrFail($request->id);
         $data['total_price'] = $this->count_total_price($data['purchase_order']);
@@ -174,4 +174,7 @@ class PurchaseOrderController extends Controller
         $pdf = \PDF::loadView('pdf.purchase_order', $data);
         return $pdf->stream('purchase_order.pdf');
     }
+
+    
+
 }

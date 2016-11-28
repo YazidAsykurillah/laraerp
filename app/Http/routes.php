@@ -37,15 +37,25 @@ Route::resource('supplier', 'SupplierController');
 
 //Purchase orders
 	//Print
-	Route::get('purchase-order/{id}/print', 'PurchaseOrderController@print');
+	Route::get('purchase-order/{id}/printPdf', 'PurchaseOrderController@printPdf');
 	//Save Purchase Order
 	Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
 	//Update
 	Route::put('UpdatePurchaseOrder', 'PurchaseOrderController@update');
 	Route::resource('purchase-order', 'PurchaseOrderController');
 
+//Purchase Order Invoice
+	Route::get('purchase-order-invoice/{purchase_order_id}/create', 'PurchaseOrderInvoiceController@create');
+	Route::post('storePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@store');
+	Route::post('deletePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@destroy');
+	Route::put('updatePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@update');
+	Route::resource('purchase-order-invoice', 'PurchaseOrderInvoiceController');
+
+
+
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
 	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
+	'getPurchaseOrderInvoices'=>'datatables.getPurchaseOrderInvoices',
 ]);

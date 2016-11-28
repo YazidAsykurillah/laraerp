@@ -11,6 +11,7 @@ use Yajra\Datatables\Datatables;
 use App\Product;
 use App\Supplier;
 use App\PurchaseOrder;
+use App\PurchaseOrderInvoice;
 
 class DatatablesController extends Controller
 {
@@ -124,6 +125,7 @@ class DatatablesController extends Controller
     //ENDFunction to get supplier list
 
 
+    //Function get Purchase Orders list
     public function getPurchaseOrders(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
         $purchase_orders = PurchaseOrder::with('supplier', 'created_by')->select(
@@ -139,6 +141,9 @@ class DatatablesController extends Controller
             })
             ->editColumn('creator', function($purchase_orders){
                 return $purchase_orders->created_by->name;
+            })
+            ->editColumn('status', function($purchase_orders){
+                return ucwords($purchase_orders->status);
             })
             ->addColumn('actions', function($purchase_orders){
                 $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
@@ -161,6 +166,49 @@ class DatatablesController extends Controller
         return $data_purchase_orders->make(true);
 
     }
+    //ENDFunction get Purchase Orders list
+
+
+    //Function get Purchase Order Invoice
+    public function getPurchaseOrderInvoices(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $purchase_order_invoices = PurchaseOrderInvoice::with('purchase_order','creator')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_order_invoices.*',
+            ]
+        );
+        $data_purchase_order_invoices = Datatables::of($purchase_order_invoices)
+            ->editColumn('purchase_order_id', function($purchase_order_invoices){
+                return $purchase_order_invoices->purchase_order->code;
+            })
+            ->editColumn('bill_price', function($purchase_order_invoices){
+                return number_format($purchase_order_invoices->bill_price);
+            })
+            ->editColumn('paid_price', function($purchase_order_invoices){
+                return number_format($purchase_order_invoices->paid_price);
+            })
+            ->editColumn('creator', function($purchase_order_invoices){
+
+                return $purchase_order_invoices->creator->name;
+            })
+            ->addColumn('actions', function($purchase_order_invoices){
+                $actions_html ='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+                
+                return $actions_html;
+            });
+        return $data_purchase_order_invoices->make(true);
+    }
+    //ENDFunction get Purchase Order Invoice
     
 
 }

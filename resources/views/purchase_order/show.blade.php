@@ -27,8 +27,11 @@
         <div class="box-header with-border">
           <h3 class="box-title"> {{ $purchase_order->code }}</h3>
           <div class="pull-right">
-            <a href="{{ url('purchase-order/'.$purchase_order->id.'/print') }}" class="btn btn-default btn-xs">
+            <a href="{{ url('purchase-order/'.$purchase_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
               <i class='fa fa-print'></i>&nbsp;Print
+            </a>&nbsp;
+            <a href="{{ URL::to('purchase-order-invoice/'.$purchase_order->id.'/create')}}" class="btn btn-default btn-xs">
+              <i class='fa fa-bookmark'></i>&nbsp;Input Invoice
             </a>
           </div>
           

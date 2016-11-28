@@ -42,7 +42,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ url('purchase-order') }}"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
+          <li><a href="{{ url('purchase-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
       </li>
