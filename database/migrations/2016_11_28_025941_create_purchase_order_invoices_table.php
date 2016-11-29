@@ -19,7 +19,7 @@ class CreatePurchaseOrderInvoicesTable extends Migration
             $table->decimal('bill_price', 20, 2);
             $table->decimal('paid_price', 20, 2);
             $table->datetime('paid_at')->nullable();
-            $table->enum('status',['received', 'completed'])->default('received');
+            $table->enum('status',['paid', 'unpaid'])->default('unpaid');
             $table->integer('created_by');
             $table->timestamps();
         });

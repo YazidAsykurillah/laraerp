@@ -53,10 +53,26 @@ class PurchaseOrderInvoiceController extends Controller
                 'purchase_order_id' =>$request->purchase_order_id,
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
                 'paid_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->paid_price)),
+                'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id
             ];
 
             $save = PurchaseOrderInvoice::create($data);
+            if($save){
+                //find purchase_order model
+                $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+                //Build sync data to update PO relation w/ products
+                $syncData = [];
+                foreach($request->product_id as $key=>$value){
+                    $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+                }
+                //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing
+                \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
+                //Now time to sync the products
+                $purchase_order->products()->sync($syncData);
+            }
+            
+
             $response = [
                 'msg'=>'storePurchaseOrderInvoiceOk',
                 'purchase_order_id'=>$request->purchase_order_id
@@ -78,12 +94,10 @@ class PurchaseOrderInvoiceController extends Controller
     public function show($id)
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
-        $purchase_order = PurchaseOrder::where('id','=',$purchase_order_invoice->purchase_order_id)->first();
-        $total_price = $this->count_total_price($purchase_order);
+        $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
         return view('purchase_order.show_invoice')
             ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order)
-            ->with('total_price', $total_price);
+            ->with('purchase_order', $purchase_order);
     }
 
     /**
@@ -95,8 +109,10 @@ class PurchaseOrderInvoiceController extends Controller
     public function edit($id)
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
+        $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
         return view('purchase_order.edit_invoice')
-            ->with('purchase_order_invoice', $purchase_order_invoice);
+            ->with('purchase_order_invoice', $purchase_order_invoice)
+            ->with('purchase_order', $purchase_order);
     }
 
     /**
@@ -112,7 +128,22 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order_invoice->code = $request->code;
         $purchase_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $purchase_order_invoice->paid_price = floatval(preg_replace('#[^0-9.]#', '', $request->paid_price));
+        $purchase_order_invoice->status = $request->status;
+        $purchase_order_invoice->notes = $request->notes;
         $purchase_order_invoice->save();
+
+        //find purchase_order model
+        $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+        //Build sync data to update PO relation w/ products
+        $syncData = [];
+        foreach($request->product_id as $key=>$value){
+            $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+        }
+        //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing
+        \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
+        //Now time to sync the products
+        $purchase_order->products()->sync($syncData);
+                
         return redirect('purchase-order-invoice/'.$request->purchase_order_invoice_id)
             ->with('successMessage', "Invoice has been updated");
     }

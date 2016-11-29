@@ -38,7 +38,6 @@
                 <th style="width:40%">Product Name</th>
                 <th style="width:20%">Quantity</th>
                 <th style="width:20%">Unit</th>
-                <th style="width:20%">Price</th>
               </tr>
               <tr id="tr-no-product-selected">
                 <td colspan="4">No product selected</td>
@@ -206,15 +205,8 @@
                 '<td>'+
                   tableProduct.row(this).data().unit_id+
                 '</td>'+
-                '<td>'+
-                  '<input type="text" class="price form-control" name="price[]" style="" value="" />'+
-                '</td>'+
               '</tr>'
             );
-            $('.price').autoNumeric('init',{
-              aSep:',',
-              aDec:'.'
-            });
         } else {
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();

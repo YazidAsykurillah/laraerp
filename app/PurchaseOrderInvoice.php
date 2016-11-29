@@ -11,7 +11,7 @@ class PurchaseOrderInvoice extends Model
 {
     protected $table = 'purchase_order_invoices';
 
-    protected $fillable = ['code','purchase_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status'];
+    protected $fillable = ['code','purchase_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status', 'notes'];
 
     public function creator()
     {

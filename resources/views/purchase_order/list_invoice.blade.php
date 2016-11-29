@@ -85,7 +85,7 @@
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="text" id="purchase_order_invoice_id" name="purchase_order_invoice_id">
+          <input type="hidden" id="purchase_order_invoice_id" name="purchase_order_invoice_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

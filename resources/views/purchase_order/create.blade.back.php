@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Edit Purchase Order
+  Create Purchase Order
 @endsection
 
 @section('page_header')
   <h1>
     Purchase Order
-    <small>Edit Purchase Order</small>
+    <small>Create Purchase Order</small>
   </h1>
 @endsection
 
@@ -15,13 +15,13 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
-    <li class="active"><i></i>Edit</li>
+    <li class="active"><i></i>Create</li>
   </ol>
 @endsection
 
 @section('content')
   <!-- Row Products-->
-  {!! Form::model($purchase_order, ['route'=>['purchase-order.update', $purchase_order->id], 'id'=>'form-edit-purchase-order', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
+  {!! Form::open(['route'=>'purchase-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-order']) !!}
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
@@ -34,36 +34,15 @@
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <thead>
-                <tr>
-                  <th style="width:40%">Product Name</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if($purchase_order->products->count() > 0)
-                  @foreach($purchase_order->products as $product)
-                  <tr id="tr_product_{{$product->id}}">
-                    <td>
-                      <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
-                      {{ $product->name }}
-                    </td>
-                    <td>
-                      <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
-                    </td>
-                    <td>{{ $product->unit->name }}</td>
-                  </tr>
-                  @endforeach
-                @else
-                <tr id="tr-no-product-selected">
-                  <td>There are no product</td>
-                </tr>
-                @endif
-              </tbody>
-              <tfoot>
-              
-              </tfoot>
+              <tr>
+                <th style="width:40%">Product Name</th>
+                <th style="width:20%">Quantity</th>
+                <th style="width:20%">Unit</th>
+                <th style="width:20%">Price</th>
+              </tr>
+              <tr id="tr-no-product-selected">
+                <td colspan="4">No product selected</td>
+              </tr>
             </table>
           </div>
 
@@ -117,7 +96,6 @@
                 <button type="submit" class="btn btn-info" id="btn-submit-product">
                   <i class="fa fa-save"></i>&nbsp;Submit
                 </button>
-                <input type="hidden" name="id" value="{{ $purchase_order->id }}" />
               </div>
             </div>
           
@@ -190,33 +168,27 @@
   <script type="text/javascript">
     
     var selected = [];
-    //initially push selected products to var selected
-    @foreach($purchase_order->products as $product)
-      selected.push({{$product->id}});
-    @endforeach
-    //ENDinitially push selected products to var selected
+
     var tableProduct =  $('#table-product').DataTable({
       processing :true,
       serverSide : true,
-      pageLength : 10,
+      pageLength:10,
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
-        {data: 'code', name: 'code' },
-        {data: 'name', name: 'name' },
+        { data: 'code', name: 'code' },
+        { data: 'name', name: 'name' },
+        
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
           $(row).addClass('selected');
         }
-      },
-      initComplete:function(){
-        //console.log(selected);
-      },
+      }
 
     });
 
-    tableProduct.on('click', 'tr', function () {
+    tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
         var index = $.inArray(id, selected);
@@ -234,16 +206,22 @@
                 '<td>'+
                   tableProduct.row(this).data().unit_id+
                 '</td>'+
+                '<td>'+
+                  '<input type="text" class="price form-control" name="price[]" style="" value="" />'+
+                '</td>'+
               '</tr>'
             );
-
+            $('.price').autoNumeric('init',{
+              aSep:',',
+              aDec:'.'
+            });
         } else {
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
         }
  
         $(this).toggleClass('selected');
-
+        
     } );
 
     $('#btn-set-product').on('click', function(){
@@ -261,6 +239,7 @@
       if ($(this).index() != 0 && $(this).index() != 5) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
+          
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
@@ -279,25 +258,26 @@
   </script>
 
   <script type="text/javascript">
-
-    $('#form-edit-purchase-order').on('submit', function(event){
+  //Block handle form create purchase order submission
+    $('#form-create-purchase-order').on('submit', function(event){
       event.preventDefault();
       var data = $(this).serialize();
       $.ajax({
-          url: '{!!URL::to('UpdatePurchaseOrder')!!}',
+          url: '{!!URL::to('storePurchaseOrder')!!}',
           type : 'POST',
           data : $(this).serialize(),
           beforeSend : function(){
             $('#btn-submit-product').prop('disabled', true);
+            //$('#btn-submit-product').hide();
           },
           success : function(response){
-              if(response.msg == 'updatePurchaseOrderOk'){
-                  window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
-              }
-              else{
-                $('#btn-submit-product').prop('disabled', false);
-                  console.log(response);
-              }
+            if(response.msg == 'storePurchaseOrderOk'){
+                window.location.href= '{{ URL::to('purchase-order') }}/'+response.purchase_order_id;
+            }
+            else{
+              $('#btn-submit-product').prop('disabled', false);
+              console.log(response);
+            }
           },
           error:function(data){
             var htmlErrors = '<p>Error : </p>';
@@ -305,12 +285,13 @@
             $.each(errors, function(index, value){
               htmlErrors+= '<p>'+value+'</p>';
             });
-            $('#btn-submit-product').prop('disabled', false);
             alertify.set('notifier', 'delay',0);
             alertify.error(htmlErrors);
+            $('#btn-submit-product').prop('disabled', false);
         }
       });
     });
+  //ENDBlock handle form create purchase order submission
   </script>
 @endSection
 

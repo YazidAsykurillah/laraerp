@@ -8,6 +8,7 @@ use App\PurchaseOrder;
 use App\Supplier;
 use App\User;
 use App\Product;
+use App\PurchaseOrderInvoice;
 
 class PurchaseOrder extends Model
 {
@@ -28,5 +29,11 @@ class PurchaseOrder extends Model
     public function products()
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'purchase_order_id');
+    }
+
+    //relation to purchase order invoice
+    public function purchase_order_invoice()
+    {
+        return $this->hasOne('App\PurchaseOrderInvoice');
     }
 }

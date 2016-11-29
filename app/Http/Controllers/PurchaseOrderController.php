@@ -65,7 +65,8 @@ class PurchaseOrderController extends Controller
             //Build sync data to store the relation w/ products
             $syncData = [];
             foreach($request->product_id as $key=>$value){
-                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+                //$syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+                $syncData[$value] = ['quantity'=> $request->quantity[$key]];
             }
             //sync the purchase order product relation
             $purchase_order->products()->sync($syncData);
@@ -95,10 +96,13 @@ class PurchaseOrderController extends Controller
     public function show($id)
     {
         $purchase_order = PurchaseOrder::findOrFail($id);
+        //invoice related with this purchase order
+        $invoice =  $purchase_order->purchase_order_invoice();
         $total_price = $this->count_total_price($purchase_order);
         return view('purchase_order.show')
             ->with('purchase_order', $purchase_order)
-            ->with('total_price', $total_price);
+            ->with('total_price', $total_price)
+            ->with('invoice', $invoice);
     }
 
     /**
@@ -138,7 +142,7 @@ class PurchaseOrderController extends Controller
             //Build sync data to update PO relation w/ products
             $syncData = [];
             foreach($request->product_id as $key=>$value){
-                $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+                $syncData[$value] = ['quantity'=> $request->quantity[$key]];
             }
 
             //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing

@@ -39,6 +39,7 @@
                   <th style="width:40%">Product Name</th>
                   <th style="width:20%">Quantity</th>
                   <th style="width:20%">Unit</th>
+                  <th style="width:20%">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -53,6 +54,9 @@
                       <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
                     </td>
                     <td>{{ $product->unit->name }}</td>
+                    <td>
+                      <input type="text" class="price form-control" name="price[]" style="" value="{{ $product->pivot->price }}" />
+                    </td>
                   </tr>
                   @endforeach
                 @else
@@ -62,7 +66,10 @@
                 @endif
               </tbody>
               <tfoot>
-              
+                <tr>
+                  <th colspan="3">Total Price</th>
+                  <th id="total_price">{{ $total_price }}</th>
+                </tr>
               </tfoot>
             </table>
           </div>
@@ -234,8 +241,22 @@
                 '<td>'+
                   tableProduct.row(this).data().unit_id+
                 '</td>'+
+                '<td>'+
+                  '<input type="text" class="price form-control" name="price[]" style="" value="" />'+
+                '</td>'+
               '</tr>'
             );
+            $('.price').autoNumeric('init',{
+                aSep : ',',
+                aDec : '.'
+            });
+            $('#total_price').autoNumeric('init',{
+              aSep : ',',
+              aDec : '.'
+            });
+            $('.price').on('keyup', function(){
+              countTotalPrice();
+            });
 
         } else {
             selected.splice( index, 1 );
@@ -310,6 +331,40 @@
             alertify.error(htmlErrors);
         }
       });
+    });
+  </script>
+
+
+  <script type="text/javascript">
+    $('.price').autoNumeric('init',{
+        aSep : ',',
+        aDec : '.'
+    });
+    $('#total_price').autoNumeric('init',{
+      aSep : ',',
+      aDec : '.'
+    });
+    //Handle total price value to show
+    //var total_price_arr = [];
+    function currencyFormat (num) {
+      return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      console.log( num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+    }
+
+    function countTotalPrice(){
+      total_price_arr = [];
+      $('.price').each(function(){
+        
+        total_price_arr.push($(this).val().replace(/,/g, ''));
+      });
+      map_total_price = total_price_arr.map(Number);
+      result = map_total_price.reduce(function(a,b){return a+b},0);
+      $('#total_price').html(currencyFormat(result));
+      //console.log(total_price_arr);
+    }
+    $('.price').on('keyup', function(){
+      
+      countTotalPrice();
     });
   </script>
 @endSection

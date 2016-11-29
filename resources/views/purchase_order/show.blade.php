@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Purchase Order Detail
-    <small></small>
+    Purchase Order
+    <small>Purchase Order Detail</small>
   </h1>
 @endsection
 
@@ -25,26 +25,41 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title"> {{ $purchase_order->code }}</h3>
+          <h3 class="box-title">Purchase Order Detail</h3>
           <div class="pull-right">
             <a href="{{ url('purchase-order/'.$purchase_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
               <i class='fa fa-print'></i>&nbsp;Print
             </a>&nbsp;
-            <a href="{{ URL::to('purchase-order-invoice/'.$purchase_order->id.'/create')}}" class="btn btn-default btn-xs">
-              <i class='fa fa-bookmark'></i>&nbsp;Input Invoice
-            </a>
+            @if($purchase_order->status == 'posted' || $purchase_order->status =='completed')
+            
+            @endif
+            @if(count($purchase_order->purchase_order_invoice) == 0)
+              <a href="{{ URL::to('purchase-order-invoice/'.$purchase_order->id.'/create')}}" class="btn btn-default btn-xs">
+                <i class='fa fa-bookmark'></i>&nbsp;Input Invoice
+              </a>
+            @endif
+
+            
           </div>
           
         </div><!-- /.box-header -->
         <div class="box-body">
+          
+          <div class="row">
+              <div class="col-md-2"><strong>Code</strong></div>
+              <div class="col-md-6"><strong>{{ $purchase_order->code }}</strong></div>
+          </div>
+          <br/>
+          
           <div class="table-responsive">
+            
             <table class="table table-bordered" id="table-selected-products">
               <thead>
+
                 <tr>
                   <th style="width:40%">Product Name</th>
                   <th style="width:20%">Quantity</th>
                   <th style="width:20%">Unit</th>
-                  <th style="width:20%">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,24 +69,20 @@
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->pivot->quantity }}</td>
                     <td>{{ $product->unit->name }}</td>
-                    <td>{{ number_format($product->pivot->price, 2, ".", ",") }}</td>
                   </tr>
                 <tr>
                   @endforeach
                 @else
-                  <td>There are no product</td>
+                  <td colspan="3">There are no product</td>
                 </tr>
                 @endif
               </tbody>
               <tfoot>
-                <tr>
-                  <th colspan="3">Total Price</th>
-                  <th>{{ number_format($total_price, 2, ".", ",") }}</th>
-                </tr>
+
               </tfoot>
             </table>
-
           </div>
+
           <div class="row">
             <div class="col-md-3">Supplier</div>
             <div class="col-md-9">
@@ -96,13 +107,7 @@
             </div>
             <div class="col-md-4">
               
-              @if($purchase_order->status == 'posted')
-                <p>
-                  <i class="fa fa-comment-o" title="Status"></i>&nbsp;Posted
-                </p>
-              @else
-                Paid
-              @endif
+              {{ $purchase_order->status }}
             </div>
           </div>
         </div>
@@ -110,6 +115,25 @@
     </div>
   </div>
   <!-- ENDRow Products-->
+
+  <!-- Row Invoice-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title"> Related Invoice </h3>
+          
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          
+        </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+          
+        </div>
+      </div><!-- /.box -->
+    </div>
+  </div>
+  <!-- ENDRow Invoice-->
   
 
 
