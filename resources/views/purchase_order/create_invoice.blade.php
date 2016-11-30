@@ -122,7 +122,7 @@
             <div class="form-group">
                 {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                <a href="{{ url('purchase-order-invoice') }}" class="btn btn-default">
+                <a href="{{ url('purchase-order/'.$purchase_order->id) }}" class="btn btn-default">
                   <i class="fa fa-repeat"></i>&nbsp;Cancel
                 </a>&nbsp;
                 <button type="submit" class="btn btn-info" id="btn-submit-purchase-order-invoice">

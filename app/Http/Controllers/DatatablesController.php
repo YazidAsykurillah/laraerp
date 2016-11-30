@@ -143,15 +143,36 @@ class DatatablesController extends Controller
                 return $purchase_orders->created_by->name;
             })
             ->editColumn('status', function($purchase_orders){
-                return ucwords($purchase_orders->status);
+                $status_label = '';
+                $status_action = '';
+                if($purchase_orders->status == 'posted'){
+                    $status_label = '<p><h4><span class="label label-default">Posted</span></h4></p>';
+                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-accept-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to accept this purchase order">';
+                    $status_action .=    '<i class="fa fa-sign-in"></i>';
+                    $status_action .='</button>';
+                }
+                else if($purchase_orders->status =='accepted'){
+                    $status_label = '<p><h4><span class="label label-info">Accepted</span></h4></p>';
+                    $status_action .='<button type="button" class="btn btn-success btn-xs btn-complete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to complete this purchase order">';
+                    $status_action .=    '<i class="fa fa-check"></i>';
+                    $status_action .='</button>';
+                }
+                else{
+                    $status_label = '<p><h4><span class="label label-success">Completed</span></h4></p>';
+                }
+
+                return $status_label.$status_action;
             })
             ->addColumn('actions', function($purchase_orders){
                 $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<a href="'.url('purchase-order/'.$purchase_orders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
-                $actions_html .=    '<i class="fa fa-edit"></i>';
-                $actions_html .='</a>&nbsp;';
+                //only show edit button link if the status is posted
+                if($purchase_orders->status =='posted'){
+                    $actions_html .='<a href="'.url('purchase-order/'.$purchase_orders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                }
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';

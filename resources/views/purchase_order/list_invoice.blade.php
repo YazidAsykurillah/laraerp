@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Purchase Order Invoice List
-    <small>List of invoice of purchase orders</small>
+    Purchase Order
+    <small>Purchase Order Invoice List</small>
   </h1>
 @endsection
 
@@ -15,8 +15,7 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
-    <li><a href="{{ URL::to('purchase-order-invoice') }}"><i class="fa fa-dashboard"></i>Invoices</a></li>
-    <li class="active">List</li>
+    <li class="active">Invoices</li>
   </ol>
 @endsection
 

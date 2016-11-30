@@ -73,7 +73,7 @@
       {!! Form::open(['url'=>'deletePurchaseOrder', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-delete-purchase-orderLabel">Confirmation</h4>
+          <h4 class="modal-title" id="modal-delete-purchase-orderLabel">Delete Purchase Order Confirmation</h4>
         </div>
         <div class="modal-body">
           You are going to remove purchase-order&nbsp;<b id="purchase-order-name-to-delete"></b>
@@ -92,6 +92,61 @@
     </div>
   </div>
 <!--ENDModal Delete purchase-order-->
+
+<!--Modal Accept purchase-order-->
+  <div class="modal fade" id="modal-accept-purchase-order" tabindex="-1" role="dialog" aria-labelledby="modal-accept-purchase-orderLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'acceptPurchaseOrder', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-accept-purchase-orderLabel">Accept Purchase Order Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <b id="purchase-order-name-to-accept"></b> will be changed to Accepted
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="id_to_be_accepted" name="id_to_be_accepted">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Accept</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Accept purchase-order-->
+
+<!--Modal complete purchase-order-->
+  <div class="modal fade" id="modal-complete-purchase-order" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-orderLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completePurchaseOrder', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-complete-purchase-orderLabel">Complete Purchase Order Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <b id="purchase-order-name-to-complete"></b> will be changed to completed
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="id_to_be_completed" name="id_to_be_completed">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">complete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete purchase-order-->
+
 @endsection
 
 
@@ -134,5 +189,24 @@
     });
     //ENDBlock search input and select
     
+    //Handler accept purchase order
+    tablePurchaseOrder.on('click', '.btn-accept-purchase-order', function (e) { 
+      var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#id_to_be_accepted').val(id);
+      $('#purchase-order-name-to-accept').text(code);
+      $('#modal-accept-purchase-order').modal('show');
+    });
+    //ENDHandler accept purchase order
+
+    //Handler complete purchase order
+    tablePurchaseOrder.on('click', '.btn-complete-purchase-order', function (e) { 
+      var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#id_to_be_completed').val(id);
+      $('#purchase-order-name-to-complete').text(code);
+      $('#modal-complete-purchase-order').modal('show');
+    });
+    //ENDHandler complete purchase order
   </script>
 @endsection

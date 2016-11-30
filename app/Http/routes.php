@@ -35,7 +35,11 @@ Route::resource('product', 'ProductController');
 Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
-//Purchase orders
+//Purchase orders\
+	//complete purchase order
+	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
+	//accept purchase order
+	Route::post('acceptPurchaseOrder', 'PurchaseOrderController@accept');
 	//Print
 	Route::get('purchase-order/{id}/printPdf', 'PurchaseOrderController@printPdf');
 	//Save Purchase Order

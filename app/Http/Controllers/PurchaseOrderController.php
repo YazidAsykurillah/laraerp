@@ -11,6 +11,7 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 
 use App\PurchaseOrder;
 use App\Supplier;
+use App\Product;
 
 class PurchaseOrderController extends Controller
 {
@@ -179,6 +180,39 @@ class PurchaseOrderController extends Controller
         return $pdf->stream('purchase_order.pdf');
     }
 
-    
+
+    public function accept(Request $request)
+    {
+
+        $purchase_order = PurchaseOrder::findOrFail($request->id_to_be_accepted);
+        $purchase_order->status = 'accepted';
+        $purchase_order->save();
+        
+        //update stock quantity to each products based on the accepted purchase order
+        //error prevent control incase there are no relational product
+        if(count($purchase_order->products) > 0){
+            foreach($purchase_order->products as $product){
+            
+                //$prod_qu []= ['id'=>$product->id, 'stock'=>$product->pivot->quantity];
+                $current_stock = \DB::table('products')->where('id', $product->id)->value('stock');
+                $added_stock = $current_stock+$product->pivot->quantity;
+                $update_stock = \DB::table('products')
+                                ->where('id', $product->id)
+                                ->update(['stock'=> $added_stock]);
+            }    
+        }
+        
+
+        return redirect('purchase-order');
+
+    }
+
+    public function complete(Request $request)
+    {
+        $purchase_order = PurchaseOrder::findOrFail($request->id_to_be_completed);
+        $purchase_order->status = 'completed';
+        $purchase_order->save();
+        return redirect('purchase-order');
+    }
 
 }
