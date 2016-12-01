@@ -30,6 +30,9 @@
             <a href="{{ url('purchase-order/'.$purchase_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
               <i class='fa fa-print'></i>&nbsp;Print
             </a>
+            <a href="{{ url('purchase-return/create/?purchase_order_id='.$purchase_order->id.'') }}" class="btn btn-default btn-xs">
+              <i class='fa fa-reply'></i>&nbsp;Create Return
+            </a>
           </div>
           
         </div><!-- /.box-header -->

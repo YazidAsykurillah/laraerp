@@ -55,11 +55,19 @@ Route::resource('supplier', 'SupplierController');
 	Route::put('updatePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@update');
 	Route::resource('purchase-order-invoice', 'PurchaseOrderInvoiceController');
 
-
+//Purchase Return
+	//complete purchase return
+	Route::post('completePurchaseReturn', 'PurchaseReturnController@changeToCompleted');
+	//Send purchase return
+	Route::post('sendPurchaseReturn', 'PurchaseReturnController@changeToSent');
+	//Save Purchase Return
+	Route::post('storePurchaseReturn', 'PurchaseReturnController@store');
+	Route::resource('purchase-return', 'PurchaseReturnController');
 
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
 	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
 	'getPurchaseOrderInvoices'=>'datatables.getPurchaseOrderInvoices',
+	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 ]);

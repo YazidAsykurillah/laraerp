@@ -12,6 +12,7 @@ use App\Product;
 use App\Supplier;
 use App\PurchaseOrder;
 use App\PurchaseOrderInvoice;
+use App\PurchaseReturn;
 
 class DatatablesController extends Controller
 {
@@ -231,5 +232,60 @@ class DatatablesController extends Controller
     }
     //ENDFunction get Purchase Order Invoice
     
+
+    //Function get Purchase Returns
+    public function getPurchaseReturns(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $purchase_returns = PurchaseReturn::with('purchase_order','creator', 'product')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_returns.*',
+            ]
+        );
+        $data_purchase_returns = Datatables::of($purchase_returns)
+            ->editColumn('purchase_order_id', function($purchase_returns){
+                return $purchase_returns->purchase_order->code;
+            })
+            ->editColumn('product_id', function($purchase_returns){
+                return $purchase_returns->product->name;
+            })
+            ->editColumn('status', function($purchase_returns){
+                $status_label = '';
+                $status_action = '';
+                if($purchase_returns->status =='posted'){
+                    $status_label = '<p><h4><span class="label label-default">Posted</span></h4></p>';
+                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-send-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Sent">';
+                    $status_action .=    '<i class="fa fa-sign-in"></i>';
+                    $status_action .='</button>';
+                }
+                else if($purchase_returns->status =='sent'){
+                    $status_label = '<p><h4><span class="label label-warning">Sent</span></h4></p>';
+                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-complete-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Sent">';
+                    $status_action .=    '<i class="fa fa-check"></i>';
+                    $status_action .='</button>';
+                }
+                else{
+                    $status_label = '<p><h4><span class="label label-success">Completed</span></h4></p>';
+                }
+
+                return $status_label.$status_action;
+            })
+            ->addColumn('actions', function($purchase_returns){
+                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('purchase-return/'.$purchase_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+                
+                return $actions_html;
+            });
+        return $data_purchase_returns->make(true);
+    }
+
 
 }
