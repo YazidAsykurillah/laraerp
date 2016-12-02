@@ -50,6 +50,7 @@ class PurchaseReturnController extends Controller
         return $error;
         
     }
+
     public function store(StorePurchaseReturnRequest $request)
     {
         if($request->ajax()){
@@ -101,7 +102,11 @@ class PurchaseReturnController extends Controller
      */
     public function edit($id)
     {
-        //
+        $purchase_return = PurchaseReturn::findOrFail($id);
+        $purchase_order = PurchaseOrder::findOrFail($purchase_return->purchase_order_id);
+        return view('purchase_return.edit')
+            ->with('purchase_return', $purchase_return)
+            ->with('purchase_order', $purchase_order);
     }
 
     /**
@@ -113,7 +118,11 @@ class PurchaseReturnController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $purchase_return = PurchaseReturn::findOrFail($request->purchase_return_id);
+        $purchase_return->quantity = preg_replace('#[^0-9]#', '', $request->quantity);
+        $purchase_return->notes = $request->notes;
+        $purchase_return->save();
+        return redirect('purchase-return');
     }
 
     /**
@@ -164,12 +173,23 @@ class PurchaseReturnController extends Controller
 
     public function changeToCompleted(Request $request){
 
+
+
         $purchase_return = PurchaseReturn::findOrFail($request->id_to_be_completed);
         //get product name and purchase order code refference
+        $product_id = $purchase_return->product_id;
+        $quantity = $purchase_return->quantity;
         $product_name = $purchase_return->product->name;
         $purchase_order_ref = $purchase_return->purchase_order->code;
         $purchase_return->status = 'completed';
         $purchase_return->save();
+
+        //now re add the quantity that returned to the stock
+        $product = Product::findOrFail($product_id);
+        $current_stock = $product->stock;
+        $new_stock = $current_stock+$quantity;
+        $product->stock = $new_stock;
+        $product->save();
         return redirect('purchase-return')
             ->with('successMessage', "$product_name has been added back to inventory from $purchase_order_ref");
     }

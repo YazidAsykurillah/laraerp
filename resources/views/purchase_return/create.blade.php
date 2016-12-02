@@ -47,7 +47,7 @@
                 <tr id="row_product_{{$product->id}}">
                   <td>{{ Form::checkbox('product_id[]', $product->id, false, ['class'=>'product-id-checkbox']) }}</td>
                   <td>{{ $product->name }}</td>
-                  <td>{{ $product->pivot->quantity }}</td>
+                  <td class="purchased_qty">{{ $product->pivot->quantity }}</td>
                   <td>{{ Form::text('returned_quantity[]',null, ['class'=>'returned_quantity form-control', 'disabled']) }}</td>
                   <td>{{ Form::text('notes[]',null, ['class'=>'notes form-control', 'disabled']) }}</td>
                 </tr>
@@ -93,15 +93,28 @@
 
 @section('additional_scripts')
  
- {!! Html::script('js/autoNumeric.js') !!}
+{!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
     $('.returned_quantity').autoNumeric('init',{
         aSep:'.',
         aDec:',',
         aPad:false
     });
-
 </script>
+<!--Block Compare Control returned quantity to purchased quantity-->
+<script type="text/javascript">
+  $('.returned_quantity').on('keyup', function(){
+    var purchased_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
+    var the_value = parseInt($(this).val());
+    if(the_value > purchased_qty){
+      alertify.error('Returned quantity can not be greater than purchased quantity');
+    }
+    return false;
+  });
+</script>
+<!--ENDBlock Compare Control returned quantity to purchased quantity-->
+
+
 <script type="text/javascript">
   $('.product-id-checkbox').on('click', function(){
     if($(this).is(':checked') == true){
@@ -110,6 +123,8 @@
     }
     else{
       $(this).parent().parent().find('.returned_quantity').prop('disabled', true);
+      $(this).parent().parent().find('.returned_quantity').val('');
+      $(this).parent().parent().find('.notes').val('');
       $(this).parent().parent().find('.notes').prop('disabled', true);
     }
   });
@@ -152,6 +167,6 @@
       });
     });
   //ENDBlock handle form create purchase order submission
-  </script>
+</script>
  
 @endsection

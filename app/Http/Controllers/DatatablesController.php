@@ -261,7 +261,7 @@ class DatatablesController extends Controller
                 }
                 else if($purchase_returns->status =='sent'){
                     $status_label = '<p><h4><span class="label label-warning">Sent</span></h4></p>';
-                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-complete-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Sent">';
+                    $status_action .='<button type="button" class="btn btn-success btn-xs btn-complete-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Completed">';
                     $status_action .=    '<i class="fa fa-check"></i>';
                     $status_action .='</button>';
                 }
@@ -275,12 +275,17 @@ class DatatablesController extends Controller
                 $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<a href="'.url('purchase-return/'.$purchase_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
-                $actions_html .=    '<i class="fa fa-edit"></i>';
-                $actions_html .='</a>&nbsp;';
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
+                //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
+                if($purchase_returns->status == 'posted'){
+                    $actions_html .='<a href="'.url('purchase-return/'.$purchase_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
+                
+                
                 
                 return $actions_html;
             });

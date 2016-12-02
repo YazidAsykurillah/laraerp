@@ -92,22 +92,22 @@
   <div class="modal fade" id="modal-send-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-send-purchase-returnLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'sendPurchaseReturn', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'sendPurchaseReturn', 'method'=>'post', 'id'=>'form-send-purchase-return']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-send-purchase-returnLabel">Send Purchase Return Confirmation</h4>
         </div>
         <div class="modal-body">
-          This product return status will be changed to completed
+          This purchase return status will be changed to "Sent".
           <br/>
           <p class="text text-danger">
-            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+            <i class="fa fa-info-circle"></i>&nbsp;The product will be returned to the supplier.
           </p>
           <input type="hidden" id="id_to_be_send" name="id_to_be_send">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger">Send</button>
+          <button type="submit" class="btn btn-danger" id="btn-send-purchase-return">Send</button>
         </div>
       {!! Form::close() !!}
       </div>
@@ -119,22 +119,22 @@
   <div class="modal fade" id="modal-complete-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-returnLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'completePurchaseReturn', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'completePurchaseReturn', 'method'=>'post', 'id'=>'form-complete-purchase-return']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-send-purchase-returnLabel">Complete Purchase Return Confirmation</h4>
         </div>
         <div class="modal-body">
-          The product will be returned to the supplier
+          This return status will be changed to completed
           <br/>
           <p class="text text-danger">
-            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+            <i class="fa fa-info-circle"></i>&nbsp;The product will be re-added to the inventory
           </p>
-          <input type="text" id="id_to_be_completed" name="id_to_be_completed">
+          <input type="hidden" id="id_to_be_completed" name="id_to_be_completed">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger">Send</button>
+          <button type="submit" class="btn btn-danger" id="btn-complete-purchase-return">Complete</button>
         </div>
       {!! Form::close() !!}
       </div>
@@ -190,6 +190,10 @@
       var id = $(this).attr('data-id');
       $('#id_to_be_send').val(id);
       $('#modal-send-purchase-return').modal('show');
+    });
+
+    $('#form-send-purchase-return').on('submit', function(){
+      $('#btn-send-purchase-return').prop('disabled', true);
     });
     //ENDHandler send purchase return
 
