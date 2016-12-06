@@ -91,7 +91,9 @@ class PurchaseReturnController extends Controller
      */
     public function show($id)
     {
-        //
+        $purchase_return = PurchaseReturn::findOrFail($id);
+        return view('purchase_return.show')
+            ->with('purchase_return', $purchase_return);
     }
 
     /**

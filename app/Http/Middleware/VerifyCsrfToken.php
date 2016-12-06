@@ -13,6 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-    	'/show_product',
+    	'/show_product', '/wp_post'
     ];
 }

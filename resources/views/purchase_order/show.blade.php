@@ -30,9 +30,6 @@
             <a href="{{ url('purchase-order/'.$purchase_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
               <i class='fa fa-print'></i>&nbsp;Print
             </a>
-            <a href="{{ url('purchase-return/create/?purchase_order_id='.$purchase_order->id.'') }}" class="btn btn-default btn-xs">
-              <i class='fa fa-reply'></i>&nbsp;Create Return
-            </a>
           </div>
           
         </div><!-- /.box-header -->
@@ -211,6 +208,61 @@
   </div>
   <!-- ENDRow Invoice-->
   
+  <!-- Row Return-->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Related Return</h3>
+          <div class="pull-right">
+            <a href="{{ url('purchase-return/create/?purchase_order_id='.$purchase_order->id.'') }}" class="btn btn-default btn-xs">
+              <i class='fa fa-reply'></i>&nbsp;Create Return
+            </a>
+          </div>
+          
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          
+          <div class="table-responsive">
+            
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Returned Quantity</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              @if($purchase_returns->count() > 0)
+
+                @foreach($purchase_returns as $purchase_return)
+                <tr>
+                  <td> {{ $purchase_return->product->name }}</td>
+                  <td> {{ $purchase_return->quantity }}</td>
+                  <td> {{ $purchase_return->notes }}</td>
+                  <td> {{ ucwords($purchase_return->status) }}</td>
+                </tr>
+                @endforeach
+              @else
+              <tr>
+                <td colspan="4">
+                  <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related return to this purchase order</p>
+                </td>
+              </tr>
+              @endif
+              </tbody>
+            </table>
+          </div>
+        </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+          
+        </div>
+      </div><!-- /.box -->
+    </div>
+  </div>
+  <!-- ENDRow Return-->
 
 
 @endsection

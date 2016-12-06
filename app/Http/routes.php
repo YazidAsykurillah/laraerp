@@ -11,14 +11,19 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+//just an API testing calls
+Route::post('wp_post', 'PurchaseOrderController@wp_post');
 Route::any('/show_product', function(){
 	$product = \DB::table('products')->get();
 	return json_encode($product);
 });
+//ENDjust an API testing calls
 
 Route::auth();
 
@@ -36,10 +41,13 @@ Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
 //Purchase orders\
+	
 	//complete purchase order
 	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
 	//accept purchase order
 	Route::post('acceptPurchaseOrder', 'PurchaseOrderController@accept');
+	//delete
+	Route::post('deletePurchaseOrder', 'PurchaseOrderController@destroy');
 	//Print
 	Route::get('purchase-order/{id}/printPdf', 'PurchaseOrderController@printPdf');
 	//Save Purchase Order

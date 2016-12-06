@@ -9,6 +9,7 @@ use App\Supplier;
 use App\User;
 use App\Product;
 use App\PurchaseOrderInvoice;
+use App\PurchaseReturn;
 
 class PurchaseOrder extends Model
 {
@@ -35,5 +36,10 @@ class PurchaseOrder extends Model
     public function purchase_order_invoice()
     {
         return $this->hasOne('App\PurchaseOrderInvoice');
+    }
+
+    //relaation to purhcase return
+    public function purchase_returns(){
+        return $this->hasMany('App\PurchaseReturn');
     }
 }

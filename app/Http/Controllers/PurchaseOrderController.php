@@ -12,9 +12,29 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\Product;
+use App\PurchaseReturn;
 
 class PurchaseOrderController extends Controller
 {
+
+    public function wp_post(Request $request)
+    {
+
+        $returned = [];
+        $returned['firstname'] = $request->firstname;
+        $returned['lastname']=$request->lastname;
+        $returned['email']=$request->email;
+        $returned['mobile']=$request->mobile;
+        $returned['address']=$request->address;
+        $returned['countrycode']=$request->countrycode;
+        $returned['regioncode']=$request->regioncode;
+        $returned['citycode']=$request->citycode;
+        $returned['productcode']=$request->productcode;
+        $returned['validfrom']=$request->validfrom;
+        $returned['paymenttypecode']=$request->paymenttypecode;
+        $returned['signature']=$request->signature;
+        return $returned;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -99,11 +119,14 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($id);
         //invoice related with this purchase order
         $invoice =  $purchase_order->purchase_order_invoice();
+        //purchase returns related
+        $purchase_returns = $purchase_order->purchase_returns;
         $total_price = $this->count_total_price($purchase_order);
         return view('purchase_order.show')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
-            ->with('invoice', $invoice);
+            ->with('invoice', $invoice)
+            ->with('purchase_returns', $purchase_returns);
     }
 
     /**
@@ -166,9 +189,23 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+        $purchase_order->delete();
+        //delete all the related data with this purchase order in the database
+        //product related
+        \DB::table('product_purchase_order')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
+        //invoice related
+        \DB::table('purchase_order_invoices')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
+        //return related
+        \DB::table('purchase_returns')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
+        return redirect('purchase-order')
+            ->with('successMessage', "Purchase Order has been deleted");
+
+
+
+
     }
 
     public function printPdf(Request $request){
