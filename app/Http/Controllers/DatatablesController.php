@@ -10,6 +10,7 @@ use Yajra\Datatables\Datatables;
 
 use App\Product;
 use App\Supplier;
+use App\Unit;
 use App\PurchaseOrder;
 use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
@@ -87,8 +88,42 @@ class DatatablesController extends Controller
     }
     //ENDFunction to get product list
 
+    //Function to get UNITS list
+    public function getUnits(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $units = Unit::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'name',
+            'created_at',
+            'updated_at',
+        ]);
 
-    //Function to get supplier lis
+        $data_units = Datatables::of($units)
+            ->addColumn('actions', function($units){
+                    $actions_html ='<a href="'.url('unit/'.$units->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-eye"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('unit/'.$units->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this unit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-unit" data-id="'.$units->id.'" data-text="'.$units->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_units->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_units->make(true);
+    }
+    //ENDFunction to get UNITS list
+
+    //Function to get supplier list
     public function getSuppliers(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
         $suppliers = Supplier::select([

@@ -86,6 +86,7 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
+          <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

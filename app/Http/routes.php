@@ -40,6 +40,10 @@ Route::resource('product', 'ProductController');
 Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
+//Unit
+Route::post('deleteUnit', 'UnitController@destroy');
+Route::resource('unit', 'UnitController');
+
 //Purchase orders\
 	
 	//complete purchase order
@@ -75,7 +79,9 @@ Route::resource('supplier', 'SupplierController');
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
+	'getUnits'=>'datatables.getUnits',
 	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
 	'getPurchaseOrderInvoices'=>'datatables.getPurchaseOrderInvoices',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
+	
 ]);
