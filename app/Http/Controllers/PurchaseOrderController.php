@@ -33,7 +33,8 @@ class PurchaseOrderController extends Controller
         $returned['validfrom']=$request->validfrom;
         $returned['paymenttypecode']=$request->paymenttypecode;
         $returned['signature']=$request->signature;
-        return $returned;
+        $returned['OrderID']= 77;
+        return response()->json($returned);
     }
     /**
      * Display a listing of the resource.
@@ -240,7 +241,8 @@ class PurchaseOrderController extends Controller
         }
         
 
-        return redirect('purchase-order');
+        //return redirect('purchase-order');
+        return back();
 
     }
 
@@ -249,7 +251,7 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($request->id_to_be_completed);
         $purchase_order->status = 'completed';
         $purchase_order->save();
-        return redirect('purchase-order');
+        return back();
     }
 
 }

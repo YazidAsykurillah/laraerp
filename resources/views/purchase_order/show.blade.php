@@ -75,32 +75,48 @@
 
           <div class="row">
             <div class="col-md-3">Supplier</div>
-            <div class="col-md-9">
+            <div class="col-md-1">:</div>
+            <div class="col-md-8">
               {{ $purchase_order->supplier->name }}
             </div>
           </div>
           <br/>
           <div class="row">
+            <div class="col-md-3">Created At</div>
+            <div class="col-md-1">:</div>
+            <div class="col-md-8">
+              {{ $purchase_order->created_at }}
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-3">Status</div>
+            <div class="col-md-1">:</div>
+            <div class="col-md-8">
+              {{ strtoupper($purchase_order->status) }}
+              <br/>
+              @if($purchase_order->status == 'posted')
+                <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}">
+                  <i class="fa fa-sign-in"></i>&nbsp;Accept
+                </button>
+              @endif
+              @if($purchase_order->status == 'accepted')
+                <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}">
+                  <i class="fa fa-sign-in"></i>&nbsp;Complete
+                </button>
+              @endif
+            </div>
+          </div>
+          <br/>
+          <div class="row">
             <div class="col-md-3">Notes</div>
-            <div class="col-md-9">
+            <div class="col-md-1">:</div>
+            <div class="col-md-8">
               {!! nl2br($purchase_order->notes) !!}
             </div>
           </div>
         </div><!-- /.box-body -->
-        <div class="box-footer clearfix">
-          <div class="row">
-            <div class="col-md-4">
-              <i class="fa fa-calendar" title="Date created"></i>&nbsp;{{ $purchase_order->created_at }}
-            </div>
-            <div class="col-md-4">
-              <i class="fa fa-user" title="Purchase order creator"></i>&nbsp;{{ $purchase_order->created_by->name }}
-            </div>
-            <div class="col-md-4">
-              
-              {{ $purchase_order->status }}
-            </div>
-          </div>
-        </div>
+        
       </div><!-- /.box -->
     </div>
   </div>
@@ -264,11 +280,86 @@
   </div>
   <!-- ENDRow Return-->
 
+  <!--Modal Accept purchase-order-->
+  <div class="modal fade" id="modal-accept-purchase-order" tabindex="-1" role="dialog" aria-labelledby="modal-accept-purchase-orderLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'acceptPurchaseOrder', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-accept-purchase-orderLabel">Accept Purchase Order Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <b id="purchase-order-name-to-accept"></b> status will be changed to Accepted
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="id_to_be_accepted" name="id_to_be_accepted">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Accept</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Accept purchase-order-->
+
+<!--Modal complete purchase-order-->
+  <div class="modal fade" id="modal-complete-purchase-order" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-orderLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completePurchaseOrder', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-complete-purchase-orderLabel">Complete Purchase Order Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <b id="purchase-order-name-to-complete"></b> will be changed to completed
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="id_to_be_completed" name="id_to_be_completed">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">complete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete purchase-order-->
 
 @endsection
 
 
 @section('additional_scripts')
+
+<script type="text/javascript">
+  //Accept
+  $('#btn-accept').on('click', function(event){
+    event.preventDefault();
+    var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#id_to_be_accepted').val(id);
+      $('#purchase-order-name-to-accept').text(code);
+      $('#modal-accept-purchase-order').modal('show');
+  });
+
+  //Complete
+  $('#btn-complete').on('click', function(event){
+    event.preventDefault();
+    var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#id_to_be_completed').val(id);
+      $('#purchase-order-name-to-complete').text(code);
+      $('#modal-complete-purchase-order').modal('show');
+  });
+</script>
   
 @endSection
 
