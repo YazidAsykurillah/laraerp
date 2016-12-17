@@ -29,38 +29,56 @@
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Return Detail</h3>
         </div><!-- /.box-header -->
-        <div class="box-body table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Purchase Order Referense</th>
-                  <th>Product</th>
-                  <th>Purchased Quantity</th>
-                  <th>Returned Quantity</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ $purchase_return->purchase_order->code }}</td>
-                  <td>{{ $purchase_return->product->name }}</td>
-                  <td class="purchased_qty">
-                    {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
-                  </td>
-                  <td>
-                    {{ $purchase_return->quantity }}
-                  </td>
-                  <td>
-                    {{ $purchase_return->notes }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>PO Refference</th>
+                    <th>Product</th>
+                    <th>Purchased Quantity</th>
+                    <th>Returned Quantity</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ $purchase_return->purchase_order->code }}</td>
+                    <td>{{ $purchase_return->product->name }}</td>
+                    <td class="purchased_qty">
+                      {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                    </td>
+                    <td>
+                      {{ $purchase_return->quantity }}
+                    </td>
+                    <td>
+                      {{ $purchase_return->notes }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-3">Status</div>
+              <div class="col-md-1">:</div>
+              <div class="col-md-3">
+                <p>{{ strtoupper($purchase_return->status) }}</p>
+                @if($purchase_return->status == 'posted')
+                  <button type="button" id="btn-send-purchase-return" class="btn btn-warning btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Sent">
+                    <i class="fa fa-sign-in"></i>&nbsp;Send
+                  </button>
+                @endif
+                @if($purchase_return->status == 'sent')
+                  <button type="button" id="btn-complete-purchase-return" class="btn btn-success btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Sent">
+                    <i class="fa fa-check"></i>&nbsp;Complete
+                  </button>
+                @endif
+              </div>
+            </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          <div class="row">
-            <div class="col-md-3">{{ ucwords($purchase_return->status) }}</div>
-          </div>
+          
         </div>
 
       </div><!-- /.box -->
@@ -68,45 +86,81 @@
     </div>
   </div>
 
+  <!--Modal Send purchase-return-->
+  <div class="modal fade" id="modal-send-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-send-purchase-returnLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'sendPurchaseReturn', 'method'=>'post', 'id'=>'form-send-purchase-return']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-send-purchase-returnLabel">Send Purchase Return Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          This purchase return status will be changed to "Sent".
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;The product will be returned to the supplier.
+          </p>
+          <input type="hidden" id="id_to_be_send" name="id_to_be_send">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" id="btn-send-purchase-return">Send</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Send purchase-return-->
+
+<!--Modal complete purchase-return-->
+  <div class="modal fade" id="modal-complete-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-returnLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completePurchaseReturn', 'method'=>'post', 'id'=>'form-complete-purchase-return']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-send-purchase-returnLabel">Complete Purchase Return Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          This return status will be changed to completed
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;The product will be re-added to the inventory
+          </p>
+          <input type="hidden" id="id_to_be_completed" name="id_to_be_completed">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" id="btn-complete-purchase-return">Complete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal complete purchase-return-->
 
 @endsection
 
 
 @section('additional_scripts')
  
-{!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
-    $('.returned_quantity').autoNumeric('init',{
-        aSep:'.',
-        aDec:',',
-        aPad:false
+  //Handler send purchase return
+    $('#btn-send-purchase-return').on('click', function (e) { 
+      var id = $(this).attr('data-id');
+      $('#id_to_be_send').val(id);
+      $('#modal-send-purchase-return').modal('show');
     });
 </script>
-<!--Block Compare Control returned quantity to purchased quantity-->
-<script type="text/javascript">
-  $('.returned_quantity').on('keyup', function(){
-    var purchased_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
-    var the_value = parseInt($(this).val());
-    if(the_value > purchased_qty){
-      alertify.error('Returned quantity can not be greater than purchased quantity');
-     $('#btn-submit-purchase-return').prop('disabled', true);
-    }
-    else{
-      $('#btn-submit-purchase-return').prop('disabled', false);
-    }
-    return false;
-  });
-</script>
-<!--ENDBlock Compare Control returned quantity to purchased quantity-->
-
-
 
 <script type="text/javascript">
-  //Block handle form edit purchase return submission
-    $('#form-edit-purchase-return').on('submit', function(){
-      $('#btn-submit-purchase-return').prop('disabled', true);
+  //Handler send purchase return
+    $('#btn-complete-purchase-return').on('click', function (e) { 
+      var id = $(this).attr('data-id');
+      $('#id_to_be_completed').val(id);
+      $('#modal-complete-purchase-return').modal('show');
     });
-  //ENDBlock handle form edit purchase order submission
 </script>
  
 @endsection

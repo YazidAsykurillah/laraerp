@@ -175,8 +175,6 @@ class PurchaseReturnController extends Controller
 
     public function changeToCompleted(Request $request){
 
-
-
         $purchase_return = PurchaseReturn::findOrFail($request->id_to_be_completed);
         //get product name and purchase order code refference
         $product_id = $purchase_return->product_id;

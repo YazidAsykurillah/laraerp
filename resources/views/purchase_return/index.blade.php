@@ -7,7 +7,7 @@
 @section('page_header')
   <h1>
     Purchase Return
-    <small>Purchase Return </small>
+    <small>List of purchase returns </small>
   </h1>
 @endsection
 
@@ -159,7 +159,7 @@
         { data: 'quantity', name: 'quantity' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });
 

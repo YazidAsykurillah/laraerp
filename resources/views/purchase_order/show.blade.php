@@ -96,12 +96,12 @@
               {{ strtoupper($purchase_order->status) }}
               <br/>
               @if($purchase_order->status == 'posted')
-                <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}">
+                <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to accept this purchase order">
                   <i class="fa fa-sign-in"></i>&nbsp;Accept
                 </button>
               @endif
               @if($purchase_order->status == 'accepted')
-                <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}">
+                <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
                   <i class="fa fa-sign-in"></i>&nbsp;Complete
                 </button>
               @endif

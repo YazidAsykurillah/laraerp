@@ -163,7 +163,7 @@
         { data: 'creator', name: 'created_by.name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });
 

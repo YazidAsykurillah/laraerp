@@ -145,28 +145,24 @@ class DatatablesController extends Controller
             })
             ->editColumn('status', function($purchase_orders){
                 $status_label = '';
-                $status_action = '';
+                
                 if($purchase_orders->status == 'posted'){
-                    $status_label = '<p><h4><span class="label label-default">Posted</span></h4></p>';
-                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-accept-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to accept this purchase order">';
-                    $status_action .=    '<i class="fa fa-sign-in"></i>';
-                    $status_action .='</button>';
+                    $status_label = '<p>POSTED</p>';
+                    
                 }
                 else if($purchase_orders->status =='accepted'){
-                    $status_label = '<p><h4><span class="label label-info">Accepted</span></h4></p>';
-                    $status_action .='<button type="button" class="btn btn-success btn-xs btn-complete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to complete this purchase order">';
-                    $status_action .=    '<i class="fa fa-check"></i>';
-                    $status_action .='</button>';
+                    $status_label = '<p>ACCEPTED</p>';
+                    
                 }
                 else{
-                    $status_label = '<p><h4><span class="label label-success">Completed</span></h4></p>';
+                    $status_label = '<p>COMPLETED</p>';
                 }
 
-                return $status_label.$status_action;
+                return $status_label;
             })
             ->addColumn('actions', function($purchase_orders){
-                $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only show edit button link if the status is posted
                 if($purchase_orders->status =='posted'){
@@ -215,9 +211,13 @@ class DatatablesController extends Controller
 
                 return $purchase_order_invoices->creator->name;
             })
+            ->editColumn('status', function($purchase_order_invoices){
+
+                return strtoupper($purchase_order_invoices->status);
+            })
             ->addColumn('actions', function($purchase_order_invoices){
-                $actions_html ='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html ='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
                 $actions_html .='</a>&nbsp;';
                 $actions_html .='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                 $actions_html .=    '<i class="fa fa-edit"></i>';
@@ -254,26 +254,26 @@ class DatatablesController extends Controller
                 $status_label = '';
                 $status_action = '';
                 if($purchase_returns->status =='posted'){
-                    $status_label = '<p><h4><span class="label label-default">Posted</span></h4></p>';
+                    $status_label = '<p>POSTED</p>';
                     $status_action .='<button type="button" class="btn btn-warning btn-xs btn-send-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Sent">';
                     $status_action .=    '<i class="fa fa-sign-in"></i>';
                     $status_action .='</button>';
                 }
                 else if($purchase_returns->status =='sent'){
-                    $status_label = '<p><h4><span class="label label-warning">Sent</span></h4></p>';
+                    $status_label = '<p>SENT</p>';
                     $status_action .='<button type="button" class="btn btn-success btn-xs btn-complete-purchase-return" data-id="'.$purchase_returns->id.'" title="Change status to Completed">';
                     $status_action .=    '<i class="fa fa-check"></i>';
                     $status_action .='</button>';
                 }
                 else{
-                    $status_label = '<p><h4><span class="label label-success">Completed</span></h4></p>';
+                    $status_label = '<p>COMPLETED</h4></p>';
                 }
 
                 return $status_label.$status_action;
             })
             ->addColumn('actions', function($purchase_returns){
-                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
                 if($purchase_returns->status == 'posted'){
@@ -284,9 +284,7 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }
-                
-                
-                
+    
                 return $actions_html;
             });
         return $data_purchase_returns->make(true);
