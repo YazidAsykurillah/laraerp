@@ -32,7 +32,7 @@
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
             {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'code']) !!}
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'code', 'disabled']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
@@ -113,6 +113,17 @@
               @if ($errors->has('category_id'))
                 <span class="help-block">
                   <strong>{{ $errors->first('category_id') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('family_id') ? ' has-error' : '' }}">
+            {!! Form::label('family_id', 'Family', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {{ Form::select('family_id', $family_options, null, ['class'=>'form-control', 'placeholder'=>'Select Family', 'id'=>'family_id']) }}
+              @if ($errors->has('family_id'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('family_id') }}</strong>
                 </span>
               @endif
             </div>

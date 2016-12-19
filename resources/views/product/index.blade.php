@@ -70,7 +70,7 @@
   <div class="modal fade" id="modal-delete-product" tabindex="-1" role="dialog" aria-labelledby="modal-delete-productLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'deleteProduct', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'deleteProduct', 'method'=>'post', 'id'=>'form-delete-product']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-delete-productLabel">Konfirmasi</h4>
@@ -85,7 +85,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger">Delete</button>
+          <button type="submit" class="btn btn-danger" id="btn-confirm-delete-product">Delete</button>
         </div>
       {!! Form::close() !!}
       </div>
@@ -109,7 +109,6 @@
         { data: 'stock', name: 'stock'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
-
 
     });
 
@@ -155,6 +154,11 @@
     });
     //ENDBlock search input and select
 
+
+    //Delete product process
+    $('#form-delete-product').on('submit', function(){
+      $('#btn-confirm-delete-product').prop('disabled', true);
+    });
     
   </script>
 @endsection

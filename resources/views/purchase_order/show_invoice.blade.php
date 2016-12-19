@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Purchase Order Invoice Detail
+  {{ $purchase_order_invoice->code }}
 @endsection
 
 @section('page_header')
   <h1>
-    Purchase Order
-    <small>Invoice Detail</small>
+    Purchase Order Invoice Detail
+    <small>{{ $purchase_order_invoice->code }}</small>
   </h1>
 @endsection
 
@@ -28,7 +28,10 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Purchase Order Invoice Detail</h3>    
+          <h3 class="box-title">{{ $purchase_order_invoice->code }}</h3>
+          <div class="pull-right">
+            
+          </div>
         </div><!-- /.box-header -->
         <div class="box-body">
 
@@ -92,7 +95,15 @@
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Status</strong></td>
-                <td>{{ $purchase_order_invoice->status }}</td>
+                <td>
+                  {{ strtoupper($purchase_order_invoice->status) }}
+                  @if($purchase_order_invoice->status =='unpaid')
+                    <p></p>
+                    <button id="btn-pay-invoice" class="btn btn-xs btn-primary" title="Click to pay this invoice" data-id="{{ $purchase_order_invoice->id}}" data-text="{{ $purchase_order_invoice->code }}">
+                      <i class="fa fa-money"></i>&nbsp;Pay
+                    </button>
+                  @endif
+                </td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Notes</strong></td>
@@ -112,7 +123,32 @@
   <!-- ENDRow Invoice-->
 
 
-  
+  <!--Modal pay purchase-order-invoice-->
+  <div class="modal fade" id="modal-pay-purchase-order-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-pay-purchase-order-invoiceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'payPurchaseOrderInvoice', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-pay-purchase-order-invoiceLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <b id="purchase-order-invoice-name-to-pay"></b> status will be changed to PAID
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="purchase_order_invoice_id" name="purchase_order_invoice_id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Ok</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal pay purchase-order-invoice-->
   
 
 
@@ -121,6 +157,16 @@
 
 @section('additional_scripts')
   
+  <script type="text/javascript">
+    // Delete button handler
+    $('#btn-pay-invoice').on('click', function (e) { 
+      var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#purchase_order_invoice_id').val(id);
+      $('#purchase-order-invoice-name-to-pay').text(code);
+      $('#modal-pay-purchase-order-invoice').modal('show');
+    });
+  </script>
   
 @endSection
 

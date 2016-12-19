@@ -29,7 +29,17 @@
           <h3 class="box-title">Basic Informations</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+          <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+            {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'code']) !!}
+              @if ($errors->has('code'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('code') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -58,13 +68,23 @@
       <!--ENDBOX Basic Informations-->
     </div>
     <div class="col-md-4">
-      <!--BOX Image-->
+      <!--BOX category and image-->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Product Image</h3>
+          <h3 class="box-title">Category and Picture</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+            {!! Form::label('category_id', 'Category', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {{ Form::select('category_id', $category_options, null, ['class'=>'form-control', 'placeholder'=>'Select category', 'id'=>'category_id']) }}
+              @if ($errors->has('category_id'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('category_id') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
             {!! Form::label('image', 'Image', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -78,7 +98,7 @@
           </div>
         </div><!-- /.box-body -->
       </div>
-      <!--ENDBOX Image-->
+      <!--ENDBOX category and image-->
     </div>
   </div>
 
@@ -118,40 +138,6 @@
       </div>
       <!--ENDBOX Stock Informations-->
     </div>
-    <div class="col-md-4">
-      <!--BOX Category and Family-->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Category and Family</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-            {!! Form::label('category_id', 'Category', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {{ Form::select('category_id', $category_options, null, ['class'=>'form-control', 'placeholder'=>'Select category', 'id'=>'category_id']) }}
-              @if ($errors->has('category_id'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('category_id') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-          <div class="form-group{{ $errors->has('family_id') ? ' has-error' : '' }}">
-            {!! Form::label('family_id', 'Family', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {{ Form::select('family_id', $family_options, null, ['class'=>'form-control', 'placeholder'=>'Select Family', 'id'=>'family_id']) }}
-              @if ($errors->has('family_id'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('family_id') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-          
-        </div><!-- /.box-body -->
-      </div>
-      <!--ENDBOX Category and Family-->
-    </div>
   </div>
   <!--ENDROW Stock Information-->
   <!--ROW Submission-->
@@ -182,8 +168,8 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
-    $('#form-create-product').on('submit', function(){
-      $('#btn-submit-product').prop('disabled', true);
-    });
+    $('#btn-submit-product').click(function(){
+      $(this).attr('disable', 'disabled');
+    })
   </script>
 @endsection

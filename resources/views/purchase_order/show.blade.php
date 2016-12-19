@@ -127,7 +127,7 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title"> Related Invoice </h3>
+          <h3 class="box-title"> Invoice <small>Invoice that related with this purchase order</small></h3>
           <div class="pull-right">
             @if($purchase_order->status == 'posted' || $purchase_order->status =='completed')
             
@@ -137,7 +137,6 @@
                 <i class='fa fa-bookmark'></i>&nbsp;Input Invoice
               </a>
             @endif
-            
           </div>
           
         </div><!-- /.box-header -->
@@ -145,7 +144,11 @@
           @if($invoice->count() > 0)
             <div class="row">
               <div class="col-md-12"> 
-                <strong>{{ $purchase_order->purchase_order_invoice->code }}</strong>
+                <strong>
+                  <a href="{{url('purchase-order-invoice/'.$purchase_order->purchase_order_invoice->id.'')}}" title="Click to view the detail of the invoice" target="_blank">
+                    {{ $purchase_order->purchase_order_invoice->code }}
+                  </a>
+                </strong>
               </div>
             </div>
             <br/>

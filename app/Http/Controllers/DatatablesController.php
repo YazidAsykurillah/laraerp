@@ -10,6 +10,7 @@ use Yajra\Datatables\Datatables;
 
 use App\Product;
 use App\Supplier;
+use App\Customer;
 use App\Unit;
 use App\PurchaseOrder;
 use App\PurchaseOrderInvoice;
@@ -18,6 +19,43 @@ use App\PurchaseReturn;
 class DatatablesController extends Controller
 {
 
+
+
+    //Function get CUSTOMERS datatable
+    public function getCustomers(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $customers = Customer::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'phone_number',
+            'address'
+        ]);
+
+        $data_customers = Datatables::of($customers)
+            ->addColumn('actions', function($customers){
+                    $actions_html ='<a href="'.url('customer/'.$customers->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('customer/'.$customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this customer">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_customers->make(true);
+    }
+    //ENDFunction get CUSTOMERS datatable
 
 
     //Function to get product list

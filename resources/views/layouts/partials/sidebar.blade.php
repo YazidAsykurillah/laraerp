@@ -52,7 +52,7 @@
           <span>Sales</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="#"><i class="fa fa-circle-o"></i> Sales Order</a></li>
+          <li><a href="{{ url('sales-order') }}"><i class="fa fa-circle-o"></i> Sales Order</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
@@ -85,6 +85,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
+          <li><a href="{{ url('customer') }}"><i class="fa fa-circle-o"></i> Customer</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
           <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
         </ul>

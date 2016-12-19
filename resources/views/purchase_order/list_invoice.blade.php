@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Purchase Order Invoice List
+  Purchase Order Invoices
 @endsection
 
 @section('page_header')
   <h1>
-    Purchase Order
-    <small>Purchase Order Invoice List</small>
+    Purchase Order Invoices
+    <small>List of purchase order invoices</small>
   </h1>
 @endsection
 

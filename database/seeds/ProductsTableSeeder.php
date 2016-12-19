@@ -13,8 +13,9 @@ class ProductsTableSeeder extends Seeder
     {
         \DB::table('products')->delete();
         $data = [
-        	['id'=>1, 'code'=>'P-01', 'name'=>'Product 1', 'category_id'=>1, 'unit_id'=>1],
-        	['id'=>2, 'code'=>'P-02', 'name'=>'Product 2', 'category_id'=>1, 'unit_id'=>2],
+        	
+            ['id'=>1, 'code'=>'CAT1-FAM1-1', 'name'=>'Product 1', 'category_id'=>1, 'unit_id'=>1, 'family_id'=>1],
+        	['id'=>2, 'code'=>'CAT1-FAM1-2', 'name'=>'Product 2', 'category_id'=>1, 'unit_id'=>2, 'family_id'=>1],
         ];
 
        \DB::table('products')->insert($data);

@@ -109,17 +109,7 @@
                 @endif
               </div>
             </div>
-            <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-              {!! Form::label('status', 'Status', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-6">
-                {!! Form::select('status',['paid'=>'Paid', 'unpaid'=>'Unpaid'], null, ['placeholder'=>'--Select Payment status--', 'class'=>'form-control', 'id'=>'status']) !!}
-                @if ($errors->has('status'))
-                  <span class="help-block">
-                    <strong>{{ $errors->first('status') }}</strong>
-                  </span>
-                @endif
-              </div>
-            </div>
+            
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">

@@ -128,7 +128,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order_invoice->code = $request->code;
         $purchase_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $purchase_order_invoice->paid_price = floatval(preg_replace('#[^0-9.]#', '', $request->paid_price));
-        $purchase_order_invoice->status = $request->status;
+        
         $purchase_order_invoice->notes = $request->notes;
         $purchase_order_invoice->save();
 
@@ -160,5 +160,14 @@ class PurchaseOrderInvoiceController extends Controller
         $delete = $purch_order_inv->delete();
         return redirect('purchase-order-invoice')
         ->with('successMessage', 'Invoice has been deleted');
+    }
+
+    public function payInvoice(Request $request)
+    {
+        $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
+        $purch_order_inv->status = 'paid';
+        $purch_order_inv->save();
+        return redirect('purchase-order-invoice/'.$request->purchase_order_invoice_id)
+            ->with('successMessage', "Purchase order invoice $purch_order_inv->code has just been paid");
     }
 }

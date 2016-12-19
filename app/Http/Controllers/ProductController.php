@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Product;
 use App\Category;
 use App\Unit;
+use App\Family;
 
 class ProductController extends Controller
 {
@@ -23,9 +24,10 @@ class ProductController extends Controller
     public function __construct(){
         $this->middleware('auth');
     }
+    
     public function index()
     {
- 
+
         $categories = Category::all();
         return view('product.index')
             ->with('category_selections', $categories);
@@ -40,33 +42,39 @@ class ProductController extends Controller
     {
         $category_options = Category::lists('name', 'id');
         $unit_options = Unit::lists('name', 'id');
+        $family_options = Family::lists('name', 'id');
         return view('product.create')
             ->with('category_options', $category_options)
-            ->with('unit_options', $unit_options);
+            ->with('unit_options', $unit_options)
+            ->with('family_options', $family_options);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreProductRequest $request)
     {
         if($request->hasFile('image')){
             $this->upload_process($request);
         }
         $product = new Product;
-        $product->code = $request->code;
         $product->name = $request->name;
         $product->image = $this->product_image;
         $product->category_id = $request->category_id;
+        $product->family_id = $request->family_id;
         $product->unit_id = $request->unit_id;
         $product->stock = $request->stock;
         $product->minimum_stock = $request->minimum_stock;
         $product->save();
-        return redirect('product');
 
+        //Block Update product code
+        $product_id = $product->id;
+        $category_id = $request->category_id;
+        $family_id = $request->family_id;
+        $selected_category = \DB::table('categories')->where('id',$category_id)->first()->code;
+        $selected_family = \DB::table('families')->where('id',$family_id)->first()->code;
+        $product_code = $selected_category.'-'.$selected_family.'-'.$product_id;
+        $update = \DB::table('products')->where('id', $product_id)->update(['code'=>$product_code]);
+        //ENDBlock Update product code
+        return redirect('product')
+            ->with('successMessage', "Product $product_code has been added");
     }
 
     
@@ -94,10 +102,12 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $category_options = Category::lists('name', 'id');
+        $family_options = Family::lists('name', 'id');
         $unit_options = Unit::lists('name', 'id');
         return view('product.edit')
             ->with('product', $product)
             ->with('category_options', $category_options)
+            ->with('family_options', $family_options)
             ->with('unit_options', $unit_options);
     }
 
@@ -110,6 +120,9 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
+        
+
+
         $product = Product::findOrFail($id);
         if($request->hasFile('image')){
             //if there is an uploaded image, fire the upload process,set the new product image name
@@ -121,14 +134,23 @@ class ProductController extends Controller
             //no image uploaded, it means the product image name stays still
             $this->product_image = $product->image;
         }
-        $product->code = $request->code;
+
         $product->name = $request->name;
         $product->category_id = $request->category_id;
+        $product->family_id = $request->family_id;
         $product->unit_id = $request->unit_id;
         $product->image = $this->product_image;
         $product->stock = $request->stock;
         $product->minimum_stock = $request->minimum_stock;
         $product->save();
+
+        //now update the product code of the last inserted product
+        $category_id = $request->category_id;
+        $family_id = $request->family_id;
+        $category_code = \DB::table('categories')->where('id',$category_id)->first()->code;
+        $family_code = \DB::table('families')->where('id',$family_id)->first()->code;
+        $product_code = $category_code.'-'.$family_code.'-'.$id;
+        $update = \DB::table('products')->where('id', $id)->update(['code'=>$product_code]);
 
         //delete old product image and the thumbnail from the server if any
         \File::delete(public_path().'/img/products/'.$this->product_image_to_be_deleted);

@@ -24,9 +24,10 @@ class StoreProductRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|unique:products,code',
+            //'code'=>'required|unique:products,code',
             'name'=>'required|unique:products,name',
             'category_id'=>'required|exists:categories,id',
+            'family_id'=>'required|exists:families,id',
             'unit_id'=>'required|exists:units,id',
             'image'=>'mimes:jpg,png,jpeg',
             'stock'=>'integer',
