@@ -86,9 +86,12 @@ class SalesOrderController extends Controller
     public function show($id)
     {
         $sales_order = SalesOrder::findOrFail($id);
+        //invoice related with this purchase order
+        $invoice =  $sales_order->sales_order_invoice();
 
         return view('sales_order.show')
-            ->with('sales_order', $sales_order);
+            ->with('sales_order', $sales_order)
+            ->with('invoice', $invoice);
     }
 
     protected function count_total_price($sales_order)

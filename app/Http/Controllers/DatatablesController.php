@@ -16,6 +16,7 @@ use App\PurchaseOrder;
 use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
 use App\SalesOrder;
+use App\SalesOrderInvoice;
 
 class DatatablesController extends Controller
 {
@@ -423,4 +424,49 @@ class DatatablesController extends Controller
 
     }
     //ENDFunction get Sales Orders list
+
+    //Function get Sales Order Invoice
+    public function getSalesOrderInvoices(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $sales_order_invoices = SalesOrderInvoice::with('sales_order','creator')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'sales_order_invoices.*',
+            ]
+        );
+        $data_sales_order_invoices = Datatables::of($sales_order_invoices)
+            ->editColumn('sales_order_id', function($sales_order_invoices){
+                return $sales_order_invoices->sales_order->code;
+            })
+            ->editColumn('bill_price', function($sales_order_invoices){
+                return number_format($sales_order_invoices->bill_price);
+            })
+            ->editColumn('paid_price', function($sales_order_invoices){
+                return number_format($sales_order_invoices->paid_price);
+            })
+            ->editColumn('creator', function($sales_order_invoices){
+
+                return $sales_order_invoices->creator->name;
+            })
+            ->editColumn('status', function($sales_order_invoices){
+
+                return strtoupper($sales_order_invoices->status);
+            })
+            ->addColumn('actions', function($sales_order_invoices){
+                $actions_html ='<a href="'.url('purchase-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('purchase-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+                
+                return $actions_html;
+            });
+        return $data_sales_order_invoices->make(true);
+    }
+    //ENDFunction get Sales Order Invoice
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Customer;
 use App\User;
 use App\Product;
+use App\SalesOrderInvoice;
 
 class SalesOrder extends Model
 {
@@ -27,5 +28,11 @@ class SalesOrder extends Model
     public function products()
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'sales_order_id');
+    }
+
+    //relation to sales order invoice
+    public function sales_order_invoice()
+    {
+        return $this->hasOne('App\SalesOrderInvoice');
     }
 }

@@ -183,7 +183,6 @@ class PurchaseOrderController extends Controller
             ];
             return response()->json($response);
         }
-        
     }
 
     /**

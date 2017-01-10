@@ -190,7 +190,7 @@
   <script type="text/javascript">
     
     var selected = [];
-    //initially push selected products to var selected
+    //initially push selected products to variable selected
     @foreach($sales_order->products as $product)
       selected.push({{$product->id}});
     @endforeach

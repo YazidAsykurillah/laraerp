@@ -92,6 +92,9 @@ Route::resource('customer', 'CustomerController');
 	Route::post('deleteSalesOrder', 'SalesOrderController@destroy');
 	Route::resource('sales-order', 'SalesOrderController');
 
+//Sales order invoice
+	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
+
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
@@ -99,6 +102,7 @@ Route::controller('datatables', 'DatatablesController',[
 	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
 	'getPurchaseOrderInvoices'=>'datatables.getPurchaseOrderInvoices',
 	'getSalesOrders'=>'datatables.getSalesOrders',
+	'getSalesOrderInvoices'=>'datatables.getSalesOrderInvoices',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 	'getCustomers'=>'datatables.getCustomers',
 	
