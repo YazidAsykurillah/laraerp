@@ -15,10 +15,10 @@ use App\Unit;
 use App\PurchaseOrder;
 use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
+use App\SalesOrder;
 
 class DatatablesController extends Controller
 {
-
 
 
     //Function get CUSTOMERS datatable
@@ -364,4 +364,63 @@ class DatatablesController extends Controller
     }
 
 
+    //Function get Sales Orders list
+    public function getSalesOrders(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $sales_orders = SalesOrder::with('customer', 'created_by')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'sales_orders.*',
+            ]
+        );
+
+        $data_sales_orders = Datatables::of($sales_orders)
+            ->editColumn('customer_id', function($sales_orders){
+                return $sales_orders->customer->name;
+            })
+            ->editColumn('creator', function($sales_orders){
+                return $sales_orders->created_by->name;
+            })
+            ->editColumn('status', function($sales_orders){
+                $status_label = '';
+                
+                if($sales_orders->status == 'posted'){
+                    $status_label = '<p>POSTED</p>';
+                    
+                }
+                else if($sales_orders->status =='accepted'){
+                    $status_label = '<p>ACCEPTED</p>';
+                    
+                }
+                else{
+                    $status_label = '<p>COMPLETED</p>';
+                }
+
+                return $status_label;
+            })
+            ->addColumn('actions', function($sales_orders){
+                $actions_html ='<a href="'.url('sales-order/'.$sales_orders->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html .='</a>&nbsp;';
+                //only show edit button link if the status is posted
+                if($sales_orders->status =='posted'){
+                    $actions_html .='<a href="'.url('sales-order/'.$sales_orders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                }
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+                
+                return $actions_html;
+            });
+
+        /*if ($keyword = $request->get('search')['value']) {
+            $data_sales_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }*/
+        
+        return $data_sales_orders->make(true);
+
+    }
+    //ENDFunction get Sales Orders list
 }

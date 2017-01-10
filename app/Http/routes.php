@@ -83,7 +83,13 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('purchase-return', 'PurchaseReturnController');
 
 
-//Sales Order Controller
+//Sales Order
+	//Save
+	Route::post('storeSalesOrder', 'SalesOrderController@store');
+	//Update
+	Route::put('UpdateSalesOrder', 'SalesOrderController@update');
+	//delete
+	Route::post('deleteSalesOrder', 'SalesOrderController@destroy');
 	Route::resource('sales-order', 'SalesOrderController');
 
 Route::controller('datatables', 'DatatablesController',[
@@ -92,6 +98,7 @@ Route::controller('datatables', 'DatatablesController',[
 	'getUnits'=>'datatables.getUnits',
 	'getPurchaseOrders'=>'datatables.getPurchaseOrders',
 	'getPurchaseOrderInvoices'=>'datatables.getPurchaseOrderInvoices',
+	'getSalesOrders'=>'datatables.getSalesOrders',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 	'getCustomers'=>'datatables.getCustomers',
 	

@@ -33,7 +33,7 @@ class PurchaseOrderController extends Controller
         $returned['validfrom']=$request->validfrom;
         $returned['paymenttypecode']=$request->paymenttypecode;
         $returned['signature']=$request->signature;
-        $returned['OrderID']= 77;
+        $returned['ordernumber']= 77;
         return response()->json($returned);
     }
     /**
@@ -205,9 +205,6 @@ class PurchaseOrderController extends Controller
         \DB::table('purchase_returns')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
         return redirect('purchase-order')
             ->with('successMessage', "Purchase Order has been deleted");
-
-
-
 
     }
 
