@@ -41,7 +41,6 @@ class PurchaseOrderInvoiceController extends Controller
         return view('purchase_order.create_invoice')
             ->with('total_price', $this->count_total_price($purchase_order))
             ->with('purchase_order', $purchase_order);
-
     }
 
     public function store(StorePurchaseOrderInvoiceRequest $request)
@@ -71,14 +70,13 @@ class PurchaseOrderInvoiceController extends Controller
                 //Now time to sync the products
                 $purchase_order->products()->sync($syncData);
             }
-            
 
             $response = [
                 'msg'=>'storePurchaseOrderInvoiceOk',
                 'purchase_order_id'=>$request->purchase_order_id
             ];
             return response()->json($response);
-        }   
+        }
         else{
 
             return "Please activate javascript in your browser";

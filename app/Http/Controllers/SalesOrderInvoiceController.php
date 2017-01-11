@@ -27,11 +27,22 @@ class SalesOrderInvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        return view('sales_order.create_invoice')
+            ->with('total_price', $this->count_total_price($sales_order))
+            ->with('sales_order', $sales_order);
+
     }
 
+    protected function count_total_price($sales_order)
+    {
+        $sum_price = \DB::table('product_sales_order')
+                    ->where('sales_order_id', $sales_order->id)
+                    ->sum('price');
+        return $sum_price;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -40,7 +51,44 @@ class SalesOrderInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       if($request->ajax()){
+
+            $data = [
+                'sales_order_id' =>$request->sales_order_id,
+                'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
+                'notes'=>$request->notes,
+                'created_by'=>\Auth::user()->id
+            ];
+
+            $save = SalesOrderInvoice::create($data);
+            if($save){
+                //find sales_order model
+                $sales_order = salesOrder::findOrFail($request->sales_order_id);
+                //Build sync data to update PO relation w/ products
+                $syncData = [];
+                foreach($request->product_id as $key=>$value){
+                    $syncData[$value] = [
+                        'quantity'=> $request->quantity[$key], 
+                        'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key])),
+                        'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price_per_unit[$key]))
+                    ];
+                }
+                //First, delete all the relation cloumn between product and sales order on table prouduct_sales_order before syncing
+                \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
+                //Now time to sync the products
+                $sales_order->products()->sync($syncData);
+            }
+
+            $response = [
+                'msg'=>'storeSalesOrderInvoiceOk',
+                'sales_order_id'=>$request->sales_order_id
+            ];
+            return response()->json($response);
+        }
+        else{
+
+            return "Please activate javascript in your browser";
+        }
     }
 
     /**

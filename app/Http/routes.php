@@ -93,6 +93,8 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
+	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');
+	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
 
 Route::controller('datatables', 'DatatablesController',[

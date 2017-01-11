@@ -454,13 +454,13 @@ class DatatablesController extends Controller
                 return strtoupper($sales_order_invoices->status);
             })
             ->addColumn('actions', function($sales_order_invoices){
-                $actions_html ='<a href="'.url('purchase-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html ='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-eye"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<a href="'.url('purchase-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                $actions_html .='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                 $actions_html .=    '<i class="fa fa-edit"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
                 
