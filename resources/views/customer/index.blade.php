@@ -39,6 +39,7 @@
                   <th>Name</th>
                   <th style="width:20%;">Phone Number</th>
                   <th style="width:20%;">Address</th>
+                  <th style="">Invoice Term</th>
                   <th style="width:10%;text-align:center;">Actions</th>
                 </tr>
               </thead>
@@ -49,6 +50,7 @@
                   <th>Name</th>
                   <th style="width:20%;">Phone Number</th>
                   <th style="width:20%;">Address</th>
+                  <th style="">Invoice Term</th>
                   <th style="width:10%;text-align:center;">Actions</th>
                 </tr>
               </thead>
@@ -106,6 +108,7 @@
         { data: 'name', name: 'name' },
         { data: 'phone_number', name: 'phone_number' },
         { data: 'address', name: 'address'},
+        { data: 'invoice_term_id', name: 'invoice_term_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
 
@@ -123,7 +126,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 5) {
+          if ($(this).index() != 0 && $(this).index() !=5 && $(this).index()!=6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
           

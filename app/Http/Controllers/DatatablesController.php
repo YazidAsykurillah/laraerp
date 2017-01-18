@@ -17,10 +17,10 @@ use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
 use App\SalesOrder;
 use App\SalesOrderInvoice;
+use App\InvoiceTerm;
 
 class DatatablesController extends Controller
 {
-
 
     //Function get CUSTOMERS datatable
     public function getCustomers(Request $request)
@@ -32,10 +32,17 @@ class DatatablesController extends Controller
             'code',
             'name',
             'phone_number',
-            'address'
+            'address',
+            'invoice_term_id'
         ]);
 
         $data_customers = Datatables::of($customers)
+            ->editColumn('invoice_term_id', function($customers){
+                if(!is_null($customers->invoice_term_id)){
+                    return $customers->invoice_term->name;
+                }
+                return "";
+            })
             ->addColumn('actions', function($customers){
                     $actions_html ='<a href="'.url('customer/'.$customers->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
@@ -469,4 +476,40 @@ class DatatablesController extends Controller
         return $data_sales_order_invoices->make(true);
     }
     //ENDFunction get Sales Order Invoice
+
+    //get invoice terms list
+    public function getInvoiceTerms(Request $request)
+    {
+       \DB::statement(\DB::raw('set @rownum=0'));
+        $invoice_terms = InvoiceTerm::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'name',
+            'day_many',
+        ]);
+
+        $data_invoice_terms = Datatables::of($invoice_terms)
+            ->addColumn('actions', function($invoice_terms){
+                    $actions_html ='<a href="'.url('invoice-term/'.$invoice_terms->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('invoice-term/'.$invoice_terms->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice-term">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-term" data-id="'.$invoice_terms->id.'" data-text="'.$invoice_terms->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_invoice_terms->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_invoice_terms->make(true);
+    }
+
+
+    
 }

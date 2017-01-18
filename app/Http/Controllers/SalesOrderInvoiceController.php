@@ -33,7 +33,6 @@ class SalesOrderInvoiceController extends Controller
         return view('sales_order.create_invoice')
             ->with('total_price', $this->count_total_price($sales_order))
             ->with('sales_order', $sales_order);
-
     }
 
     protected function count_total_price($sales_order)
@@ -61,9 +60,14 @@ class SalesOrderInvoiceController extends Controller
             ];
 
             $save = SalesOrderInvoice::create($data);
+            //get last inserted id of sales_order_invoice
+            $sales_order_invoice_id = $save->id;
             if($save){
+                //update the code for this invoice
+                $code = 'SOI-'.$sales_order_invoice_id;
+                \DB::table('sales_order_invoices')->where('id', $sales_order_invoice_id)->update(['code'=>$code]);
                 //find sales_order model
-                $sales_order = salesOrder::findOrFail($request->sales_order_id);
+                $sales_order = SalesOrder::findOrFail($request->sales_order_id);
                 //Build sync data to update PO relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
@@ -99,7 +103,7 @@ class SalesOrderInvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
     }
 
     /**
@@ -131,8 +135,11 @@ class SalesOrderInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->sales_order_invoice_id;
+        \DB::table('sales_order_invoices')->where('id', $id)->delete();
+        return redirect('sales-order-invoice');
+
     }
 }

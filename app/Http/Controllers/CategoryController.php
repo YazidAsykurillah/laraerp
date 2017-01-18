@@ -89,8 +89,8 @@ class CategoryController extends Controller
         $category->code = strtoupper(str_replace(' ', '',$request->code));
         $category->name = $request->name;
         $category->save();
-        return redirect('category')
-            ->with('successMessage', 'Kategori produk berhasil diperbarui');
+        return redirect('category/'.$id.'/edit')
+            ->with('successMessage', 'Category has been updated');
     }
 
     /**
@@ -104,6 +104,6 @@ class CategoryController extends Controller
         $category = Category::findOrFail($request->category_id);
         $category->delete();
         return redirect('category')
-            ->with('successMessage', 'Kategori telah dihapus');
+            ->with('successMessage', 'Category has been deleted');
     }
 }

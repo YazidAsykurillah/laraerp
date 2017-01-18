@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Customer
+  Edit Customer
 @endsection
 
 @section('page_header')
   <h1>
-    Create Customer
-    <small>Create new customer</small>
+    Edit Customer
+    <small>Edit the customer</small>
   </h1>
 @endsection
 
@@ -15,12 +15,12 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customers</a></li>
-    <li class="active"><i></i>Create</li>
+    <li class="active"><i></i>Edit</li>
   </ol>
 @endsection
 
 @section('content')
-  {!! Form::open(['route'=>'customer.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-customer','files'=>true]) !!}
+  {!! Form::model($customer,['route'=>['customer.update', $customer], 'class'=>'form-horizontal', 'method'=>'put']) !!}
   <div class="row">
     <div class="col-lg-7">
       <div class="box">

@@ -1,17 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -93,9 +81,15 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
+	Route::post('deleteSalesOrderInvoice', 'SalesOrderInvoiceController@destroy');
 	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');
 	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
+
+
+//Invoiceterms
+	
+	Route::resource('invoice-term', 'InvoiceTermController');
 
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
@@ -107,5 +101,7 @@ Route::controller('datatables', 'DatatablesController',[
 	'getSalesOrderInvoices'=>'datatables.getSalesOrderInvoices',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 	'getCustomers'=>'datatables.getCustomers',
+	'getInvoiceTerms'=>'datatables.getInvoiceTerms'
+	
 	
 ]);

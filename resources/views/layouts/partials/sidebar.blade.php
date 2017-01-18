@@ -88,6 +88,7 @@
           <li><a href="{{ url('customer') }}"><i class="fa fa-circle-o"></i> Customer</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
           <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
+          <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Terms</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

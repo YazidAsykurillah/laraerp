@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class StoreCustomerRequest extends Request
+class StoreInvoiceTermRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class StoreCustomerRequest extends Request
     public function rules()
     {
         return [
-            'name'=>'required',
-            'phone_number'=>'required',
-            'address'=>'required',
-            'invoice_term_id'=>'required|integer'
+            'name'=>'required|unique:invoice_terms,name',
+            'day_many'=>'required|integer'
         ];
     }
 }

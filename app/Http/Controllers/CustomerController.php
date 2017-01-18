@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 
 use App\Customer;
+use App\InvoiceTerm;
 
 class CustomerController extends Controller
 {
@@ -28,7 +30,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.create');
+        $invoice_terms = InvoiceTerm::lists('name', 'id');
+        return view('customer.create')
+        ->with('invoice_terms', $invoice_terms);
     }
 
     /**
@@ -43,8 +47,8 @@ class CustomerController extends Controller
         $customer->name = $request->name;
         $customer->phone_number = $request->phone_number;
         $customer->address = $request->address;
+        $customer->invoice_term_id = $request->invoice_term_id;
         $customer->save();
-
         //now update customer's code
         $customer_id = $customer->id;
         $customer_code = \DB::table('customers')->where('id',$customer_id)->update(['code'=>'CS-'.$customer_id]);
@@ -72,8 +76,12 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+        $invoice_terms = InvoiceTerm::lists('name', 'id');
+        $customer = Customer::findOrFail($id);
+        return view('customer.edit')
+        ->with('invoice_terms', $invoice_terms)
+        ->with('customer', $customer);
     }
 
     /**
@@ -83,9 +91,16 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCustomerRequest $request, $id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        $customer->name = $request->name;
+        $customer->phone_number = $request->phone_number;
+        $customer->address = $request->address;
+        $customer->invoice_term_id = $request->invoice_term_id;
+        $customer->save();
+        return redirect('customer/'.$id.'/edit')
+            ->with('successMessage', 'Customer has been updated');
     }
 
     /**
