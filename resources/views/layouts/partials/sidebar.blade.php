@@ -30,7 +30,7 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <li class="header">NAVIGATION</li>
-      <li {{{ (Request::is('dashboard') ? 'class=active' : '') }}}>
+      <li {{{ (Request::is('home') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('home') }}">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>

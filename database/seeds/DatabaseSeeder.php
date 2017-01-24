@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FamiliesTableSeeder::class);
         $this->call(CustomersTableSeeder::class);
         $this->call(SalesOrdersTableSeeder::class);
-        $this->call(SalesOrdersInvoiceTableSeeder::class);
         $this->call(InvoceTermsTableSeeder::class);
     }
 }

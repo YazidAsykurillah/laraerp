@@ -21,5 +21,8 @@ class SalesOrdersTableSeeder extends Seeder
         ];
 
         \DB::table('sales_orders')->insert($data);
+
+        //delete sales_order_invoices table datas
+        \DB::table('sales_order_invoices')->delete();
     }
 }

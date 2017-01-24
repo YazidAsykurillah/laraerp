@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+//Carbon package
+Use Carbon\Carbon;
 
 use App\SalesOrderInvoice;
 use App\SalesOrder;
@@ -51,24 +53,29 @@ class SalesOrderInvoiceController extends Controller
     public function store(Request $request)
     {
        if($request->ajax()){
+            $sales_order_id = $request->sales_order_id;
+            $sales_order_code = SalesOrder::findOrFail($sales_order_id)->code;
+            $customer_invoice_term = SalesOrder::findOrFail($sales_order_id)->customer->invoice_term->day_many;
 
+            $current = Carbon::now();
+            $due_date = $current->addDays($customer_invoice_term);
             $data = [
+                'code'=>'INV-'.$sales_order_code,
                 'sales_order_id' =>$request->sales_order_id,
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
                 'notes'=>$request->notes,
-                'created_by'=>\Auth::user()->id
+                'created_by'=>\Auth::user()->id,
+                'due_date'=>$due_date
             ];
 
             $save = SalesOrderInvoice::create($data);
             //get last inserted id of sales_order_invoice
             $sales_order_invoice_id = $save->id;
             if($save){
-                //update the code for this invoice
-                $code = 'SOI-'.$sales_order_invoice_id;
-                \DB::table('sales_order_invoices')->where('id', $sales_order_invoice_id)->update(['code'=>$code]);
+                
                 //find sales_order model
                 $sales_order = SalesOrder::findOrFail($request->sales_order_id);
-                //Build sync data to update PO relation w/ products
+                //Build sync data to update SalesOrder relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
                     $syncData[$value] = [
@@ -77,7 +84,7 @@ class SalesOrderInvoiceController extends Controller
                         'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price_per_unit[$key]))
                     ];
                 }
-                //First, delete all the relation cloumn between product and sales order on table prouduct_sales_order before syncing
+                //First, delete all the relation column for product and sales order on table prouduct_sales_order before syncing
                 \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
                 //Now time to sync the products
                 $sales_order->products()->sync($syncData);

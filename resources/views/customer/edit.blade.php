@@ -20,18 +20,18 @@
 @endsection
 
 @section('content')
-  {!! Form::model($customer,['route'=>['customer.update', $customer], 'class'=>'form-horizontal', 'method'=>'put']) !!}
+  {!! Form::model($customer,['route'=>['customer.update', $customer], 'class'=>'form-horizontal','id'=>'form-edit-customer', 'method'=>'put']) !!}
   <div class="row">
-    <div class="col-lg-7">
+    <div class="col-lg-8">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Create new customer</h3>
+          <h3 class="box-title">Edit Customer</h3>
           
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('name', 'Name', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the customer', 'id'=>'name']) !!}
               @if ($errors->has('name'))
                 <span class="help-block">
@@ -41,8 +41,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('phone_number', 'Phone Number', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('phone_number', 'Phone Number', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('phone_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the customer', 'id'=>'phone_number']) !!}
               @if ($errors->has('phone_number'))
                 <span class="help-block">
@@ -52,8 +52,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-            {!! Form::label('address', 'Address', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('address', 'Address', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::textarea('address',null,['class'=>'form-control', 'placeholder'=>'Address of the supplier', 'id'=>'address']) !!}
               @if ($errors->has('address'))
                 <span class="help-block">
@@ -63,8 +63,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('invoice_term_id') ? ' has-error' : '' }}">
-            {!! Form::label('invoice_term_id', 'Unit', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('invoice_term_id', 'Invoice Term', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {{ Form::select('invoice_term_id', $invoice_terms, null, ['class'=>'form-control', 'placeholder'=>'Select Term', 'id'=>'invoice_term_id']) }}
               @if ($errors->has('invoice_term_id'))
                 <span class="help-block">
@@ -74,8 +74,8 @@
             </div>
           </div>
           <div class="form-group">
-              {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+              {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               <a href="{{ url('customer') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;
@@ -100,7 +100,7 @@
 @section('additional_scripts')
 
   <script type="text/javascript">
-    $('#form-create-customer').on('submit', function(){
+    $('#form-edit-customer').on('submit', function(){
       $('#btn-submit-customer').prop('disabled', true);
     });
   </script>
