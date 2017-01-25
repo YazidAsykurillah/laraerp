@@ -19,7 +19,7 @@ class CreateSalesOrderInvoicesTable extends Migration
             $table->decimal('bill_price', 20, 2);
             $table->decimal('paid_price', 20, 2);
             $table->datetime('paid_at')->nullable();
-            $table->enum('status',['paid', 'unpaid'])->default('unpaid');
+            $table->enum('status',['completed', 'uncompleted'])->default('uncompleted');
             $table->integer('created_by');
             $table->text('notes')->nullable();
             $table->date('due_date');

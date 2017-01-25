@@ -84,6 +84,8 @@ Route::resource('customer', 'CustomerController');
 	Route::post('deleteSalesOrderInvoice', 'SalesOrderInvoiceController@destroy');
 	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');
 	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');
+	Route::get('sales-order-invoice/{invoice_id}/payment/create', 'SalesOrderInvoiceController@createPayment');
+	Route::post('storeInvoicePayment', 'SalesOrderInvoiceController@storeInvoicePayment');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
 
 

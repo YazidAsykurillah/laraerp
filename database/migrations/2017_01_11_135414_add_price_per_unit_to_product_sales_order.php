@@ -24,6 +24,9 @@ class AddPricePerUnitToProductSalesOrder extends Migration
      */
     public function down()
     {
-        $table->dropColumn('price_per_unit');
+        Schema::table('product_sales_order', function(Blueprint $table){
+            $table->dropColumn('price_per_unit');
+        });
+       
     }
 }

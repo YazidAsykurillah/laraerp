@@ -42,7 +42,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Sales Order General Information</h3>
+              <h3 class="box-title">General Information</h3>
               <div class="pull-right">
                 <a href="{{ url('sales-order/'.$sales_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
                   <i class='fa fa-print'></i>&nbsp;Print
@@ -146,7 +146,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title"> Sales Order Invoice <small>Related invoice with the sales order</small></h3>
+              <h3 class="box-title"> Invoice <small>Related invoice with the sales order</small></h3>
               <div class="pull-right">
                 @if($invoice->count() < 1)
                 <a href="{{ URL::to('sales-order-invoice/'.$sales_order->id.'/create')}}" class="btn btn-default btn-xs">
@@ -158,75 +158,42 @@
             </div><!-- /.box-header -->
             <div class="box-body">
               @if($invoice->count() > 0)
-                <div class="row">
-                  <div class="col-md-12"> 
-                    <strong>
-                      <a href="{{url('sales-order-invoice/'.$sales_order->sales_order_invoice->id.'')}}" title="Click to view the detail of the invoice" target="_blank">
-                        {{ $sales_order->sales_order_invoice->code }}
-                      </a>
-                    </strong>
-                  </div>
-                </div>
-                <br/>
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="table-selected-products">
-                    <thead>
-
-                      <tr>
-                        <th style="width:40%">Product Name</th>
-                        <th style="width:20%">Quantity</th>
-                        <th style="width:20%">Unit</th>
-                        <th style="width:20%">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @if($sales_order->products->count() > 0)
-                        @foreach($sales_order->products as $product)
-                        <tr>
-                          <td>
-                            {{ $product->name }}
-                          </td>
-                          <td>
-                            {{ $product->pivot->quantity }}
-                          </td>
-                          <td>
-                            {{ $product->unit->name }}
-                          </td>
-                          <td>
-                            {{ number_format($product->pivot->price) }}
-                          </td>
-                        </tr>
-                      
-                        @endforeach
-                      @else
-                      <tr>
-                        <td>There are no product</td>
-                      </tr>
-                      @endif
-                    </tbody>
-                  </table>
-                  <br/>
                   <table class="table">
                     <tr>
-                      <td style="width:30%;"><strong>Bill Price</strong></td>
+                      <td>Invoice Code</td>
+                      <td></td>
+                      <td>
+                        <a href="{{ url('sales-order-invoice/'.$sales_order->sales_order_invoice->id.'') }}" title="Click to see the detail">
+                          {{ $sales_order->sales_order_invoice->code }}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Bill Price</td>
+                      <td></td>
                       <td>{{ number_format($sales_order->sales_order_invoice->bill_price) }}</td>
+                    </tr>
+                    <tr>
+                      <td>Paid Price</td>
+                      <td></td>
+                      <td>{{ number_format($sales_order->sales_order_invoice->paid_price) }}</td>
                     </tr>
                     
                     <tr>
-                      <td style="width:30%;"><strong>Paid Price</strong></td>
-                      <td>{{ number_format($sales_order->sales_order_invoice->paid_price) }}</td>
+                      <td>Created Date</td>
+                      <td></td>
+                      <td>{{ $sales_order->sales_order_invoice->created_at }}</td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Status</strong></td>
-                      <td>{{ ucwords($sales_order->sales_order_invoice->status) }}</td>
-                    </tr>
-                    <tr>
-                      <td style="width:30%;"><strong>Due Date</strong></td>
+                      <td>Due Date</td>
+                      <td></td>
                       <td>{{ $sales_order->sales_order_invoice->due_date }}</td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Notes</strong></td>
-                      <td>{{ $sales_order->sales_order_invoice->notes }}</td>
+                      <td>Status</td>
+                      <td></td>
+                      <td>{{ ucwords($sales_order->sales_order_invoice->status) }}</td>
                     </tr>
                   </table>
                 </div>
@@ -257,7 +224,35 @@
               <h3 class="box-title">Invoice Payments <small>Related payment with the sales order invoice</small></h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-              Invoice payment goes here
+              <div class="table-responsive">
+                <table class="table" id="table-sales-invoice-payment">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Payment Date</th>
+                      <th>Payment Method</th>
+                      <th>Amount</th>
+                      <th>Receiver</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if(count($sales_order->sales_order_invoice))
+                      @if($sales_order->sales_order_invoice->sales_invoice_payment->count())
+                        <?php  $payment_row = 0; ?>
+                        @foreach($sales_order->sales_order_invoice->sales_invoice_payment as $payment)
+                        <tr>
+                          <td> {{ $payment_row +=1 }}</td>
+                          <td>{{ $payment->created_at }}</td>
+                          <td>{{ $payment->payment_method_id }}</td>
+                          <td>{{ number_format($payment->amount) }}</td>
+                        </tr>
+                        @endforeach
+                      @endif
+                    @else
+                    @endif
+                  </tbody>
+                </table>
+              </div>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix"></div>
           </div><!-- /.box -->

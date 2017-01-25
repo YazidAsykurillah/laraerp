@@ -24,5 +24,7 @@ class SalesOrdersTableSeeder extends Seeder
 
         //delete sales_order_invoices table datas
         \DB::table('sales_order_invoices')->delete();
+        //delete sales_invoice_payments table
+        \DB::table('sales_invoice_payments')->delete();
     }
 }

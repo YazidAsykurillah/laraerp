@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreSalesInvoicePaymentRequest;
 
 //Carbon package
 Use Carbon\Carbon;
 
 use App\SalesOrderInvoice;
 use App\SalesOrder;
+use App\PaymentMethod;
+use App\SalesInvoicePayment;
 
 class SalesOrderInvoiceController extends Controller
 {
@@ -110,7 +113,9 @@ class SalesOrderInvoiceController extends Controller
      */
     public function show($id)
     {
-        $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
+        $invoice = SalesOrderInvoice::findOrFail($id);
+        return view('sales_order.show_invoice')
+            ->with('invoice', $invoice);
     }
 
     /**
@@ -147,6 +152,48 @@ class SalesOrderInvoiceController extends Controller
         $id = $request->sales_order_invoice_id;
         \DB::table('sales_order_invoices')->where('id', $id)->delete();
         return redirect('sales-order-invoice');
+    }
 
+
+    public function createPayment(Request $request)
+    {
+        $invoice_id = $request->invoice_id;
+        $invoice = SalesOrderInvoice::findOrFail($invoice_id);
+        $payment_methods = PaymentMethod::lists('name', 'id');
+        return view('sales_order.create_payment')
+            ->with('payment_methods', $payment_methods)
+            ->with('invoice', $invoice);
+    }
+
+    public function storeInvoicePayment(StoreSalesInvoicePaymentRequest $request)
+    {
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
+        //get current paid_price of the invoice
+        $current_paid_price = $sales_order_invoice->paid_price;
+        $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+        //build new paid_price to be updated
+        $new_paid_price = $current_paid_price+$amount;
+        
+        $sales_order_id = $sales_order_invoice->sales_order->id;
+       
+        $sales_invoice_payment = new SalesInvoicePayment;
+        $sales_invoice_payment->sales_order_invoice_id = $request->sales_order_invoice_id;
+        $sales_invoice_payment->payment_method_id = $request->payment_method_id;
+        $sales_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+        $sales_invoice_payment->receiver = \Auth::user()->id;
+        $save = $sales_invoice_payment->save();
+        if($save){
+            //update invoice's paid_price
+            $sales_order_invoice->paid_price = $new_paid_price;
+            $update_paid_price = $sales_order_invoice->save();
+
+            return redirect('sales-order/'.$sales_order_id)
+            ->with('successMessage', 'Payment has been added');
+        }
+        else{
+            return "Failed to save invoice payment, contact the developer";
+        }
+        
+        
     }
 }

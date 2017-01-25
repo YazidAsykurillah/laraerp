@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\SalesOrder;
 use App\User;
+use App\SalesInvoicePayment;
 
 class SalesOrderInvoice extends Model
 {
@@ -21,5 +22,10 @@ class SalesOrderInvoice extends Model
     public function sales_order()
     {
     	return $this->belongsTo('App\SalesOrder');
+    }
+
+    public function sales_invoice_payment()
+    {
+        return $this->hasMany('App\SalesInvoicePayment', 'sales_order_invoice_id');
     }
 }

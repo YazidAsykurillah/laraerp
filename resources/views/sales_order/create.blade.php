@@ -58,7 +58,7 @@
     <div class="col-md-8">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">customer and Notes</h3>
+          <h3 class="box-title">Customer and Notes</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           
