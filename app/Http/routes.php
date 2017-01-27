@@ -21,6 +21,7 @@ Route::post('deleteCategory', 'CategoryController@destroy');
 Route::resource('category', 'CategoryController');
 
 //Product
+Route::post('check_product_availability', 'ProductController@check_product_availability');
 Route::post('deleteProduct', 'ProductController@destroy');
 Route::resource('product', 'ProductController');
 
@@ -74,6 +75,8 @@ Route::resource('customer', 'CustomerController');
 //Sales Order
 	//Save
 	Route::post('storeSalesOrder', 'SalesOrderController@store');
+	//Update sales order status
+	Route::post('sales-order/updateStatus', 'SalesOrderController@updateStatus');
 	//Update
 	Route::put('UpdateSalesOrder', 'SalesOrderController@update');
 	//delete
@@ -81,6 +84,7 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
+	Route::post('completeSalesInvoice', 'SalesOrderInvoiceController@completeSalesInvoice');
 	Route::post('deleteSalesOrderInvoice', 'SalesOrderInvoiceController@destroy');
 	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');
 	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');

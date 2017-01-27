@@ -74,9 +74,9 @@
                   </div>
                 @endif
                 @if(Session::has('errorMessage'))
-                  <div class="alert alert-warning alert-dismissible" role="alert" id="alert-warning">
+                  <div class="alert alert-error alert-dismissible" role="alert" id="alert-error">
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <strong>Warning...!</strong> <span id="warning-info"> {{ Session::get('errorMessage') }}</span>
+                      <strong>Error...!</strong> <span id="error-info"> {{ Session::get('errorMessage') }}</span>
                   </div>
                 @endif
               </div>

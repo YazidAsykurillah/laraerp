@@ -29,7 +29,7 @@
       <a data-toggle="tab" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payment</a>
+      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
       </li>
     <li>
       <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
@@ -108,19 +108,22 @@
               <div class="row">
                 <div class="col-md-3">Status</div>
                 <div class="col-md-1">:</div>
-                <div class="col-md-8">
+                <div class="col-md-3">
                   {{ strtoupper($sales_order->status) }}
-                  <br/>
-                  @if($sales_order->status == 'posted')
-                    <button id="btn-send" class="btn btn-xs btn-warning" data-id="{{ $sales_order->id }}" data-text="{{ $sales_order->code }}" title="Click to send this Sales Order">
-                      <i class="fa fa-sign-in"></i>&nbsp;Send
-                    </button>
-                  @endif
-                  @if($sales_order->status == 'accepted')
-                    <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $sales_order->id }}" data-text="{{ $sales_order->code }}" title="Click to complete this Sales Order">
-                      <i class="fa fa-sign-in"></i>&nbsp;Complete
-                    </button>
-                  @endif
+                </div>
+                <div class="col-md-5">
+                  {!! Form::open(['url'=>'sales-order/updateStatus','role'=>'form','class'=>'form-inline','id'=>'form-update-sales-order-status', 'method'=>'POST']) !!}
+                    <select name="status" id="status">
+                      <option value="posted" <?php echo $sales_order->status == 'posted' ? 'selected':'' ;?>>Posted</option>
+                      <option value="processing" <?php echo $sales_order->status == 'processing' ? 'selected':'' ;?>>Processing</option>
+                      <option value="delivering" <?php echo $sales_order->status == 'delivering' ? 'selected':'' ;?>>Delivering</option>
+                      <option value="cancelled" <?php echo $sales_order->status == 'cancelled' ? 'selected':'' ;?>>Cancelled</option>
+                      <option value="completed" <?php echo $sales_order->status == 'completed' ? 'selected':'' ;?>>Completed</option>
+                    </select>
+                    <input type="hidden" name="sales_order_id" value="{{ $sales_order->id}}" />
+                    <button type="submit" class="btn btn-info btn-xs">Update Status</button>
+                  {!! Form::close() !!}
+                
                 </div>
               </div>
               <br/>
@@ -162,7 +165,7 @@
                   <table class="table">
                     <tr>
                       <td>Invoice Code</td>
-                      <td></td>
+                      <td>:</td>
                       <td>
                         <a href="{{ url('sales-order-invoice/'.$sales_order->sales_order_invoice->id.'') }}" title="Click to see the detail">
                           {{ $sales_order->sales_order_invoice->code }}
@@ -171,29 +174,37 @@
                     </tr>
                     <tr>
                       <td>Bill Price</td>
-                      <td></td>
+                      <td>:</td>
                       <td>{{ number_format($sales_order->sales_order_invoice->bill_price) }}</td>
                     </tr>
                     <tr>
                       <td>Paid Price</td>
-                      <td></td>
+                      <td>:</td>
                       <td>{{ number_format($sales_order->sales_order_invoice->paid_price) }}</td>
                     </tr>
-                    
                     <tr>
                       <td>Created Date</td>
-                      <td></td>
+                      <td>:</td>
                       <td>{{ $sales_order->sales_order_invoice->created_at }}</td>
                     </tr>
                     <tr>
                       <td>Due Date</td>
-                      <td></td>
+                      <td>:</td>
                       <td>{{ $sales_order->sales_order_invoice->due_date }}</td>
                     </tr>
                     <tr>
                       <td>Status</td>
-                      <td></td>
-                      <td>{{ ucwords($sales_order->sales_order_invoice->status) }}</td>
+                      <td>:</td>
+                      <td>
+                        {{ strtoupper($sales_order->sales_order_invoice->status) }}
+                        @if($sales_order->sales_order_invoice->status == 'uncompleted')
+                          <p>
+                            <button id="btn-complete-invoice" class="btn btn-xs btn-success" title="Click to complete this invoice" data-id="{{ $sales_order->sales_order_invoice->id }}">
+                              Complete
+                            </button>
+                          </p>
+                        @endif
+                      </td>
                     </tr>
                   </table>
                 </div>
@@ -241,14 +252,13 @@
                         <?php  $payment_row = 0; ?>
                         @foreach($sales_order->sales_order_invoice->sales_invoice_payment as $payment)
                         <tr>
-                          <td> {{ $payment_row +=1 }}</td>
+                          <td>{{ $payment_row +=1 }}</td>
                           <td>{{ $payment->created_at }}</td>
                           <td>{{ $payment->payment_method_id }}</td>
                           <td>{{ number_format($payment->amount) }}</td>
                         </tr>
                         @endforeach
                       @endif
-                    @else
                     @endif
                   </tbody>
                 </table>
@@ -288,7 +298,47 @@
     <!-- ENDSection Return -->
   </div>
 
+
+
+  <!--Modal Complete invoice-->
+  <div class="modal fade" id="modal-complete-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-complete-invoiceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completeSalesInvoice', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-complete-invoiceLabel">Complete Invoice confirmation</h4>
+        </div>
+        <div class="modal-body">
+          The invoice's status will be changed to completed&nbsp;<b id="sales-order-name-to-delete"></b>
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="sales_order_invoice_id" name="sales_order_invoice_id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete invoice-->
 @endsection
+
+
+@section('additional_scripts')
+  <script type="text/javascript">
+    $('#btn-complete-invoice').on('click', function(){
+      $('#sales_order_invoice_id').val($(this).attr('data-id'));
+      $('#modal-complete-invoice').modal('show');
+    });
+  </script>
+@endsection
+
+
 
 
 

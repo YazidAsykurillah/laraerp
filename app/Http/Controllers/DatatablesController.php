@@ -96,25 +96,6 @@ class DatatablesController extends Controller
                 return 'Undefined unit';
                 
             })
-            ->editColumn('stock', function($products){
-                $minimum_stock = $products->minimum_stock;
-                $stock_html = '';
-                if($products->stock == '0'){
-                    $stock_html = '<text class="text text-danger">0</text>';
-                }
-                else if($products->stock == $minimum_stock){
-                    $stock_html = '<text class="text text-warning">'.$products->stock.'</text>';
-                }
-                else if($products->stock < $minimum_stock){
-                    $stock_html = '<text class="text text-warning">'.$products->stock.'</text>';
-                }
-                else{
-                    $stock_html = '<text class="text text-info">'.$products->stock.'</text>';
-                }
-
-                return $stock_html;
-                
-            })
             ->addColumn('actions', function($products){
                     $actions_html  ='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';

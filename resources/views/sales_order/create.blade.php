@@ -126,13 +126,17 @@
                   <th style="width:5%;">#</th>
                   <th style="width:10%;">Code</th>
                   <th>Product Name</th>
+                  <th>Stock</th>
+                  <th>Minimum Stock</th>
                 </tr>
               </thead>
               <thead id="searchid">
                 <tr>
                   <th style="width:5%;"></th>
                   <th>Code</th>
-                  <th>Product Name</th> 
+                  <th>Product Name</th>
+                  <th>Stock</th>
+                  <th>Minimum Stock</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,6 +181,8 @@
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
+        { data: 'stock', name: 'stock' },
+        { data: 'minimum_stock', name: 'minimum_stock' },
         
       ],
       rowCallback: function(row, data){
@@ -190,29 +196,39 @@
     tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
-        var index = $.inArray(id, selected);
-        if ( index === -1 ) {
-            selected.push(id);
-            $('#table-selected-products').append(
-              '<tr id="tr_product_'+id+'">'+
-                '<td>'+
-                  '<input type="hidden" name="product_id[]" value="'+id+'" />'+
-                  tableProduct.row(this).data().name+
-                '</td>'+
-                '<td>'+
-                  '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-                '</td>'+
-                '<td>'+
-                  tableProduct.row(this).data().unit_id+
-                '</td>'+
-              '</tr>'
-            );
-        } else {
-            selected.splice( index, 1 );
-            $('#tr_product_'+id).remove();
+        var product_name = tableProduct.row(this).data().name;
+        var stock = tableProduct.row(this).data().stock;
+        var minimum_stock = tableProduct.row(this).data().minimum_stock;
+        if(stock < minimum_stock){ //product out of the stock, prevent this product to be added on the selected product
+          alertify.error(product_name+" is out of the stock");
+          return false;
         }
- 
-        $(this).toggleClass('selected');
+        else{
+          var index = $.inArray(id, selected);
+          if ( index === -1 ) {
+              selected.push(id);
+              $('#table-selected-products').append(
+                '<tr id="tr_product_'+id+'">'+
+                  '<td>'+
+                    '<input type="hidden" name="product_id[]" value="'+id+'" />'+
+                    tableProduct.row(this).data().name+
+                  '</td>'+
+                  '<td>'+
+                    '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                  '</td>'+
+                  '<td>'+
+                    tableProduct.row(this).data().unit_id+
+                  '</td>'+
+                '</tr>'
+              );
+          } else {
+              selected.splice( index, 1 );
+              $('#tr_product_'+id).remove();
+          }
+   
+          $(this).toggleClass('selected');
+        }
+        
         
     } );
 

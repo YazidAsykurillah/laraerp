@@ -193,7 +193,27 @@ class SalesOrderInvoiceController extends Controller
         else{
             return "Failed to save invoice payment, contact the developer";
         }
-        
-        
     }
+
+    //change status invoice to "Completed"
+    public function completeSalesInvoice(Request $request)
+    {   
+        $invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
+        //check the bill and the paid price
+        $bill_price = $invoice->bill_price;
+        $paid_price = $invoice->paid_price;
+
+        if($paid_price < $bill_price)
+        {
+            return redirect()->back()
+                ->with('errorMessage', "Invoice can not be completed, Paid price is less than the Bill price");
+        }
+        else{
+            $invoice->status = 'completed';
+            $invoice->save();
+             return redirect()->back()
+             ->with('successMessage', "Invoice has been completed");
+        }
+    }
+    
 }

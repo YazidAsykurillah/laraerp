@@ -18,7 +18,7 @@ class CreateSalesOrdersTable extends Migration
             $table->integer('creator');
             $table->integer('customer_id');
             $table->text('notes')->nullable();
-            $table->enum('status',['posted', 'sent', 'cancelled', 'completed'])->default('posted');
+            $table->enum('status',['posted','processing','delivering','cancelled','completed'])->default('posted');
             $table->timestamps();
         });
     }

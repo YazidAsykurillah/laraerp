@@ -28,9 +28,12 @@
       <div class="box-header with-border">
         <h3 class="box-title">{{ $invoice->code }}<small></small></h3>
         <div class="pull-right">
+          <!--Show button create payment only when invoice status is NOT completed yet-->
+          @if($invoice->status != "completed")
           <a href="{{ url('sales-order-invoice/'.$invoice->id.'/payment/create') }}" class="btn btn-default btn-xs" title="Create payment for this invoice">
             <i class='fa fa-money'></i>&nbsp;Create Payment
           </a>
+          @endif
         </div>
       </div><!-- /.box-header -->
       <div class="box-body">
@@ -94,7 +97,7 @@
           </tr>
           <tr>
             <td style="width:30%;"><strong>Status</strong></td>
-            <td>{{ ucwords($invoice->status) }}</td>
+            <td>{{ strtoupper($invoice->status) }}</td>
           </tr>
           
           <tr>

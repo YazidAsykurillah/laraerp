@@ -164,4 +164,50 @@ class SalesOrderController extends Controller
         return redirect('sales-order')
             ->with('successMessage', "Sales order has been deleted");
     }
+
+    protected function update_product_stock_from_process($sales_order)
+    {
+        if(count($sales_order->products)){
+            foreach($sales_order->products as $product){
+                //echo $product->id;
+                $current_stock = \DB::table('products')->where('id', $product->id)->value('stock');
+                $stock_to_sale = $product->pivot->quantity;
+                $new_stock = $current_stock-$stock_to_sale;
+                $update_product_stock = \DB::table('products')->where('id', $product->id)->update(['stock'=>$new_stock]);
+            }
+        }
+        return TRUE;
+    }
+
+    protected function update_product_stock_from_cancelled($sales_order)
+    {
+        if(count($sales_order->products)){
+            foreach($sales_order->products as $product){
+                //echo $product->id;
+                $current_stock = \DB::table('products')->where('id', $product->id)->value('stock');
+                $stock_to_sale = $product->pivot->quantity;
+                $new_stock = $current_stock+$stock_to_sale;
+                $update_product_stock = \DB::table('products')->where('id', $product->id)->update(['stock'=>$new_stock]);
+            }
+        }
+        return TRUE;
+    }
+    
+    public function updateStatus(Request $request)
+    {
+        $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        $sales_order->status = $request->status;
+        $updateStatus = $sales_order->save();
+        switch ($request->status) {
+            case 'processing':
+                $this->update_product_stock_from_process($sales_order);
+                break;
+            case 'cancelled':
+                $this->update_product_stock_from_cancelled($sales_order);
+            default:
+                # code...
+                break;
+        }
+        return back()->with('successMessage', "Status has been changed");
+    }
 }
