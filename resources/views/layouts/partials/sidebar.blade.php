@@ -7,7 +7,7 @@
     <div class="user-panel">
       <div class="pull-left image">
         {!! Html::image('img/admin-lte/user2-160x160.jpg', 'User Image', ['class'=>'img-circle']) !!}
-        
+
       </div>
       <div class="pull-left info">
         <p>{{ Auth::user()->name }}</p>
@@ -89,6 +89,7 @@
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
           <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
           <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Terms</a></li>
+          <li><a href="{{ url('driver') }}"><i class="fa fa-circle-o"></i> Drivers</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

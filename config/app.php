@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -156,6 +156,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
 
         //Laravel Collective
         Collective\Html\HtmlServiceProvider::class,
@@ -227,7 +228,7 @@ return [
 
         //DOMPDF
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'Helper' => App\Helpers\Helper::class,
     ],
 
 ];

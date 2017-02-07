@@ -44,14 +44,14 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $customer = new Customer;
-        $customer->name = $request->name;
-        $customer->phone_number = $request->phone_number;
-        $customer->address = $request->address;
-        $customer->invoice_term_id = $request->invoice_term_id;
+        $customer->name = preg_replace('/\s+/',' ',$request->name);
+        $customer->phone_number = preg_replace('/\s+/','',$request->phone_number);
+        $customer->address = preg_replace('/\s+/',' ',$request->address);
+        $customer->invoice_term_id = preg_replace('/\s+/',' ',$request->invoice_term_id);
         $customer->save();
         //now update customer's code
         $customer_id = $customer->id;
-        $customer_code = \DB::table('customers')->where('id',$customer_id)->update(['code'=>'CS-'.$customer_id]);
+        $customer_code = \DB::table('customers')->where('id',$customer_id)->update(['code'=>'CST-'.$customer_id]);
         return redirect('customer')
             ->with('successMessage', "Customer has been added");
 
@@ -76,7 +76,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {
         $invoice_terms = InvoiceTerm::lists('name', 'id');
         $customer = Customer::findOrFail($id);
         return view('customer.edit')
@@ -94,10 +94,10 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, $id)
     {
         $customer = Customer::findOrFail($id);
-        $customer->name = $request->name;
-        $customer->phone_number = $request->phone_number;
-        $customer->address = $request->address;
-        $customer->invoice_term_id = $request->invoice_term_id;
+        $customer->name = preg_replace('/\s+/',' ',$request->name);
+        $customer->phone_number = preg_replace('/\s+/','',$request->phone_number);
+        $customer->address = preg_replace('/\s+/',' ',$request->address);
+        $customer->invoice_term_id = preg_replace('/\s+/',' ',$request->invoice_term_id);
         $customer->save();
         return redirect('customer/'.$id.'/edit')
             ->with('successMessage', 'Customer has been updated');

@@ -20,6 +20,13 @@ Route::get('/home', 'HomeController@index');
 Route::post('deleteCategory', 'CategoryController@destroy');
 Route::resource('category', 'CategoryController');
 
+//Driver
+Route::get('/func',function(){
+    return Helper::uc_words("imsak haqiqy");
+});
+Route::post('deleteDriver', 'DriverController@destroy');
+Route::resource('driver','DriverController');
+
 //Product
 Route::post('check_product_availability', 'ProductController@check_product_availability');
 Route::post('deleteProduct', 'ProductController@destroy');
@@ -39,7 +46,7 @@ Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
 //Purchase orders
-	
+
 	//complete purchase order
 	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
 	//accept purchase order
@@ -52,7 +59,7 @@ Route::resource('customer', 'CustomerController');
 	Route::post('storePurchaseOrder', 'PurchaseOrderController@store');
 	//Update
 	Route::put('UpdatePurchaseOrder', 'PurchaseOrderController@update');
-	Route::resource('purchase-order', 'PurchaseOrderController');
+	Route::resource('purchase-order', 'PurchaseOrderController'); //
 
 //Purchase Order Invoice
 	Route::post('payPurchaseOrderInvoice', 'PurchaseOrderInvoiceController@payInvoice');
@@ -94,7 +101,7 @@ Route::resource('customer', 'CustomerController');
 
 
 //Invoiceterms
-	
+
 	Route::resource('invoice-term', 'InvoiceTermController');
 
 Route::controller('datatables', 'DatatablesController',[
@@ -107,7 +114,8 @@ Route::controller('datatables', 'DatatablesController',[
 	'getSalesOrderInvoices'=>'datatables.getSalesOrderInvoices',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 	'getCustomers'=>'datatables.getCustomers',
-	'getInvoiceTerms'=>'datatables.getInvoiceTerms'
-	
-	
+	'getInvoiceTerms'=>'datatables.getInvoiceTerms',
+    'getDrivers'=>'datatables.getDrivers'
+
+
 ]);
