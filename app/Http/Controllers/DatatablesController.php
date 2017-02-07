@@ -372,9 +372,9 @@ class DatatablesController extends Controller
                 return $sales_orders->created_by->name;
             })
             ->editColumn('status', function($sales_orders){
-<<<<<<< HEAD
+
                 return strtoupper($sales_orders->status);
-=======
+
                 $status_label = '';
 
                 if($sales_orders->status == 'posted'){
@@ -390,7 +390,7 @@ class DatatablesController extends Controller
                 }
 
                 return $status_label;
->>>>>>> 313f04e02f7a6e28076ea7dc4992de4691dc15b4
+
             })
             ->addColumn('actions', function($sales_orders){
                 $actions_html ='<a href="'.url('sales-order/'.$sales_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
