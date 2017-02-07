@@ -55,16 +55,16 @@
                 </tr>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -111,12 +111,13 @@
         { data: 'invoice_term_id', name: 'invoice_term_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
+      "order" : [[1, "asc"]]
 
 
     });
 
     // Delete button handler
-    tableCustomer.on('click', '.btn-delete-customer', function (e) { 
+    tableCustomer.on('click', '.btn-delete-customer', function (e) {
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#customer_id').val(id);
@@ -129,13 +130,13 @@
           if ($(this).index() != 0 && $(this).index() !=5 && $(this).index()!=6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tableCustomer.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
   </script>
   @endsection

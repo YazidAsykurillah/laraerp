@@ -18,6 +18,7 @@ use App\PurchaseReturn;
 use App\SalesOrder;
 use App\SalesOrderInvoice;
 use App\InvoiceTerm;
+use App\Driver;
 
 class DatatablesController extends Controller
 {
@@ -91,10 +92,10 @@ class DatatablesController extends Controller
             })
             ->editColumn('unit_id', function($products){
                 if($products->unit_id != NULL){
-                    return $products->unit->name;    
+                    return $products->unit->name;
                 }
                 return 'Undefined unit';
-                
+
             })
             ->addColumn('actions', function($products){
                     $actions_html  ='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
@@ -103,7 +104,7 @@ class DatatablesController extends Controller
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product" data-id="'.$products->id.'" data-text="'.$products->name.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
-                    
+
                     return $actions_html;
             });
         if ($keyword = $request->get('search')['value']) {
@@ -111,7 +112,7 @@ class DatatablesController extends Controller
         }
 
         return $datatables->make(true);
-    
+
     }
     //ENDFunction to get product list
 
@@ -162,7 +163,6 @@ class DatatablesController extends Controller
             'primary_email',
             'primary_phone_number',
         ]);
-
         $data_suppliers = Datatables::of($suppliers)
             ->addColumn('actions', function($suppliers){
                     $actions_html ='<a href="'.url('supplier/'.$suppliers->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
@@ -181,6 +181,7 @@ class DatatablesController extends Controller
         if ($keyword = $request->get('search')['value']) {
             $data_suppliers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
+
 
         return $data_suppliers->make(true);
 
@@ -207,14 +208,14 @@ class DatatablesController extends Controller
             })
             ->editColumn('status', function($purchase_orders){
                 $status_label = '';
-                
+
                 if($purchase_orders->status == 'posted'){
                     $status_label = '<p>POSTED</p>';
-                    
+
                 }
                 else if($purchase_orders->status =='accepted'){
                     $status_label = '<p>ACCEPTED</p>';
-                    
+
                 }
                 else{
                     $status_label = '<p>COMPLETED</p>';
@@ -235,14 +236,14 @@ class DatatablesController extends Controller
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
-                
+
                 return $actions_html;
             });
 
         /*if ($keyword = $request->get('search')['value']) {
             $data_purchase_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }*/
-        
+
         return $data_purchase_orders->make(true);
 
     }
@@ -287,13 +288,13 @@ class DatatablesController extends Controller
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
-                
+
                 return $actions_html;
             });
         return $data_purchase_order_invoices->make(true);
     }
     //ENDFunction get Purchase Order Invoice
-    
+
 
     //Function get Purchase Returns
     public function getPurchaseReturns(Request $request)
@@ -346,7 +347,7 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }
-    
+
                 return $actions_html;
             });
         return $data_purchase_returns->make(true);
@@ -372,14 +373,14 @@ class DatatablesController extends Controller
             })
             ->editColumn('status', function($sales_orders){
                 $status_label = '';
-                
+
                 if($sales_orders->status == 'posted'){
                     $status_label = '<p>POSTED</p>';
-                    
+
                 }
                 else if($sales_orders->status =='accepted'){
                     $status_label = '<p>ACCEPTED</p>';
-                    
+
                 }
                 else{
                     $status_label = '<p>COMPLETED</p>';
@@ -400,14 +401,14 @@ class DatatablesController extends Controller
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
-                
+
                 return $actions_html;
             });
 
         /*if ($keyword = $request->get('search')['value']) {
             $data_sales_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }*/
-        
+
         return $data_sales_orders->make(true);
 
     }
@@ -451,7 +452,7 @@ class DatatablesController extends Controller
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
-                
+
                 return $actions_html;
             });
         return $data_sales_order_invoices->make(true);
@@ -491,6 +492,43 @@ class DatatablesController extends Controller
         return $data_invoice_terms->make(true);
     }
 
+    //Function to get driver list
+    public function getDrivers(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        //\DB::table('suppliers')->orderBy('code','asc')->get();
+        $drivers = Driver::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'contact_number',
+        ]);
 
-    
+        $data_drivers = Datatables::of($drivers)
+            ->addColumn('actions', function($drivers){
+                    $actions_html ='<a href="'.url('driver/'.$drivers->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('driver/'.$drivers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$drivers->id.'" data-text="'.$drivers->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_drivers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_drivers->make(true);
+
+    }
+    //ENDFunction to get supplier list
+
+
+
+
 }
