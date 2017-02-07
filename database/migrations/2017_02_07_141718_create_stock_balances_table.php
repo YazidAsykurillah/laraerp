@@ -15,8 +15,6 @@ class CreateStockBalancesTable extends Migration
         Schema::create('stock_balances', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code');
-            $table->integer('stock_system');
-            $table->integer('stock_real');
             $table->integer('created_by');
             $table->timestamps();
         });
