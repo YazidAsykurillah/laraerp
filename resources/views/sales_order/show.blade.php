@@ -197,13 +197,6 @@
                       <td>:</td>
                       <td>
                         {{ strtoupper($sales_order->sales_order_invoice->status) }}
-                        @if($sales_order->sales_order_invoice->status == 'uncompleted')
-                          <p>
-                            <button id="btn-complete-invoice" class="btn btn-xs btn-success" title="Click to complete this invoice" data-id="{{ $sales_order->sales_order_invoice->id }}">
-                              Complete
-                            </button>
-                          </p>
-                        @endif
                       </td>
                     </tr>
                   </table>
@@ -254,7 +247,7 @@
                         <tr>
                           <td>{{ $payment_row +=1 }}</td>
                           <td>{{ $payment->created_at }}</td>
-                          <td>{{ $payment->payment_method_id }}</td>
+                          <td>{{ $payment->payment_method->name }}</td>
                           <td>{{ number_format($payment->amount) }}</td>
                         </tr>
                         @endforeach
@@ -300,43 +293,8 @@
 
 
 
-  <!--Modal Complete invoice-->
-  <div class="modal fade" id="modal-complete-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-complete-invoiceLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-      {!! Form::open(['url'=>'completeSalesInvoice', 'method'=>'post']) !!}
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-complete-invoiceLabel">Complete Invoice confirmation</h4>
-        </div>
-        <div class="modal-body">
-          The invoice's status will be changed to completed&nbsp;<b id="sales-order-name-to-delete"></b>
-          <br/>
-          <p class="text text-danger">
-            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
-          </p>
-          <input type="hidden" id="sales_order_invoice_id" name="sales_order_invoice_id">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-success">Update</button>
-        </div>
-      {!! Form::close() !!}
-      </div>
-    </div>
-  </div>
-<!--ENDModal Complete invoice-->
 @endsection
 
-
-@section('additional_scripts')
-  <script type="text/javascript">
-    $('#btn-complete-invoice').on('click', function(){
-      $('#sales_order_invoice_id').val($(this).attr('data-id'));
-      $('#modal-complete-invoice').modal('show');
-    });
-  </script>
-@endsection
 
 
 
