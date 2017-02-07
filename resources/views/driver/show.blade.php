@@ -58,7 +58,7 @@
           <div class="table-responsive">
             <table class="table table-hover">
               <tr>
-                <td style="width:15%;">Contact Number</td>
+                <td style="width:15%;">Phone Number</td>
                 <td>:</td>
                 <td>{{ $driver->contact_number }}</td>
               </tr>

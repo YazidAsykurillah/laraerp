@@ -47,11 +47,11 @@ class DriverController extends Controller
     {
         //
         $driver = new Driver;
-        $driver->code = preg_replace('/\s+/','',$request->code);
-        $driver->name = $request->name;
-        preg_replace('/\s+/',' ',$driver->name);
-        echo ucwords($driver->name);
-        $driver->contact_number = preg_replace('/\s+/',' ',$request->primary_phone_number);
+        $driver->code = $request->code;
+        $driver->name = Helper::capital($request->name);
+        //preg_replace('/\s+/',' ',$driver->name);
+        //echo ucwords($driver->name);
+        $driver->contact_number = $request->primary_phone_number;
         $driver->save();
         return redirect('driver');
     }
@@ -96,8 +96,9 @@ class DriverController extends Controller
         //
         $driver = Driver::findOrFail($id);
         $driver->code = $request->code;
-        //Helper::Ucwords($driver->name);
-        $driver->name = preg_replace('/\s+/',' ',$request->name);
+        $driver->name = Helper::capital($request->name);
+        //Helper::capital($driver->name);
+        //$driver->name = Helper::sortir($driver->name);
         $driver->contact_number = preg_replace('/\s+/','',$request->contact_number);
         $driver->save();
         return redirect('driver')

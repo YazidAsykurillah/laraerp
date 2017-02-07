@@ -28,3 +28,4 @@ class HelperServiceProvider extends ServiceProvider {
         }
    }
 }
+?>
