@@ -6,7 +6,7 @@
 
 @section('page_header')
   <h1>
-    Sales Order 
+    Sales Order Invoice Detail
     <small> Invoice Detail </small>
   </h1>
 @endsection
@@ -97,7 +97,16 @@
           </tr>
           <tr>
             <td style="width:30%;"><strong>Status</strong></td>
-            <td>{{ strtoupper($invoice->status) }}</td>
+            <td>
+              {{ strtoupper($invoice->status) }}
+              @if($invoice->status == 'uncompleted')
+                <p>
+                  <button id="btn-complete-invoice" class="btn btn-xs btn-success" title="Click to complete this invoice" data-id="{{ $invoice->id }}">
+                    Complete
+                  </button>
+                </p>
+              @endif
+            </td>
           </tr>
           
           <tr>
@@ -111,6 +120,40 @@
   </div>
 </div>    
 
+<!--Modal Complete invoice-->
+  <div class="modal fade" id="modal-complete-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-complete-invoiceLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completeSalesInvoice', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-complete-invoiceLabel">Complete Invoice confirmation</h4>
+        </div>
+        <div class="modal-body">
+          The invoice's status will be changed to completed&nbsp;
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="sales_order_invoice_id" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Complete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete invoice-->
+@endsection
+
+@section('additional_scripts')
+  <script type="text/javascript">
+    $('#btn-complete-invoice').on('click', function(){
+      $('#modal-complete-invoice').modal('show');
+    });
+  </script>
 @endsection
 
 

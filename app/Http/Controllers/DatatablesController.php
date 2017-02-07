@@ -372,6 +372,9 @@ class DatatablesController extends Controller
                 return $sales_orders->created_by->name;
             })
             ->editColumn('status', function($sales_orders){
+<<<<<<< HEAD
+                return strtoupper($sales_orders->status);
+=======
                 $status_label = '';
 
                 if($sales_orders->status == 'posted'){
@@ -387,10 +390,11 @@ class DatatablesController extends Controller
                 }
 
                 return $status_label;
+>>>>>>> 313f04e02f7a6e28076ea7dc4992de4691dc15b4
             })
             ->addColumn('actions', function($sales_orders){
-                $actions_html ='<a href="'.url('sales-order/'.$sales_orders->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('sales-order/'.$sales_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only show edit button link if the status is posted
                 if($sales_orders->status =='posted'){
@@ -439,12 +443,11 @@ class DatatablesController extends Controller
                 return $sales_order_invoices->creator->name;
             })
             ->editColumn('status', function($sales_order_invoices){
-
                 return strtoupper($sales_order_invoices->status);
             })
             ->addColumn('actions', function($sales_order_invoices){
-                $actions_html ='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
                 $actions_html .='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                 $actions_html .=    '<i class="fa fa-edit"></i>';

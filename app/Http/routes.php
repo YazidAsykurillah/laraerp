@@ -5,7 +5,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//just an API testing calls
+//API testing calls
 Route::post('wp_post', 'PurchaseOrderController@wp_post');
 Route::any('/show_product', function(){
 	$product = \DB::table('products')->get();

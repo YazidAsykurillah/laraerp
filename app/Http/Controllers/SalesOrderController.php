@@ -104,12 +104,19 @@ class SalesOrderController extends Controller
     public function edit($id)
     {
         $sales_order = SalesOrder::findOrFail($id);
-        $customer_options = Customer::lists('name', 'id');
-        $total_price = $this->count_total_price($sales_order);
-        return view('sales_order.edit')
-            ->with('sales_order', $sales_order)
-            ->with('total_price', $total_price)
-            ->with('customer_options', $customer_options);
+        if($sales_order->status == 'posted'){
+            $customer_options = Customer::lists('name', 'id');
+            $total_price = $this->count_total_price($sales_order);
+            return view('sales_order.edit')
+                ->with('sales_order', $sales_order)
+                ->with('total_price', $total_price)
+                ->with('customer_options', $customer_options);
+        }
+        else{
+
+            return response('404');
+        }
+        
     }
 
     /**
