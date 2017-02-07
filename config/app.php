@@ -156,6 +156,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //load helper
         App\Providers\HelperServiceProvider::class,
 
         //Laravel Collective
@@ -228,6 +229,7 @@ return [
 
         //DOMPDF
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        //helperInput
         'Helper' => App\Helpers\Helper::class,
     ],
 
