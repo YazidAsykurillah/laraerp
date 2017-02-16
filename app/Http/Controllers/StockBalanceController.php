@@ -31,7 +31,6 @@ class StockBalanceController extends Controller
     {
         $data = Product::get();
         return view('stock_balance.create')->with('dataList',$data);
-
     }
 
     /**
