@@ -176,18 +176,23 @@ class SalesOrderController extends Controller
     public function updateStatus(Request $request)
     {
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
-        $sales_order->status = $request->status;
-        $updateStatus = $sales_order->save();
-        switch ($request->status) {
-            case 'processing':
-                $this->update_product_stock_from_process($sales_order);
-                break;
-            case 'cancelled':
-                $this->update_product_stock_from_cancelled($sales_order);
-            default:
-                # code...
-                break;
+        $previous_status = $sales_order->status;
+        //only update the product inventory's stock if the required status is different with previous status
+        if($previous_status != $request->status){
+            $sales_order->status = $request->status;
+            $updateStatus = $sales_order->save();
+            switch ($request->status) {
+                case 'processing':
+                    $this->update_product_stock_from_process($sales_order);
+                    break;
+                case 'cancelled':
+                    $this->update_product_stock_from_cancelled($sales_order);
+                default:
+                    # code...
+                    break;
+            }
         }
+        
         return back()->with('successMessage', "Status has been changed");
     }
 

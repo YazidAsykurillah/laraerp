@@ -106,4 +106,5 @@ class CategoryController extends Controller
         return redirect('category')
             ->with('successMessage', 'Category has been deleted');
     }
+    
 }

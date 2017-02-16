@@ -8,10 +8,15 @@ use App\Http\Requests;
 //form request
 use App\Http\Requests\StorePurchaseOrderInvoiceRequest;
 use App\Http\Requests\UpdatePurchaseOrderInvoiceRequest;
+use App\Http\Requests\StorePurchasePaymentCash;
+use App\Http\Requests\StorePurchasePaymentTransfer;
 
 
 use App\PurchaseOrderInvoice;
 use App\PurchaseOrder;
+use App\PaymentMethod;
+use App\PurchaseInvoicePayment;
+use App\Bank;
 
 
 class PurchaseOrderInvoiceController extends Controller
@@ -38,9 +43,11 @@ class PurchaseOrderInvoiceController extends Controller
     {
         
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+        $payment_methods = PaymentMethod::lists('name', 'id');
         return view('purchase_order.create_invoice')
             ->with('total_price', $this->count_total_price($purchase_order))
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('payment_methods', $payment_methods);
     }
 
     public function store(StorePurchaseOrderInvoiceRequest $request)
@@ -51,7 +58,8 @@ class PurchaseOrderInvoiceController extends Controller
                 'code'=>$request->code,
                 'purchase_order_id' =>$request->purchase_order_id,
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
-                'paid_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->paid_price)),
+                'payment_method_id'=>$request->payment_method_id,
+                // 'paid_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->paid_price)),
                 'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id
             ];
@@ -108,9 +116,11 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
         $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
+        $payment_methods = PaymentMethod::lists('name', 'id');
         return view('purchase_order.edit_invoice')
             ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('payment_methods', $payment_methods);
     }
 
     /**
@@ -125,8 +135,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
         $purchase_order_invoice->code = $request->code;
         $purchase_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
-        $purchase_order_invoice->paid_price = floatval(preg_replace('#[^0-9.]#', '', $request->paid_price));
-        
+        $purchase_order_invoice->payment_method_id = $request->payment_method_id;
         $purchase_order_invoice->notes = $request->notes;
         $purchase_order_invoice->save();
 
@@ -160,12 +169,86 @@ class PurchaseOrderInvoiceController extends Controller
         ->with('successMessage', 'Invoice has been deleted');
     }
 
-    public function payInvoice(Request $request)
+    public function completePurchaseInvoice(Request $request)
     {
-        $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
-        $purch_order_inv->status = 'paid';
-        $purch_order_inv->save();
-        return redirect('purchase-order-invoice/'.$request->purchase_order_invoice_id)
-            ->with('successMessage', "Purchase order invoice $purch_order_inv->code has just been paid");
+        $invoice = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
+        //check the bill and the paid price
+        $bill_price = $invoice->bill_price;
+        $paid_price = $invoice->paid_price;
+
+        if($paid_price < $bill_price)
+        {
+            return redirect()->back()
+                ->with('errorMessage', "Invoice can not be completed, Paid price is less than the Bill price");
+        }
+        else{
+            $invoice->status = 'completed';
+            $invoice->save();
+             return redirect()->back()
+             ->with('successMessage', "Invoice has been completed");
+        }
+        
+    }
+
+
+    public function createPayment(Request $request)
+    {
+        $invoice_id = $request->invoice_id;
+        $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
+        $payment_methods = PaymentMethod::lists('name','id');
+        $banks = Bank::lists('name', 'id');
+        if($invoice->payment_method_id == 1){
+            return view('purchase_order.create_payment_bank_transfer')
+            ->with('banks', $banks)
+            ->with('invoice', $invoice);
+        }
+        elseif($invoice->payment_method_id == 2){
+            return view('purchase_order.create_payment_cash')
+            ->with('invoice', $invoice);
+        }
+        else{
+            return "Custom payment method";
+        }
+        
+    }
+
+    public function storePaymentCash(StorePurchasePaymentCash $request)
+    {
+        $invoice_id = $request->purchase_order_invoice_id;
+        // $payment_method_id = $request->payment_method_id;
+        $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+
+        $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
+        //get current paid_price of the invoice
+        $current_paid_price = $purchase_order_invoice->paid_price;
+        //build new paid_price to be updated
+        $new_paid_price = $current_paid_price+$amount;
+
+        $purchase_order_id = $purchase_order_invoice->purchase_order->id;
+
+        $purchase_invoice_payment = new PurchaseInvoicePayment;
+        $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
+        $purchase_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#', '', $amount));
+        $purchase_invoice_payment->receiver = \Auth::user()->id;
+        $save = $purchase_invoice_payment->save();
+        if($save){
+            //update invoice's paid_price
+            $purchase_order_invoice->paid_price = $new_paid_price;
+            $update_paid_price = $purchase_order_invoice->save();
+
+            return redirect('purchase-order/'.$purchase_order_id)
+            ->with('successMessage', 'Payment has been added');
+        }
+        else{
+            return "Failed to save invoice payment, contact the developer";
+        }
+    }
+
+
+    public function storePaymentTransfer(StorePurchasePaymentTransfer $request)
+    {
+        $invoice_id = $request->purchase_order_invoice_id;
+        $bank_id = $request->bank_id;
+        
     }
 }

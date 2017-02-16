@@ -98,13 +98,14 @@
                 @endif
               </div>
             </div>
-            <div class="form-group{{ $errors->has('paid_price') ? ' has-error' : '' }}">
-              {!! Form::label('paid_price', 'Paid Price', ['class'=>'col-sm-2 control-label']) !!}
+            
+            <div class="form-group{{ $errors->has('payment_method_id') ? ' has-error' : '' }}">
+              {!! Form::label('payment_method_id', 'Payment Method', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                {!! Form::text('paid_price',null,['class'=>'form-control', 'placeholder'=>'Paid price for the invoice', 'id'=>'paid_price']) !!}
-                @if ($errors->has('paid_price'))
+                {{ Form::select('payment_method_id', $payment_methods, null, ['class'=>'form-control', 'placeholder'=>'Select payment method', 'id'=>'payment_method_id']) }}
+                @if ($errors->has('payment_method_id'))
                   <span class="help-block">
-                    <strong>{{ $errors->first('paid_price') }}</strong>
+                    <strong>{{ $errors->first('payment_method_id') }}</strong>
                   </span>
                 @endif
               </div>

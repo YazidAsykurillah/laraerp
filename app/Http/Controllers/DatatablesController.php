@@ -19,10 +19,16 @@ use App\SalesOrder;
 use App\SalesOrderInvoice;
 use App\InvoiceTerm;
 use App\Driver;
+<<<<<<< HEAD
 use App\StockBalance;
+=======
+use App\Bank;
+>>>>>>> f689890a736fffa9dee6a38ec077d971e4545cba
 
 class DatatablesController extends Controller
 {
+
+    
 
     //Function get CUSTOMERS datatable
     public function getCustomers(Request $request)
@@ -221,12 +227,11 @@ class DatatablesController extends Controller
                 else{
                     $status_label = '<p>COMPLETED</p>';
                 }
-
                 return $status_label;
             })
             ->addColumn('actions', function($purchase_orders){
-                $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only show edit button link if the status is posted
                 if($purchase_orders->status =='posted'){
@@ -255,16 +260,13 @@ class DatatablesController extends Controller
     public function getPurchaseOrderInvoices(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $purchase_order_invoices = PurchaseOrderInvoice::with('purchase_order','creator')->select(
+        $purchase_order_invoices = PurchaseOrderInvoice::with('purchase_order','creator', 'payment_method')->select(
             [
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_order_invoices.*',
             ]
         );
         $data_purchase_order_invoices = Datatables::of($purchase_order_invoices)
-            ->editColumn('purchase_order_id', function($purchase_order_invoices){
-                return $purchase_order_invoices->purchase_order->code;
-            })
             ->editColumn('bill_price', function($purchase_order_invoices){
                 return number_format($purchase_order_invoices->bill_price);
             })
@@ -275,17 +277,23 @@ class DatatablesController extends Controller
 
                 return $purchase_order_invoices->creator->name;
             })
+            ->editColumn('payment_method', function($purchase_order_invoices){
+                return $purchase_order_invoices->payment_method->code;
+            })
             ->editColumn('status', function($purchase_order_invoices){
 
                 return strtoupper($purchase_order_invoices->status);
             })
             ->addColumn('actions', function($purchase_order_invoices){
-                $actions_html ='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
-                $actions_html .=    '<i class="fa fa-edit"></i>';
-                $actions_html .='</a>&nbsp;';
+                if($purchase_order_invoices->status != "completed"){
+                    $actions_html .='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';    
+                }
+                
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
@@ -569,6 +577,43 @@ class DatatablesController extends Controller
 
     }
     //ENDFunction to get stock balances list
+
+    //function to get banks datatable
+    public function getBanks(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $banks = Bank::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'account_name',
+            'account_number',
+            'value'
+        ]);
+
+        $data_banks = Datatables::of($banks)
+            ->addColumn('actions', function($banks){
+                    $actions_html ='<a href="'.url('bank/'.$banks->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('bank/'.$banks->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this bank">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-bank" data-id="'.$banks->id.'" data-text="'.$banks->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_banks->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_banks->make(true);
+    }
+
 
 
 

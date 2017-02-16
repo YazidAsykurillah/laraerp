@@ -17,6 +17,11 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//Bank
+Route::post('deleteBank', 'BankController@destroy');
+Route::resource('bank', 'BankController');
+
+//Category
 Route::post('deleteCategory', 'CategoryController@destroy');
 Route::resource('category', 'CategoryController');
 
@@ -51,7 +56,6 @@ Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
 //Purchase orders
-
 	//complete purchase order
 	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
 	//accept purchase order
@@ -67,7 +71,10 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('purchase-order', 'PurchaseOrderController'); //
 
 //Purchase Order Invoice
-	Route::post('payPurchaseOrderInvoice', 'PurchaseOrderInvoiceController@payInvoice');
+	Route::post('storePurchasePaymentTransfer', 'PurchaseOrderInvoiceController@storePaymentTransfer');
+	Route::post('storePurchasePaymentCash', 'PurchaseOrderInvoiceController@storePaymentCash');
+	Route::post('completePurchaseInvoice', 'PurchaseOrderInvoiceController@completePurchaseInvoice');
+	Route::get('purchase-order-invoice/{invoice_id}/payment/create', 'PurchaseOrderInvoiceController@createPayment');
 	Route::get('purchase-order-invoice/{purchase_order_id}/create', 'PurchaseOrderInvoiceController@create');
 	Route::post('storePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@store');
 	Route::post('deletePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@destroy');
@@ -104,10 +111,9 @@ Route::resource('customer', 'CustomerController');
 	Route::post('storeInvoicePayment', 'SalesOrderInvoiceController@storeInvoicePayment');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
 
-
 //Invoiceterms
-
 	Route::resource('invoice-term', 'InvoiceTermController');
+
 
 Route::controller('datatables', 'DatatablesController',[
 	'getProducts'=>'datatables.getProducts',
@@ -121,7 +127,11 @@ Route::controller('datatables', 'DatatablesController',[
 	'getCustomers'=>'datatables.getCustomers',
 	'getInvoiceTerms'=>'datatables.getInvoiceTerms',
     'getDrivers'=>'datatables.getDrivers',
+<<<<<<< HEAD
     'getStockBalances' => 'datatables.getStockBalances'
+=======
+    'getBanks'=>'datatables.getBanks',
+>>>>>>> f689890a736fffa9dee6a38ec077d971e4545cba
 
 
 ]);
