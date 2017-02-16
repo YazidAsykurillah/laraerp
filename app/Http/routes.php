@@ -127,11 +127,9 @@ Route::controller('datatables', 'DatatablesController',[
 	'getCustomers'=>'datatables.getCustomers',
 	'getInvoiceTerms'=>'datatables.getInvoiceTerms',
     'getDrivers'=>'datatables.getDrivers',
-<<<<<<< HEAD
-    'getStockBalances' => 'datatables.getStockBalances'
-=======
-    'getBanks'=>'datatables.getBanks',
->>>>>>> f689890a736fffa9dee6a38ec077d971e4545cba
 
+    'getStockBalances' => 'datatables.getStockBalances',
+
+    'getBanks'=>'datatables.getBanks',
 
 ]);
