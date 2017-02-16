@@ -64,7 +64,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
+          <li><a href="{{ url('stock_balance') }}"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
         </ul>
       </li>
       <li class="treeview">

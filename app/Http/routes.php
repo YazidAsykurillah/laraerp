@@ -20,6 +20,11 @@ Route::get('/home', 'HomeController@index');
 Route::post('deleteCategory', 'CategoryController@destroy');
 Route::resource('category', 'CategoryController');
 
+//Stock Balance
+//Update
+Route::put('UpdateSalesOrder', 'SalesOrderController@update');
+Route::resource('stock_balance','StockBalanceController');
+
 //Driver
 Route::get('/func',function(){
     return Helper::uc_words("imsak haqiqy");
@@ -115,7 +120,8 @@ Route::controller('datatables', 'DatatablesController',[
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
 	'getCustomers'=>'datatables.getCustomers',
 	'getInvoiceTerms'=>'datatables.getInvoiceTerms',
-    'getDrivers'=>'datatables.getDrivers'
+    'getDrivers'=>'datatables.getDrivers',
+    'getStockBalances' => 'datatables.getStockBalances'
 
 
 ]);

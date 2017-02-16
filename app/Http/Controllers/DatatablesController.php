@@ -19,6 +19,7 @@ use App\SalesOrder;
 use App\SalesOrderInvoice;
 use App\InvoiceTerm;
 use App\Driver;
+use App\StockBalance;
 
 class DatatablesController extends Controller
 {
@@ -529,8 +530,45 @@ class DatatablesController extends Controller
         return $data_drivers->make(true);
 
     }
-    //ENDFunction to get supplier list
+    //ENDFunction to get driver list
 
+    //Function to get driver list
+    public function getStockBalances(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $stock_balance = StockBalance::with('creator')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'stock_balances.*',
+            ]
+        );
+
+
+        $data_stock_balance = Datatables::of($stock_balance)
+            ->addColumn('actions', function($stock_balance){
+                    $actions_html ='<a href="'.url('stock_balance/'.$stock_balance->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('stock_balance/'.$stock_balance->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this stock balance">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-stock-balance" data-id="'.$stock_balance->id.'" data-text="'.$stock_balance->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            })
+            ->editColumn('creator', function($stock_balance){
+                    return $stock_balance->creator->name;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_stock_balance->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_stock_balance->make(true);
+
+    }
+    //ENDFunction to get stock balances list
 
 
 

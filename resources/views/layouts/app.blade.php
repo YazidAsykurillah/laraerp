@@ -13,7 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     {!! Html::style('css/bootstrap/bootstrap.css') !!}
-
+    
     <!-- Admin LTE Core CSS -->
     {!! Html::style('css/admin-lte/AdminLTE.css') !!}
 
@@ -32,7 +32,7 @@
       <!--
       <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
       -->
-    
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -88,7 +88,7 @@
 
       <!-- Include the footer -->
       @include('layouts.partials.footer')
-      
+
       <!-- Add the sidebar's background. This div must be placed
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
@@ -101,8 +101,8 @@
          Both of these plugins are recommended to enhance the
          user experience. Slimscroll is required when using the
          fixed layout. -->
-    
-    
+
+
 
     <!-- jQuery -->
     {!! Html::script('js/jquery-1.12.4.js') !!}
@@ -112,7 +112,7 @@
       <!--
       <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
       -->
-    
+
 
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('js/bootstrap/bootstrap.js') !!}
@@ -124,7 +124,7 @@
 
     <!-- Additional javascript -->
     @yield('additional_scripts')
-    
+
 
 </body>
 
