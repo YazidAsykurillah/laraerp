@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Purchase Order Invoice Detail
-    <small>{{ $purchase_order_invoice->code }}</small>
+    Purchase Order
+    <small>Invoice Detail</small>
   </h1>
 @endsection
 
@@ -30,21 +30,15 @@
         <div class="box-header with-border">
           <h3 class="box-title">{{ $purchase_order_invoice->code }}</h3>
           <div class="pull-right">
-            
+            <!--Show button create payment only when invoice status is NOT completed yet-->
+            @if($purchase_order_invoice->status != "completed")
+            <a href="{{ url('purchase-order-invoice/'.$purchase_order_invoice->id.'/payment/create') }}" class="btn btn-default btn-xs" title="Create payment for this invoice">
+              <i class='fa fa-money'></i>&nbsp;Input Payment
+            </a>
+            @endif
           </div>
         </div><!-- /.box-header -->
         <div class="box-body">
-
-          <div class="row">
-            <div class="col-md-3"><strong>Purchase Order Reference</strong></div>
-            <div class="col-md-1">:</div>
-            <div class="col-md-6">
-              <a href="{{ url('purchase-order/'.$purchase_order->id.'')}}" target="_blank">
-                {{ $purchase_order_invoice->purchase_order->code }}
-              </a>
-            </div>
-          </div>
-          <br/>
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
               <thead>
@@ -85,9 +79,14 @@
             <br/>
             <table class="table">
               
+              
               <tr>
                 <td style="width:30%;"><strong>Bill Price</strong></td>
                 <td>{{ number_format($purchase_order_invoice->bill_price) }}</td>
+              </tr>
+              <tr>
+                <td style="width:30%;"><strong>Payment Method</strong></td>
+                <td>{{ $purchase_order_invoice->payment_method->name }}</td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Paid Price</strong></td>
@@ -97,10 +96,10 @@
                 <td style="width:30%;"><strong>Status</strong></td>
                 <td>
                   {{ strtoupper($purchase_order_invoice->status) }}
-                  @if($purchase_order_invoice->status =='unpaid')
+                  @if($purchase_order_invoice->status =='uncompleted')
                     <p></p>
                     <button id="btn-pay-invoice" class="btn btn-xs btn-primary" title="Click to pay this invoice" data-id="{{ $purchase_order_invoice->id}}" data-text="{{ $purchase_order_invoice->code }}">
-                      <i class="fa fa-money"></i>&nbsp;Pay
+                      <i class="fa fa-money"></i>&nbsp;Complete
                     </button>
                   @endif
                 </td>
@@ -127,13 +126,13 @@
   <div class="modal fade" id="modal-pay-purchase-order-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-pay-purchase-order-invoiceLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'payPurchaseOrderInvoice', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'completePurchaseInvoice', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-pay-purchase-order-invoiceLabel">Confirmation</h4>
         </div>
         <div class="modal-body">
-          <b id="purchase-order-invoice-name-to-pay"></b> status will be changed to PAID
+          <b id="purchase-order-invoice-name-to-pay"></b> is going to be completed
           <br/>
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted

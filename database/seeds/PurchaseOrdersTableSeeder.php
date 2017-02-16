@@ -21,5 +21,10 @@ class PurchaseOrdersTableSeeder extends Seeder
         ];
 
         \DB::table('purchase_orders')->insert($data);
+
+        //delete purchase_order_invoices table datas
+        \DB::table('purchase_order_invoices')->delete();
+        //delete purchase_invoice_payments table
+        \DB::table('purchase_invoice_payments')->delete();
     }
 }

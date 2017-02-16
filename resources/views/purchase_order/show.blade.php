@@ -21,9 +21,18 @@
 
 @section('content')
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#section-general-information">General Information</a></li>
-    <li><a data-toggle="tab" href="#section-invoice">Invoice</a></li>
-    <li><a data-toggle="tab" href="#section-return">Return</a></li>
+    <li class="active">
+      <a data-toggle="tab" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
+    </li>
   </ul>
    <div class="tab-content">
     <!--General Information-->
@@ -130,7 +139,8 @@
       </div>
       <!-- ENDRow Products-->
     </div>
-    <!--General Information-->
+
+    <!--Section Invoice-->
     <div id="section-invoice" class="tab-pane fade">
       <!-- Row Invoice-->
       <div class="row">
@@ -152,56 +162,22 @@
             </div><!-- /.box-header -->
             <div class="box-body">
               @if($invoice->count() > 0)
-                <div class="row">
-                  <div class="col-md-12"> 
-                    <strong>
-                      <a href="{{url('purchase-order-invoice/'.$purchase_order->purchase_order_invoice->id.'')}}" title="Click to view the detail of the invoice" target="_blank">
-                        {{ $purchase_order->purchase_order_invoice->code }}
-                      </a>
-                    </strong>
-                  </div>
-                </div>
-                <br/>
+                
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="table-selected-products">
-                    <thead>
-
-                      <tr>
-                        <th style="width:40%">Product Name</th>
-                        <th style="width:20%">Quantity</th>
-                        <th style="width:20%">Unit</th>
-                        <th style="width:20%">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @if($purchase_order->products->count() > 0)
-                        @foreach($purchase_order->products as $product)
-                        <tr>
-                          <td>
-                            {{ $product->name }}
-                          </td>
-                          <td>
-                            {{ $product->pivot->quantity }}
-                          </td>
-                          <td>
-                            {{ $product->unit->name }}
-                          </td>
-                          <td>
-                            {{ number_format($product->pivot->price) }}
-                          </td>
-                        </tr>
-                      
-                        @endforeach
-                      @else
-                      <tr>
-                        <td>There are no product</td>
-                      </tr>
-                      @endif
-                    </tbody>
-                  </table>
-                  <br/>
-                  <table class="table">
                   
+                  <table class="table">
+                    <tr>
+                      <td style="width:30%;"><strong>Invoice Code</strong></td>
+                      <td>
+                        <a href="{{url('purchase-order-invoice/'.$purchase_order->purchase_order_invoice->id.'')}}" title="Click to view the detail of the invoice">
+                          {{ $purchase_order->purchase_order_invoice->code }}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width:30%;"><strong>Payment Method</strong></td>
+                      <td>{{$purchase_order->purchase_order_invoice->payment_method->name }}</td>
+                    </tr>
                     <tr>
                       <td style="width:30%;"><strong>Bill Price</strong></td>
                       <td>{{ number_format($purchase_order->purchase_order_invoice->bill_price) }}</td>
@@ -237,7 +213,32 @@
       </div>
       <!-- ENDRow Invoice-->
     </div>
-    <!--General Information-->
+
+    <!-- Section Invoice Payment -->
+    <div id="section-invoice-payment" class="tab-pane fade">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Invoice Payments <small>Related payment with the purchase order invoice</small></h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+            @if(count($purchase_order->purchase_order_invoice))
+              @if($purchase_order->purchase_order_invoice->payment_method->name == "cash")
+                @include('purchase_order.table_invoice_cash')
+              @else
+                @include('purchase_order.table_invoice_transfer')
+              @endif
+            @endif
+            </div><!-- /.box-body -->
+            <div class="box-footer clearfix"></div>
+          </div><!-- /.box -->
+        </div>
+      </div>
+    </div>
+    <!-- ENDSection Invoice Payment -->
+
+    <!--Section Return-->
     <div id="section-return" class="tab-pane fade">
       <!-- Row Return-->
       <div class="row">

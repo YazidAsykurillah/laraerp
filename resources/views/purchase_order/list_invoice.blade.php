@@ -34,12 +34,12 @@
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
-                <th>Purchase Order</th>
                 <th>Bill Price</th>
                 <th>Paid Price</th>
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
+                <th>Payment Method</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -47,13 +47,13 @@
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
-                <th>Purchase Order</th>
                 <th>Bill Price</th>
                 <th>Paid Price</th>
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th>Payment Method</th>
+                <th style="width:10%;text-align:center;"></th>
               </tr>
             </thead>
             <tbody>
@@ -106,14 +106,14 @@
       ajax : '{!! route('datatables.getPurchaseOrderInvoices') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'code', name: 'code' },
-        { data: 'purchase_order_id', name: 'purchase_order.code' },
-        { data: 'bill_price', name: 'bill_price' },
-        { data: 'paid_price', name: 'paid_price' },
-        { data: 'created_at', name: 'created_at' },
-        { data: 'creator', name: 'creator.name' },
-        { data: 'status', name: 'status' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
+        { data:'code', name: 'code' },
+        { data:'bill_price', name:'bill_price', className:'dt-right'},
+        { data:'paid_price', name:'paid_price', className:'dt-right'},
+        { data:'created_at', name:'created_at' },
+        { data:'creator', name:'creator.name' },
+        { data:'status', name:'status' },
+        { data:'payment_method', name:'payment_method.code' },
+        { data:'actions', name:'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
     });
 
