@@ -19,15 +19,11 @@ use App\SalesOrder;
 use App\SalesOrderInvoice;
 use App\InvoiceTerm;
 use App\Driver;
-
 use App\StockBalance;
-
 use App\Bank;
-
 
 class DatatablesController extends Controller
 {
-
 
     //Function get CUSTOMERS datatable
     public function getCustomers(Request $request)
