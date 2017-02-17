@@ -13,7 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     {!! Html::style('css/bootstrap/bootstrap.css') !!}
-    
+
     <!-- Admin LTE Core CSS -->
     {!! Html::style('css/admin-lte/AdminLTE.css') !!}
 

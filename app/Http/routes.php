@@ -28,6 +28,7 @@ Route::resource('category', 'CategoryController');
 //Stock Balance
 //Update
 Route::put('UpdateSalesOrder', 'SalesOrderController@update');
+Route::post('deleteStockBalance','StockBalanceController@destroy');
 Route::resource('stock_balance','StockBalanceController');
 
 //Driver

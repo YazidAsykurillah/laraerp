@@ -53,7 +53,8 @@ class DriverController extends Controller
         //echo ucwords($driver->name);
         $driver->contact_number = $request->primary_phone_number;
         $driver->save();
-        return redirect('driver');
+        return redirect('driver')
+            ->with('successMessage','Driver has been created');
     }
 
     /**

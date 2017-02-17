@@ -41,7 +41,7 @@
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
@@ -50,7 +50,7 @@
                 <th style="width:20%;">Updated At</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
 
             </tbody>
@@ -65,21 +65,21 @@
   </div>
 
   <!--Modal Delete supplier-->
-  <!-- <div class="modal fade" id="modal-delete-driver" tabindex="-1" role="dialog" aria-labelledby="modal-delete-driverLabel">
+  <div class="modal fade" id="modal-delete-stock-balance" tabindex="-1" role="dialog" aria-labelledby="modal-delete-stockbalanceLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'deleteDriver', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'deleteStockBalance', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-delete-driverLabel">Confirmation</h4>
+          <h4 class="modal-title" id="modal-delete-stockbalanceLabel">Confirmation</h4>
         </div>
         <div class="modal-body">
-          You are going to remove supplier&nbsp;<b id="driver-name-to-delete"></b>
+          You are going to remove stock balance&nbsp;<b id="stock-balance-name-to-delete"></b>
           <br/>
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="hidden" id="driver_id" name="driver_id">
+          <input type="hidden" id="stock_balance_id" name="stock_balance_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -88,7 +88,7 @@
       {!! Form::close() !!}
       </div>
     </div>
-  </div> -->
+  </div>
 <!--ENDModal Delete supplier-->
 @endsection
 
@@ -111,14 +111,14 @@
     });
 
     //Delete button handler
-    // tableDriver.on('click', '.btn-delete-driver', function (e) {
-    //   var id = $(this).attr('data-id');
-    //   var name = $(this).attr('data-text');
-    //   $('#driver_id').val(id);
-    //   $('#driver-name-to-delete').text(name);
-    //   $('#modal-delete-driver').modal('show');
-    // });
-    //
+    tableStockBalance.on('click', '.btn-delete-stock-balance', function (e) {
+      var id = $(this).attr('data-id');
+      var name = $(this).attr('data-text');
+      $('#stock_balance_id').val(id);
+      $('#stock-balance-name-to-delete').text(name);
+      $('#modal-delete-stock-balance').modal('show');
+    });
+
     // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
           if ($(this).index() != 0 && $(this).index() != 5) {
@@ -127,9 +127,9 @@
 
     });
     //Block search input and select
-    $('#searchid input').keyup(function() {
-      tableStockBalance.columns($(this).data('id')).search(this.value).draw();
-    });
+    // $('#searchid input').keyup(function() {
+    //   tableStockBalance.columns($(this).data('id')).search(this.value).draw();
+    // });
     //ENDBlock search input and select
 
   </script>

@@ -72,7 +72,7 @@
           <h4 class="modal-title" id="modal-delete-driverLabel">Confirmation</h4>
         </div>
         <div class="modal-body">
-          You are going to remove supplier&nbsp;<b id="driver-name-to-delete"></b>
+          You are going to remove driver&nbsp;<b id="driver-name-to-delete"></b>
           <br/>
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted

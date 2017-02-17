@@ -290,9 +290,9 @@ class DatatablesController extends Controller
                 if($purchase_order_invoices->status != "completed"){
                     $actions_html .='<a href="'.url('purchase-order-invoice/'.$purchase_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';    
+                    $actions_html .='</a>&nbsp;';
                 }
-                
+
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';

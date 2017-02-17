@@ -66,8 +66,9 @@
                   <th style="width:5%;">#</th>
                   <th style="width:10%;">Code</th>
                   <th style="width:40%;">Product Name</th>
-                  <th style="width:20%;">System Stock</th>
-                  <th style="width:20%;">Real Stock</th>
+                  <th style="width:10%;">System Stock</th>
+                  <th style="width:10%;">Real Stock</th>
+                  <th style="width:25%;">Information</th>
               </tr>
             </thead>
             <!-- <thead id="searchid">
@@ -87,7 +88,22 @@
                         <td>{{ $view->code }}</td>
                         <td>{{ $view->name }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
                         <td>{{ $view->stock }}<input type="hidden" value="{{ $view->stock }}" name="system_stock[]"></td>
-                        <td><input type="text" value="{{ $view->stock }}" name="real_stock[]"></td>
+                        <td>
+                            <input type="text" value="{{ $view->stock }}" name="real_stock[]" class="col-lg-12">
+                            @if ($errors->has('real_stock[]'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('real_stock[]') }}</strong>
+                              </span>
+                            @endif
+                        </td>
+                        <td>
+                            <input type="text" name="information[]" class="col-lg-12" value="">
+                            @if ($errors->has('information[]'))
+                              <span class="help-block" style="color:red;font-size:8pt">
+                                <strong>{{ $errors->first('information[]') }}</strong>
+                              </span>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -110,10 +126,10 @@
           <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              <a href="{{ url('driver') }}" class="btn btn-default">
+              <a href="{{ url('stock_balance') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;
-              <button type="submit" class="btn btn-info" id="btn-submit-driver">
+              <button type="submit" class="btn btn-info" id="btn-submit-stock-balance">
                 <i class="fa fa-save"></i>&nbsp;Submit
               </button>
             </div>
@@ -143,6 +159,7 @@
       $('#product-name-to-delete').text(name);
       $('#modal-delete-product').modal('show');
     });
+
 
 
     //Delete product process
