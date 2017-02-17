@@ -47,8 +47,8 @@
                       {!! Form::label('created_by', 'Created By', ['class'=>'col-sm-3 control-label']) !!}
                       <div class="col-sm-5">
                         {!! Form::text('creator[name]',null,['class'=>'form-control', 'id'=>'created_name']) !!}
-                        {!! Form::text('created_by',null,['class'=>'form-control','id'=>'created_by']) !!}
-                        {!! Form::text('id',null,['class'=>'form-control','id'=>'id']) !!}
+                        {!! Form::hidden('created_by',null,['class'=>'form-control','id'=>'created_by']) !!}
+                        {!! Form::hidden('id',null,['class'=>'form-control','id'=>'id']) !!}
                         @if ($errors->has('created_by'))
                           <span class="help-block">
                             <strong>{{ $errors->first('created_by') }}</strong>
