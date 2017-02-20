@@ -24,7 +24,7 @@ class SalesOrder extends Model
     {
     	return $this->belongsTo('App\User', 'creator');
     }
-    
+
     public function products()
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'sales_order_id');
@@ -34,5 +34,11 @@ class SalesOrder extends Model
     public function sales_order_invoice()
     {
         return $this->hasOne('App\SalesOrderInvoice');
+    }
+
+    //relation to sales return
+    public function sales_returns()
+    {
+        return $this->hasMany('App\SalesReturn');
     }
 }

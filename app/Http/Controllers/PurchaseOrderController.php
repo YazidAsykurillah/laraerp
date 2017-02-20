@@ -67,7 +67,7 @@ class PurchaseOrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorePurchaseOrderRequest $request)
-    {   
+    {
         if($request->ajax()){
 
             $max_po_id = \DB::table('purchase_orders')->max('id');
@@ -116,7 +116,7 @@ class PurchaseOrderController extends Controller
                     ->sum('price');
         return $sum_price;
     }
-    
+
     public function show($id)
     {
         $purchase_order = PurchaseOrder::findOrFail($id);
@@ -159,7 +159,7 @@ class PurchaseOrderController extends Controller
     public function update(UpdatePurchaseOrderRequest $request)
     {
         if($request->ajax()){
-            
+
             $id = $request->id;
             $purchase_order = PurchaseOrder::findOrFail($id);
             $purchase_order->supplier_id = $request->supplier_id;
@@ -211,7 +211,7 @@ class PurchaseOrderController extends Controller
 
         $data['purchase_order'] = PurchaseOrder::findOrFail($request->id);
         $data['total_price'] = $this->count_total_price($data['purchase_order']);
-        
+
         $pdf = \PDF::loadView('pdf.purchase_order', $data);
         return $pdf->stream('purchase_order.pdf');
     }
@@ -223,21 +223,21 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($request->id_to_be_accepted);
         $purchase_order->status = 'accepted';
         $purchase_order->save();
-        
+
         //update stock quantity to each products based on the accepted purchase order
         //error prevent control incase there are no relational product
         if(count($purchase_order->products) > 0){
             foreach($purchase_order->products as $product){
-            
+
                 //$prod_qu []= ['id'=>$product->id, 'stock'=>$product->pivot->quantity];
                 $current_stock = \DB::table('products')->where('id', $product->id)->value('stock');
                 $added_stock = $current_stock+$product->pivot->quantity;
                 $update_stock = \DB::table('products')
                                 ->where('id', $product->id)
                                 ->update(['stock'=> $added_stock]);
-            }    
+            }
         }
-        
+
 
         //return redirect('purchase-order');
         return back();

@@ -12,7 +12,7 @@ class SalesOrderInvoice extends Model
 {
     protected $table = 'sales_order_invoices';
 
-    protected $fillable = ['code','sales_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status', 'notes', 'due_date'];
+    protected $fillable = ['code','sales_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status', 'notes'];
 
     public function creator()
     {

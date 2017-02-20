@@ -42,7 +42,7 @@
             </thead>
             <tbody>
               @if($purchase_order->products->count() > 0)
-                
+
                 @foreach($purchase_order->products as $product)
                 <tr id="row_product_{{$product->id}}">
                   <td>{{ Form::checkbox('product_id[]', $product->id, false, ['class'=>'product-id-checkbox']) }}</td>
@@ -51,7 +51,7 @@
                   <td>{{ Form::text('returned_quantity[]',null, ['class'=>'returned_quantity form-control', 'disabled']) }}</td>
                   <td>{{ Form::text('notes[]',null, ['class'=>'notes form-control', 'disabled']) }}</td>
                 </tr>
-              
+
                 @endforeach
               @else
                 <tr>
@@ -64,7 +64,7 @@
 
             </tfoot>
           </table>
-          
+
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
           <div class="form-group">
@@ -83,7 +83,7 @@
         </div>
 
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -92,7 +92,7 @@
 
 
 @section('additional_scripts')
- 
+
 {!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
     $('.returned_quantity').autoNumeric('init',{
@@ -104,7 +104,7 @@
 <!--Block Compare Control returned quantity to purchased quantity-->
 <script type="text/javascript">
   $('.returned_quantity').on('keyup', function(){
-    var purchased_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
+    var salesed_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
     var the_value = parseInt($(this).val());
     if(the_value > purchased_qty){
       alertify.error('Returned quantity can not be greater than purchased quantity');
@@ -136,7 +136,7 @@
       event.preventDefault();
       var data = $(this).serialize();
       $.ajax({
-          url: '{!!URL::to('storePurchaseReturn')!!}',
+          url: '{!! URL::to('storePurchaseReturn')!!}',
           type : 'POST',
           data : $(this).serialize(),
           beforeSend : function(){
@@ -168,5 +168,5 @@
     });
   //ENDBlock handle form create purchase order submission
 </script>
- 
+
 @endsection

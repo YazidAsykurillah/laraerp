@@ -20,13 +20,13 @@
 @endsection
 
 @section('content')
-  
+
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Sales Order Invoices</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           <table class="table table-bordered" id="table-sales-order-invoice-invoice">
@@ -34,15 +34,16 @@
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
-                <th>Sales Order</th>
                 <th>Bill Price</th>
                 <th>Paid Price</th>
-                <th>Due Date</th>
+                <th>Created At</th>
+                <th>Created By</th>
                 <th>Status</th>
+                <th>Payment Method</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
@@ -53,17 +54,17 @@
                 <th>Status</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -105,17 +106,18 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
-        { data: 'sales_order_id', name: 'sales_order.code' },
         { data: 'bill_price', name: 'bill_price' },
         { data: 'paid_price', name: 'paid_price' },
-        { data: 'due_date', name: 'due_date' },
+        { data: 'created_at', name: 'created_at' },
+        { data: 'created_by', name: 'created_by' },
         { data: 'status', name: 'status' },
+        { data: 'payment', name: 'payment.payment_method_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
     });
 
     // Delete button handler
-    tablesalesOrderInvoice.on('click', '.btn-delete-sales-order-invoice', function (e) { 
+    tablesalesOrderInvoice.on('click', '.btn-delete-sales-order-invoice', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#sales_order_invoice_id').val(id);
@@ -124,17 +126,17 @@
     });
 
       // Setup - add a text input to each header cell
-    $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 8) {
-              $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
-          }
-          
-    });
+    // $('#searchid th').each(function() {
+    //       if ($(this).index() != 0 && $(this).index() != 8) {
+    //           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+    //       }
+    //
+    // });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tablesalesOrderInvoice.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
   </script>
 @endsection

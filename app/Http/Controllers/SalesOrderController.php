@@ -88,10 +88,14 @@ class SalesOrderController extends Controller
         $sales_order = SalesOrder::findOrFail($id);
         //invoice related with this purchase order
         $invoice =  $sales_order->sales_order_invoice();
-
+        //sales return related
+        $sales_returns = $sales_order->sales_returns;
+        $total_price = $this->count_total_price($sales_order);
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
-            ->with('invoice', $invoice);
+            ->with('total_price', $total_price)
+            ->with('invoice', $invoice)
+            ->with('sales_returns', $sales_returns);
     }
 
     protected function count_total_price($sales_order)
@@ -101,6 +105,7 @@ class SalesOrderController extends Controller
                     ->sum('price');
         return $sum_price;
     }
+
     public function edit($id)
     {
         $sales_order = SalesOrder::findOrFail($id);
@@ -116,7 +121,7 @@ class SalesOrderController extends Controller
 
             return response('404');
         }
-        
+
     }
 
     /**
@@ -172,7 +177,7 @@ class SalesOrderController extends Controller
             ->with('successMessage', "Sales order has been deleted");
     }
 
-    
+
     public function updateStatus(Request $request)
     {
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
@@ -192,7 +197,7 @@ class SalesOrderController extends Controller
                     break;
             }
         }
-        
+
         return back()->with('successMessage', "Status has been changed");
     }
 
@@ -223,5 +228,5 @@ class SalesOrderController extends Controller
         }
         return TRUE;
     }
-    
+
 }

@@ -41,7 +41,7 @@ class PurchaseOrderInvoiceController extends Controller
 
     public function create(Request $request)
     {
-        
+
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
         $payment_methods = PaymentMethod::lists('name', 'id');
         return view('purchase_order.create_invoice')
@@ -150,7 +150,7 @@ class PurchaseOrderInvoiceController extends Controller
         \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
         //Now time to sync the products
         $purchase_order->products()->sync($syncData);
-                
+
         return redirect('purchase-order-invoice/'.$request->purchase_order_invoice_id)
             ->with('successMessage', "Invoice has been updated");
     }
@@ -187,7 +187,7 @@ class PurchaseOrderInvoiceController extends Controller
              return redirect()->back()
              ->with('successMessage', "Invoice has been completed");
         }
-        
+
     }
 
 
@@ -197,19 +197,20 @@ class PurchaseOrderInvoiceController extends Controller
         $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name','id');
         $banks = Bank::lists('name', 'id');
-        if($invoice->payment_method_id == 1){
-            return view('purchase_order.create_payment_bank_transfer')
-            ->with('banks', $banks)
-            ->with('invoice', $invoice);
-        }
-        elseif($invoice->payment_method_id == 2){
-            return view('purchase_order.create_payment_cash')
-            ->with('invoice', $invoice);
-        }
-        else{
-            return "Custom payment method";
-        }
-        
+        // if($invoice->payment_method_id == 1){
+        //     return view('purchase_order.create_payment_bank_transfer')
+        //     ->with('banks', $banks)
+        //     ->with('invoice', $invoice);
+        // }
+        // elseif($invoice->payment_method_id == 2){
+        //     return view('purchase_order.create_payment_cash')
+        //     ->with('invoice', $invoice);
+        // }
+        // else{
+        //     return "Custom payment method";
+        // }
+        return view('purchase_order.create_payment');
+
     }
 
     public function storePaymentCash(StorePurchasePaymentCash $request)
@@ -249,6 +250,6 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $invoice_id = $request->purchase_order_invoice_id;
         $bank_id = $request->bank_id;
-        
+
     }
 }

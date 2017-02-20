@@ -20,7 +20,7 @@
 @endsection
 
 @section('content')
-  
+
   <ul class="nav nav-tabs">
     <li class="active">
       <a data-toggle="tab" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
@@ -48,18 +48,18 @@
                   <i class='fa fa-print'></i>&nbsp;Print
                 </a>
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
-              
+
               <div class="row">
                   <div class="col-md-2"><strong>Code</strong></div>
                   <div class="col-md-6"><strong>{{ $sales_order->code }}</strong></div>
               </div>
               <br/>
-              
+
               <div class="table-responsive">
-                
+
                 <table class="table table-bordered" id="table-selected-products">
                   <thead>
                     <tr>
@@ -123,7 +123,7 @@
                     <input type="hidden" name="sales_order_id" value="{{ $sales_order->id}}" />
                     <button type="submit" class="btn btn-info btn-xs">Update Status</button>
                   {!! Form::close() !!}
-                
+
                 </div>
               </div>
               <br/>
@@ -135,11 +135,11 @@
                 </div>
               </div>
             </div><!-- /.box-body -->
-            
+
           </div><!-- /.box -->
         </div>
       </div>
-      
+
     </div>
     <!-- ENDSection General Information-->
 
@@ -157,7 +157,7 @@
                 </a>
                 @endif
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
               @if($invoice->count() > 0)
@@ -211,7 +211,7 @@
               @endif
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-              
+
             </div>
           </div><!-- /.box -->
         </div>
@@ -272,17 +272,48 @@
             <div class="box-header with-border">
               <h3 class="box-title"> Sales Order Return <small>Related return with this sales order</small></h3>
               <div class="pull-right">
-                <a href="{{ URL::to('sales-order-return/'.$sales_order->id.'/create')}}" class="btn btn-default btn-xs">
+                <a href="{{ URL::to('sales-return/create/?sales_order_id='.$sales_order->id.'') }}" class="btn btn-default btn-xs">
                     <i class='fa fa-bookmark'></i>&nbsp;Create Return
                 </a>
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
-              Return will goes here
+                <div class="table-responsive">
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Returned Quantity</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @if($sales_returns->count() > 0)
+
+                      @foreach($sales_returns as $sales_return)
+                      <tr>
+                        <td> {{ $sales_return->product->name }}</td>
+                        <td> {{ $sales_return->quantity }}</td>
+                        <td> {{ $sales_return->notes }}</td>
+                        <td> {{ ucwords($sales_return->status) }}</td>
+                      </tr>
+                      @endforeach
+                    @else
+                    <tr>
+                      <td colspan="4">
+                        <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related return to this purchase order</p>
+                      </td>
+                    </tr>
+                    @endif
+                    </tbody>
+                  </table>
+                </div>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-              
+
             </div>
           </div><!-- /.box -->
         </div>
@@ -294,10 +325,3 @@
 
 
 @endsection
-
-
-
-
-
-
-
