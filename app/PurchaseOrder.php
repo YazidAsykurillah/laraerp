@@ -10,6 +10,8 @@ use App\User;
 use App\Product;
 use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
+use App\PurchaseInvoicePayment;
+use App\BankPurchaseInvoicePayment;
 
 class PurchaseOrder extends Model
 {
@@ -42,4 +44,16 @@ class PurchaseOrder extends Model
     public function purchase_returns(){
         return $this->hasMany('App\PurchaseReturn');
     }
+
+    public function purchase_invoice_payments()
+    {
+        return $this->belongsTo('App\PurchaseInvoicePayment','id');
+    }
+
+    public function bank_purchase_invoice_payment()
+    {
+        return $this->hasMany('App\BankPurchaseInvoicePayment','purchase_invoice_payment_id');
+    }
+
+
 }

@@ -13,6 +13,9 @@ use App\PurchaseOrder;
 use App\Supplier;
 use App\Product;
 use App\PurchaseReturn;
+use App\PurchaseInvoicePayment;
+use App\BankPurchaseInvoicePayment;
+use DB;
 
 class PurchaseOrderController extends Controller
 {
@@ -125,6 +128,7 @@ class PurchaseOrderController extends Controller
         //purchase returns related
         $purchase_returns = $purchase_order->purchase_returns;
         $total_price = $this->count_total_price($purchase_order);
+
         return view('purchase_order.show')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
@@ -195,13 +199,21 @@ class PurchaseOrderController extends Controller
     {
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
         $purchase_order->delete();
+
         //delete all the related data with this purchase order in the database
         //product related
+        $bank = $purchase_order->purchase_order_invoice->purchase_invoice_payment;
+        foreach ($bank as $key) {
+            \DB::table('bank_purchase_invoice_payment')->where('purchase_invoice_payment_id','=',$key->id)->delete();
+        }
         \DB::table('product_purchase_order')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
         //invoice related
         \DB::table('purchase_order_invoices')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
+        //purchase invoice payment related
+        \DB::table('purchase_invoice_payments')->where('purchase_order_invoice_id','=',$request->payment_id)->delete();
         //return related
         \DB::table('purchase_returns')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
+        //bank purchase invoice payment related
         return redirect('purchase-order')
             ->with('successMessage', "Purchase Order has been deleted");
 

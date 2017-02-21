@@ -196,7 +196,7 @@ class DatatablesController extends Controller
     //Function get Purchase Orders list
     public function getPurchaseOrders(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
-        $purchase_orders = PurchaseOrder::with('supplier', 'created_by')->select(
+        $purchase_orders = PurchaseOrder::with('supplier', 'created_by', 'purchase_order_invoice')->select(
             [
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_orders.*',
@@ -236,10 +236,15 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                 }
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
-
+                if(count($purchase_orders->purchase_order_invoice) > 0){
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" data-id-payment="'.$purchase_orders->purchase_order_invoice->id.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }else{
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
                 return $actions_html;
             });
 
@@ -274,9 +279,9 @@ class DatatablesController extends Controller
 
                 return $purchase_order_invoices->creator->name;
             })
-            ->editColumn('payment_method', function($purchase_order_invoices){
-                return $purchase_order_invoices->payment_method->code;
-            })
+            // ->editColumn('payment_method', function($purchase_order_invoices){
+            //     return $purchase_order_invoices->payment_method->code;
+            // })
             ->editColumn('status', function($purchase_order_invoices){
 
                 return strtoupper($purchase_order_invoices->status);
@@ -450,9 +455,6 @@ class DatatablesController extends Controller
             })
             ->editColumn('status', function($sales_order_invoices){
                 return strtoupper($sales_order_invoices->status);
-            })
-            ->editColumn('payment', function($sales_order_invoices){
-                return $sales_order_invoices->sales_invoice_payment;
             })
             ->addColumn('actions', function($sales_order_invoices){
                 $actions_html ='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';

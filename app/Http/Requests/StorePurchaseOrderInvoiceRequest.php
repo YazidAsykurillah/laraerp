@@ -25,7 +25,7 @@ class StorePurchaseOrderInvoiceRequest extends Request
     {
         return [
             'code'=>'required|unique:purchase_order_invoices,code',
-            'payment_method_id'=>'required|integer|exists:payment_methods,id',
+            //'payment_method_id'=>'required|integer|exists:payment_methods,id',
             'bill_price'=>'required',
             'purchase_order_id'=>'required|integer|exists:purchase_orders,id',
         ];

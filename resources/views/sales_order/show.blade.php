@@ -30,7 +30,7 @@
     </li>
     <li>
       <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
-    y</li>
+    </li>
     <li>
       <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
     </li>

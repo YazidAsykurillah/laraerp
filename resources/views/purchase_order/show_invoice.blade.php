@@ -22,7 +22,7 @@
 @endsection
 
 @section('content')
-  
+
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
@@ -67,7 +67,7 @@
                       {{ number_format($product->pivot->price) }}
                     </td>
                   </tr>
-                
+
                   @endforeach
                 @else
                 <tr>
@@ -78,15 +78,11 @@
             </table>
             <br/>
             <table class="table">
-              
-              
+
+
               <tr>
                 <td style="width:30%;"><strong>Bill Price</strong></td>
                 <td>{{ number_format($purchase_order_invoice->bill_price) }}</td>
-              </tr>
-              <tr>
-                <td style="width:30%;"><strong>Payment Method</strong></td>
-                <td>{{ $purchase_order_invoice->payment_method->name }}</td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Paid Price</strong></td>
@@ -113,9 +109,9 @@
           </div>
 
 
-          
+
         </div><!-- /.box-body -->
-        
+
       </div><!-- /.box -->
     </div>
   </div>
@@ -148,17 +144,17 @@
     </div>
   </div>
 <!--ENDModal pay purchase-order-invoice-->
-  
+
 
 
 @endsection
 
 
 @section('additional_scripts')
-  
+
   <script type="text/javascript">
     // Delete button handler
-    $('#btn-pay-invoice').on('click', function (e) { 
+    $('#btn-pay-invoice').on('click', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#purchase_order_invoice_id').val(id);
@@ -166,6 +162,5 @@
       $('#modal-pay-purchase-order-invoice').modal('show');
     });
   </script>
-  
-@endSection
 
+@endSection

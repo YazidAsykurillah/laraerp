@@ -22,13 +22,13 @@
 @endsection
 
 @section('content')
-  
+
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Form Invoice</h3>    
+          <h3 class="box-title">Form Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::open(['route'=>'purchase-order-invoice.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-order-invoice','files'=>true]) !!}
@@ -62,7 +62,7 @@
                       <input type="text"  name="price[]" class="price form-control" />
                     </td>
                   </tr>
-                
+
                   @endforeach
                 @else
                 <tr>
@@ -74,7 +74,7 @@
 
           </div>
 
-          
+
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -86,8 +86,8 @@
                 @endif
               </div>
             </div>
-            
-            <div class="form-group{{ $errors->has('payment_method_id') ? ' has-error' : '' }}">
+
+            <!-- <div class="form-group{{ $errors->has('payment_method_id') ? ' has-error' : '' }}">
               {!! Form::label('payment_method_id', 'Payment Method', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
                 {{ Form::select('payment_method_id', $payment_methods, null, ['class'=>'form-control', 'placeholder'=>'Select payment method', 'id'=>'payment_method_id']) }}
@@ -97,8 +97,8 @@
                   </span>
                 @endif
               </div>
-            </div>
-            
+            </div> -->
+
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -136,22 +136,22 @@
             {!! Form::hidden('purchase_order_id', $purchase_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
-        
+
       </div><!-- /.box -->
     </div>
   </div>
   <!-- ENDRow Invoice-->
 
 
-  
-  
+
+
 
 
 @endsection
 
 
 @section('additional_scripts')
-  
+
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#bill_price').autoNumeric('init',{
@@ -208,4 +208,3 @@
   </script>
 
 @endSection
-
