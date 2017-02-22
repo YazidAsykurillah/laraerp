@@ -64,6 +64,7 @@ class SalesOrderInvoiceController extends Controller
             $sales_order_code = SalesOrder::findOrFail($sales_order_id)->code;
             $customer_invoice_term = SalesOrder::findOrFail($sales_order_id)->customer->invoice_term->day_many;
 
+
             $current = Carbon::now();
             $due_date = $current->addDays($customer_invoice_term);
             $data = [
@@ -72,7 +73,7 @@ class SalesOrderInvoiceController extends Controller
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
                 'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id,
-                'due_date'=>$due_date
+                'due_date'=> $due_date
             ];
 
             $save = SalesOrderInvoice::create($data);

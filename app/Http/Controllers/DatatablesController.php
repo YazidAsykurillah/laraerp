@@ -17,8 +17,6 @@ use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
 use App\SalesOrder;
 use App\SalesOrderInvoice;
-use App\SalesInvoicePayment;
-use App\SalesReturn;
 use App\InvoiceTerm;
 use App\Driver;
 use App\StockBalance;
@@ -433,23 +431,23 @@ class DatatablesController extends Controller
     public function getSalesOrderInvoices(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $sales_order_invoices = SalesOrderInvoice::with('sales_order','creator','sales_invoice_payment')->select(
+        $sales_order_invoices = SalesOrderInvoice::with('sales_order','creator')->select(
             [
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'sales_order_invoices.*',
             ]
         );
         $data_sales_order_invoices = Datatables::of($sales_order_invoices)
+            ->editColumn('sales_order_id', function($sales_order_invoices){
+                return $sales_order_invoices->sales_order->code;
+            })
             ->editColumn('bill_price', function($sales_order_invoices){
                 return number_format($sales_order_invoices->bill_price);
             })
             ->editColumn('paid_price', function($sales_order_invoices){
                 return number_format($sales_order_invoices->paid_price);
             })
-            ->editColumn('created_at', function($sales_order_invoices){
-                return $sales_order_invoices->created_at;
-            })
-            ->editColumn('created_by', function($sales_order_invoices){
+            ->editColumn('creator', function($sales_order_invoices){
 
                 return $sales_order_invoices->creator->name;
             })
