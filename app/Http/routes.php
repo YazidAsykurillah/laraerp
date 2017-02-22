@@ -144,6 +144,8 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
+    Route::post('storeSalesPaymentCash','SalesOrderInvoiceController@storePaymentCash');
+    Route::post('storeSalesPaymentTransfer','SalesOrderInvoiceController@storePaymentTransfer');
 	Route::post('completeSalesInvoice', 'SalesOrderInvoiceController@completeSalesInvoice');
 	Route::post('deleteSalesOrderInvoice', 'SalesOrderInvoiceController@destroy');
 	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');

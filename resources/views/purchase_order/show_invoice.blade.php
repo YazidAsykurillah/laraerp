@@ -16,7 +16,7 @@
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order </a></li>
     <li><a href="{{ URL::to('purchase-order/'.$purchase_order_invoice->purchase_order->id) }}"><i class="fa fa-dashboard"></i> {{ $purchase_order_invoice->purchase_order->code }} </a></li>
-    <li></i>Invoice</li>
+    <li>Invoice</li>
     <li class="active">{{ $purchase_order_invoice->code }}</li>
   </ol>
 @endsection
@@ -111,6 +111,9 @@
 
 
         </div><!-- /.box-body -->
+        <div class="box-footer clearfix">
+
+        </div>
 
       </div><!-- /.box -->
     </div>

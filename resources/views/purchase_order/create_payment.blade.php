@@ -117,7 +117,7 @@
                                   </span>
                                 @endif
                               </div>
-                            </div>
+                          </div>
                           <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                             {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-6">

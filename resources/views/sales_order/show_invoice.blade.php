@@ -6,7 +6,7 @@
 
 @section('page_header')
   <h1>
-    Sales Order Invoice Detail
+    Sales Order
     <small> Invoice Detail </small>
   </h1>
 @endsection
@@ -16,6 +16,7 @@
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
     <li><a href="{{ URL::to('sales-order/'.$sales_order_invoice->sales_order->id.'') }}"><i class="fa fa-dashboard"></i>{{ $sales_order_invoice->sales_order->code }}</a></li>
+    <li>Invoice</li>
     <li class="active">{{ $sales_order_invoice->code }}</li>
   </ol>
 @endsection
@@ -79,10 +80,6 @@
             <td>{{ number_format($sales_order_invoice->bill_price) }}</td>
           </tr>
           <tr>
-            <td style="width:30%;"><strong>Payment Method</strong></td>
-            
-          </tr>
-          <tr>
             <td style="width:30%;"><strong>Paid Price</strong></td>
             <td>{{ number_format($sales_order_invoice->paid_price) }}</td>
           </tr>
@@ -111,37 +108,41 @@
 </div>
 
 <!--Modal Complete invoice-->
-  <!-- <div class="modal fade" id="modal-complete-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-complete-invoiceLabel">
+  <div class="modal fade" id="modal-pay-sales-order-invoice" tabindex="-1" role="dialog" aria-labelledby="modal-pay-sales-order-invoiceLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
       {!! Form::open(['url'=>'completeSalesInvoice', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-complete-invoiceLabel">Complete Invoice confirmation</h4>
+          <h4 class="modal-title" id="modal-pay-sales-order-invoiceLabel">Confirmation</h4>
         </div>
         <div class="modal-body">
-          The invoice's status will be changed to completed&nbsp;
-          <br/>
+            <b id="sales-order-invoice-name-to-pay"></b> is going to be completed
+            <br/>
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="hidden" id="sales_order_invoice_id" name="sales_order_invoice_id" value="{{ $sales_order_invoice->id }}">
+          <input type="hidden" id="sales_order_invoice_id" name="sales_order_invoice_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-success">Complete</button>
+          <button type="submit" class="btn btn-success">Ok</button>
         </div>
       {!! Form::close() !!}
       </div>
     </div>
-  </div> -->
+  </div>
 <!--ENDModal Complete invoice-->
 @endsection
 
 @section('additional_scripts')
   <script type="text/javascript">
-    $('#btn-complete-invoice').on('click', function(){
-      $('#modal-complete-invoice').modal('show');
+    $('#btn-pay-invoice').on('click', function(e) {
+        var id = $(this).attr('data-id');
+        var code = $(this).attr('data-text');
+        $('#sales_order_invoice_id').val(id);
+        $('#sales-order-invoice-name-to-pay').text(code);
+        $('#modal-pay-sales-order-invoice').modal('show');
     });
   </script>
 @endsection

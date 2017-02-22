@@ -41,4 +41,9 @@ class SalesOrder extends Model
     {
         return $this->hasMany('App\SalesReturn');
     }
+
+    public function bank_purchase_invoice_payment()
+    {
+        return $this->hasMany('App\BankPurchaseInvoicePayment','purchase_invoice_payment_id');
+    }
 }

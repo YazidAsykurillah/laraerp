@@ -198,18 +198,6 @@ class PurchaseOrderInvoiceController extends Controller
         $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name','id');
         $banks = Bank::lists('name', 'id');
-        // if($invoice->purchase_order_id == 13){
-        //     return view('purchase_order.create_payment_bank_transfer')
-        //     ->with('banks', $banks)
-        //     ->with('invoice', $invoice);
-        // }
-        // elseif($invoice->payment_method_id == 2){
-        //     return view('purchase_order.create_payment_cash')
-        //     ->with('invoice', $invoice);
-        // }
-        // else{
-        //     return "Custom payment method";
-        // }
         return view('purchase_order.create_payment')
                     ->with('invoice',$invoice)
                     ->with('payment_method',$payment_methods)
