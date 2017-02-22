@@ -28,4 +28,5 @@ class SalesOrderInvoice extends Model
     {
         return $this->hasMany('App\SalesInvoicePayment', 'sales_order_invoice_id');
     }
+
 }
