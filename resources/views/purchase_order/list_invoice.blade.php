@@ -20,13 +20,13 @@
 @endsection
 
 @section('content')
-  
+
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Order Invoices</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           <table class="table table-bordered" id="table-purchase-order-invoice-invoice">
@@ -39,7 +39,6 @@
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
-                <th>Payment Method</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -52,20 +51,19 @@
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
-                <th>Payment Method</th>
                 <th style="width:10%;text-align:center;"></th>
               </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -112,13 +110,13 @@
         { data:'created_at', name:'created_at' },
         { data:'creator', name:'creator.name' },
         { data:'status', name:'status' },
-        { data:'payment_method', name:'payment_method.code' },
+        //{ data:'payment_method', name:'payment_method.code' },
         { data:'actions', name:'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
     });
 
     // Delete button handler
-    tablePurchaseOrderInvoice.on('click', '.btn-delete-purchase-order-invoice', function (e) { 
+    tablePurchaseOrderInvoice.on('click', '.btn-delete-purchase-order-invoice', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#purchase_order_invoice_id').val(id);
@@ -131,13 +129,13 @@
           if ($(this).index() != 0 && $(this).index() != 8) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tablePurchaseOrderInvoice.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
   </script>
 @endsection

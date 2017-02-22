@@ -17,7 +17,8 @@ use App\PurchaseOrder;
 use App\PaymentMethod;
 use App\PurchaseInvoicePayment;
 use App\Bank;
-
+use App\BankPurchaseInvoicePayment;
+use DB;
 
 class PurchaseOrderInvoiceController extends Controller
 {
@@ -58,7 +59,7 @@ class PurchaseOrderInvoiceController extends Controller
                 'code'=>$request->code,
                 'purchase_order_id' =>$request->purchase_order_id,
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
-                'payment_method_id'=>$request->payment_method_id,
+                //'payment_method_id'=>$request->payment_method_id,
                 // 'paid_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->paid_price)),
                 'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id
@@ -197,7 +198,7 @@ class PurchaseOrderInvoiceController extends Controller
         $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name','id');
         $banks = Bank::lists('name', 'id');
-        // if($invoice->payment_method_id == 1){
+        // if($invoice->purchase_order_id == 13){
         //     return view('purchase_order.create_payment_bank_transfer')
         //     ->with('banks', $banks)
         //     ->with('invoice', $invoice);
@@ -209,7 +210,10 @@ class PurchaseOrderInvoiceController extends Controller
         // else{
         //     return "Custom payment method";
         // }
-        return view('purchase_order.create_payment');
+        return view('purchase_order.create_payment')
+                    ->with('invoice',$invoice)
+                    ->with('payment_method',$payment_methods)
+                    ->with('banks',$banks);
 
     }
 
@@ -230,6 +234,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_invoice_payment = new PurchaseInvoicePayment;
         $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
         $purchase_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#', '', $amount));
+        $purchase_invoice_payment->payment_method_id = $request->payment_method_id;
         $purchase_invoice_payment->receiver = \Auth::user()->id;
         $save = $purchase_invoice_payment->save();
         if($save){
@@ -250,6 +255,32 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $invoice_id = $request->purchase_order_invoice_id;
         $bank_id = $request->bank_id;
+        $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+        $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
+        $current_paid_price = $purchase_order_invoice->paid_price;
+        $new_paid_price = $current_paid_price+$amount;
+        $purchase_order_id = $purchase_order_invoice->purchase_order->id;
 
+        $purchase_invoice_payment = new PurchaseInvoicePayment;
+        $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
+        $purchase_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#','',$amount));
+        $purchase_invoice_payment->payment_method_id = $request->payment_method_id;
+        $purchase_invoice_payment->receiver = \Auth::user()->id;
+        $save = $purchase_invoice_payment->save();
+
+        $bank_purchase_invoice_payment = new BankPurchaseInvoicePayment;
+        $bank_purchase_invoice_payment->bank_id = $bank_id;
+        $bank_purchase_invoice_payment->purchase_invoice_payment_id = $purchase_invoice_payment->id;
+        $bank_purchase_invoice_payment->save();
+        if($save){
+            //update invoice's paid_price
+            $purchase_order_invoice->paid_price = $new_paid_price;
+            $update_paid_price = $purchase_order_invoice->save();
+
+            return redirect('purchase-order/'.$purchase_order_id)
+                ->with('successMessage','Payment has been added');
+        }else{
+            return "Failed to save invoice payment, contact the developer";
+        }
     }
 }

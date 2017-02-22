@@ -25,7 +25,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Order</h3>
-          <a href="{{ URL::to('purchase-order/create')}}" class="btn btn-primary pull-right" title="Create new purchase-order">
+          <a href="{{ URL::to('purchase-order/create')}}" class="btn btn-primary pull-right" title="Create new purchase order">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -42,7 +42,7 @@
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
@@ -52,17 +52,17 @@
                 <th style="width:20%;">Status</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -81,7 +81,9 @@
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="hidden" id="purchase_order_id" name="purchase_order_id">
+          <input type="text" id="purchase_order_id" name="purchase_order_id">
+          <input type="text" name="payment_id" id="payment-id">
+          <input type="text" name="bank_purchase_id" id="bank_purchase_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -168,10 +170,14 @@
     });
 
     // Delete button handler
-    tablePurchaseOrder.on('click', '.btn-delete-purchase-order', function (e) { 
+    tablePurchaseOrder.on('click', '.btn-delete-purchase-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
+      var idPayment = $(this).attr('data-id-payment');
+      var idBankPurchase = $(this).attr('data-id-bank-purchase-payment');
       $('#purchase_order_id').val(id);
+      $('#payment-id').val(idPayment);
+      $('#bank_purchase_id').val(idBankPurchase);
       $('#purchase-order-name-to-delete').text(code);
       $('#modal-delete-purchase-order').modal('show');
     });
@@ -181,16 +187,16 @@
           if ($(this).index() != 0 && $(this).index() != 6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tablePurchaseOrder.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
     //Handler accept purchase order
-    tablePurchaseOrder.on('click', '.btn-accept-purchase-order', function (e) { 
+    tablePurchaseOrder.on('click', '.btn-accept-purchase-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_accepted').val(id);
@@ -200,7 +206,7 @@
     //ENDHandler accept purchase order
 
     //Handler complete purchase order
-    tablePurchaseOrder.on('click', '.btn-complete-purchase-order', function (e) { 
+    tablePurchaseOrder.on('click', '.btn-complete-purchase-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_completed').val(id);

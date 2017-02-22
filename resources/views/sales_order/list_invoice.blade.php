@@ -39,7 +39,6 @@
                 <th>Created At</th>
                 <th>Created By</th>
                 <th>Status</th>
-                <th>Payment Method</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -111,7 +110,6 @@
         { data: 'created_at', name: 'created_at' },
         { data: 'created_by', name: 'created_by' },
         { data: 'status', name: 'status' },
-        { data: 'payment', name: 'payment.payment_method_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
     });

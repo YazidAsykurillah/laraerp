@@ -67,11 +67,11 @@
           </div>
         {!! Form::close() !!}
       </div><!-- /.box-body -->
-      
+
     </div><!-- /.box -->
   </div>
   <!-- ENDSection input payment -->
-  
+
   <!-- Section Invoice Information -->
   <div class="col-lg-5">
     <div class="box">
@@ -98,14 +98,14 @@
           <div class="col-md-6"><strong>Paid Price</strong></div>
           <div class="col-md-3">{{ number_format($invoice->paid_price) }} </div>
         </div>
-        
-        
+
+
       </div><!-- /.box-body -->
-      
+
     </div><!-- /.box -->
   </div>
   <!-- ENDSection Invoice Information -->
-</div>    
+</div>
 
 @endsection
 
@@ -122,7 +122,3 @@
     });
   </script>
 @endSection
-
-
-
-

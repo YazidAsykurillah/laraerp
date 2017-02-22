@@ -48,18 +48,18 @@
                   <i class='fa fa-print'></i>&nbsp;Print
                 </a>
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
-              
+
               <div class="row">
                   <div class="col-md-2"><strong>Code</strong></div>
                   <div class="col-md-6"><strong>{{ $purchase_order->code }}</strong></div>
               </div>
               <br/>
-              
+
               <div class="table-responsive">
-                
+
                 <table class="table table-bordered" id="table-selected-products">
                   <thead>
 
@@ -133,7 +133,7 @@
                 </div>
               </div>
             </div><!-- /.box-body -->
-            
+
           </div><!-- /.box -->
         </div>
       </div>
@@ -150,7 +150,7 @@
               <h3 class="box-title"> Invoice <small>Invoice that related with this purchase order</small></h3>
               <div class="pull-right">
                 @if($purchase_order->status == 'posted' || $purchase_order->status =='completed')
-                
+
                 @endif
                 @if($purchase_order->status=='accepted' && count($purchase_order->purchase_order_invoice) == 0)
                   <a href="{{ URL::to('purchase-order-invoice/'.$purchase_order->id.'/create')}}" class="btn btn-default btn-xs">
@@ -158,13 +158,13 @@
                   </a>
                 @endif
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
               @if($invoice->count() > 0)
-                
+
                 <div class="table-responsive">
-                  
+
                   <table class="table">
                     <tr>
                       <td style="width:30%;"><strong>Invoice Code</strong></td>
@@ -175,8 +175,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Payment Method</strong></td>
-                      <td>{{$purchase_order->purchase_order_invoice->payment_method->name }}</td>
+
                     </tr>
                     <tr>
                       <td style="width:30%;"><strong>Bill Price</strong></td>
@@ -206,7 +205,7 @@
               @endif
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-              
+
             </div>
           </div><!-- /.box -->
         </div>
@@ -223,15 +222,42 @@
               <h3 class="box-title">Invoice Payments <small>Related payment with the purchase order invoice</small></h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-            @if(count($purchase_order->purchase_order_invoice))
-              @if($purchase_order->purchase_order_invoice->payment_method->name == "cash")
-                @include('purchase_order.table_invoice_cash')
-              @else
-                @include('purchase_order.table_invoice_transfer')
-              @endif
-            @endif
+                <div class="table-responsive">
+                  <table class="table" id="table-purchase-invoice-payment-transfer">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Payment Date</th>
+                        <th>Payment Method</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($purchase_order->purchase_order_invoice) > 0)
+                        @if($purchase_order->purchase_order_invoice->purchase_invoice_payment->count())
+                          <?php  $payment_row = 0; ?>
+                          @foreach($purchase_order->purchase_order_invoice->purchase_invoice_payment as $payment)
+                          <tr>
+                            <td>{{ $payment_row +=1 }}</td>
+                            <td>{{ $payment->created_at }}</td>
+                            @if($payment->payment_method_id == 2)
+                            <td>{{ "Cash" }}</td>
+                            @else
+                            <td>{{ "Bank Transfer ".$purchase_order->bank_purchase_invoice_payment }}&nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="{{$payment->id}}"><i class="fa fa-info"></i></a></td>
+                            @endif
+                            <td>{{ number_format($payment->amount) }}</td>
+                          </tr>
+                          @endforeach
+                        @endif
+                        @endif
+
+                    </tbody>
+                  </table>
+                </div>
             </div><!-- /.box-body -->
-            <div class="box-footer clearfix"></div>
+            <div class="box-footer clearfix">
+                
+            </div>
           </div><!-- /.box -->
         </div>
       </div>
@@ -251,12 +277,12 @@
                   <i class='fa fa-reply'></i>&nbsp;Create Return
                 </a>
               </div>
-              
+
             </div><!-- /.box-header -->
             <div class="box-body">
-              
+
               <div class="table-responsive">
-                
+
                 <table class="table">
                   <thead>
                     <tr>
@@ -289,7 +315,7 @@
               </div>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-              
+
             </div>
           </div><!-- /.box -->
         </div>
@@ -377,7 +403,14 @@
       $('#purchase-order-name-to-complete').text(code);
       $('#modal-complete-purchase-order').modal('show');
   });
-</script>
-  
-@endSection
 
+  //tooltip bank transfer
+  $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip({
+          //title:"<p></p>",
+          html: true
+      });
+  });
+</script>
+
+@endSection

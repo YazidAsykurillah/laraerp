@@ -76,14 +76,14 @@ class SalesOrderInvoiceController extends Controller
             //get last inserted id of sales_order_invoice
             $sales_order_invoice_id = $save->id;
             if($save){
-                
+
                 //find sales_order model
                 $sales_order = SalesOrder::findOrFail($request->sales_order_id);
                 //Build sync data to update SalesOrder relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
                     $syncData[$value] = [
-                        'quantity'=> $request->quantity[$key], 
+                        'quantity'=> $request->quantity[$key],
                         'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key])),
                         'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price_per_unit[$key]))
                     ];
@@ -114,9 +114,11 @@ class SalesOrderInvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoice = SalesOrderInvoice::findOrFail($id);
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
+        $sales_order = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
         return view('sales_order.show_invoice')
-            ->with('invoice', $invoice);
+            ->with('sales_order_invoice', $sales_order_invoice)
+            ->with('sales_order', $sales_order);
     }
 
     /**
@@ -174,9 +176,9 @@ class SalesOrderInvoiceController extends Controller
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
         //build new paid_price to be updated
         $new_paid_price = $current_paid_price+$amount;
-        
+
         $sales_order_id = $sales_order_invoice->sales_order->id;
-       
+
         $sales_invoice_payment = new SalesInvoicePayment;
         $sales_invoice_payment->sales_order_invoice_id = $request->sales_order_invoice_id;
         $sales_invoice_payment->payment_method_id = $request->payment_method_id;
@@ -198,7 +200,7 @@ class SalesOrderInvoiceController extends Controller
 
     //change status invoice to "Completed"
     public function completeSalesInvoice(Request $request)
-    {   
+    {
         $invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
         //check the bill and the paid price
         $bill_price = $invoice->bill_price;
@@ -216,5 +218,5 @@ class SalesOrderInvoiceController extends Controller
              ->with('successMessage', "Invoice has been completed");
         }
     }
-    
+
 }
