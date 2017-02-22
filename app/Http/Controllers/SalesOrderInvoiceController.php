@@ -17,7 +17,6 @@ use App\PaymentMethod;
 use App\SalesInvoicePayment;
 use App\Bank;
 use App\BankSalesInvoicePayment;
-use DB;
 
 class SalesOrderInvoiceController extends Controller
 {
@@ -187,11 +186,11 @@ class SalesOrderInvoiceController extends Controller
         $invoice_id = $request->invoice_id;
         $invoice = SalesOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name', 'id');
-        $bank = Bank::lists('name','id');
+        $banks = Bank::lists('name','id');
         return view('sales_order.create_payment')
             ->with('payment_methods', $payment_methods)
             ->with('invoice', $invoice)
-            ->with('bank',$bank);
+            ->with('banks',$banks);
     }
 
     public function storePaymentCash(StoreSalesPaymentCash $request)

@@ -117,7 +117,7 @@
                                 <div class="form-group{{ $errors->has('bank_id') ? 'has-error' : '' }}">
                                     {!! Form::label('bank_id','Bank',['class'=>'col-sm-2 control-label']) !!}
                                     <div class="col-sm-6">
-                                        {{ Form::select('bank_id',$bank,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'bank_id']) }}
+                                        {{ Form::select('bank_id',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'bank_id']) }}
                                         @if($errors->has('bank_id'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('bank_id') }}</strong>
@@ -139,11 +139,11 @@
                                 <div class="form-group">
                                   {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
                                   <div class="col-sm-10">
-                                    <a href="{{ url('purchase-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
+                                    <a href="{{ url('sales-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
                                       <i class="fa fa-repeat"></i>&nbsp;Cancel
                                     </a>&nbsp;
-                                    <input type="hidden" name="purchase_order_invoice_id" value="{{ $invoice->id }}">
-                                    <input type="hidden" name="payment_method_id" value="1">
+                                    <input type="text" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+                                    <input type="text" name="payment_method_id" value="1">
                                     <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                       <i class="fa fa-save"></i>&nbsp;Submit
                                     </button>

@@ -25,7 +25,7 @@ class StoreSalesPaymentTransfer extends Request
     {
         return [
             'amount'=>'required',
-            'bank_id'=>'required|integer|exists:bank,id'
+            'bank_id'=>'required|integer|exists:banks,id'
         ];
     }
 }
