@@ -117,11 +117,9 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
         $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
-        $payment_methods = PaymentMethod::lists('name', 'id');
         return view('purchase_order.edit_invoice')
             ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order)
-            ->with('payment_methods', $payment_methods);
+            ->with('purchase_order', $purchase_order);
     }
 
     /**
@@ -131,16 +129,15 @@ class PurchaseOrderInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePurchaseOrderInvoiceRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
         $purchase_order_invoice->code = $request->code;
         $purchase_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
-        $purchase_order_invoice->payment_method_id = $request->payment_method_id;
         $purchase_order_invoice->notes = $request->notes;
         $purchase_order_invoice->save();
 
-        //find purchase_order model
+        // //find purchase_order model
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
         //Build sync data to update PO relation w/ products
         $syncData = [];
@@ -152,7 +149,7 @@ class PurchaseOrderInvoiceController extends Controller
         //Now time to sync the products
         $purchase_order->products()->sync($syncData);
 
-        return redirect('purchase-order-invoice/'.$request->purchase_order_invoice_id)
+        return redirect('purchase-order-invoice')
             ->with('successMessage', "Invoice has been updated");
     }
 
@@ -165,7 +162,7 @@ class PurchaseOrderInvoiceController extends Controller
     public function destroy(Request $request)
     {
         $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
-        $delete = $purch_order_inv->delete();
+        $purch_order_inv->delete();
         return redirect('purchase-order-invoice')
         ->with('successMessage', 'Invoice has been deleted');
     }

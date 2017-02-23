@@ -17,6 +17,7 @@ use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
 use App\SalesOrder;
 use App\SalesOrderInvoice;
+use App\SalesReturn;
 use App\InvoiceTerm;
 use App\Driver;
 use App\StockBalance;
@@ -338,7 +339,7 @@ class DatatablesController extends Controller
                     $status_action .='</button>';
                 }
                 else{
-                    $status_label = '<p>COMPLETED</h4></p>';
+                    $status_label = '<p>COMPLETED</p>';
                 }
 
                 return $status_label.$status_action;
@@ -447,7 +448,7 @@ class DatatablesController extends Controller
             ->editColumn('paid_price', function($sales_order_invoices){
                 return number_format($sales_order_invoices->paid_price);
             })
-            ->editColumn('creator', function($sales_order_invoices){
+            ->editColumn('created_by', function($sales_order_invoices){
 
                 return $sales_order_invoices->creator->name;
             })
@@ -458,9 +459,11 @@ class DatatablesController extends Controller
                 $actions_html ='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
-                $actions_html .=    '<i class="fa fa-edit"></i>';
-                $actions_html .='</a>&nbsp;';
+                if($sales_order_invoices->status != 'completed'){
+                    $actions_html .='<a href="'.url('sales-order-invoice/'.$sales_order_invoices->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                }
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
@@ -470,6 +473,63 @@ class DatatablesController extends Controller
         return $data_sales_order_invoices->make(true);
     }
     //ENDFunction get Sales Order Invoice
+
+    //Function get sales return
+    public function getSalesReturns(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $sales_returns = SalesReturn::with('sales_order','creator','product')->select(
+            [
+                \DB::raw('@rownum := @rownum + 1 AS rownum'),
+                'sales_returns.*',
+            ]
+        );
+        $data_sales_returns = Datatables::of($sales_returns)
+            ->editColumn('sales_order_id', function($sales_returns){
+                return $sales_returns->sales_order->code;
+            })
+            ->editColumn('product_id', function($sales_returns){
+                return $sales_returns->product->name;
+            })
+            ->editColumn('status', function($sales_returns){
+                $status_label = '';
+                $status_action = '';
+                if($sales_returns->status =='posted'){
+                    $status_label = '<p>POSTED</p>';
+                    $status_action .='<button type="button" class="btn btn-warning btn-xs btn-accept-sales-return" data-id="'.$sales_returns->id.'" title="Change status to Accept">';
+                    $status_action .=    '<i class="fa fa-sign-in"></i>';
+                    $status_action .='</button>';
+                }
+                else if($sales_returns->status =='accept'){
+                    $status_label = '<p>SENT</p>';
+                    $status_action .='<button type="button" class="btn btn-success btn-xs btn-resent-sales-return" data-id="'.$sales_returns->id.'" title="Change status to Resent">';
+                    $status_action .=    '<i class="fa fa-check"></i>';
+                    $status_action .='</button>';
+                }
+                else{
+                    $status_label = '<p>RESENT</p>';
+                }
+
+                return $status_label.$status_action;
+            })
+            ->addColumn('actions', function($sales_returns){
+                $actions_html ='<a href="'.url('sales-return/'.$sales_returns->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html .='</a>&nbsp;';
+                //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
+                if($sales_returns->status == 'posted'){
+                    $actions_html .='<a href="'.url('sales-return/'.$sales_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
+
+                return $actions_html;
+            });
+        return $data_sales_returns->make(true);
+    }
 
     //get invoice terms list
     public function getInvoiceTerms(Request $request)

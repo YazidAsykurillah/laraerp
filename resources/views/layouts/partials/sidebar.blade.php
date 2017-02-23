@@ -54,7 +54,7 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('sales-order') }}"><i class="fa fa-circle-o"></i> Sales Order</a></li>
           <li><a href="{{ url('sales-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Return</a></li>
+          <li><a href="{{ url('sales-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
       </li>
       <li class="treeview">

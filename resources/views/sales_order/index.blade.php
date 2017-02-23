@@ -42,7 +42,7 @@
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
@@ -52,17 +52,17 @@
                 <th style="width:20%;">Status</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -168,7 +168,7 @@
     });
 
     // Delete button handler
-    tableSalesOrder.on('click', '.btn-delete-sales-order', function (e) { 
+    tableSalesOrder.on('click', '.btn-delete-sales-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#sales_order_id').val(id);
@@ -181,16 +181,16 @@
           if ($(this).index() != 0 && $(this).index() != 6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tableSalesOrder.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
     //Handler accept sales order
-    tableSalesOrder.on('click', '.btn-accept-sales-order', function (e) { 
+    tableSalesOrder.on('click', '.btn-accept-sales-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_accepted').val(id);
@@ -200,7 +200,7 @@
     //ENDHandler accept sales order
 
     //Handler complete sales order
-    tableSalesOrder.on('click', '.btn-complete-sales-order', function (e) { 
+    tableSalesOrder.on('click', '.btn-complete-sales-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_completed').val(id);

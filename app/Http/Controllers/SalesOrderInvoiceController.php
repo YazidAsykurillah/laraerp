@@ -17,6 +17,7 @@ use App\PaymentMethod;
 use App\SalesInvoicePayment;
 use App\Bank;
 use App\BankSalesInvoicePayment;
+use DB;
 
 class SalesOrderInvoiceController extends Controller
 {
@@ -132,7 +133,11 @@ class SalesOrderInvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
+        $sales_order = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
+        return view('sales_order.edit_invoice')
+                ->with('sales_order_invoice',$sales_order_invoice)
+                ->with('sales_order',$sales_order);
     }
 
     /**
@@ -144,7 +149,27 @@ class SalesOrderInvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
+        $sales_order_invoice->code = $request->code;
+        $sales_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#','',$request->bill_price));
+        $sales_order_invoice->notes = $request->notes;
+        $sales_order_invoice->save();
+        //UPDATE SUCCESS
+
+
+        //find sales order model
+        $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        //build sync data to update PO relative w/products
+        $syncData = [];
+        foreach ($request->product_id as $key => $value) {
+            $syncData[$value] = ['quantity'=>$request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#','',$request->price[$key]))];
+        }
+        //first, delete all the relation column between product and sales order on table product sales order before syncing
+        \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
+        //now time to sync the product
+        $sales_order->products()->sync($syncData);
+        return redirect('sales-order-invoice')
+            ->with('successMessage','has been update');
     }
 
     /**
@@ -155,9 +180,11 @@ class SalesOrderInvoiceController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id = $request->sales_order_invoice_id;
-        \DB::table('sales_order_invoices')->where('id', $id)->delete();
-        return redirect('sales-order-invoice');
+        $id = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
+        $id->delete();
+        //\DB::table('sales_order_invoices')->where('id', $id)->delete();
+        return redirect('sales-order-invoice')
+            ->with('successMessage','Invoice has been deleted');
     }
 
     //change status invoice to "Completed"

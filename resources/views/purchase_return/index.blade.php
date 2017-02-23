@@ -40,24 +40,26 @@
               </tr>
             </thead>
             <thead id="searchid">
-              <th style="width:5%;">#</th>
-                <th>Product</th>
-                <th style="width:20%;">PO Reference</th>
-                <th>Returned Qty</th>
-                <th>Created At</th>
-                <th style="width:10%;">Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <tr>
+                    <th style="width:5%;">#</th>
+                    <th>Product</th>
+                    <th style="width:20%;">PO Reference</th>
+                    <th>Returned Qty</th>
+                    <th>Created At</th>
+                    <th style="width:10%;">Status</th>
+                    <th style="width:10%;text-align:center;">Actions</th>
+                </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -114,7 +116,7 @@
     </div>
   </div>
 <!--ENDModal Send purchase-return-->
-
+    
 <!--Modal complete purchase-return-->
   <div class="modal fade" id="modal-complete-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-returnLabel">
     <div class="modal-dialog" role="document">
@@ -164,7 +166,7 @@
     });
 
     // Delete button handler
-    tablePurchaseReturn.on('click', '.btn-delete-purchase-return', function (e) { 
+    tablePurchaseReturn.on('click', '.btn-delete-purchase-return', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#purchase_order_id').val(id);
@@ -177,7 +179,7 @@
           if ($(this).index() != 0 && $(this).index() != 6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
@@ -186,7 +188,7 @@
     //ENDBlock search input and select
 
     //Handler send purchase return
-    tablePurchaseReturn.on('click', '.btn-send-purchase-return', function (e) { 
+    tablePurchaseReturn.on('click', '.btn-send-purchase-return', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_send').val(id);
       $('#modal-send-purchase-return').modal('show');
@@ -198,12 +200,12 @@
     //ENDHandler send purchase return
 
     //Handler complete purchase return
-    tablePurchaseReturn.on('click', '.btn-complete-purchase-return', function (e) { 
+    tablePurchaseReturn.on('click', '.btn-complete-purchase-return', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_completed').val(id);
       $('#modal-complete-purchase-return').modal('show');
     });
     //ENDHandler complete purchase return
-    
+
   </script>
 @endsection

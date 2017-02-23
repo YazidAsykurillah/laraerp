@@ -18,43 +18,16 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 
-//Purchase Order Invoice
-	//Route::post('storePurchasePaymentTransfer', 'PurchaseOrderInvoiceController@storePaymentTransfer');
-	//Route::post('storePurchasePaymentCash', 'PurchaseOrderInvoiceController@storePaymentCash');
-	//Route::post('completePurchaseInvoice', 'PurchaseOrderInvoiceController@completePurchaseInvoice');
-	//Route::get('purchase-order-invoice/{invoice_id}/payment/create', 'PurchaseOrderInvoiceController@createPayment');
-	//Route::get('purchase-order-invoice/{purchase_order_id}/create', 'PurchaseOrderInvoiceController@create');
-	//Route::post('storePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@store');
-	//Route::post('deletePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@destroy');
-	//Route::put('updatePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@update');
-	//Route::resource('sales-order-invoice', 'PurchaseOrderInvoiceController');
+// Sales Return
+    //Send sales return
+    Route::post('acceptSalesReturn', 'SalesReturnController@changeToAccept');
+    //Complete sales return
+    Route::post('resentSalesReturn','SalesReturnController@changeToResent');
+    //Save Purchase Return
+    Route::post('storeSalesReturn', 'SalesReturnController@store');
+    Route::resource('sales-return', 'SalesReturnController');
 
-//Purchase Return
-	//complete purchase return
-	//Route::post('completePurchaseReturn', 'PurchaseReturnController@changeToCompleted');
-	//Send purchase return
-	//Route::post('sendPurchaseReturn', 'PurchaseReturnController@changeToSent');
-	//Save Purchase Return
-	Route::post('storeSalesReturn', 'SalesReturnController@store');
-	Route::resource('sales-return', 'SalesReturnController');
 
-// //Sales Order Return
-// 	//complete purchase return
-// 	//Route::post('completePurchaseReturn', 'PurchaseReturnController@changeToCompleted');
-// 	//Send purchase return
-//     //Route::post('sendPurchaseReturn', 'PurchaseReturnController@changeToSent');
-// 	//Save Purchase Return
-// 	//Route::post('storePurchaseReturn', 'PurchaseReturnController@store');
-// 	Route::resource('sales-order', 'SalesOrderReturnController');
-//
-// //Purchase Return
-// 	//complete purchase return
-// 	//Route::post('completePurchaseReturn', 'PurchaseReturnController@changeToCompleted');
-// 	//Send purchase return
-// 	//Route::post('sendPurchaseReturn', 'PurchaseReturnController@changeToSent');
-// 	//Save Purchase Return
-// 	Route::post('storeSalesReturn', 'SalesReturnController@store');
-// 	Route::resource('sales-return', 'SalesReturnController');
 
 
 //Bank
@@ -167,6 +140,7 @@ Route::controller('datatables', 'DatatablesController',[
 	'getSalesOrders'=>'datatables.getSalesOrders',
 	'getSalesOrderInvoices'=>'datatables.getSalesOrderInvoices',
 	'getPurchaseReturns'=>'datatables.getPurchaseReturns',
+    'getSalesReturns'=>'datatables.getSalesReturns',
 	'getCustomers'=>'datatables.getCustomers',
 	'getInvoiceTerms'=>'datatables.getInvoiceTerms',
     'getDrivers'=>'datatables.getDrivers',

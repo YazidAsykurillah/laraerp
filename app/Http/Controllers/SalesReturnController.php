@@ -9,6 +9,7 @@ use App\Http\Requests;
 // use Modal
 use App\SalesOrder;
 use App\SalesReturn;
+use App\Product;
 
 class SalesReturnController extends Controller
 {
@@ -19,7 +20,7 @@ class SalesReturnController extends Controller
      */
     public function index()
     {
-        //
+        return view('sales_return.index');
     }
 
     /**
@@ -68,7 +69,9 @@ class SalesReturnController extends Controller
      */
     public function show($id)
     {
-        //
+        $sales_return = SalesReturn::findOrFail($id);
+        return view('sales_return.show')
+                ->with('sales_return', $sales_return);
     }
 
     /**
@@ -79,7 +82,11 @@ class SalesReturnController extends Controller
      */
     public function edit($id)
     {
-        //
+        $sales_return = SalesReturn::findOrFail($id);
+        $sales_order = SalesOrder::findOrFail($sales_return->sales_order->id);
+        return view('sales_return.edit')
+            ->with('sales_return',$sales_return)
+            ->with('sales_order',$sales_order);
     }
 
     /**
@@ -103,5 +110,60 @@ class SalesReturnController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeToAccept(request $request)
+    {
+        //initiate sales return and product models
+        $sales_return = SalesReturn::findOrFail($request->id_to_be_accept);
+        $product = Product::findOrFail($sales_return->product_id);
+
+        //get product name and sales order code refference
+        $product_name = $sales_return->product->name;
+        $sales_order_ref = $sales_return->sales_order->code;
+
+        //get the current product stok
+        $current_stock = $product->stock;
+
+        //product quantity to be returned
+        $qty_to_return = $sales_return->quantity;
+
+        //compare to product quantities to return and current product stock
+        //if current product stock is lower than quantities to be returned,  then throw an error
+        if($qty_to_return > $current_stock){
+            return redirect('sales-return')
+                    ->with('errorMessage',"Returned product quantity is higher than product stock, it is must be an error, please fix your sales return");
+        }else{
+            //update product stock by subtracting curent product stock by product quantity to returned
+            $product->stock = $current_stock+$qty_to_return;
+            $product->save();
+
+            //change sales return to sent
+            $sales_return->status = "accept";
+            $sales_return->save();
+            return redirect('sales-return')
+                    ->with('successMessage',"$product_name on $sales_order_ref has been returned to the supplier");
+        }
+    }
+
+    public function changeToResent(Request $request)
+    {
+        $sales_return = SalesReturn::findOrFail($request->id_to_be_resent);
+        //get product name and sales order code refference
+        $product_id = $sales_return->product_id;
+        $quantity = $sales_return->quantity;
+        $product_name = $sales_return->product->name;
+        $sales_order_ref = $sales_return->sales_order->code;
+        $sales_return->status = "resent";
+        $sales_return->save();
+
+        //now re add the quantity that returned to the stock
+        $product = Product::findOrFail($product_id);
+        $current_stock = $product->stock;
+        $new_stock = $current_stock-$quantity;
+        $product->stock = $new_stock;
+        $product->save();
+        return redirect('sales-return')
+                ->with('successMessage',"$product_name has been added back to inventory from $sales_order_ref");
     }
 }

@@ -16,20 +16,20 @@
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order </a></li>
     <li><a href="{{ URL::to('purchase-order/'.$purchase_order_invoice->purchase_order->id) }}"><i class="fa fa-dashboard"></i> {{ $purchase_order_invoice->purchase_order->code }} </a></li>
-    <li></i>Invoice</li>
+    <li>Invoice</li>
     <li><a href="{{ URL::to('purchase-order-invoice/'.$purchase_order_invoice->id.'') }}"><i class="fa fa-dashboard"></i> {{ $purchase_order_invoice->code }}</a></li>
     <li class="active">Edit</li>
   </ol>
 @endsection
 
 @section('content')
-  
+
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Form Edit Invoice</h3>    
+          <h3 class="box-title">Form Edit Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::model($purchase_order_invoice, ['route'=>['purchase-order-invoice.update', $purchase_order_invoice->id], 'id'=>'form-edit-purchase-order-invoice', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
@@ -62,7 +62,7 @@
                       <input type="text"  name="price[]" class="price form-control" value="{{ $product->pivot->price }}" />
                     </td>
                   </tr>
-                
+
                   @endforeach
                 @else
                 <tr>
@@ -75,7 +75,7 @@
           </div>
 
 
-          
+
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -98,19 +98,7 @@
                 @endif
               </div>
             </div>
-            
-            <div class="form-group{{ $errors->has('payment_method_id') ? ' has-error' : '' }}">
-              {!! Form::label('payment_method_id', 'Payment Method', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-6">
-                {{ Form::select('payment_method_id', $payment_methods, null, ['class'=>'form-control', 'placeholder'=>'Select payment method', 'id'=>'payment_method_id']) }}
-                @if ($errors->has('payment_method_id'))
-                  <span class="help-block">
-                    <strong>{{ $errors->first('payment_method_id') }}</strong>
-                  </span>
-                @endif
-              </div>
-            </div>
-            
+
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -133,26 +121,26 @@
                 </button>
               </div>
             </div>
-            {!! Form::hidden('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
-            {!! Form::hidden('purchase_order_id', $purchase_order_invoice->purchase_order->id) !!}
+            {!! Form::text('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
+            {!! Form::text('purchase_order_id', $purchase_order_invoice->purchase_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
-        
+
       </div><!-- /.box -->
     </div>
   </div>
   <!-- ENDRow Invoice-->
 
 
-  
-  
+
+
 
 
 @endsection
 
 
 @section('additional_scripts')
-  
+
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#bill_price').autoNumeric('init',{
@@ -179,6 +167,5 @@
     });
   //ENDBlock handle form create purchase order submission
   </script>
-  
-@endSection
 
+@endSection

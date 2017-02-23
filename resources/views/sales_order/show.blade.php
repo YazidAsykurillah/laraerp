@@ -236,7 +236,6 @@
                       <th>Payment Date</th>
                       <th>Payment Method</th>
                       <th>Amount</th>
-                      <th>Receiver</th>
                     </tr>
                   </thead>
                   <tbody>

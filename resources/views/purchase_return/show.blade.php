@@ -70,7 +70,7 @@
                   </button>
                 @endif
                 @if($purchase_return->status == 'sent')
-                  <button type="button" id="btn-complete-purchase-return" class="btn btn-success btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Sent">
+                  <button type="button" id="btn-complete-purchase-return" class="btn btn-success btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Completed">
                     <i class="fa fa-check"></i>&nbsp;Complete
                   </button>
                 @endif
@@ -78,11 +78,11 @@
             </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
 
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -144,10 +144,10 @@
 
 
 @section('additional_scripts')
- 
+
 <script type="text/javascript">
   //Handler send purchase return
-    $('#btn-send-purchase-return').on('click', function (e) { 
+    $('#btn-send-purchase-return').on('click', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_send').val(id);
       $('#modal-send-purchase-return').modal('show');
@@ -156,11 +156,11 @@
 
 <script type="text/javascript">
   //Handler send purchase return
-    $('#btn-complete-purchase-return').on('click', function (e) { 
+    $('#btn-complete-purchase-return').on('click', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_completed').val(id);
       $('#modal-complete-purchase-return').modal('show');
     });
 </script>
- 
+
 @endsection

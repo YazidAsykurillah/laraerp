@@ -25,7 +25,6 @@ class UpdatePurchaseOrderInvoiceRequest extends Request
     {
         return [
             'code'=>'required|unique:purchase_order_invoices,code,'.$this->get('purchase_order_invoice_id'),
-            'payment_method_id'=>'required|integer',
             'bill_price'=>'required',
             // 'paid_price'=>'required',
             'purchase_order_invoice_id'=>'required|integer|exists:purchase_order_invoices,id',
