@@ -36,9 +36,10 @@
                                 <thead>
                                     <tr>
                                         <th style="width:40%">Product Name</th>
-                                        <th style="width:20%">Quantity</th>
+                                        <th style="width:10%">Quantity</th>
                                         <th style="width:20%">Unit</th>
-                                        <th style="width:20%">Price</th>
+                                        <th style="width:15%">Price Per Unit</th>
+                                        <th style="width:15%">Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,15 +47,18 @@
                                         @foreach($sales_order->products as $product)
                                             <tr>
                                                 <td>
-                                                    <input type="text" name="product_id[]" value="{{ $product->id}}" />
+                                                    <input type="hidden" name="product_id[]" value="{{ $product->id}}" />
                                                     {{ $product->name }}
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="quantity[]" value="{{ $product->pivot->quantity }}"/>
+                                                    <input type="hidden" name="quantity[]" value="{{ $product->pivot->quantity }}" class="quantity"/>
                                                     {{ $product->pivot->quantity }}
                                                 </td>
                                                 <td>
                                                     {{ $product->unit->name }}
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="price_per_unit[]" class="price_per_unit form-control" value="{{ $product->pivot->price_per_unit }}" />
                                                 </td>
                                                 <td>
                                                     <input type="text" name="price[]" class="price form-control" value="{{ $product->pivot->price }}"/>
@@ -70,17 +74,6 @@
                             </table>
                         </div>
 
-                        <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                            {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
-                            <div class="col-sm-6">
-                                {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the invoice','id'=>'code']) !!}
-                                @if($errors->has('code'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('code') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
                         <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
                           {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
                           <div class="col-sm-6">
@@ -96,7 +89,7 @@
                         <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
                           {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
                           <div class="col-sm-6">
-                            {!! Form::textarea('notes',null,['class'=>'form-control', 'placeholder'=>'Paid price for the invoice', 'id'=>'notes']) !!}
+                            {!! Form::textarea('notes',null,['class'=>'form-control', 'placeholder'=>'Notes for the invoice', 'id'=>'notes']) !!}
                             @if ($errors->has('notes'))
                               <span class="help-block">
                                 <strong>{{ $errors->first('notes') }}</strong>
@@ -115,11 +108,58 @@
                             </button>
                           </div>
                         </div>
-                        {!! Form::text('sales_order_invoice_id', $sales_order_invoice->id) !!}
-                        {!! Form::text('sales_order_id', $sales_order_invoice->sales_order->id) !!}
+                        {!! Form::hidden('sales_order_invoice_id', $sales_order_invoice->id) !!}
+                        {!! Form::hidden('sales_order_id', $sales_order_invoice->sales_order->id) !!}
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('additional_scripts')
+    {!! Html::script('js/autoNumeric.js') !!}
+    <script type="text/javascript">
+        $('.price_per_unit').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+        $('.price').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+        $('#bill_price').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+
+        //block handle price value on price per unit keyup event
+        $('.price_per_unit').on('keyup',function(){
+            var quantity = $(this).parent().parent().find('.quantity').val();
+            var the_price = 0;
+            if($(this).val() == ''){
+                the_price = 0;
+            }else{
+                the_price = parseFloat($(this).val().replace(/,/g,''))*quantity;
+            }
+            $(this).parent().parent().find('.price').val(the_price).autoNumeric('update',{
+                aSep:',',
+                aDec:'.'
+            });
+            fill_the_bill_price();
+        });
+
+        function fill_the_bill_price(){
+            var sum = 0;
+            $('.price').each(function(){
+                sum += +$(this).val().replace(/,/g,'');
+            });
+            $('#bill_price').val(sum);
+            $('#bill_price').autoNumeric('update',{
+                aSep:',',
+                aDec:'.'
+            });
+        }
+    </script>
 @endsection

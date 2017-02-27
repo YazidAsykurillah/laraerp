@@ -114,7 +114,7 @@
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                {!! Form::textarea('notes',null,['class'=>'form-control', 'placeholder'=>'Paid price for the invoice', 'id'=>'notes']) !!}
+                {!! Form::textarea('notes',null,['class'=>'form-control', 'placeholder'=>'Notes for the invoice', 'id'=>'notes']) !!}
                 @if ($errors->has('notes'))
                   <span class="help-block">
                     <strong>{{ $errors->first('notes') }}</strong>
@@ -158,15 +158,32 @@
         aSep:',',
         aDec:'.'
     });
-    $('#paid_price').autoNumeric('init',{
-        aSep:',',
-        aDec:'.'
-    });
+    // $('#paid_price').autoNumeric('init',{
+    //     aSep:',',
+    //     aDec:'.'
+    // });
     //set autonumeric to price classes field
     $('.price').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });
+
+    //block handle price value keyup event
+    $('.price').on('keyup',function(){
+        fill_the_bill_price();
+    });
+
+    function fill_the_bill_price(){
+        var sum = 0;
+        $('.price').each(function(){
+            sum += +$(this).val().replace(/,/g,'');
+        });
+        $('#bill_price').val(sum);
+        $('#bill_price').autoNumeric('update',{
+            aSep:',',
+            aDec:'.'
+        });
+    }
 
   </script>
 

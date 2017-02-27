@@ -40,30 +40,41 @@
                       </div><!-- /.box-header -->
                       <div class="box-body">
                         {!! Form::open(['url'=>'storePurchasePaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
-                          <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
-                            {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
+                        <div class="form-group{{ $errors->has('cash_id') ? 'has-error' : '' }}">
+                            {!! Form::label('cash_id','Cash',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-6">
-                              {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount']) }}
-                              @if ($errors->has('amount'))
+                                {{ Form::select('cash_id',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) }}
+                                @if($errors->has('cash_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('cash_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
+                            {!! Form::label('amount','Amount',['class'=>'col-sm-2 control-label']) !!}
+                            <div class="col-sm-6">
+                            {{ Form::text('amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'amount-cash','autocomplete'=>'off']) }}
+                            @if($errors->has('amount'))
                                 <span class="help-block">
-                                  <strong>{{ $errors->first('amount') }}</strong>
+                                    <strong>{{ $errors->first('amount') }}</strong>
                                 </span>
-                              @endif
+                            @endif
                             </div>
-                          </div>
-                          <div class="form-group">
-                            {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-                            <div class="col-sm-10">
-                              <a href="{{ url('purchase-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
-                                <i class="fa fa-repeat"></i>&nbsp;Cancel
-                              </a>&nbsp;
-                              <input type="hidden" name="purchase_order_invoice_id" value="{{ $invoice->id }}">
-                              <input type="hidden" name="payment_method_id" value="2">
-                              <button type="submit" class="btn btn-info" id="btn-submit-payment">
-                                <i class="fa fa-save"></i>&nbsp;Submit
-                              </button>
-                            </div>
-                          </div>
+                        </div>
+                      <div class="form-group">
+                        {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+                        <div class="col-sm-10">
+                          <a href="{{ url('purchase-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
+                            <i class="fa fa-repeat"></i>&nbsp;Cancel
+                          </a>&nbsp;
+                          <input type="hidden" name="purchase_order_invoice_id" value="{{ $invoice->id }}">
+                          <input type="hidden" name="payment_method_id" value="2">
+                          <button type="submit" class="btn btn-info" id="btn-submit-payment">
+                            <i class="fa fa-save"></i>&nbsp;Submit
+                          </button>
+                        </div>
+                      </div>
                         {!! Form::close() !!}
                       </div><!-- /.box-body -->
 
@@ -121,7 +132,7 @@
                           <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                             {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-6">
-                              {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount']) }}
+                              {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount-bank']) }}
                               @if ($errors->has('amount'))
                                 <span class="help-block">
                                   <strong>{{ $errors->first('amount') }}</strong>
@@ -183,7 +194,11 @@
   <!--Auto numeric plugin-->
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
-    $('#amount').autoNumeric('init',{
+    $('#amount-bank').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+    $('#amount-cash').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

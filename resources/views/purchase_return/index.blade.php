@@ -39,7 +39,7 @@
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
                 <tr>
                     <th style="width:5%;">#</th>
                     <th>Product</th>
@@ -49,7 +49,7 @@
                     <th style="width:10%;">Status</th>
                     <th style="width:10%;text-align:center;">Actions</th>
                 </tr>
-            </thead>
+            </thead> -->
             <tbody>
 
             </tbody>
@@ -116,7 +116,7 @@
     </div>
   </div>
 <!--ENDModal Send purchase-return-->
-    
+
 <!--Modal complete purchase-return-->
   <div class="modal fade" id="modal-complete-purchase-return" tabindex="-1" role="dialog" aria-labelledby="modal-complete-purchase-returnLabel">
     <div class="modal-dialog" role="document">

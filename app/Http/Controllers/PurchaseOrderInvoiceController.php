@@ -17,7 +17,9 @@ use App\PurchaseOrder;
 use App\PaymentMethod;
 use App\PurchaseInvoicePayment;
 use App\Bank;
+use App\Cash;
 use App\BankPurchaseInvoicePayment;
+use App\CashPurchaseInvoicePayment;
 use DB;
 
 class PurchaseOrderInvoiceController extends Controller
@@ -163,6 +165,23 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
         $purch_order_inv->delete();
+
+        if($purch_order_inv->purchase_invoice_payment->count()){
+            //delete bank purchase invoice payment
+            $bank = $purch_order_inv->purchase_invoice_payment;
+            foreach ($bank as $key) {
+                \DB::table('bank_purchase_invoice_payment')->where('purchase_invoice_payment_id','=',$key->id)->delete();
+            }
+            //delete cash purchase invoice payment
+            $cash = $purch_order_inv->purchase_invoice_payment;
+            foreach ($cash as $key) {
+                \DB::table('cash_purchase_invoice_payment')->where('purchase_invoice_payment_id','=',$key->id)->delete();
+            }
+        }
+
+        //delete purchase invoice payment
+        \DB::table('purchase_invoice_payments')->where('purchase_order_invoice_id','=',$request->purchase_order_invoice_id)->delete();
+
         return redirect('purchase-order-invoice')
         ->with('successMessage', 'Invoice has been deleted');
     }
@@ -195,16 +214,19 @@ class PurchaseOrderInvoiceController extends Controller
         $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name','id');
         $banks = Bank::lists('name', 'id');
+        $cashs = Cash::lists('name','id');
         return view('purchase_order.create_payment')
                     ->with('invoice',$invoice)
                     ->with('payment_method',$payment_methods)
-                    ->with('banks',$banks);
+                    ->with('banks',$banks)
+                    ->with('cashs',$cashs);
 
     }
 
     public function storePaymentCash(StorePurchasePaymentCash $request)
     {
         $invoice_id = $request->purchase_order_invoice_id;
+        $cash_id = $request->cash_id;
         // $payment_method_id = $request->payment_method_id;
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
 
@@ -222,10 +244,21 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_invoice_payment->payment_method_id = $request->payment_method_id;
         $purchase_invoice_payment->receiver = \Auth::user()->id;
         $save = $purchase_invoice_payment->save();
+
+        $cash_purchase_invoice_payment = new CashPurchaseInvoicePayment;
+        $cash_purchase_invoice_payment->cash_id = $cash_id;
+        $cash_purchase_invoice_payment->purchase_invoice_payment_id = $purchase_invoice_payment->id;
+        $cash_purchase_invoice_payment->save();
+
+        $cash_value = Cash::findOrFail($cash_id);
+        $current_cash_value = $cash_value->value;
+        $new_cash_value = $current_cash_value-$amount;
         if($save){
             //update invoice's paid_price
             $purchase_order_invoice->paid_price = $new_paid_price;
+            $cash_value->value = $new_cash_value;
             $update_paid_price = $purchase_order_invoice->save();
+            $update_cash_value = $cash_value->save();
 
             return redirect('purchase-order/'.$purchase_order_id)
             ->with('successMessage', 'Payment has been added');
@@ -257,10 +290,16 @@ class PurchaseOrderInvoiceController extends Controller
         $bank_purchase_invoice_payment->bank_id = $bank_id;
         $bank_purchase_invoice_payment->purchase_invoice_payment_id = $purchase_invoice_payment->id;
         $bank_purchase_invoice_payment->save();
+
+        $bank_value = Bank::findOrFail($bank_id);
+        $current_bank_value = $bank_value->value;
+        $new_bank_value = $current_bank_value-$amount;
         if($save){
             //update invoice's paid_price
             $purchase_order_invoice->paid_price = $new_paid_price;
+            $bank_value->value = $new_bank_value;
             $update_paid_price = $purchase_order_invoice->save();
+            $update_bank_value = $bank_value->save();
 
             return redirect('purchase-order/'.$purchase_order_id)
                 ->with('successMessage','Payment has been added');

@@ -136,7 +136,7 @@
             },
             success : function(response){
                 if(response == 'storeSalesReturnOk'){
-                    window.location.href = '{{ URL::to("sales-order") }}';
+                    window.location.href = '{{ URL::to("sales-return") }}';
                 }
                 else{
                     $('btn-submit-sales-return').prop('disabled',false);

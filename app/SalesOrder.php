@@ -32,7 +32,7 @@ class SalesOrder extends Model
 
     public function products()
     {
-        return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'sales_order_id');
+        return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'sales_order_id','price_per_unit');
     }
 
     //relation to sales order invoice

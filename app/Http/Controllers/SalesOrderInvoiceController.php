@@ -152,7 +152,6 @@ class SalesOrderInvoiceController extends Controller
     public function update(Request $request, $id)
     {
         $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
-        $sales_order_invoice->code = $request->code;
         $sales_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#','',$request->bill_price));
         $sales_order_invoice->notes = $request->notes;
         $sales_order_invoice->save();
@@ -164,7 +163,7 @@ class SalesOrderInvoiceController extends Controller
         //build sync data to update PO relative w/products
         $syncData = [];
         foreach ($request->product_id as $key => $value) {
-            $syncData[$value] = ['quantity'=>$request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#','',$request->price[$key]))];
+            $syncData[$value] = ['quantity'=>$request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#','',$request->price[$key])), 'price_per_unit'=>floatval(preg_replace('#[^0-9.]#','',$request->price_per_unit[$key]))];
         }
         //first, delete all the relation column between product and sales order on table product sales order before syncing
         \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
@@ -185,16 +184,18 @@ class SalesOrderInvoiceController extends Controller
         $id = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
         $id->delete();
 
-        //delete bank sales invoice payment
-        $bank = $id->sales_invoice_payment;
-        foreach ($bank as $key) {
-            \DB::table('bank_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
-        }
+        if($id->sales_invoice_payment->count()){
+            //delete bank sales invoice payment
+            $bank = $id->sales_invoice_payment;
+            foreach ($bank as $key) {
+                \DB::table('bank_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+            }
 
-        //delete cash sales invoice payment
-        $cash = $id->sales_invoice_payment;
-        foreach ($cash as $key) {
-            \DB::table('cash_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+            //delete cash sales invoice payment
+            $cash = $id->sales_invoice_payment;
+            foreach ($cash as $key) {
+                \DB::table('cash_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+            }
         }
 
         //delete sales invoice payment

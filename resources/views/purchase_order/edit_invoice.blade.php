@@ -121,8 +121,8 @@
                 </button>
               </div>
             </div>
-            {!! Form::text('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
-            {!! Form::text('purchase_order_id', $purchase_order_invoice->purchase_order->id) !!}
+            {!! Form::hidden('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
+            {!! Form::hidden('purchase_order_id', $purchase_order_invoice->purchase_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
 
@@ -158,6 +158,21 @@
         aDec:'.'
     });
 
+    $('.price').on('keyup',function(){
+        fill_the_bill_price();
+    });
+
+    function fill_the_bill_price(){
+        var sum = 0;
+        $('.price').each(function(){
+            sum += +$(this).val().replace(/,/g,'');
+        });
+        $('#bill_price').val(sum);
+        $('#bill_price').autoNumeric('update',{
+            aSep:',',
+            aDec:'.'
+        });
+    }
   </script>
 
   <script type="text/javascript">
