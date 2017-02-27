@@ -13,10 +13,10 @@
 
 @section('breadcrumb')
     <ol class="breadcrumb">
-        <li><a href=""><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href=""><i class="fa fa-dashboard"></i> Sales Order</a></li>
+        <li><a href="{{ url('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ url('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
         <li>{{ $sales_order->code }}</li>
-        <li><a href=""><i class="fa fa-dashboard"></i> Return</a></li>
+        <li><a href="{{ url('sales-return/create?sales_order_id='.$sales_order->id) }}"><i class="fa fa-dashboard"></i> Return</a></li>
         <li class="active"><i></i> Create</li>
     </ol>
 @endsection
@@ -67,7 +67,7 @@
                     <div class="form-group">
                         {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            <a href="" class="btn btn-default">
+                            <a href="{{ url('sales-order/'.$sales_order->id)}}" class="btn btn-default">
                                 <i class="fa fa-repeat"></i>&nbsp;Cancel
                             </a>&nbsp;
                             <button type="submit" class="btn btn-info" id="btn-submit-sales-return">
@@ -75,7 +75,7 @@
                             </button>
                         </div>
                     </div>
-                    {!! Form::text('sales_order_id', $sales_order->id) !!}
+                    {!! Form::hidden('sales_order_id', $sales_order->id) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box footer -->
             </div>

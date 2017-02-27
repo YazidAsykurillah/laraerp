@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateColumnStatusNewToTableSalesReturns extends Migration
+class CreateTableCash extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,12 @@ class CreateColumnStatusNewToTableSalesReturns extends Migration
      */
     public function up()
     {
-        Schema::table('sales_returns',function($table){
-            $table->enum('status',['posted','accept','resent'])->default('posted');
+        Schema::create('cashs',function(Blueprint $table){
+            $table->increments('id');
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->decimal('value',20,2);
+            $table->timestamps();
         });
     }
 
@@ -24,6 +28,6 @@ class CreateColumnStatusNewToTableSalesReturns extends Migration
      */
     public function down()
     {
-        Schema::drop('sales_returns');
+        Schema::drop('cashs');
     }
 }

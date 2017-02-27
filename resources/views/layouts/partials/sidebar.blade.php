@@ -74,6 +74,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ url('bank') }}"><i class="fa fa-circle-o"></i> Bank</a></li>
+          <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Ledger</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
         </ul>

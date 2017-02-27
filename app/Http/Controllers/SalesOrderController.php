@@ -91,6 +91,7 @@ class SalesOrderController extends Controller
         //sales return related
         $sales_returns = $sales_order->sales_returns;
         $total_price = $this->count_total_price($sales_order);
+
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
@@ -173,10 +174,15 @@ class SalesOrderController extends Controller
 
         //delete related data with this sales order in the database
 
-        //bank purchase invoice payment related
+        //bank sales invoice payment related
         $bank = $sales_order->sales_order_invoice->sales_invoice_payment;
         foreach ($bank as $key) {
             \DB::table('bank_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+        }
+        //cash sales invoice payment related
+        $cash = $sales_order->sales_order_invoice->sales_invoice_payment;
+        foreach ($cash as $key) {
+            \DB::table('cash_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
         }
         //product related
         \DB::table('product_sales_order')->where('sales_order_id','=',$request->sales_order_id)->delete();
@@ -190,6 +196,14 @@ class SalesOrderController extends Controller
             ->with('successMessage', "Sales order has been deleted");
     }
 
+    public function printPdf(Request $request)
+    {
+        $data['sales_order'] = SalesOrder::findOrFail($request->id);
+        $data['total_price'] = $this->count_total_price($data['sales_order']);
+
+        $pdf =  \PDF::loadView('pdf.sales_order',$data);
+        return $pdf->stream('sales_order.pdf');
+    }
 
     public function updateStatus(Request $request)
     {

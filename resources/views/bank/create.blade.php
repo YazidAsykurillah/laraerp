@@ -18,7 +18,7 @@
     <li class="active"><i></i>Create</li>
   </ol>
 @endsection
-  
+
 @section('content')
   {!! Form::open(['route'=>'bank.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-bank','files'=>true]) !!}
   <div class="row">
@@ -26,7 +26,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Create New Bank</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
@@ -97,15 +97,15 @@
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
   {!! Form::close() !!}
 @endsection
 
 @section('additional_scripts')
-  
+
 @endsection

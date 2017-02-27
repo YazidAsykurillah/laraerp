@@ -17,14 +17,19 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+// Cash
+Route::post('deleteCash','CashController@destroy');
+Route::resource('cash','CashController');
 
 // Sales Return
     //Send sales return
     Route::post('acceptSalesReturn', 'SalesReturnController@changeToAccept');
     //Complete sales return
     Route::post('resentSalesReturn','SalesReturnController@changeToResent');
-    //Save Purchase Return
+    //Save sales Return
     Route::post('storeSalesReturn', 'SalesReturnController@store');
+    //Delete sales Return
+    Route::post('deleteSalesReturn','SalesReturnController@destroy');
     Route::resource('sales-return', 'SalesReturnController');
 
 
@@ -114,6 +119,8 @@ Route::resource('customer', 'CustomerController');
 	Route::put('UpdateSalesOrder', 'SalesOrderController@update');
 	//delete
 	Route::post('deleteSalesOrder', 'SalesOrderController@destroy');
+    //Print
+	Route::get('sales-order/{id}/printPdf', 'SalesOrderController@printPdf');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
@@ -148,5 +155,6 @@ Route::controller('datatables', 'DatatablesController',[
     'getStockBalances' => 'datatables.getStockBalances',
 
     'getBanks'=>'datatables.getBanks',
+    'getCashs'=>'datatables.getCashs',
 
 ]);

@@ -82,6 +82,7 @@
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
           <input type="hidden" id="sales_order_id" name="sales_order_id">
+          <input type="hidden" id="payment_id" name="payment_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -171,7 +172,11 @@
     tableSalesOrder.on('click', '.btn-delete-sales-order', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
+      var idPayment = $(this).attr('data-id-payment');
+      var idBankSales = $(this).attr('data-id-bank-sales-payment')
       $('#sales_order_id').val(id);
+      $('#payment_id').val(idPayment);
+      $('#bank_sales_id').val(idBankSales);
       $('#sales-order-name-to-delete').text(code);
       $('#modal-delete-sales-order').modal('show');
     });

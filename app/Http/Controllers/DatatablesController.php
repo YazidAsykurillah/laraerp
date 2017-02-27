@@ -22,6 +22,7 @@ use App\InvoiceTerm;
 use App\Driver;
 use App\StockBalance;
 use App\Bank;
+use App\Cash;
 
 class DatatablesController extends Controller
 {
@@ -367,7 +368,7 @@ class DatatablesController extends Controller
     //Function get Sales Orders list
     public function getSalesOrders(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
-        $sales_orders = SalesOrder::with('customer', 'created_by')->select(
+        $sales_orders = SalesOrder::with('customer', 'created_by','sales_order_invoice')->select(
             [
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'sales_orders.*',
@@ -412,10 +413,15 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                 }
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
-
+                if(count($sales_orders->sales_order_invoice) > 0){
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" data-id-payment="'.$sales_orders->sales_order_invoice->id.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }else{
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
                 return $actions_html;
             });
 
@@ -672,6 +678,39 @@ class DatatablesController extends Controller
         }
 
         return $data_banks->make(true);
+    }
+
+    public function getCashs(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $cashs = Cash::select([
+            \DB::raw('@rownum := @rownum + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'value',
+        ]);
+
+        $data_cashs = Datatables::of($cashs)
+            ->addColumn('actions',function($cashs){
+                $actions_html ='<a href="'.url('cash/'.$cashs->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('cash/'.$cashs->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this cash">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash" data-id="'.$cashs->id.'" data-text="'.$cashs->name.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+
+                return $actions_html;
+            });
+
+            if ($keyword = $request->get('search')['value']) {
+                $data_cashs->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+            }
+
+            return $data_cashs->make(true);
     }
 
 

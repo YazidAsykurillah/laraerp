@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableSalesReturns extends Migration
+class CreateSalesReturnTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,7 @@ class CreateTableSalesReturns extends Migration
             $table->integer('product_id');
             $table->integer('quantity');
             $table->text('notes');
-            $table->enum('status',['posted', 'sent', 'completed'])->default('posted');
+            $table->enum('status',['posted', 'accept', 'resent'])->default('posted');
             $table->integer('created_by');
             $table->timestamps();
         });

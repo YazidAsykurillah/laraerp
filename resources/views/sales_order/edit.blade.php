@@ -62,14 +62,14 @@
                 @endif
               </tbody>
               <tfoot>
-              
+
               </tfoot>
             </table>
           </div>
 
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
     </div>
@@ -83,7 +83,7 @@
           <h3 class="box-title">Customer and Notes</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+
             <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
               {!! Form::label('customer_id', 'Customer', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -120,13 +120,13 @@
                 <input type="hidden" name="id" value="{{ $sales_order->id }}" />
               </div>
             </div>
-          
+
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
   <!-- ENDRow customer and Notes-->
@@ -136,7 +136,7 @@
   <div class="modal fade" id="modal-display-products" tabindex="-1" role="dialog" aria-labelledby="modal-display-productsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-      
+
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
@@ -163,7 +163,7 @@
                 </tr>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
@@ -172,7 +172,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-info" id="btn-set-product">Set selected products</button>
         </div>
-      
+
       </div>
     </div>
   </div>
@@ -192,7 +192,7 @@
   </script>
 
   <script type="text/javascript">
-    
+
     var selected = [];
     //initially push selected products to variable selected
     @foreach($sales_order->products as $product)
@@ -255,7 +255,7 @@
         $('#tr-no-product-selected').hide();
       }
       else{
-        $('#tr-no-product-selected').show(); 
+        $('#tr-no-product-selected').show();
       }
       $('#modal-display-products').modal('hide');
     });

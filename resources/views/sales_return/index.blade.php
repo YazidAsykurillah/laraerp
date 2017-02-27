@@ -39,7 +39,7 @@
                                 <th style="width:10%;text-align:center">Actions</th>
                             </tr>
                         </thead>
-                        <thead id="searchid">
+                        <!-- <thead id="searchid">
                             <tr>
                                 <th style="width:5%">#</th>
                                 <th>Product</th>
@@ -49,7 +49,7 @@
                                 <th style="width:10%">Status</th>
                                 <th style="width:20%;text-align:center">Actions</th>
                             </tr>
-                        </thead>
+                        </thead> -->
                         <tbody>
 
                         </tbody>
@@ -77,7 +77,7 @@
                     <p class="text text-danger">
                         <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
                     </p>
-                    <input type="text" id="sales_order_id" name="sales_order_id">
+                    <input type="text" id="sales_return_id" name="sales_return_id">
                 </div><!-- /.modal-body -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -89,7 +89,7 @@
     </div><!-- /.modalfade -->
     <!-- END Delete sales-return -->
 
-    <!--Modal Aceept purchase-return-->
+    <!--Modal Aceept sales-return-->
       <div class="modal fade" id="modal-accept-sales-return" tabindex="-1" role="dialog" aria-labelledby="modal-accept-sales-returnLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -164,7 +164,7 @@
         tableSalesReturn.on('click','.btn-delete-sales-return', function(e){
             var id = $(this).attr('data-id');
             var code = $(this).attr('data-text');
-            $('#sales_order_id').val(id);
+            $('#sales_return_id').val(id);
             $('#sales-return-name-to-delete').text(code);
             $('#modal-delete-sales-return').modal('show');
         });

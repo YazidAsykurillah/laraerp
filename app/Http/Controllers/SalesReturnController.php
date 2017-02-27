@@ -98,7 +98,12 @@ class SalesReturnController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sales_return = SalesReturn::findOrFail($request->sales_return_id);
+        $sales_return->quantity = preg_replace('#[^0-9.]#','',$request->quantity);
+        $sales_return->notes = $request->notes;
+        $sales_return->save();
+        return redirect('sales-return')
+            ->with('successMessage','Sales return has been added');
     }
 
     /**
@@ -107,9 +112,12 @@ class SalesReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $sales_return = SalesReturn::findOrFail($request->sales_return_id);
+        $sales_return->delete();
+        return redirect('sales-return')
+            ->with('successMessage',"$sales_return->codehas been delete");
     }
 
     public function changeToAccept(request $request)
