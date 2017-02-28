@@ -21,13 +21,13 @@
 @endsection
 
 @section('content')
-  
+
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Form Edit Invoice</h3>    
+          <h3 class="box-title">Form Edit Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::model($purchase_order_invoice, ['route'=>['purchase-order-invoice.update', $purchase_order_invoice->id], 'id'=>'form-edit-purchase-order-invoice', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
@@ -100,22 +100,22 @@
             {!! Form::hidden('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
-        
+
       </div><!-- /.box -->
     </div>
   </div>
   <!-- ENDRow Invoice-->
 
 
-  
-  
+
+
 
 
 @endsection
 
 
 @section('additional_scripts')
-  
+
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#bill_price').autoNumeric('init',{
@@ -136,6 +136,5 @@
     });
   //ENDBlock handle form create purchase order submission
   </script>
-  
-@endSection
 
+@endSection

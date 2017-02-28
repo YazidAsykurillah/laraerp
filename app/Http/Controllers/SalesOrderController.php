@@ -91,6 +91,7 @@ class SalesOrderController extends Controller
         //sales return related
         $sales_returns = $sales_order->sales_returns;
         $total_price = $this->count_total_price($sales_order);
+
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
@@ -170,13 +171,43 @@ class SalesOrderController extends Controller
     {
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
         $sales_order->delete();
+
         //delete related data with this sales order in the database
+        if(count($sales_order->sales_order_invoice)){
+            if($sales_order->sales_order_invoice->sales_invoice_payment->count()){
+                //bank sales invoice payment related
+                $bank = $sales_order->sales_order_invoice->sales_invoice_payment;
+                foreach ($bank as $key) {
+                    \DB::table('bank_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+                }
+                //cash sales invoice payment related
+                $cash = $sales_order->sales_order_invoice->sales_invoice_payment;
+                foreach ($cash as $key) {
+                    \DB::table('cash_sales_invoice_payment')->where('sales_invoice_payment_id','=',$key->id)->delete();
+                }
+            }
+        }
         //product related
         \DB::table('product_sales_order')->where('sales_order_id','=',$request->sales_order_id)->delete();
+        //invoice related
+        \DB::table('sales_order_invoices')->where('sales_order_id','=',$request->sales_order_id)->delete();
+        //return related
+        \DB::table('sales_returns')->where('sales_order_id','=',$request->sales_order_id)->delete();
+        //sales invoice payment related
+        \DB::table('sales_invoice_payments')->where('sales_order_invoice_id','=',$request->payment_id)->delete();
+
         return redirect('sales-order')
             ->with('successMessage', "Sales order has been deleted");
     }
 
+    public function printPdf(Request $request)
+    {
+        $data['sales_order'] = SalesOrder::findOrFail($request->id);
+        $data['total_price'] = $this->count_total_price($data['sales_order']);
+
+        $pdf =  \PDF::loadView('pdf.sales_order',$data);
+        return $pdf->stream('sales_order.pdf');
+    }
 
     public function updateStatus(Request $request)
     {

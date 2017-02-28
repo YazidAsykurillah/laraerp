@@ -42,10 +42,11 @@
           <table class="table table-bordered" id="table-selected-products">
             <thead>
               <tr>
-                <th style="">Product Name</th>
-                <th style="">Quantity</th>
-                <th style="">Unit</th>
-                <th style="">Price</th>
+                <th style="width:40%">Product Name</th>
+                <th style="width:10%">Quantity</th>
+                <th style="width:20%">Unit</th>
+                <th style="width:15%">Price Per Unit</th>
+                <th style="width:15%">Price</th>
               </tr>
             </thead>
             <tbody>
@@ -60,6 +61,9 @@
                   </td>
                   <td>
                     {{ $product->unit->name }}
+                  </td>
+                  <td>
+                    {{ number_format($product->pivot->price_per_unit) }}
                   </td>
                   <td>
                     {{ number_format($product->pivot->price) }}

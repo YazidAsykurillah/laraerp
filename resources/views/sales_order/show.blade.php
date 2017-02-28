@@ -151,10 +151,12 @@
             <div class="box-header with-border">
               <h3 class="box-title"> Invoice <small>Related invoice with the sales order</small></h3>
               <div class="pull-right">
+                @if($sales_order->status == 'processing')
                 @if($invoice->count() < 1)
                 <a href="{{ URL::to('sales-order-invoice/'.$sales_order->id.'/create')}}" class="btn btn-default btn-xs">
                     <i class='fa fa-bookmark'></i>&nbsp;Create Invoice
                 </a>
+                @endif
                 @endif
               </div>
 
@@ -236,7 +238,6 @@
                       <th>Payment Date</th>
                       <th>Payment Method</th>
                       <th>Amount</th>
-                      <th>Receiver</th>
                     </tr>
                   </thead>
                   <tbody>

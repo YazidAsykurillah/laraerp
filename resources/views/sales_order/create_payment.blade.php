@@ -40,10 +40,21 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
+                                <div class="form-group{{ $errors->has('bank_id') ? 'has-error' : '' }}">
+                                    {!! Form::label('cash_id','Cash',['class'=>'col-sm-2 control-label']) !!}
+                                    <div class="col-sm-6">
+                                        {{ Form::select('cash_id',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) }}
+                                        @if($errors->has('cash_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('cash_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
                                     {!! Form::label('amount','Amount',['class'=>'col-sm-2 control-label']) !!}
                                     <div class="col-sm-6">
-                                    {{ Form::text('amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'amount']) }}
+                                    {{ Form::text('amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'amount-cash','autocomplete'=>'off']) }}
                                     @if($errors->has('amount'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('amount') }}</strong>
@@ -57,8 +68,8 @@
                                         <a href="{{ url('sales-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
                                             <i class="fa fa-repeat"></i>&nbsp;Cancel
                                         </a>&nbsp;
-                                        <input type="text" name="sales_order_invoice_id" value="{{ $invoice->id }}">
-                                        <input type="text" name="payment_method_id" value="2">
+                                        <input type="hidden" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+                                        <input type="hidden" name="payment_method_id" value="2">
                                         <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                             <i class="fa fa-save"></i>&nbsp;Submit
                                         </button>
@@ -128,7 +139,7 @@
                                 <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                                   {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
                                   <div class="col-sm-6">
-                                    {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount']) }}
+                                    {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount-bank','autocomplete'=>'off']) }}
                                     @if ($errors->has('amount'))
                                       <span class="help-block">
                                         <strong>{{ $errors->first('amount') }}</strong>
@@ -142,8 +153,8 @@
                                     <a href="{{ url('sales-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
                                       <i class="fa fa-repeat"></i>&nbsp;Cancel
                                     </a>&nbsp;
-                                    <input type="text" name="sales_order_invoice_id" value="{{ $invoice->id }}">
-                                    <input type="text" name="payment_method_id" value="1">
+                                    <input type="hidden" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+                                    <input type="hidden" name="payment_method_id" value="1">
                                     <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                       <i class="fa fa-save"></i>&nbsp;Submit
                                     </button>
@@ -182,4 +193,19 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('additional_scripts')
+    {!! Html::script('js/autoNumeric.js') !!}
+    <script type="text/javascript">
+        $('#amount-cash').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+
+        $('#amount-bank').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+    </script>
 @endsection

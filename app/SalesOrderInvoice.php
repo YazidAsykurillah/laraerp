@@ -8,6 +8,9 @@ use App\SalesOrder;
 use App\User;
 use App\PaymentMethod;
 use App\SalesInvoicePayment;
+use App\BankSalesInvoicePayment;
+use App\CashSalesInvoicePayment;
+use App\Bank;
 
 class SalesOrderInvoice extends Model
 {
@@ -29,9 +32,25 @@ class SalesOrderInvoice extends Model
     {
         return $this->belongsTo('App\PaymentMethod');
     }
+
     public function sales_invoice_payment()
     {
         return $this->hasMany('App\SalesInvoicePayment', 'sales_order_invoice_id');
+    }
+
+    public function bank_sales_invoice_payment()
+    {
+        return $this->hasMany('App\BankSalesInvoicePayment','sales_invoice_payment_id');
+    }
+
+    public function cash_sales_invoice_payment()
+    {
+        return $this->hasMany('App\CashSalesInvoicePayment','sales_invoice_payment_id');
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo('App\Bank');
     }
 
 }

@@ -8,6 +8,9 @@ use App\PurchaseOrder;
 use App\User;
 use App\PaymentMethod;
 use App\PurchaseInvoicePayment;
+use App\BankPurchaseInvoicePayment;
+use App\CashPurchaseInvoicePayment;
+use App\Bank;
 
 class PurchaseOrderInvoice extends Model
 {
@@ -33,6 +36,16 @@ class PurchaseOrderInvoice extends Model
     public function purchase_invoice_payment()
     {
         return $this->hasMany('App\PurchaseInvoicePayment', 'purchase_order_invoice_id');
+    }
+
+    public function bank_purchase_invoice_payment()
+    {
+        return $this->hasMany('App\BankPurchaseInvoicePayment','purchase_invoice_payment_id');
+    }
+
+    public function cash_purchase_invoice_payment()
+    {
+        return $this->hasMany('App\CashPurchaseInvoicePayment','purchase_invoice_payment_id');
     }
 
 

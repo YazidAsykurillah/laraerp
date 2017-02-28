@@ -160,8 +160,13 @@ class SalesOrderController extends Controller
         $sales_order->delete();
         //delete related data with this sales order in the database
         //product related
+
+        //TODO relation table delete
+
         \DB::table('product_sales_order')->where('sales_order_id','=',$request->sales_order_id)->delete();
         return redirect('sales-order')
             ->with('successMessage', "Sales order has been deleted");
     }
+
+    
 }

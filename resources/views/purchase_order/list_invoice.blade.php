@@ -42,7 +42,7 @@
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <thead id="searchid">
+            <!-- <thead id="searchid">
               <tr>
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
@@ -53,7 +53,7 @@
                 <th>Status</th>
                 <th style="width:10%;text-align:center;"></th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
 
             </tbody>

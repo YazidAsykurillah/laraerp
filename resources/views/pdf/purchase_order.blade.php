@@ -20,7 +20,7 @@
 							<th>Quantity</th>
 							<th>Units</th>
 							<th>Price</th>
-						</tr>	
+						</tr>
 					</thead>
 					<tbody>
 						@foreach($purchase_order->products as $product)
@@ -38,8 +38,8 @@
 							<th> {{ number_format($total_price) }}</th>
 						</tr>
 					</tfoot>
-					
-				</table>	
+
+				</table>
 			</div>
 		</div>
 		<p></p>
@@ -71,9 +71,9 @@
 
 			</table>
 		</div>
-		
+
 	</div>
-	
+
 </body>
 
 </html>
