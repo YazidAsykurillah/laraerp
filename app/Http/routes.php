@@ -158,7 +158,15 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('invoice-term', 'InvoiceTermController');
 
 
+//Users
+	Route::resource('user', 'UserController');
+//Roles
+	Route::post('update-role-permission', 'RoleController@updateRolePermission');
+	Route::resource('role', 'RoleController');
+
 Route::controller('datatables', 'DatatablesController',[
+	'getRoles'=>'datatables.getRoles',
+	'getUsers'=>'datatables.getUsers',
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
 	'getUnits'=>'datatables.getUnits',

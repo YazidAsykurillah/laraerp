@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\User;
-use App\Role;
 use App\PurchaseOrder;
 
 
@@ -34,31 +33,41 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\PurchaseOrder');
     }
-    
-    public function roles(){
 
-        return $this->belongsToMany('App\Role');
+
+    //ACL methods
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 
-    //----Authorization blocks--
-    public function hasRole($role)
+    public function hasRole($name)
     {
-        if ($this->isSuperAdmin()) {
-            return true;
+        foreach($this->roles as $role) {
+            if ($role->name == $name) {
+                return true;
+            }
         }
-        if (is_string($role)) {
-            return $this->role->contains('name', $role);
-        }
-        return !! $this->roles->intersect($role)->count();
-    }
-
-    public function isSuperAdmin()
-    {
-       if ($this->roles->contains('name', 'Super Admin')) {
-            return true;
-        }
+ 
         return false;
     }
-    //----ENDAuthorization blocks---
+
+    public function assignRole($role)
+    {
+        if (is_string($role)) {
+            $role = Role::where('name', $role)->first();
+        }
+ 
+        return $this->roles()->attach($role);
+    }
+ 
+    public function revokeRole($role)
+    {
+        if (is_string($role)) {
+            $role = Role::where('name', $role)->first();
+        }
+ 
+        return $this->roles()->detach($role);
+    }
     
 }

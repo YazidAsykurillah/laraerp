@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentMethodsTableSeeder::class);
         $this->call(BankTableSeeder::class);
         $this->call(StockBalanceTableSeeder::class);
+        $this->call(AclTableSeeder::class);
     }
 }

@@ -27,10 +27,17 @@ class ProductController extends Controller
     
     public function index()
     {
+        /*if (auth()->user()->can('show.product')) {
+            $categories = Category::all();
+            return view('product.index')
+                ->with('category_selections', $categories);
+        }
+        return abort(403);*/
 
         $categories = Category::all();
-        return view('product.index')
-            ->with('category_selections', $categories);
+            return view('product.index')
+                ->with('category_selections', $categories);
+        
     }
 
     /**

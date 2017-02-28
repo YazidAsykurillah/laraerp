@@ -8,6 +8,8 @@ use App\Http\Requests;
 
 use Yajra\Datatables\Datatables;
 
+use App\User;
+use App\Role;
 use App\Product;
 use App\Supplier;
 use App\Customer;
@@ -24,6 +26,8 @@ use App\Bank;
 
 class DatatablesController extends Controller
 {
+
+    
 
     //Function get CUSTOMERS datatable
     public function getCustomers(Request $request)
@@ -614,6 +618,71 @@ class DatatablesController extends Controller
         return $data_banks->make(true);
     }
 
+
+    //Build users data
+    public function getUsers(Request $request){
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $users = User::with('roles')->select(
+            [
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'users.*',
+            ]
+        );
+        $datatables = Datatables::of($users)
+            ->addColumn('role', function($users){
+                return $users->roles->first()->name;
+            })
+            ->addColumn('actions', function($users){
+                    $actions_html ='<a href="'.url('user/'.$users->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('user/'.$users->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this user">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-user" data-id="'.$users->id.'" data-text="'.$users->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $datatables->make(true);
+    }
+
+    //Build roles data
+    public function getRoles(Request $request){
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $roles = Role::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'name',
+        ])->where('name','!=', 'Super Admin');
+        $datatables = Datatables::of($roles)
+            
+            ->addColumn('actions', function($roles){
+                    $actions_html ='<a href="'.url('role/'.$roles->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('role/'.$roles->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this role">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-role" data-id="'.$roles->id.'" data-text="'.$roles->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $datatables->make(true);
+    }
 
 
 

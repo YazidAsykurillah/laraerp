@@ -16,17 +16,6 @@
       </div>
     </div>
 
-    <!-- search form (Optional) -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
-        <span class="input-group-btn">
-          <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-        </span>
-      </div>
-    </form>
-    <!-- /.search form -->
-
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <li class="header">NAVIGATION</li>
@@ -65,6 +54,8 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
           <li><a href="{{ url('stock_balance') }}"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
+          <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
+          <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -86,10 +77,27 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
           <li><a href="{{ url('customer') }}"><i class="fa fa-circle-o"></i> Customer</a></li>
-          <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
-          <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
           <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Terms</a></li>
           <li><a href="{{ url('driver') }}"><i class="fa fa-circle-o"></i> Drivers</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-users"></i>
+          <span>Users</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('user') }}"><i class="fa fa-circle-o"></i> Users List</a></li>
+        </ul>
+      </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-lock"></i>
+          <span>Role and Permission</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('role') }}"><i class="fa fa-circle-o"></i> Role</a></li>
+          <li><a href="{{ url('permission') }}"><i class="fa fa-circle-o"></i> Permission</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

@@ -46,8 +46,6 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-
-        //return config('app.timezone');
         return view('purchase_order.index');
     }
 
