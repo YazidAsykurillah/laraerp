@@ -24,8 +24,10 @@ class AddNotesToTablePurchaseOrderInvoices extends Migration
      */
     public function down()
     {
-        Schema::table('purchase_order_invoices', function($table){
-            $table->dropColumn('notes');
-        });
+        if(Schema::hasColumn('purchase_order_invoices', 'notes')){
+            Schema::table('purchase_order_invoices', function($table){
+                $table->dropColumn('notes');
+            });
+        }
     }
 }

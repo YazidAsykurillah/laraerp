@@ -24,8 +24,11 @@ class AddPaymentMethodIdToPurchaseOrderInvoiceTable extends Migration
      */
     public function down()
     {
-        Schema::table('purchase_order_invoices', function($table){
-            $table->dropColumn('payment_method_id');
-        });
+        if(Schema::hasColumn('purchase_order_invoices', 'payment_method_id')){
+            Schema::table('purchase_order_invoices', function($table){
+                $table->dropColumn('payment_method_id');
+            });    
+        }
+        
     }
 }

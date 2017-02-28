@@ -12,9 +12,12 @@ class DropColumnStatusFromTableSalesReturns extends Migration
      */
     public function up()
     {
-        Schema::table('sales_returns',function($table){
-            $table->dropColumn('status');
-        });
+        if(Schema::hasColumn('sales_returns', 'status')){
+            Schema::table('sales_returns',function($table){
+                $table->dropColumn('status');
+            });    
+        }
+        
     }
 
     /**
@@ -24,6 +27,6 @@ class DropColumnStatusFromTableSalesReturns extends Migration
      */
     public function down()
     {
-        Schema::drop('sales_returns');
+        //Schema::drop('sales_returns');
     }
 }

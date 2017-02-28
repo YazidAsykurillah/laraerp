@@ -12,9 +12,12 @@ class DropColumnPaymentMethodFromTablePurchaseOrderInvoices extends Migration
      */
     public function up()
     {
-        Schema::table('purchase_order_invoices', function(Blueprint $table){
-            $table->dropColumn('payment_method_id');
-        });
+        if (Schema::hasColumn('purchase_order_invoices', 'payment_method_id')){
+            Schema::table('purchase_order_invoices', function(Blueprint $table){
+                $table->dropColumn('payment_method_id');
+            });
+        }
+        
     }
 
     /**
@@ -24,6 +27,6 @@ class DropColumnPaymentMethodFromTablePurchaseOrderInvoices extends Migration
      */
     public function down()
     {
-        Schema::drop('purchase_order_invoices');
+        //Schema::drop('purchase_order_invoices');
     }
 }
