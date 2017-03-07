@@ -13,12 +13,14 @@ use App\SalesReturn;
 use App\SalesInvoicePayment;
 use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
+use App\Driver;
+use App\Vehicle;
 
 class SalesOrder extends Model
 {
     protected $table = 'sales_orders';
 
-    protected $fillable = ['code', 'creator', 'customer_id', 'notes', 'status'];
+    protected $fillable = ['code', 'creator', 'customer_id', 'notes', 'status','driver_id','vehicle_id'];
 
     public function customer()
     {
@@ -28,6 +30,16 @@ class SalesOrder extends Model
     public function created_by()
     {
     	return $this->belongsTo('App\User', 'creator');
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo('App\Driver');
+    }
+
+    public function vehicle()
+    {
+        return $this->belongsTo('App\Vehicle');
     }
 
     public function products()

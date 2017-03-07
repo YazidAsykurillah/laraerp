@@ -13,6 +13,7 @@ Use Carbon\Carbon;
 
 use App\SalesOrderInvoice;
 use App\SalesOrder;
+use App\InvoiceTerm;
 use App\PaymentMethod;
 use App\SalesInvoicePayment;
 use App\Cash;
@@ -321,6 +322,17 @@ class SalesOrderInvoiceController extends Controller
         }else{
             return "Failed to save invoice payment, contact the developer";
         }
+    }
+
+    public function printInv(Request $request)
+    {
+        $data['sales_order_invoice'] = SalesOrderInvoice::findOrFail($request->id);
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($request->id);
+        $data['sales_order'] = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
+        $sales_order = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
+        $data['invoice_term'] = InvoiceTerm::findOrFail($sales_order->customer->invoice_term_id);
+        $pdf = \PDF::loadView('pdf.inv_sales_order',$data);
+        return $pdf->stream('inv_sales_order.pdf');
     }
 
 }

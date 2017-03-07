@@ -77,7 +77,7 @@
   <!-- ENDRow Products-->
   <!-- Row Customer and Notes-->
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Customer and Notes</h3>
@@ -127,6 +127,37 @@
         </div>
       </div><!-- /.box -->
 
+    </div>
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Drivers and Transport</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                    {!! Form::label('driver_id','Driver',['class'=>'col-sm-2 control-label']) !!}
+                    <div class="col-sm-6">
+                        {{ Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select driver','id'=>'driver_id']) }}
+                        @if($errors->has('driver_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('driver_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('vehicle_id') ? 'has-error' : '' }}">
+                    {!! Form::label('vehicle_id','Vehicle',['class'=>'col-sm-2 control-label']) !!}
+                    <div class="col-sm-6">
+                        {{ Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select vehicle','id'=>'vehicle_id']) }}
+                        @if($errors->has('vehicle_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('vehicle_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                    </div>
+            </div>
+        </div>
     </div>
   </div>
   <!-- ENDRow customer and Notes-->

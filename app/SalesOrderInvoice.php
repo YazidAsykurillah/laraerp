@@ -11,6 +11,7 @@ use App\SalesInvoicePayment;
 use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
 use App\Bank;
+use App\InvoiceTerm;
 
 class SalesOrderInvoice extends Model
 {

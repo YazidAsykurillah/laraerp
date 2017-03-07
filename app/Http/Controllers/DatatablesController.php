@@ -25,11 +25,14 @@ use App\Driver;
 use App\StockBalance;
 use App\Bank;
 use App\Cash;
+use App\Vehicle;
+use App\ChartAccount;
+use App\SubChartAccount;
 
 class DatatablesController extends Controller
 {
 
-    
+
 
     //Function get CUSTOMERS datatable
     public function getCustomers(Request $request)
@@ -762,7 +765,7 @@ class DatatablesController extends Controller
             'name',
         ])->where('name','!=', 'Super Admin');
         $datatables = Datatables::of($roles)
-            
+
             ->addColumn('actions', function($roles){
                     $actions_html ='<a href="'.url('role/'.$roles->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
@@ -783,6 +786,81 @@ class DatatablesController extends Controller
         return $datatables->make(true);
     }
 
+    //Function to get vehicle list
+    public function getVehicles(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $vehicles = Vehicle::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'category',
+            'number_of_vehicle',
+        ]);
 
+        $data_vehicles = Datatables::of($vehicles)
+            ->editColumn('category', function($vehicles){
+                $category = '';
+                if($vehicles->category == 'truck'){
+                    $category = "Truck";
+                }else if($vehicles->category == 'pick_up'){
+                    $category = "Pick Up";
+                }else if($vehicles->category == 'motorcycle'){
+                    $category = "Motorcycle";
+                }
+                return $category;
+            })
+            ->addColumn('actions', function($vehicles){
+                $actions_html ='<a href="'.url('vehicle/'.$vehicles->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<a href="'.url('vehicle/'.$vehicles->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this vehicle">';
+                $actions_html .=    '<i class="fa fa-edit"></i>';
+                $actions_html .='</a>&nbsp;';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vehicle" data-id="'.$vehicles->id.'" data-text="'.$vehicles->name.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
 
+                return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_vehicles->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_vehicles->make(true);
+
+    }
+    //ENDFunction to get vehicle list
+
+    public function getChartAccounts(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $chart_accounts = ChartAccount::select([
+            \DB::raw('@rownum := @rownum + 1 AS rownum'),
+            'id',
+            'name',
+            'account_number',
+            'description',
+        ]);
+
+        $data_chart_accounts = Datatables::of($chart_accounts)
+        ->addColumn('actions', function($chart_accounts){
+            $actions_html ='<a href="'.url('chart-account/'.$chart_accounts->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+            $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+            $actions_html .='</a>&nbsp;';
+            $actions_html .='<a href="'.url('chart-account/'.$chart_accounts->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this chart account">';
+            $actions_html .=    '<i class="fa fa-edit"></i>';
+            $actions_html .='</a>&nbsp;';
+            $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-chart-account" data-id="'.$chart_accounts->id.'" data-text="'.$chart_accounts->name.'">';
+            $actions_html .=    '<i class="fa fa-trash"></i>';
+            $actions_html .='</button>';
+
+            return $actions_html;
+        });
+
+        if($keyword = $request->get('search')['value']){
+            $data_chart_accounts->filterColumn('rownum','whereRaw','@rownum + 1 like ?', ["%{$keyword}"]);
+        }
+
+        return $data_chart_accounts->make(true);
+    }
 }

@@ -30,6 +30,9 @@
         <h3 class="box-title">{{ $sales_order_invoice->code }}<small></small></h3>
         <div class="pull-right">
           <!--Show button create payment only when invoice status is NOT completed yet-->
+          <a href="{{ url('sales-order-invoice/'.$sales_order_invoice->id.'/printInv') }}" class="btn btn-default btn-xs">
+              <i class="fa fa-print"></i>&nbsp;Print
+          </a>
           @if($sales_order_invoice->status != "completed")
           <a href="{{ url('sales-order-invoice/'.$sales_order_invoice->id.'/payment/create') }}" class="btn btn-default btn-xs" title="Create payment for this invoice">
             <i class='fa fa-money'></i>&nbsp;Create Payment

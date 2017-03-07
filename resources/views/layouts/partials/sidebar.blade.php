@@ -68,6 +68,8 @@
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Ledger</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
+          <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
+          <li><a href="{{ url('neraca') }}"><i class="fa fa-circle-o"></i> Neraca</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -80,6 +82,7 @@
           <li><a href="{{ url('customer') }}"><i class="fa fa-circle-o"></i> Customer</a></li>
           <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Terms</a></li>
           <li><a href="{{ url('driver') }}"><i class="fa fa-circle-o"></i> Drivers</a></li>
+          <li><a href="{{ url('vehicle') }}"><i class="fa fa-circle-o"></i> Vehicle</a></li>
         </ul>
       </li>
       <li class="treeview">

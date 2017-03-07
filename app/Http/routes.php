@@ -17,6 +17,24 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//neraca
+Route::post('neraca.neraca_montly_print','NeracaController@neraca_montly_print');
+Route::resource('neraca','NeracaController');
+
+//sub chart account
+Route::post('deleteSubChartAccount','ChartAccountController@delete_sub');
+Route::put('sub-chart-account.update_sub','ChartAccountController@update_sub');
+Route::post('sub-chart-account.store_sub','ChartAccountController@store_sub');
+Route::resource('sub-chart-account','ChartAccountController');
+
+//chart account
+Route::post('deleteChartAccount','ChartAccountController@destroy');
+Route::resource('chart-account','ChartAccountController');
+
+// vehicle
+Route::post('deleteVehicle','VehicleController@destroy');
+Route::resource('vehicle','VehicleController');
+
 // Cash
 Route::post('deleteCash','CashController@destroy');
 Route::resource('cash','CashController');
@@ -121,6 +139,7 @@ Route::resource('customer', 'CustomerController');
 	Route::post('deleteSalesOrder', 'SalesOrderController@destroy');
     //Print
 	Route::get('sales-order/{id}/printPdf', 'SalesOrderController@printPdf');
+    Route::get('sales-order/{id}/printDO','SalesOrderController@printDO');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
@@ -132,6 +151,8 @@ Route::resource('customer', 'CustomerController');
 	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');
 	Route::get('sales-order-invoice/{invoice_id}/payment/create', 'SalesOrderInvoiceController@createPayment');
 	Route::post('storeInvoicePayment', 'SalesOrderInvoiceController@storeInvoicePayment');
+    //print
+    Route::get('sales-order-invoice/{id}/printInv','SalesOrderInvoiceController@printInv');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
 
 //Invoiceterms
@@ -164,5 +185,6 @@ Route::controller('datatables', 'DatatablesController',[
 
     'getBanks'=>'datatables.getBanks',
     'getCashs'=>'datatables.getCashs',
-
+    'getVehicles' =>'datatables.getVehicles',
+    'getChartAccounts' =>'datatables.getChartAccounts',5
 ]);

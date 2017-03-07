@@ -47,7 +47,7 @@
 
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
     </div>
@@ -55,13 +55,13 @@
   <!-- ENDRow Products-->
   <!-- Row customer and Notes-->
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Customer and Notes</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+
             <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
               {!! Form::label('customer_id', 'customer', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -97,14 +97,44 @@
                 </button>
               </div>
             </div>
-          
+
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Drivers and Transport</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                    {!! Form::label('driver_id','Driver',['class'=>'col-sm-2 control-label']) !!}
+                    <div class="col-sm-6">
+                        {{ Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select driver','id'=>'driver_id']) }}
+                        @if($errors->has('driver_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('driver_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                    {!! Form::label('vehicle_id','Vehicle',['class'=>'col-sm-2 control-label']) !!}
+                    <div class="col-sm-6">
+                        {{ Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select vehicle','id'=>'vehicle_id']) }}
+                        @if($errors->has('vehicle_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('vehicle_id') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                    </div>
+            </div>
+        </div>
   </div>
   <!-- ENDRow customer and Notes-->
   {!! Form::close() !!}
@@ -113,7 +143,7 @@
   <div class="modal fade" id="modal-display-products" tabindex="-1" role="dialog" aria-labelledby="modal-display-productsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-      
+
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
@@ -140,7 +170,7 @@
                 </tr>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
@@ -149,7 +179,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-info" id="btn-set-product">Set selected products</button>
         </div>
-      
+
       </div>
     </div>
   </div>
@@ -169,7 +199,7 @@
   </script>
 
   <script type="text/javascript">
-    
+
     var selected = [];
 
     var tableProduct =  $('#table-product').DataTable({
@@ -183,7 +213,7 @@
         { data: 'name', name: 'name' },
         { data: 'stock', name: 'stock' },
         { data: 'minimum_stock', name: 'minimum_stock' },
-        
+
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -225,11 +255,11 @@
               selected.splice( index, 1 );
               $('#tr_product_'+id).remove();
           }
-   
+
           $(this).toggleClass('selected');
         }
-        
-        
+
+
     } );
 
     $('#btn-set-product').on('click', function(){
@@ -237,7 +267,7 @@
         $('#tr-no-product-selected').hide();
       }
       else{
-        $('#tr-no-product-selected').show(); 
+        $('#tr-no-product-selected').show();
       }
       $('#modal-display-products').modal('hide');
     });
@@ -247,7 +277,7 @@
       if ($(this).index() != 0 && $(this).index() != 5) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
@@ -302,4 +332,3 @@
   //ENDBlock handle form create Sales Order submission
   </script>
 @endSection
-

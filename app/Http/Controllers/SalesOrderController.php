@@ -10,6 +10,8 @@ use App\Http\Requests\UpdateSalesOrderRequest;
 
 use App\SalesOrder;
 use App\Customer;
+use App\Driver;
+use App\Vehicle;
 
 class SalesOrderController extends Controller
 {
@@ -31,8 +33,13 @@ class SalesOrderController extends Controller
     public function create()
     {
         $customer_options = Customer::lists('name', 'id');
+        $driver_options = Driver::lists('name','id');
+        $vehicle_options = Vehicle::lists('number_of_vehicle','id');
+
         return view('sales_order.create')
-            ->with('customer_options', $customer_options);
+            ->with('customer_options', $customer_options)
+            ->with('driver_options',$driver_options)
+            ->with('vehicle_options',$vehicle_options);
     }
 
     /**
@@ -47,7 +54,9 @@ class SalesOrderController extends Controller
             $data = [
                 'customer_id'=>$request->customer_id,
                 'notes'=>$request->notes,
-                'creator'=>\Auth::user()->id
+                'creator'=>\Auth::user()->id,
+                'driver_id'=>$request->driver_id,
+                'vehicle_id'=>$request->vehicle_id
             ];
 
             $save = SalesOrder::create($data);
@@ -112,11 +121,15 @@ class SalesOrderController extends Controller
         $sales_order = SalesOrder::findOrFail($id);
         if($sales_order->status == 'posted'){
             $customer_options = Customer::lists('name', 'id');
+            $driver_options = Driver::lists('name','id');
+            $vehicle_options = Vehicle::lists('number_of_vehicle','id');
             $total_price = $this->count_total_price($sales_order);
             return view('sales_order.edit')
                 ->with('sales_order', $sales_order)
                 ->with('total_price', $total_price)
-                ->with('customer_options', $customer_options);
+                ->with('customer_options', $customer_options)
+                ->with('driver_options',$driver_options)
+                ->with('vehicle_options',$vehicle_options);
         }
         else{
 
@@ -140,6 +153,8 @@ class SalesOrderController extends Controller
             $sales_order = SalesOrder::findOrFail($id);
             $sales_order->customer_id = $request->customer_id;
             $sales_order->notes = $request->notes;
+            $sales_order->driver_id = $request->driver_id;
+            $sales_order->vehicle_id = $request->vehicle_id;
             $update = $sales_order->save();
 
             //Build sync data to update PO relation w/ products
@@ -207,6 +222,14 @@ class SalesOrderController extends Controller
 
         $pdf =  \PDF::loadView('pdf.sales_order',$data);
         return $pdf->stream('sales_order.pdf');
+    }
+
+    public function printDO(Request $request)
+    {
+        $data['sales_order'] = SalesOrder::findOrFail($request->id);
+
+        $pdf = \PDF::loadView('pdf.do_sales_order',$data);
+        return $pdf->stream('do_sales_order.pdf');
     }
 
     public function updateStatus(Request $request)

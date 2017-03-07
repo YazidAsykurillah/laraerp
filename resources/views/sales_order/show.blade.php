@@ -44,6 +44,9 @@
             <div class="box-header with-border">
               <h3 class="box-title">General Information</h3>
               <div class="pull-right">
+                <a href="{{ url('sales-order/'.$sales_order->id.'/printDO') }}" class="btn btn-default btn-xs">
+                    <i class="fa fa-file"></i>&nbsp;Delivery Orders
+                </a>
                 <a href="{{ url('sales-order/'.$sales_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
                   <i class='fa fa-print'></i>&nbsp;Print
                 </a>

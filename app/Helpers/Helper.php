@@ -14,5 +14,9 @@ class Helper
     {
 
     }
-}
 
+    public static function total_amount_sales_bank($sales_order_invoice_id,$payment_method_id,$created_at)
+    {
+        return "hello";
+    }
+}
