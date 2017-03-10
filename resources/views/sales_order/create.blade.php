@@ -141,12 +141,12 @@
 
   <!--Modal Display product datatables-->
   <div class="modal fade" id="modal-display-products" tabindex="-1" role="dialog" aria-labelledby="modal-display-productsLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width:80%">
       <div class="modal-content">
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
+          <h4 class="modal-title" id="modal-display-productsLabel">Sub Products list</h4>
         </div>
         <div class="modal-body">
           <div class="table-responsive">
@@ -154,19 +154,27 @@
               <thead>
                 <tr>
                   <th style="width:5%;">#</th>
-                  <th style="width:10%;">Code</th>
-                  <th>Product Name</th>
+                  <th>Main Product</th>
+                  <th>Name</th>
+                  <th>Description</th>
                   <th>Stock</th>
                   <th>Minimum Stock</th>
+                  <th>Family</th>
+                  <th>Category</th>
+                  <th>Unit</th>
                 </tr>
               </thead>
               <thead id="searchid">
                 <tr>
                   <th style="width:5%;"></th>
-                  <th>Code</th>
-                  <th>Product Name</th>
+                  <th>Main Product</th>
+                  <th>Name</th>
+                  <th>Description</th>
                   <th>Stock</th>
                   <th>Minimum Stock</th>
+                  <th>Family</th>
+                  <th>Category</th>
+                  <th>Unit</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,11 +217,14 @@
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'code', name: 'code' },
-        { data: 'name', name: 'name' },
+        { data: 'main_product_id', name: 'main_product_id'},
+        { data: 'name', name: 'name'},
+        { data: 'description', name: 'description'},
         { data: 'stock', name: 'stock' },
         { data: 'minimum_stock', name: 'minimum_stock' },
-
+        { data: 'family_id', name: 'family_id' },
+        { data: 'category_id', name: 'category_id' },
+        { data: 'unit_id', name: 'unit_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -229,6 +240,7 @@
         var product_name = tableProduct.row(this).data().name;
         var stock = tableProduct.row(this).data().stock;
         var minimum_stock = tableProduct.row(this).data().minimum_stock;
+        //alert('ahi'+minimum_stock);
         if(stock < minimum_stock){ //product out of the stock, prevent this product to be added on the selected product
           alertify.error(product_name+" is out of the stock");
           return false;
@@ -274,7 +286,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 9) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 

@@ -28,6 +28,7 @@ use App\Cash;
 use App\Vehicle;
 use App\ChartAccount;
 use App\SubChartAccount;
+use App\MainProduct;
 
 class DatatablesController extends Controller
 {
@@ -84,40 +85,29 @@ class DatatablesController extends Controller
         $products = Product::select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id',
-            'code',
             'name',
-            'category_id',
-            'unit_id',
+            'description',
             'stock',
-            'minimum_stock'
+            'minimum_stock',
+            'main_product_id'
         ]);
         $datatables = Datatables::of($products)
-            ->editColumn('code', function($products){
-                $code_html  ='<a href="'.url('product/'.$products->id).'" class="btn btn-link btn-xs" target="_" title="Click to see the detail">';
-                $code_html .=   '<i class="fa fa-link">&nbsp;'.$products->code.'</i>';
-                $code_html .='</a>&nbsp;';
-                return $code_html;
-            })
-            ->editColumn('category_id', function($products){
-                return $products->category->name;
-            })
-            ->editColumn('unit_id', function($products){
-                if($products->unit_id != NULL){
-                    return $products->unit->name;
-                }
-                return 'Undefined unit';
+        ->editColumn('main_product_id', function($products){
+            $code_html  ='<a href="'.url('main-product/'.$products->main_product->id).'" class="btn btn-link btn-xs" target="_blank" title="Click to see the detail">';
+            $code_html .=   '<i class="fa fa-link">&nbsp;'.$products->main_product->name.'</i>';
+            $code_html .='</a>&nbsp;';
+            return $code_html;
+        })
+        ->editColumn('family_id',function($products){
+            return $products->main_product->family->name;
+        })
+        ->editColumn('category_id',function($products){
+            return $products->main_product->category->name;
+        })
+        ->editColumn('unit_id',function($products){
+            return $products->main_product->unit->name;
+        });
 
-            })
-            ->addColumn('actions', function($products){
-                    $actions_html  ='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit produk ini">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product" data-id="'.$products->id.'" data-text="'.$products->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
-                    return $actions_html;
-            });
         if ($keyword = $request->get('search')['value']) {
             $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
@@ -126,6 +116,51 @@ class DatatablesController extends Controller
 
     }
     //ENDFunction to get product list
+
+    public function getMainProducts(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $main_products = MainProduct::select([
+            \DB::raw('@rownum := @rownum + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'family_id',
+            'category_id',
+            'unit_id'
+        ]);
+        $data_main_products = Datatables::of($main_products)
+            ->editColumn('code', function($main_products){
+                $code_html  ='<a href="'.url('main-product/'.$main_products->id).'" class="btn btn-link btn-xs" target="_" title="Click to see the detail">';
+                $code_html .=   '<i class="fa fa-link">&nbsp;'.$main_products->code.'</i>';
+                $code_html .='</a>&nbsp;';
+                return $code_html;
+            })
+            ->editColumn('family_id', function($main_products){
+                return $main_products->family->name;
+            })
+            ->editColumn('category_id', function($main_products){
+                return $main_products->category->name;
+            })
+            ->editColumn('unit_id', function($main_products){
+                return $main_products->unit->name;
+            })
+            ->addColumn('actions', function($main_products){
+                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+            if($keyword = $request->get('search')['value']){
+                $data_main_products->filterColumn('rownum','whereRaw','@rownum + 1 like ?', ["%{$keyword}%"]);
+            }
+
+            return $data_main_products->make(true);
+    }
 
     //Function to get UNITS list
     public function getUnits(Request $request)

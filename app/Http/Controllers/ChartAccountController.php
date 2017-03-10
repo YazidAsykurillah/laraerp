@@ -60,13 +60,13 @@ class ChartAccountController extends Controller
     {
         $chart_account = ChartAccount::findOrFail($id);
         $sub_chart_account = $chart_account->sub_chart_account;
-        if($chart_account->id == 6){
+        if($chart_account->name == 'KAS'){
             $cash = Cash::lists('name','id');
             return view('chart_account.show_cash')
                 ->with('chart_account',$chart_account)
                 ->with('sub_chart_account',$sub_chart_account)
                 ->with('cash',$cash);
-        }elseif ($chart_account->id == 8) {
+        }elseif ($chart_account->name == 'BANK') {
             $bank = Bank::lists('name','id');
             return view('chart_account.show_bank')
                 ->with('chart_account',$chart_account)

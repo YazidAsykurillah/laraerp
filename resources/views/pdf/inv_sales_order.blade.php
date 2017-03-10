@@ -122,10 +122,10 @@
                     @foreach($sales_order->products as $product )
                     <tr>
                         <td>{{ $no++.'.' }}</td>
-                        <td>{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->description }}</td>
                         <td style="text-align:center">{{ $product->pivot->quantity }}</td>
-                        <td style="text-align:center">{{ $product->unit->name }}</td>
+                        <td style="text-align:center">{{ $product->main_product->unit->name }}</td>
                         <td style="text-align:right">{{ number_format($product->pivot->price_per_unit) }}.00</td>
                         <td style="text-align:right">{{ number_format($product->pivot->price) }}.00</td>
                     </tr>

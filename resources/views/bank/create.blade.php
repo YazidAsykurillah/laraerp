@@ -107,5 +107,11 @@
 @endsection
 
 @section('additional_scripts')
-
+{!! Html::script('js/autoNumeric.js') !!}
+<script type="text/javascript">
+    $('#value').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+</script>
 @endsection

@@ -17,14 +17,14 @@ use App\Family;
 
 class ProductController extends Controller
 {
-    
+
     protected $product_image = NULL;
     protected $product_image_to_be_deleted = '';
 
     public function __construct(){
         $this->middleware('auth');
     }
-    
+
     public function index()
     {
         /*if (auth()->user()->can('show.product')) {
@@ -37,7 +37,7 @@ class ProductController extends Controller
         $categories = Category::all();
             return view('product.index')
                 ->with('category_selections', $categories);
-        
+
     }
 
     /**
@@ -58,33 +58,19 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        if($request->hasFile('image')){
-            $this->upload_process($request);
-        }
-        $product = new Product;
-        $product->name = $request->name;
-        $product->image = $this->product_image;
-        $product->category_id = $request->category_id;
-        $product->family_id = $request->family_id;
-        $product->unit_id = $request->unit_id;
-        $product->stock = $request->stock;
-        $product->minimum_stock = $request->minimum_stock;
-        $product->save();
-
-        //Block Update product code
-        $product_id = $product->id;
-        $category_id = $request->category_id;
-        $family_id = $request->family_id;
-        $selected_category = \DB::table('categories')->where('id',$category_id)->first()->code;
-        $selected_family = \DB::table('families')->where('id',$family_id)->first()->code;
-        $product_code = $selected_category.'-'.$selected_family.'-'.$product_id;
-        $update = \DB::table('products')->where('id', $product_id)->update(['code'=>$product_code]);
-        //ENDBlock Update product code
-        return redirect('product')
-            ->with('successMessage', "Product $product_code has been added");
+        // $product = new Product;
+        // $product->name = $request->name;
+        // $product->description = $request->description;
+        // $product->stock = $request->stock;
+        // $product->minimum_stock = $request->minimum_stock;
+        // $product->main_product_id = $request->main_product_id;
+        // $main_product = MainProduct::findOrFail($request->main_product_id);
+        // $product->save();
+        return redirect('home')
+            ->with('successMessage', "Product has been added");
     }
 
-    
+
 
     /**
      * Display the specified resource.
@@ -127,7 +113,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        
+
 
 
         $product = Product::findOrFail($id);
@@ -165,7 +151,7 @@ class ProductController extends Controller
 
         return redirect('product/'.$id.'/edit')
         ->with('successMessage', "Product has been updated");
-        
+
     }
 
     /**

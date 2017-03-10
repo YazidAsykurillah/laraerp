@@ -63,7 +63,7 @@
                     {{ $product->pivot->quantity }}
                   </td>
                   <td>
-                    {{ $product->unit->name }}
+                    {{ $product->main_product->unit->name }}
                   </td>
                   <td>
                     {{ number_format($product->pivot->price_per_unit) }}

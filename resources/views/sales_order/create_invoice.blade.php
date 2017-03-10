@@ -22,13 +22,13 @@
 @endsection
 
 @section('content')
-  
+
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Form Invoice</h3>    
+          <h3 class="box-title">Form Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::open(['route'=>'sales-order-invoice.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-invoice','files'=>true]) !!}
@@ -57,7 +57,7 @@
                         {{ $product->pivot->quantity }}
                       </td>
                       <td>
-                        {{ $product->unit->name }}
+                        {{ $product->main_product->unit->name }}
                       </td>
                       <td>
                         <input type="text"  name="price_per_unit[]" class="price_per_unit form-control" />
@@ -66,7 +66,7 @@
                         <input type="text"  name="price[]" class="price form-control" />
                       </td>
                     </tr>
-                  
+
                     @endforeach
                   @else
                   <tr>
@@ -78,7 +78,7 @@
 
             </div>
 
-          
+
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -115,22 +115,22 @@
             {!! Form::hidden('sales_order_id', $sales_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
-        
+
       </div><!-- /.box -->
     </div>
   </div>
   <!-- ENDRow Invoice-->
 
 
-  
-  
+
+
 
 
 @endsection
 
 
 @section('additional_scripts')
-  
+
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#bill_price').autoNumeric('init',{
@@ -154,7 +154,7 @@
 
     //Block handle price value on price per unit keyup event
     $('.price_per_unit').on('keyup', function(){
-      
+
       var quantity = $(this).parent().parent().find('.quantity').val();
       var the_price = 0;
       if($(this).val() == ''){
@@ -163,7 +163,7 @@
       else{
         the_price = parseFloat($(this).val().replace(/,/g, ''))*quantity;
       }
-      
+
       $(this).parent().parent().find('.price').val(the_price).autoNumeric('update',{
           aSep:',',
           aDec:'.'
@@ -172,7 +172,7 @@
     });
 
     function fill_the_bill_price(){
-      
+
       var sum = 0;
       $(".price").each(function(){
           sum += +$(this).val().replace(/,/g, '');
@@ -223,4 +223,3 @@
   </script>
 
 @endSection
-

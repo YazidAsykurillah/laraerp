@@ -52,7 +52,8 @@
           <span>Inventory</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
+          <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Main Products</a></li>
+          <!-- <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li> -->
           <li><a href="{{ url('stock_balance') }}"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
           <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>

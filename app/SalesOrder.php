@@ -15,6 +15,8 @@ use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
 use App\Driver;
 use App\Vehicle;
+use App\MainProduct;
+use App\Unit;
 
 class SalesOrder extends Model
 {
@@ -45,6 +47,16 @@ class SalesOrder extends Model
     public function products()
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'sales_order_id','price_per_unit');
+    }
+
+    public function main_product()
+    {
+        return $this->belongsTo('App\MainProduct');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo('App\Unit','name');
     }
 
     //relation to sales order invoice

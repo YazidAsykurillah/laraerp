@@ -109,13 +109,13 @@
                     @foreach($sales_order->products as $product )
                     <tr>
                         <td>{{ $no++.'.' }}</td>
-                        <td>{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->description }}</td>
                         <td style="text-align:center">{{ $product->pivot->quantity }}</td>
-                        <td style="text-align:center">{{ $product->unit->name }}</td>
+                        <td style="text-align:center">{{ $product->main_product->unit->name }}</td>
                         <td>{{ $sales_order->note }}</td>
                     </tr>
-                    @if($product->unit->name)
+                    @if($product->main_product->unit->name)
                         <?php $mtr += $product->pivot->quantity; ?>
                     @endif
                     @endforeach

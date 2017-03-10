@@ -17,6 +17,14 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//main product
+Route::post('deleteMainProduct','MainProductController@destroy');
+Route::post('main-product.destroy_product','MainProductController@destroy_product');
+Route::put('main-product.update_product','MainProductController@update_product');
+Route::post('main-product.store_product','MainProductController@store_product');
+Route::resource('main-product','MainProductController');
+
+
 //neraca
 Route::post('neraca.neraca_montly_print','NeracaController@neraca_montly_print');
 Route::resource('neraca','NeracaController');
@@ -186,5 +194,6 @@ Route::controller('datatables', 'DatatablesController',[
     'getBanks'=>'datatables.getBanks',
     'getCashs'=>'datatables.getCashs',
     'getVehicles' =>'datatables.getVehicles',
-    'getChartAccounts' =>'datatables.getChartAccounts',5
+    'getChartAccounts' =>'datatables.getChartAccounts',
+    'getMainProducts' =>'datatables.getMainProducts',
 ]);

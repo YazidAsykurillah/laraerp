@@ -50,19 +50,19 @@
                 <th>Category</th>
                 <th style="width:10%;">Unit</th>
                 <th style="width:10%;"></th>
-                <th></th>     
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -113,7 +113,7 @@
     });
 
     // Delete button handler
-    tableProduct.on('click', '.btn-delete-product', function (e) { 
+    tableProduct.on('click', '.btn-delete-product', function (e) {
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#product_id').val(id);
@@ -128,17 +128,17 @@
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
           if ($(this).index() == 3) {
-                  
+
             var category_selections_builder ='<select class="form-control" data-id="' + $(this).index() + '">';
                 category_selections_builder+='<option value="">-- All Categories --</option>';
                   @foreach($category_selections as $category)
                     category_selections_builder+='<option value="{{ $category->id }}">{{ $category->name }}</option>';
                   @endforeach
                 category_selections_builder+='</select>';
-              
+
               $(this).html(category_selections_builder);
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
@@ -159,6 +159,6 @@
     $('#form-delete-product').on('submit', function(){
       $('#btn-confirm-delete-product').prop('disabled', true);
     });
-    
+
   </script>
 @endsection

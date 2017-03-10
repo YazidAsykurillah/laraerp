@@ -72,19 +72,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @if($sales_order->products->count() > 0)
-                      @foreach($sales_order->products as $product)
+                      @if($sales_order->products->count() > 0)
+                        @foreach($sales_order->products as $product)
+                        <tr>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->pivot->quantity }}</td>
+                            <td>{{ $product->main_product->unit->name }}</td>
+                        </tr>
                       <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->pivot->quantity }}</td>
-                        <td>{{ $product->unit->name }}</td>
+                        @endforeach
+                      @else
+                        <td colspan="3">There are no product</td>
                       </tr>
-                    <tr>
-                      @endforeach
-                    @else
-                      <td colspan="3">There are no product</td>
-                    </tr>
-                    @endif
+                      @endif
                   </tbody>
                   <tfoot>
 
