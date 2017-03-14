@@ -64,8 +64,8 @@
             <thead>
               <tr>
                   <th style="width:5%;">#</th>
-                  <th style="width:10%;">Code</th>
-                  <th style="width:40%;">Product Name</th>
+                  <th style="width:20%;">Product Name</th>
+                  <th style="width:30%;">Description</th>
                   <th style="width:10%;">System Stock</th>
                   <th style="width:10%;">Real Stock</th>
                   <th style="width:25%;">Information</th>
@@ -82,11 +82,12 @@
               </tr>
             </thead> -->
             <tbody>
+                <?php $no = 1; ?>
                 @foreach($dataList as $view)
                     <tr>
-                        <td>{{ $view->id }}</td>
-                        <td>{{ $view->code }}</td>
-                        <td>{{ $view->name }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
+                        <td>{{ $no++ }}</td>
+                        <td>{{ $view->name }}</td>
+                        <td>{{ $view->description }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
                         <td>{{ $view->stock }}<input type="hidden" value="{{ $view->stock }}" name="system_stock[]"></td>
                         <td>
                             <input type="text" value="{{ $view->stock }}" name="real_stock[]" class="col-lg-12">

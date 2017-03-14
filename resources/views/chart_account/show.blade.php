@@ -54,7 +54,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Add New Sub Chart Account
+                        Add New Parent Account
                     </h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -62,7 +62,7 @@
                     <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">
                         {!! Form::label('name','Name',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
-                            {!! Form::select('reference',$bank,null,['class'=>'form-control','placeholder'=>'Name of the sub chart account','id'=>'name']) !!}
+                            {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Name of the sub chart account','id'=>'name']) !!}
                             @if($errors->has('name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('name') }}</strong>
@@ -79,6 +79,31 @@
                                 <strong>{{ $errors->first('number_account') }}</strong>
                             </span>
                             @endif
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('level') ? 'has-error' : '' }}">
+                        {!! Form::label('level','Parent/Child',['class'=>'col-sm-3 control-label']) !!}
+                        <div class="col-sm-9">
+                            {!! Form::select('level',['1'=>'Parent','2'=>'Child'],null,['placeholder'=>'Parent/Child','class'=>'form-control','id'=>'level']) !!}
+                            @if($errors->has('level'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('level') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('select_parent') ? 'has-error' : '' }}" style="display:none" id="display_parent">
+                        {!! Form::label('select_parent','Select Parent',['class'=>'col-sm-3 control-label']) !!}
+                        <div class="col-sm-9">
+                            <select class="form-control" name="parent_id">
+                                <option value="0">Select Parent</option>
+                                @foreach($sub_chart_account as $sub)
+                                    @if($sub->level == 1)
+                                    <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                                    @endif
+                                @endforeach
+
+                            </select>
                         </div>
                     </div>
                     <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
@@ -125,22 +150,42 @@
                             @if($sub_chart_account->count() > 0)
                             <?php $no = 1; ?>
                               @foreach($sub_chart_account as $key)
+                              @if($key->level == 1)
                               <tr>
                                 <td> {{ $no++ }}</td>
-                                <td> {{ $key->banks->name }}</td>
+                                <td> {{ $key->name }}</td>
                                 <td> {{ $key->account_number }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->banks->name }}">
+                                    <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-created-at="{{ $key->created_at }}">
                                         <i class="fa fa-external-link-square"></i>
                                     </button>&nbsp;
-                                    <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->banks->name }}" data-account-number="{{ $key->account_number }}">
+                                    <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}">
                                         <i class="fa fa-edit"></i>
                                     </button>&nbsp;
-                                    <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->banks->name }}">
+                                    <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
                               </tr>
+                              @foreach(child_chart_account($key->id) as $child)
+                                <tr>
+                                    <td></td>
+                                    <td style="padding-left:20px">{{ $child->name }}</td>
+                                    <td style="padding-left:20px">{{ $child->account_number }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-created-at="{{ $child->created_at }}">
+                                            <i class="fa fa-external-link-square"></i>
+                                        </button>&nbsp;
+                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}">
+                                            <i class="fa fa-edit"></i>
+                                        </button>&nbsp;
+                                        <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                              @endforeach
+                              @endif
                               @endforeach
                             @else
                             <tr>
@@ -176,14 +221,19 @@
                     <div class="table-responsive">
                       <table class="table table-hover">
                         <tr>
-                          <td style="width:15%;">Code</td>
-                          <td>:</td>
-                          <td id="view_sub_chart_account_id"></td>
-                        </tr>
-                        <tr>
-                          <td style="width:15%;">Name</td>
+                          <td style="width:30%;">Name</td>
                           <td>:</td>
                           <td id="view_sub_chart_account_name"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:30%;">Account Number</td>
+                          <td>:</td>
+                          <td id="view_sub_chart_account_account_number"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:30%;">Created At</td>
+                          <td>:</td>
+                          <td id="view_sub_chart_account_created_at"></td>
                         </tr>
                       </table>
                     </div>
@@ -235,6 +285,31 @@
                               @endif
                               {!! Form::hidden('sub_chart_account_id',null,['id'=>'sub_chart_account_id_view']) !!}
                               <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
+                          </div>
+                      </div>
+                      <div class="form-group{{ $errors->has('level') ? 'has-error' : '' }}">
+                          {!! Form::label('level','Parent/Child',['class'=>'col-sm-3 control-label']) !!}
+                          <div class="col-sm-9">
+                              {!! Form::select('level',['1'=>'Parent','2'=>'Child'],null,['placeholder'=>'Parent/Child','class'=>'form-control','id'=>'level_update']) !!}
+                              @if($errors->has('level'))
+                              <span class="help-block">
+                                  <strong>{{ $errors->first('level') }}</strong>
+                              </span>
+                              @endif
+                          </div>
+                      </div>
+                      <div class="form-group{{ $errors->has('select_parent') ? 'has-error' : '' }}" style="display:none" id="display_parent_update">
+                          {!! Form::label('select_parent','Select Parent',['class'=>'col-sm-3 control-label']) !!}
+                          <div class="col-sm-9">
+                              <select class="form-control" name="parent_id">
+                                  <option value="0">Select Parent</option>
+                                  @foreach($sub_chart_account as $sub)
+                                      @if($sub->level == 1)
+                                      <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                                      @endif
+                                  @endforeach
+
+                              </select>
                           </div>
                       </div>
                       <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
@@ -308,10 +383,12 @@
 
         //View button handler
         tableSubChartAccount.on('click','.btn-view-sub-chart-account',function(e){
-            var id = $(this).attr('data-id');
             var name = $(this).attr('data-text');
-            $('#view_sub_chart_account_id').text(id);
+            var account_number = $(this).attr('data-account-number');
+            var created_at = $(this).attr('data-created-at');
             $('#view_sub_chart_account_name').text(name);
+            $('#view_sub_chart_account_account_number').text(account_number);
+            $('#view_sub_chart_account_created_at').text(created_at);
             $('#modal-view-sub-chart-account').modal('show');
         });
 
@@ -326,6 +403,25 @@
             $('#modal-edit-sub-chart-account').modal('show');
         });
 
+        //onclick detail
+        $('#level').on('change',function(){
+            var level = $('#level').val();
+            if(level == 2){
+                $('#display_parent').show();
+            }else{
+                $('#display_parent').hide();
+            }
+        });
+
+        //onclick detail update
+        $('#level_update').on('change',function(){
+            var level = $('#level_update').val();
+            if(level == 2){
+                $('#display_parent_update').show();
+            }else{
+                $('#display_parent_update').hide();
+            }
+        });
         //TODO search handler
     </script>
 @endsection

@@ -17,6 +17,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//family
+Route::post('deleteFamily','FamilyController@destroy');
+Route::resource('family','FamilyController');
+
 //main product
 Route::post('deleteMainProduct','MainProductController@destroy');
 Route::post('main-product.destroy_product','MainProductController@destroy_product');
@@ -196,4 +200,5 @@ Route::controller('datatables', 'DatatablesController',[
     'getVehicles' =>'datatables.getVehicles',
     'getChartAccounts' =>'datatables.getChartAccounts',
     'getMainProducts' =>'datatables.getMainProducts',
+    'getSubChartAccounts' =>'datatables.getSubChartAccounts',
 ]);

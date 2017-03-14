@@ -37,6 +37,7 @@
               <thead>
                 <tr>
                   <th style="width:40%">Product Name</th>
+                  <th style="width:20%">Description</th>
                   <th style="width:20%">Quantity</th>
                   <th style="width:20%">Unit</th>
                 </tr>
@@ -50,9 +51,12 @@
                       {{ $product->name }}
                     </td>
                     <td>
+                      {{ $product->description }}
+                    </td>
+                    <td>
                       <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
                     </td>
-                    <td>{{ $product->unit->name }}</td>
+                    <td>{{ $product->main_product->unit->name }}</td>
                   </tr>
                   @endforeach
                 @else
@@ -62,14 +66,14 @@
                 @endif
               </tbody>
               <tfoot>
-              
+
               </tfoot>
             </table>
           </div>
 
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
     </div>
@@ -83,7 +87,7 @@
           <h3 class="box-title">Supplier and Notes</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+
             <div class="form-group{{ $errors->has('supplier_id') ? ' has-error' : '' }}">
               {!! Form::label('supplier_id', 'Supplier', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -120,13 +124,13 @@
                 <input type="hidden" name="id" value="{{ $purchase_order->id }}" />
               </div>
             </div>
-          
+
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
   <!-- ENDRow Supplier and Notes-->
@@ -134,9 +138,9 @@
 
   <!--Modal Display product datatables-->
   <div class="modal fade" id="modal-display-products" tabindex="-1" role="dialog" aria-labelledby="modal-display-productsLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width:80%">
       <div class="modal-content">
-      
+
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
@@ -145,21 +149,33 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-product">
               <thead>
-                <tr>
-                  <th style="width:5%;">#</th>
-                  <th style="width:10%;">Code</th>
-                  <th>Product Name</th>
-                </tr>
-              </thead>
-              <thead id="searchid">
-                <tr>
-                  <th style="width:5%;"></th>
-                  <th>Code</th>
-                  <th>Product Name</th> 
-                </tr>
+                  <tr>
+                    <th style="width:5%;">#</th>
+                    <th>Main Product</th>
+                    <th>Sub Product</th>
+                    <th>Description</th>
+                    <th>Stock</th>
+                    <th>Minimum Stock</th>
+                    <th>Family</th>
+                    <th>Category</th>
+                    <th>Unit</th>
+                  </tr>
+                </thead>
+                <thead id="searchid">
+                  <tr>
+                    <th style="width:5%;"></th>
+                    <th>Main Product</th>
+                    <th>Sub Product</th>
+                    <th>Description</th>
+                    <th>Stock</th>
+                    <th>Minimum Stock</th>
+                    <th>Family</th>
+                    <th>Category</th>
+                    <th>Unit</th>
+                  </tr>
               </thead>
               <tbody>
-                
+
               </tbody>
             </table>
           </div>
@@ -168,7 +184,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-info" id="btn-set-product">Set selected products</button>
         </div>
-      
+
       </div>
     </div>
   </div>
@@ -188,7 +204,7 @@
   </script>
 
   <script type="text/javascript">
-    
+
     var selected = [];
     //initially push selected products to var selected
     @foreach($purchase_order->products as $product)
@@ -201,9 +217,15 @@
       pageLength : 10,
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
-        {data: 'code', name: 'code' },
-        {data: 'name', name: 'name' },
+          {data: 'rownum', name: 'rownum', searchable:false},
+          { data: 'main_product_id', name: 'main_product_id'},
+          { data: 'name', name: 'name'},
+          { data: 'description', name: 'description'},
+          { data: 'stock', name: 'stock' },
+          { data: 'minimum_stock', name: 'minimum_stock' },
+          { data: 'family_id', name: 'family_id' },
+          { data: 'category_id', name: 'category_id' },
+          { data: 'unit_id', name: 'unit_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -229,6 +251,9 @@
                   tableProduct.row(this).data().name+
                 '</td>'+
                 '<td>'+
+                  tableProduct.row(this).data().description+
+                '</td>'+
+                '<td>'+
                   '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
                 '</td>'+
                 '<td>'+
@@ -241,7 +266,7 @@
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
         }
- 
+
         $(this).toggleClass('selected');
 
     } );
@@ -251,7 +276,7 @@
         $('#tr-no-product-selected').hide();
       }
       else{
-        $('#tr-no-product-selected').show(); 
+        $('#tr-no-product-selected').show();
       }
       $('#modal-display-products').modal('hide');
     });
@@ -313,4 +338,3 @@
     });
   </script>
 @endSection
-

@@ -67,6 +67,7 @@
                   <thead>
                     <tr>
                       <th style="width:40%">Product Name</th>
+                      <th style="width:20%">Description</th>
                       <th style="width:20%">Quantity</th>
                       <th style="width:20%">Unit</th>
                     </tr>
@@ -76,6 +77,7 @@
                         @foreach($sales_order->products as $product)
                         <tr>
                             <td>{{ $product->name }}</td>
+                            <td>{{ $product->description }}</td>
                             <td>{{ $product->pivot->quantity }}</td>
                             <td>{{ $product->main_product->unit->name }}</td>
                         </tr>

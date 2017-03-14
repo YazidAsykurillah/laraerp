@@ -75,8 +75,8 @@
                             <thead>
                                 <tr>
                                     <th style="width:10%">#</th>
-                                    <th>Code</th>
                                     <th>Product Name</th>
+                                    <th>Description</th>
                                     <th>System Stock</th>
                                     <th>Real Stock</th>
                                     <th>Information</th>
@@ -87,13 +87,13 @@
                                 @foreach($dataList as $view)
                                     <tr>
                                         <td>{{ $x++ }}</td>
-                                        <td>{{ $view->code }}</td>
                                         <td>{{ $view->name }}</td>
+                                        <td>{{ $view->description }}</td>
                                         <td>{{ $view->system_stock }}</td>
                                         <td>@if($view->real_stock<$view->system_stock)
-                                                <span style="color:red">
+                                                <span style="color:red;font-weight:bold">
                                             @else
-                                                <span style="color:green">
+                                                <span style="color:green;font-weight:bold">
                                             @endif
                                             {{ $view->real_stock }}</span>
                                         </td>

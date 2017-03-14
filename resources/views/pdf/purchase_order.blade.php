@@ -103,10 +103,10 @@
                     @foreach($purchase_order->products as $product )
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->description }}</td>
                         <td style="text-align:center">{{ $product->pivot->quantity }}</td>
-                        <td style="text-align:center">{{ $product->unit->name }}</td>
+                        <td style="text-align:center">{{ $product->main_product->unit->name }}</td>
                         <td>{{ $product->status }}</td>
                     </tr>
                     @if($product->pivot->quantity)

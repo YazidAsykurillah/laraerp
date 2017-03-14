@@ -36,6 +36,7 @@
             <table class="table table-bordered" id="table-selected-products">
               <tr>
                 <th style="width:40%">Product Name</th>
+                <th style="width:20%">Description</th>
                 <th style="width:20%">Quantity</th>
                 <th style="width:20%">Unit</th>
               </tr>
@@ -155,7 +156,7 @@
                 <tr>
                   <th style="width:5%;">#</th>
                   <th>Main Product</th>
-                  <th>Name</th>
+                  <th>Sub Product</th>
                   <th>Description</th>
                   <th>Stock</th>
                   <th>Minimum Stock</th>
@@ -168,7 +169,7 @@
                 <tr>
                   <th style="width:5%;"></th>
                   <th>Main Product</th>
-                  <th>Name</th>
+                  <th>Sub Product</th>
                   <th>Description</th>
                   <th>Stock</th>
                   <th>Minimum Stock</th>
@@ -254,6 +255,9 @@
                   '<td>'+
                     '<input type="hidden" name="product_id[]" value="'+id+'" />'+
                     tableProduct.row(this).data().name+
+                  '</td>'+
+                  '<td>'+
+                    tableProduct.row(this).data().description+
                   '</td>'+
                   '<td>'+
                     '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+

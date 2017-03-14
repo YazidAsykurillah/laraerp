@@ -60,21 +60,9 @@ class ChartAccountController extends Controller
     {
         $chart_account = ChartAccount::findOrFail($id);
         $sub_chart_account = $chart_account->sub_chart_account;
-        if($chart_account->name == 'KAS'){
-            $cash = Cash::lists('name','id');
-            return view('chart_account.show_cash')
+        return view('chart_account.show')
                 ->with('chart_account',$chart_account)
-                ->with('sub_chart_account',$sub_chart_account)
-                ->with('cash',$cash);
-        }elseif ($chart_account->name == 'BANK') {
-            $bank = Bank::lists('name','id');
-            return view('chart_account.show_bank')
-                ->with('chart_account',$chart_account)
-                ->with('sub_chart_account',$sub_chart_account)
-                ->with('bank',$bank);
-        }
-
-
+                ->with('sub_chart_account',$sub_chart_account);
     }
     /**
      * Show the form for editing the specified resource.
@@ -117,6 +105,7 @@ class ChartAccountController extends Controller
     {
         $chart_account = ChartAccount::findOrFail($request->chart_account_id);
         $chart_account->delete();
+        \DB::table('sub_chart_accounts')->where('chart_account_id',$request->chart_account_id)->delete();
         return redirect('chart-account')
             ->with('successMessage',"$chart_account->name has been deleted");
     }
@@ -125,9 +114,13 @@ class ChartAccountController extends Controller
     public function store_sub(Request $request)
     {
         $sub_chart_account = New SubChartAccount;
-        $sub_chart_account->reference = $request->reference;
+        $sub_chart_account->name = $request->name;
         $sub_chart_account->account_number = $request->account_number;
         $sub_chart_account->chart_account_id = $request->chart_account_id;
+        $sub_chart_account->level = $request->level;
+        if($request->parent_id != ''){
+            $sub_chart_account->parent_id = $request->parent_id;
+        }
         $sub_chart_account->save();
 
         // TODO condition account number
@@ -142,6 +135,10 @@ class ChartAccountController extends Controller
         $sub_chart_account = SubChartAccount::findOrFail($request->sub_chart_account_id);
         $sub_chart_account->name = $request->name;
         $sub_chart_account->account_number = $request->account_number;
+        $sub_chart_account->level = $request->level;
+        if($request->parent_id != ''){
+            $sub_chart_account->parent_id = $request->parent_id;
+        }
         $sub_chart_account->save();
         return redirect('chart-account/'.$request->chart_account_id)
             ->with('successMessage',"Sub chart account has been updated");

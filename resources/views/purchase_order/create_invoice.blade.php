@@ -56,7 +56,7 @@
                       {{ $product->pivot->quantity }}
                     </td>
                     <td>
-                      {{ $product->unit->name }}
+                      {{ $product->main_product->unit->name }}
                     </td>
                     <td>
                       <input type="text"  name="price[]" class="price form-control" />

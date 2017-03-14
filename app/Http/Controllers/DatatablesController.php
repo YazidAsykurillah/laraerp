@@ -898,4 +898,29 @@ class DatatablesController extends Controller
 
         return $data_chart_accounts->make(true);
     }
+
+    //Function to get sub chart account
+    public function getSubChartAccounts(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $sub_chart_accounts = SubChartAccount::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'name',
+            'account_number',
+        ]);
+        $datatables = Datatables::of($sub_chart_accounts)
+            ->editColumn('chart_account_id',function($sub_chart_accounts){
+                return 'hai';
+            })
+            ->editColumn('account_number_chart_account',function($sub_chart_accounts){
+                return 'hai';
+            });
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $datatables->make(true);
+
+    }
+    //ENDFunction to get product list
 }

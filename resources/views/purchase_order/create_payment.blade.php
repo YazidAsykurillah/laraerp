@@ -41,7 +41,7 @@
                       <div class="box-body">
                         {!! Form::open(['url'=>'storePurchasePaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
                         <div class="form-group{{ $errors->has('cash_id') ? 'has-error' : '' }}">
-                            {!! Form::label('cash_id','Cash',['class'=>'col-sm-2 control-label']) !!}
+                            {!! Form::label('cash_id','Cash',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-6">
                                 {{ Form::select('cash_id',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) }}
                                 @if($errors->has('cash_id'))
@@ -52,9 +52,30 @@
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
-                            {!! Form::label('amount','Amount',['class'=>'col-sm-2 control-label']) !!}
+                            {!! Form::label('amount','Amount',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-6">
                             {{ Form::text('amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'amount-cash','autocomplete'=>'off']) }}
+                            @if($errors->has('amount'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('amount') }}</strong>
+                                </span>
+                            @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
+                            {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-6">
+                            <select name="select_account" class="form-control">
+                                <option value="">Select Account</option>
+                            @foreach(list_account_cash_bank('51') as $as)
+                                @if($as->level == 1)
+                                <optgroup label="{{ $as->name }}">
+                                @endif
+                                @if($as->level == 2)
+                                <option value="{{ $as->id }}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                @endif
+                            @endforeach
+                            </select>
                             @if($errors->has('amount'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('amount') }}</strong>
@@ -119,7 +140,7 @@
                       <div class="box-body">
                         {!! Form::open(['url'=>'storePurchasePaymentTransfer','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
                           <div class="form-group{{ $errors->has('bank_id') ? ' has-error' : '' }}">
-                              {!! Form::label('bank_id', 'Bank', ['class'=>'col-sm-2 control-label']) !!}
+                              {!! Form::label('bank_id', 'Bank', ['class'=>'col-sm-3 control-label']) !!}
                               <div class="col-sm-6">
                                 {{ Form::select('bank_id', $banks, null, ['class'=>'form-control', 'placeholder'=>'Select Bank', 'id'=>'bank_id']) }}
                                 @if ($errors->has('bank_id'))
@@ -130,7 +151,7 @@
                               </div>
                           </div>
                           <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
-                            {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
+                            {!! Form::label('amount', 'Amount', ['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-6">
                               {{ Form::text('amount', null,['class'=>'form-control', 'placeholder'=>'Payment amount', 'id'=>'amount-bank']) }}
                               @if ($errors->has('amount'))
@@ -139,6 +160,27 @@
                                 </span>
                               @endif
                             </div>
+                          </div>
+                          <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
+                              {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
+                              <div class="col-sm-6">
+                              <select name="select_account" class="form-control">
+                                  <option value="">Select Account</option>
+                              @foreach(list_account_cash_bank('51') as $as)
+                                  @if($as->level == 1)
+                                  <optgroup label="{{ $as->name }}">
+                                  @endif
+                                  @if($as->level == 2)
+                                  <option value="{{ $as->id }}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                  @endif
+                              @endforeach
+                              </select>
+                              @if($errors->has('amount'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('amount') }}</strong>
+                                  </span>
+                              @endif
+                              </div>
                           </div>
                           <div class="form-group">
                             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
@@ -151,6 +193,7 @@
                               <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                 <i class="fa fa-save"></i>&nbsp;Submit
                               </button>
+                              
                             </div>
                           </div>
                         {!! Form::close() !!}
@@ -188,6 +231,13 @@
         </div>
     </div>
 
+    <!-- MODAL SELECT CHART ACCOUNT -->
+    <div class="modal fade" id="modal-select-chart-account" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+        </div>
+    </div>
+    <!-- END MODAL -->
 @endsection
 
 @section('additional_scripts')

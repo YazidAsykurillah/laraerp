@@ -101,7 +101,7 @@
                                     <th>Product Name</th>
                                     <th>System Stock</th>
                                     <th>Real Stock</th>
-                                    <th>information</th>
+                                    <th>Information</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,9 +109,9 @@
                                 @foreach($dataList as $view)
                                     <tr>
                                         <td>{{ $x++ }}</td>
-                                        <td>{{ $view->code }}</td>
+                                        <td>{{ $view->name }}</td>
                                         <td>
-                                            {{ $view->name }}
+                                            {{ $view->description }}
                                             <input type="hidden" name="product_id[]" value="{{ $view->product_id}}">
                                         </td>
                                         <td>

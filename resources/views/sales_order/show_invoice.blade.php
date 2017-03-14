@@ -45,7 +45,8 @@
           <table class="table table-bordered" id="table-selected-products">
             <thead>
               <tr>
-                <th style="width:40%">Product Name</th>
+                <th style="width:20%">Product Name</th>
+                <th style="width:20%">Description</th>
                 <th style="width:10%">Quantity</th>
                 <th style="width:20%">Unit</th>
                 <th style="width:15%">Price Per Unit</th>
@@ -58,6 +59,9 @@
                 <tr>
                   <td>
                     {{ $product->name }}
+                  </td>
+                  <td>
+                    {{ $product->description }}
                   </td>
                   <td>
                     {{ $product->pivot->quantity }}

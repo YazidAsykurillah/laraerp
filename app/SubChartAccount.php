@@ -13,14 +13,9 @@ class SubChartAccount extends Model
 
     protected $fillable = ['reference','account_number','chart_account_id'];
 
-    public function cashs()
-    {
-        return $this->belongsTo('App\Cash','reference');
-    }
-
-    public function banks()
-    {
-        return $this->belongsTo('App\Bank','reference');
-    }
+    // public function chart_account()
+    // {
+    //     return $this->
+    // }
 
 }

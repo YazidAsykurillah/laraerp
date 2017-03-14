@@ -85,7 +85,7 @@ class StockBalanceController extends Controller
     {
         $data = \DB::table('product_stock_balance')
         ->join('products','product_stock_balance.product_id','=','products.id')
-        ->select('product_stock_balance.*','products.code','products.name')
+        ->select('product_stock_balance.*','products.name','products.description')
         ->where('product_stock_balance.stock_balance_id','=',$id)
         ->get();
         //$data->product_stock_balance()->get();
@@ -105,7 +105,7 @@ class StockBalanceController extends Controller
     {
         $data = \DB::table('product_stock_balance')
         ->join('products','product_stock_balance.product_id','=','products.id')
-        ->select('product_stock_balance.*','products.code','products.name')
+        ->select('product_stock_balance.*','products.name','products.description')
         ->where('product_stock_balance.stock_balance_id','=',$id)
         ->get();
         $stock_balance = StockBalance::findOrFail($id);

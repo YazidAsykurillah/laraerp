@@ -12,3 +12,17 @@
         //
         // return $s_i_p;
     }
+
+    function child_chart_account($key)
+    {
+        $child_chart_account = \DB::table('sub_chart_accounts')->where('parent_id',$key)->orderBy('account_number','asc')->get();
+
+        return $child_chart_account;
+    }
+
+    function list_account_cash_bank($key)
+    {
+        $list_account_cash_bank = \DB::table('sub_chart_accounts')->where('chart_account_id',$key)->get();
+
+        return $list_account_cash_bank;
+    }

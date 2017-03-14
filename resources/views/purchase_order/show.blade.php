@@ -65,6 +65,7 @@
 
                     <tr>
                       <th style="width:40%">Product Name</th>
+                      <th style="width:20%">Description</th>
                       <th style="width:20%">Quantity</th>
                       <th style="width:20%">Unit</th>
                     </tr>
@@ -74,8 +75,9 @@
                       @foreach($purchase_order->products as $product)
                       <tr>
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->description }}</td>
                         <td>{{ $product->pivot->quantity }}</td>
-                        <td>{{ $product->unit->name }}</td>
+                        <td>{{ $product->main_product->unit->name }}</td>
                       </tr>
                     <tr>
                       @endforeach
@@ -249,6 +251,12 @@
                           </tr>
                           @endforeach
                         @endif
+                        @else
+                        <tr>
+                          <td colspan="4">
+                            <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related invoice payment to this purchase order</p>
+                          </td>
+                        </tr>
                         @endif
 
                     </tbody>
@@ -256,7 +264,7 @@
                 </div>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-                
+
             </div>
           </div><!-- /.box -->
         </div>

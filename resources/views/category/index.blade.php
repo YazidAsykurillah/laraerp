@@ -42,10 +42,7 @@
                     <tr>
                       <td>#</td>
                       <td>{{ $category->code }}</td>
-                      <td>
-                        <a href="{{ url('category/'.$category->id.'') }}">
-                          {{ $category->name }}
-                        </a>
+                      <td>{{ $category->name }}</a>
                       </td>
                       <td style="text-align:center;">
                         <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
@@ -65,10 +62,10 @@
               </table>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-              
+
             </div>
         </div><!-- /.box -->
-    
+
     </div>
   </div>
 

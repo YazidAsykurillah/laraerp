@@ -20,6 +20,7 @@ use App\Cash;
 use App\Bank;
 use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
+use App\TransactionChartAccount;
 use DB;
 
 class SalesOrderInvoiceController extends Controller
@@ -270,6 +271,11 @@ class SalesOrderInvoiceController extends Controller
         $cash_value = Cash::findOrFail($cash_id);
         $current_cash_value = $cash_value->value;
         $new_cash_value = $current_cash_value+$amount;
+
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $amount;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->save();
         if($save){
             //update invoice's paid_price
             $sales_order_invoice->paid_price = $new_paid_price;
@@ -311,6 +317,11 @@ class SalesOrderInvoiceController extends Controller
         $bank_value = Bank::findOrFail($bank_id);
         $current_bank_value = $bank_value->value;
         $new_bank_value = $current_bank_value+$amount;
+
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $amount;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->save();
         if($save){
             //update invoice's paid price
             $sales_order_invoice->paid_price = $new_paid_price;

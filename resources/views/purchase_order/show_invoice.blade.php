@@ -44,7 +44,8 @@
               <thead>
 
                 <tr>
-                  <th style="width:40%">Product Name</th>
+                  <th style="width:20%">Product Name</th>
+                  <th style="width:20%">Description</th>
                   <th style="width:20%">Quantity</th>
                   <th style="width:20%">Unit</th>
                   <th style="width:20%">Price</th>
@@ -58,10 +59,13 @@
                       {{ $product->name }}
                     </td>
                     <td>
+                      {{ $product->description }}
+                    </td>
+                    <td>
                       {{ $product->pivot->quantity }}
                     </td>
                     <td>
-                      {{ $product->unit->name }}
+                      {{ $product->main_product->unit->name }}
                     </td>
                     <td>
                       {{ number_format($product->pivot->price) }}
