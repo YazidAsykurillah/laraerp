@@ -19,7 +19,10 @@ class NeracaController extends Controller
      */
     public function index()
     {
-        return view('neraca.index');
+        $chart_account = \DB::table('chart_accounts')->get();
+        $sub_chart_account = \DB::table('sub_chart_accounts')->get();
+        return view('neraca.index')
+            ->with('chart_account',$chart_account);
     }
 
     /**
@@ -95,7 +98,7 @@ class NeracaController extends Controller
         $data['sort_by_month_end'] = $request->sort_by_month_end;
         $data['sort_by_month_year_end'] = $request->sort_by_month_year_end;
         $data['chart_account'] = ChartAccount::all();
-        
+
         $pdf = \PDF::loadView('pdf.neraca_montly',$data);
         return $pdf->stream('neraca_montly.pdf');
     }

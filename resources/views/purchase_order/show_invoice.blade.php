@@ -86,11 +86,11 @@
 
               <tr>
                 <td style="width:30%;"><strong>Bill Price</strong></td>
-                <td>{{ number_format($purchase_order_invoice->bill_price) }}</td>
+                <td id="bill_price">{{ number_format($purchase_order_invoice->bill_price) }}</td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Paid Price</strong></td>
-                <td>{{ number_format($purchase_order_invoice->paid_price) }}</td>
+                <td id="paid_price">{{ number_format($purchase_order_invoice->paid_price) }}</td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Status</strong></td>
@@ -107,6 +107,26 @@
               <tr>
                 <td style="width:30%;"><strong>Notes</strong></td>
                 <td>{{ $purchase_order_invoice->notes }}</td>
+              </tr>
+              <tr>
+                <td style="width:30%"><strong>Hutang to Account</strong></td>
+                <td>
+                    <select name="select_account" id="select_account">
+                        <option value="">Select Account</option>
+                    @foreach(list_account_hutang('56') as $as)
+                        @if($as->level == 1)
+                        <optgroup label="{{ $as->name }}">
+                        @endif
+                        @foreach(list_sub_hutang('2',$as->id) as $sub)
+                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                        @endforeach
+                    @endforeach
+                    </select>
+                    <p></p>
+                    <button id="btn-select-account" class="btn btn-xs btn-primary" title="Click to send this piutang">
+                      <i class="fa fa-save"></i>&nbsp;Submit
+                    </button>
+                </td>
               </tr>
             </table>
 
@@ -152,7 +172,33 @@
   </div>
 <!--ENDModal pay purchase-order-invoice-->
 
-
+<!--Modal Complete invoice-->
+  <div class="modal fade" id="modal-select-account" tabindex="-1" role="dialog" aria-labelledby="modal-select-accountLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'completePurchaseAccount', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-select-accountLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+            <b id="select-account-name-to-send"></b> is going to be selected
+            <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="text" id="select_account_id" name="select_account_id">
+          <input type="text" id="amount_hutang" name="amount_hutang">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Ok</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete invoice-->
 
 @endsection
 
@@ -167,6 +213,13 @@
       $('#purchase_order_invoice_id').val(id);
       $('#purchase-order-invoice-name-to-pay').text(code);
       $('#modal-pay-purchase-order-invoice').modal('show');
+    });
+
+    $('#btn-select-account').on('click',function(){
+        //$('#select-account-name-to-send').text($('#select_account').text());
+        $('#select_account_id').val($('#select_account').val());
+        $('#amount_hutang').val($('#bill_price').text().replace(/,/gi,'')-$('#paid_price').text().replace(/,/gi,''));
+        $('#modal-select-account').modal('show');
     });
   </script>
 

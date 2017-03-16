@@ -208,6 +208,15 @@ class PurchaseOrderInvoiceController extends Controller
 
     }
 
+    public function completePurchaseAccount(Request $request)
+    {
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $request->amount_hutang;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account_id;
+        $transaction_sub_chart_account->save();
+        return redirect()->back()
+            ->with('successMessage',"Send Hutang Account has been completed");
+    }
 
     public function createPayment(Request $request)
     {

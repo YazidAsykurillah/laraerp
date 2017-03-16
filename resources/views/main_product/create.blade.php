@@ -21,17 +21,6 @@
 @endsection
 
 @section('content')
-    <!-- <ul class="nav nav-tabs">
-        <li class="active">
-            <a data-toggle="tab" href="#section-create-main-product"><i class="fa fa-desktop"></i>&nbsp;Main Product</a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#section-create-sub-product"><i class="fa fa-desktop"></i>&nbsp;Sub Product</a>
-        </li>
-    </ul> -->
-
-    <!-- <div class="tab-content">
-        <div id="section-create-main-product" class="tab-pane fade in active"> -->
             {!! Form::open(['route'=>'main-product.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-main-product','files'=>true]) !!}
             <div class="row">
                 <div class="col-md-8">
@@ -40,10 +29,46 @@
                             <h3 class="box-title">Basic Informations</h3>
                         </div>
                         <div class="box-body">
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                              {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
+                            <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+                              {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
                               <div class="col-sm-10">
-                                {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the product', 'id'=>'name']) !!}
+                                {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'name']) !!}
+                                @if ($errors->has('code'))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('code') }}</strong>
+                                  </span>
+                                @endif
+                              </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('sub_code') ? ' has-error' : '' }}">
+                              {!! Form::label('sub_code','Sub Code', ['class'=>'col-sm-2 control-label']) !!}
+                              <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Mulai Dari</span>
+                                    {!! Form::text('mulai_dari',null,['class'=>'form-control', 'placeholder'=>'Start of sub product', 'id'=>'mulai_dari']) !!}
+                                    @if ($errors->has('mulai_dari'))
+                                      <span class="help-block">
+                                        <strong>{{ $errors->first('mulai_dari') }}</strong>
+                                      </span>
+                                    @endif
+                                </div>
+                              </div>
+                              <div class="col-sm-5">
+                                  <div class="input-group">
+                                    <span class="input-group-addon">Sebanyak</span>
+                                    {!! Form::text('sebanyak',null,['class'=>'form-control', 'placeholder'=>'Sebanyak of sub product', 'id'=>'sebanyak']) !!}
+                                    @if ($errors->has('sebanyak'))
+                                      <span class="help-block">
+                                        <strong>{{ $errors->first('sebanyak') }}</strong>
+                                      </span>
+                                    @endif
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                              {!! Form::label('name', 'Deskripsi', ['class'=>'col-sm-2 control-label']) !!}
+                              <div class="col-sm-10">
+                                {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Deskripsi of the product', 'id'=>'name']) !!}
                                 @if ($errors->has('name'))
                                   <span class="help-block">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -62,6 +87,7 @@
                                 @endif
                               </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="box">
@@ -133,10 +159,41 @@
                     </div><!-- /.box-body -->
                   </div>
                   <!--ENDBOX Category and Family-->
+                  <!-- <div class="box">
+                      <div class="box-header with-border">
+                          <h3 class="box-title">Account</h3>
+                      </div>
+                      <div class="box-body">
+                          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+                            {!! Form::label('account_persediaan_barang_id', 'Inventory Account', ['class'=>'col-sm-5 control-label']) !!}
+                            <div class="col-sm-7">
+                              {{ Form::select('category_id', $category_options, null, ['class'=>'form-control', 'placeholder'=>'Select category', 'id'=>'category_id']) }}
+                              @if ($errors->has('category_id'))
+                                <span class="help-block">
+                                  <strong>{{ $errors->first('category_id') }}</strong>
+                                </span>
+                              @endif
+                            </div>
+                          </div>
+                      </div>
+                  </div> -->
                 </div>
             </div>
             {!! Form::close() !!}
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+
+                        </div>
+                        <div class="box-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!-- </div> -->
-        
+
     </div>
 @endsection
