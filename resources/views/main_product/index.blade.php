@@ -81,7 +81,7 @@
       serverSide : true,
       ajax : '{!! route('datatables.getMainProducts') !!}',
       columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
+        { data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'family_id', name: 'family_id' },
@@ -89,7 +89,7 @@
         { data: 'unit_id', name: 'unit_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
-      "order" :[[1,"asc"]]
+      "order" :[[1,"desc"]]
 
     });
 
