@@ -117,6 +117,8 @@ class DatatablesController extends Controller
     }
     //ENDFunction to get product list
 
+
+    //Function to get main product list
     public function getMainProducts(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
@@ -152,15 +154,14 @@ class DatatablesController extends Controller
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
-
                     return $actions_html;
             });
             if($keyword = $request->get('search')['value']){
                 $data_main_products->filterColumn('rownum','whereRaw','@rownum + 1 like ?', ["%{$keyword}%"]);
             }
-
             return $data_main_products->make(true);
     }
+    //ENDFunction to get main product list
 
     //Function to get UNITS list
     public function getUnits(Request $request)
