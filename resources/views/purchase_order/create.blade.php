@@ -35,13 +35,15 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
               <tr>
-                <th style="width:40%">Product Name</th>
+                <th style="width:15%">Family</th>
+                <th style="width:15%">Code</th>
                 <th style="width:20%">Description</th>
-                <th style="width:20%">Quantity</th>
-                <th style="width:20%">Unit</th>
+                <th style="width:15%">Unit</th>
+                <th style="width:15%">Quantity</th>
+                <th style="width:20%">Category</th>
               </tr>
               <tr id="tr-no-product-selected">
-                <td colspan="4">No product selected</td>
+                <td colspan="6">No product selected</td>
               </tr>
             </table>
           </div>
@@ -128,6 +130,7 @@
                     <th>Family</th>
                     <th>Code</th>
                     <th>Image</th>
+                    <th>Description</th>
                     <th>Unit</th>
                     <th>Category</th>
                 </tr>
@@ -138,6 +141,7 @@
                     <th>Family</th>
                     <th>Code</th>
                     <th>Image</th>
+                    <th>Description</th>
                     <th>Unit</th>
                     <th>Category</th>
                 </tr>
@@ -185,6 +189,7 @@
           { data: 'family_id', name: 'family_id'},
           { data: 'name', name: 'name'},
           { data: 'image', name: 'image'},
+          { data: 'description', name: 'description'},
           { data: 'unit_id', name: 'unit_id' },
           { data: 'category_id', name: 'category_id' },
       ],
@@ -202,23 +207,45 @@
         var index = $.inArray(id, selected);
         if ( index === -1 ) {
             selected.push(id);
-            $('#table-selected-products').append(
-              '<tr id="tr_product_'+id+'">'+
-                '<td>'+
-                    '<input type="hidden" name="product_id[]" value="'+id+'" />'+
-                    tableProduct.row(this).data().name+
-                '</td>'+
-                '<td>'+
-                    tableProduct.row(this).data().description+
-                '</td>'+
-                '<td>'+
-                    '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-                '</td>'+
-                '<td>'+
-                    tableProduct.row(this).data().unit_id+
-                '</td>'+
-              '</tr>'
-            );
+            var token = $("meta[name='csrf-token']").attr('content');
+            //alert(token);
+            //panggil controller tampilan sub product
+            $.ajax({
+                url: '{!!URL::to('callSubProduct')!!}',
+                type : 'POST',
+                data : 'id='+id+'&_token='+token,
+                beforeSend: function(){
+
+                } ,
+                success: function(data){
+                    console.log(data);
+                    var obj = JSON.parse(data);
+                    alert(obj[100]);
+                },
+            })
+            // $('#table-selected-products').append(
+            //   '<tr id="tr_product_'+id+'">'+
+            //     '<td>'+
+            //         '<input type="hidden" name="product_id[]" value="'+id+'" />'+
+            //         tableProduct.row(this).data().family_id+
+            //     '</td>'+
+            //     '<td>'+
+            //         tableProduct.row(this).data().name+
+            //     '</td>'+
+            //     '<td>'+
+            //         tableProduct.row(this).data().description+
+            //     '</td>'+
+            //     '<td>'+
+            //         tableProduct.row(this).data().unit_id+
+            //     '</td>'+
+            //     '<td>'+
+            //         '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+            //     '</td>'+
+            //     '<td>'+
+            //         tableProduct.row(this).data().category_id+
+            //     '</td>'+
+            //   '</tr>'
+            // );
         } else {
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
@@ -240,7 +267,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 6) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 

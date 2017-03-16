@@ -92,20 +92,24 @@ class DatatablesController extends Controller
             'main_product_id'
         ]);
         $datatables = Datatables::of($products)
-        ->editColumn('main_product_id', function($products){
-            $code_html  ='<a href="'.url('main-product/'.$products->main_product->id).'" class="btn btn-link btn-xs" target="_blank" title="Click to see the detail">';
-            $code_html .=   '<i class="fa fa-link">&nbsp;'.$products->main_product->name.'</i>';
-            $code_html .='</a>&nbsp;';
-            return $code_html;
+        ->editColumn('main_products_name', function($products){
+            return $products->main_product->name;
         })
-        ->editColumn('family_id',function($products){
+        ->editColumn('family_id', function($products){
             return $products->main_product->family->name;
         })
-        ->editColumn('category_id',function($products){
+        ->editColumn('category_id', function($products){
             return $products->main_product->category->name;
         })
-        ->editColumn('unit_id',function($products){
+        ->editColumn('unit_id', function($products){
             return $products->main_product->unit->name;
+        })
+        ->editColumn('image', function($products){
+            $actions_html = '';
+            if($products->image != NULL){
+                $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$products->image.'"></a>';
+            }
+            //return $actions_html;
         });
 
         if ($keyword = $request->get('search')['value']) {
@@ -146,10 +150,14 @@ class DatatablesController extends Controller
             ->editColumn('unit_id', function($main_products){
                 return $main_products->unit->name;
             })
+            ->editColumn('description', function($main_products){
+                return $main_products->product->first()->description;
+            })
             ->editColumn('image', function($main_products){
-                $actions_html = '<a href="#" class="thumbnail">';
-                $actions_html .= '<img src="/img/products/thumb_1489480856.jpg">';
-                $actions_html .= '</a>';
+                $actions_html = '';
+                if($main_products->image != NULL){
+                    $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$main_products->image.'"></a>';
+                }
                 return $actions_html;
             })
             ->addColumn('actions', function($main_products){

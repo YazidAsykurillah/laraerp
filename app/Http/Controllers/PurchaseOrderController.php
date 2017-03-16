@@ -265,4 +265,11 @@ class PurchaseOrderController extends Controller
         return back();
     }
 
+    public function callSubProduct(Request $request)
+    {
+        if($request->ajax()){
+            $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
+            return response()->json($list_sub_product);
+        }
+    }
 }

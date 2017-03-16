@@ -105,6 +105,8 @@ Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
 //Purchase orders
+    //call sub product
+    Route::post('callSubProduct','PurchaseOrderController@callSubProduct');
 	//complete purchase order
 	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
 	//accept purchase order
