@@ -125,25 +125,21 @@
               <thead>
                 <tr>
                     <th style="width:5%;">#</th>
-                    <th>Main Product</th>
-                    <th>Sub Product</th>
-                    <th>Description</th>
-                    <th>Stock</th>
                     <th>Family</th>
-                    <th>Category</th>
+                    <th>Code</th>
+                    <th>Image</th>
                     <th>Unit</th>
+                    <th>Category</th>
                 </tr>
               </thead>
               <thead id="searchid">
                 <tr>
                     <th style="width:5%;">#</th>
-                    <th>Main Product</th>
-                    <th>Sub Product</th>
-                    <th>Description</th>
-                    <th>Stock</th>
                     <th>Family</th>
-                    <th>Category</th>
+                    <th>Code</th>
+                    <th>Image</th>
                     <th>Unit</th>
+                    <th>Category</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,17 +179,14 @@
       processing :true,
       serverSide : true,
       pageLength:10,
-      ajax : '{!! route('datatables.getProducts') !!}',
+      ajax : '{!! route('datatables.getMainProducts') !!}',
       columns :[
           {data: 'rownum', name: 'rownum', searchable:false},
-          { data: 'main_product_id', name: 'main_product_id'},
+          { data: 'family_id', name: 'family_id'},
           { data: 'name', name: 'name'},
-          { data: 'description', name: 'description'},
-          { data: 'stock', name: 'stock' },
-          { data: 'family_id', name: 'family_id' },
-          { data: 'category_id', name: 'category_id' },
+          { data: 'image', name: 'image'},
           { data: 'unit_id', name: 'unit_id' },
-
+          { data: 'category_id', name: 'category_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -247,7 +240,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 8) {
+      if ($(this).index() != 0 && $(this).index() != 6) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 

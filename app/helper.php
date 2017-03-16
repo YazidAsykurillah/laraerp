@@ -26,3 +26,59 @@
 
         return $list_account_cash_bank;
     }
+
+    function list_sub_cash_bank($key,$id)
+    {
+        $list_sub_cash_bank = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+
+        return $list_sub_cash_bank;
+    }
+
+    function list_account_piutang($key)
+    {
+        $list_account_piutang = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
+
+        return $list_account_piutang;
+    }
+
+    function list_sub_piutang($key,$id)
+    {
+        $list_sub_piutang = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+
+        return $list_sub_piutang;
+    }
+
+    function list_account_hutang($key)
+    {
+        $list_account_hutang = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
+
+        return $list_account_hutang;
+    }
+
+    function list_sub_hutang($key,$id)
+    {
+        $list_sub_hutang = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+
+        return $list_sub_hutang;
+    }
+
+    function list_parent($key)
+    {
+        $list_parent = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
+
+        return $list_parent;
+    }
+
+    function list_child($key,$id)
+    {
+        $list_child = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+
+        return $list_child;
+    }
+
+    function list_transaction($key)
+    {
+        $list_transaction = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->sum('amount');
+
+        return $list_transaction;
+    }

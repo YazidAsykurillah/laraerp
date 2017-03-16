@@ -228,6 +228,16 @@ class SalesOrderInvoiceController extends Controller
         }
     }
 
+    public function completeSalesAccount(Request $request)
+    {
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $request->amount_piutang;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account_id;
+        $transaction_sub_chart_account->save();
+        return redirect()->back()
+            ->with('successMessage',"Send Piutang Account has been completed");
+    }
+
     public function createPayment(Request $request)
     {
         $invoice_id = $request->invoice_id;

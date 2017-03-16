@@ -47,44 +47,202 @@
                     </div>
                     <br/>
                     <div class="box-body">
-                        <table style="width:100%" border="0">
+                        <table class="table-responsive table">
+                            <thead>
+                                <tr>
+                                    <th>No.Akun</th>
+                                    <th>Deskripsi</th>
+                                    <th>BULAN</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
-                                    <td style="width:70%;color:navy">Harta</td>
-                                    <td style="width:30%;text-align:right;border-bottom:1px solid black">IDR</td>
-                                </tr>
-                                @foreach($chart_account as $key)
-                                <tr>
-                                    <td class="parent">{{ $key->description }}</td>
+                                    <td></td>
+                                    <td><b>Aktiva-Aktiva</b></td>
                                     <td></td>
                                 </tr>
-                                    @foreach($key->sub_chart_account as $sub_chart)
+                                @foreach($chart_account as $cash_bank)
+                                    @if($cash_bank->id == 51)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $cash_bank->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('51') as $as)
+                                        @if($as->level == 1)
                                         <tr>
-                                            @if($sub_chart->chart_account_id == 8)
-                                            <td class="sub_child">{{ $sub_chart->banks->name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $sub_chart->account_number }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!! amount_sales_order_bank($sub_chart->reference,$sub_chart->chart_account_id) !!}</td>
-                                            <td align="right">50,000,000.00</td>
+                                            <td style="padding-left:20px;">{{ $as->account_number }}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
                                             @else
-                                            <td class="sub_child">{{ $sub_chart->cashs->name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $sub_chart->account_number }}</td>
-                                            <td align="right">20,000,000.00</td>
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
                                             @endif
                                         </tr>
+                                        @endforeach
                                     @endforeach
+                                    @endif
+                                @endforeach
+                                @foreach($chart_account as $piutang)
+                                    @if($piutang->id == 49)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $piutang->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('49') as $as)
+                                        @if($as->level == 1)
                                         <tr>
-                                            <td class="total_child">Total {{ $key->description }}</td>
-                                            <td style="border-top:1px solid black;color:navy" align="right">40,000,000.00</td>
+                                            <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
                                         </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
+                                            @else
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                    @endif
+                                @endforeach
+                                @foreach($chart_account as $persediaan)
+                                    @if($persediaan->id == 52)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $persediaan->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('52') as $as)
+                                        @if($as->level == 1)
+                                        <tr>
+                                            <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
+                                            @else
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                    @endif
+                                @endforeach
+                                @foreach($chart_account as $aktiva_lancar_lainnya)
+                                    @if($aktiva_lancar_lainnya->id == 50)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $aktiva_lancar_lainnya->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('50') as $as)
+                                        @if($as->level == 1)
+                                        <tr>
+                                            <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
+                                            @else
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                    @endif
+                                @endforeach
+                                @foreach($chart_account as $nilai_history)
+                                    @if($nilai_history->id == 68)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $nilai_history->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('68') as $as)
+                                        @if($as->level == 1)
+                                        <tr>
+                                            <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
+                                            @else
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                    @endif
+                                @endforeach
+                                @foreach($chart_account as $akumulasi_penyusutan)
+                                    @if($akumulasi_penyusutan->id == 55)
+                                    <tr>
+                                        <td></td>
+                                        <td><b>{{ $akumulasi_penyusutan->name}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach(list_parent('55') as $as)
+                                        @if($as->level == 1)
+                                        <tr>
+                                            <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:20px;">{{ $as->name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        @endif
+                                        @foreach(list_child('2',$as->id) as $sub)
+                                        <tr>
+                                            <td style="padding-left:40px;">{{ $sub->account_number}}</td>
+                                            <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                            @if(list_transaction($sub->id) == '')
+                                            <td>0,00</td>
+                                            @else
+                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                    @endif
                                 @endforeach
 
-                                <!-- <tr>
-                                    <td style="width:50%">Kas</td>
-                                    <td style="width:50%">IDR</td>
-                                </tr> -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </body>
 </html>

@@ -129,7 +129,8 @@ class DatatablesController extends Controller
             'name',
             'family_id',
             'category_id',
-            'unit_id'
+            'unit_id',
+            'image'
         ]);
         $data_main_products = Datatables::of($main_products)
             ->editColumn('code', function($main_products){
@@ -146,6 +147,12 @@ class DatatablesController extends Controller
             })
             ->editColumn('unit_id', function($main_products){
                 return $main_products->unit->name;
+            })
+            ->editColumn('image', function($main_products){
+                $actions_html = '<a href="#" class="thumbnail">';
+                $actions_html .= '<img src="/img/products/thumb_1489480856.jpg">';
+                $actions_html .= '</a>';
+                return $actions_html;
             })
             ->addColumn('actions', function($main_products){
                     $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
