@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
+    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -34,25 +34,25 @@
             <thead>
               <tr>
                 <th style="width:5%;">#</th>
-                <th style="width:10%;">Code</th>
-                <th>Supplier</th>
-                <th>Creator</th>
+                <th style="width:15%;">Code</th>
+                <th style="width:20%">Supplier</th>
+                <th style="width:20%">Creator</th>
                 <th style="width:20%;">Date Created</th>
-                <th style="width:20%;">Status</th>
+                <th style="width:10%;">Status</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
-            <!-- <thead id="searchid">
+            <thead id="searchid">
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:10%;">Code</th>
-                <th>Supplier</th>
-                <th>Creator</th>
-                <th style="width:20%;">Date Created</th>
-                <th style="width:20%;">Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                  <th style="width:5%;"></th>
+                  <th style="width:15%;">Code</th>
+                  <th style="width:20%">Supplier</th>
+                  <th style="width:20%">Creator</th>
+                  <th style="width:20%;">Date Created</th>
+                  <th style="width:10%;">Status</th>
+                  <th style="width:10%;text-align:center;"></th>
               </tr>
-            </thead> -->
+            </thead>
             <tbody>
 
             </tbody>

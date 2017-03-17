@@ -35,12 +35,12 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
               <tr>
-                <th style="width:15%">Family</th>
-                <th style="width:15%">Code</th>
-                <th style="width:20%">Description</th>
-                <th style="width:15%">Unit</th>
-                <th style="width:15%">Quantity</th>
-                <th style="width:20%">Category</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
               </tr>
               <tr id="tr-no-product-selected">
                 <td colspan="6">No product selected</td>
@@ -207,6 +207,29 @@
         var index = $.inArray(id, selected);
         if ( index === -1 ) {
             selected.push(id);
+            $('#table-selected-products').append(
+              '<tr class="tr_product_'+id+'">'+
+                '<td><b>'+
+                    tableProduct.row(this).data().family_id+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().name+
+                    tableProduct.row(this).data().image+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().description+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().unit_id+
+                '</b></td>'+
+                '<td>'+
+                    '<input type="text" name="parent_quantity" class="quantity form-control" style="" value="" />'+
+                '</td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().category_id+
+                '</b></td>'+
+              '</tr>'
+            );
             var token = $("meta[name='csrf-token']").attr('content');
             //alert(token);
             //panggil controller tampilan sub product
@@ -217,38 +240,38 @@
                 beforeSend: function(){
 
                 } ,
-                success: function(data){
-                    console.log(data);
-                    var obj = JSON.parse(data);
-                    alert(obj[100]);
+                success: function(response){
+                    $.each(response,function(index,value){
+                        $('#table-selected-products').append(
+                          '<tr class="tr_product_'+id+'">'+
+                            '<td>'+
+                                '<input type="hidden" name="product_id[]" value="'+value.id+'" />'+
+                                value.family+
+                            '</td>'+
+                            '<td>'+
+                                value.name+
+                            '</td>'+
+                            '<td>'+
+                                value.description+
+                            '</td>'+
+                            '<td>'+
+                                value.unit+
+                            '</td>'+
+                            '<td>'+
+                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                            '</td>'+
+                            '<td>'+
+                                value.category+
+                            '</td>'+
+                          '</tr>'
+                        );
+                    });
                 },
             })
-            // $('#table-selected-products').append(
-            //   '<tr id="tr_product_'+id+'">'+
-            //     '<td>'+
-            //         '<input type="hidden" name="product_id[]" value="'+id+'" />'+
-            //         tableProduct.row(this).data().family_id+
-            //     '</td>'+
-            //     '<td>'+
-            //         tableProduct.row(this).data().name+
-            //     '</td>'+
-            //     '<td>'+
-            //         tableProduct.row(this).data().description+
-            //     '</td>'+
-            //     '<td>'+
-            //         tableProduct.row(this).data().unit_id+
-            //     '</td>'+
-            //     '<td>'+
-            //         '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-            //     '</td>'+
-            //     '<td>'+
-            //         tableProduct.row(this).data().category_id+
-            //     '</td>'+
-            //   '</tr>'
-            // );
+
         } else {
             selected.splice( index, 1 );
-            $('#tr_product_'+id).remove();
+            $('.tr_product_'+id).remove();
         }
 
         $(this).toggleClass('selected');
@@ -276,14 +299,7 @@
     $('#searchid input').keyup(function() {
       tableProduct.columns($(this).data('id')).search(this.value).draw();
     });
-    $('#searchid select').change(function () {
-      if($(this).val() == ""){
-        tableProduct.columns($(this).data('id')).search('').draw();
-      }
-      else{
-        tableProduct.columns($(this).data('id')).search(this.value).draw();
-      }
-    });
+    
     //ENDBlock search input and select
 
   </script>

@@ -144,6 +144,8 @@ Route::resource('customer', 'CustomerController');
 
 
 //Sales Order
+    //call sub product
+    Route::post('callSubProduct','SalesOrderController@callSubProduct');
 	//Save
 	Route::post('storeSalesOrder', 'SalesOrderController@store');
 	//Update sales order status

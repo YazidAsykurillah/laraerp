@@ -12,6 +12,7 @@ use App\SalesOrder;
 use App\Customer;
 use App\Driver;
 use App\Vehicle;
+use App\MainProduct;
 
 class SalesOrderController extends Controller
 {
@@ -281,6 +282,25 @@ class SalesOrderController extends Controller
             }
         }
         return TRUE;
+    }
+
+    public function callSubProduct(Request $request)
+    {
+        if($request->ajax()){
+            $results = array();
+            $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
+            foreach($list_sub_product as $ls){
+                array_push($results, array(
+                    'family'=>MainProduct::find($request->id)->family->name,
+                    'id'=>$ls->id,
+                    'name'=>$ls->name,
+                    'description'=>$ls->description,
+                    'unit'=>MainProduct::find($request->id)->unit->name,
+                    'category'=>MainProduct::find($request->id)->category->name,
+                ));
+            }
+            return response()->json($results);
+        }
     }
 
 }

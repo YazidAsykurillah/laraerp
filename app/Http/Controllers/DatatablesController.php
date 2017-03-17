@@ -126,7 +126,7 @@ class DatatablesController extends Controller
     public function getMainProducts(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $main_products = MainProduct::select([
+        $main_products = MainProduct::with('product')->select([
             \DB::raw('@rownum := @rownum + 1 AS rownum'),
             'id',
             'code',
@@ -158,7 +158,7 @@ class DatatablesController extends Controller
             ->editColumn('image', function($main_products){
                 $actions_html = '';
                 if($main_products->image != NULL){
-                    $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$main_products->image.'"></a>';
+                    $actions_html = '<a href="#" class="thumbnail"><img src="'.url('img/products/thumb_'.$main_products->image).'"></a>';
                 }
                 return $actions_html;
             })
