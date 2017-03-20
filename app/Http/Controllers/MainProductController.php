@@ -56,7 +56,7 @@ class MainProductController extends Controller
         }
 
         $main_product = New MainProduct;
-        $main_product->name = $request->name;
+        $main_product->name = $request->code;
         $main_product->image = $this->product_image;
         $main_product->family_id = $request->family_id;
         $main_product->category_id = $request->category_id;
@@ -72,8 +72,20 @@ class MainProductController extends Controller
         $product_code = $selected_category.'-'.$selected_family.'-'.$product_id;
         $update = \DB::table('main_products')->where('id', $product_id)->update(['code'=>$product_code]);
         //ENDBlock Update product code
-        return redirect('main-product')
-            ->with('successMessage','Main Product has been created');
+
+        $mulai_dari = $request->mulai_dari;
+        $sebanyak = $request->sebanyak;
+        for($mulai_dari; $mulai_dari <= $sebanyak; $mulai_dari++ ){
+            $sub_product[$mulai_dari] = New Product;
+            $sub_product[$mulai_dari]->name = $request->code.'.'.'0'.$mulai_dari;
+            $sub_product[$mulai_dari]->stock = 0;
+            $sub_product[$mulai_dari]->minimum_stock = 0;
+            $sub_product[$mulai_dari]->description = $request->deskripsi;
+            $sub_product[$mulai_dari]->main_product_id = $main_product->id;
+            $sub_product[$mulai_dari]->save();
+        }
+
+        return redirect('main-product/'.$main_product->id);
     }
 
     /**
@@ -103,11 +115,13 @@ class MainProductController extends Controller
         $unit_options = Unit::lists('name', 'id');
         $family_options = Family::lists('name', 'id');
         $main_product = MainProduct::findOrFail($id);
+        $product = \DB::table('products')->where('main_product_id',$id)->get();
         return view('main_product.edit')
             ->with('category_options', $category_options)
             ->with('unit_options', $unit_options)
             ->with('family_options', $family_options)
-            ->with('main_product',$main_product);
+            ->with('main_product',$main_product)
+            ->with('product',$product);
     }
 
     /**
@@ -148,9 +162,16 @@ class MainProductController extends Controller
         $update = \DB::table('main_products')->where('id', $product_id)->update(['code'=>$product_code]);
         //ENDBlock Update product code
 
+        $product = [];
+        $description = $request->description;
+        foreach ($request->id as $key => $value) {
+            \DB::table('products')->where('id',$request->id[$key])->update(['name'=>$request->child_code_hidden[$key],'stock'=>$request->stock[$key],'minimum_stock'=>$request->stock_minimum[$key],'description'=>$description]);
+        }
+
         //delete old product image and the thumbnail from the server if any
         \File::delete(public_path().'/img/products/'.$this->product_image_to_be_deleted);
         \File::delete(public_path().'/img/products/thumb_'.$this->product_image_to_be_deleted);
+
 
         return redirect('main-product/'.$id.'/edit')
         ->with('successMessage', "Product has been updated");
@@ -193,15 +214,17 @@ class MainProductController extends Controller
 
     public function store_product(Request $request)
     {
-        $product = new Product;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->stock = $request->stock;
-        $product->minimum_stock = $request->minimum_stock;
-        $product->main_product_id = $request->main_product_id;
-        $main_product = MainProduct::findOrFail($request->main_product_id);
-        $product->save();
-        return redirect('main-product/'.$main_product->id)
+        $product = [];
+        foreach ($request->id as $key => $value) {
+            \DB::table('products')->where('id',$request->id[$key])->update(['stock'=>$request->stock[$key],'minimum_stock'=>$request->stock_minimum[$key]]);
+            // $product[$key] = [
+            //     'id' => $request->id[$key],'stock' => $request->stock[$key]
+            // ];
+        }
+
+
+        //$product->save();
+        return redirect('main-product/'.$request->parent_id)
             ->with('successMessage', "Product has been added");
     }
 
@@ -223,5 +246,14 @@ class MainProductController extends Controller
         $product->delete();
         return redirect('main-product/'.$request->main_product_id_delete)
             ->with('successMessage','sub product has been deleted');
+    }
+
+    public function show_product($id)
+    {
+        $main_product = MainProduct::findOrFail($id);
+        $product = \DB::table('products')->where('main_product_id',$id)->get();
+        return view('main_product.show_main_product')
+            ->with('main_product',$main_product)
+            ->with('product',$product);
     }
 }

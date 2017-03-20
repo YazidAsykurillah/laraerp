@@ -32,7 +32,7 @@
                             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
                               <div class="col-sm-10">
-                                {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'name']) !!}
+                                {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'code']) !!}
                                 @if ($errors->has('code'))
                                   <span class="help-block">
                                     <strong>{{ $errors->first('code') }}</strong>
@@ -65,13 +65,13 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                              {!! Form::label('name', 'Deskripsi', ['class'=>'col-sm-2 control-label']) !!}
+                            <div class="form-group{{ $errors->has('deskripsi') ? ' has-error' : '' }}">
+                              {!! Form::label('deskripsi', 'Deskripsi', ['class'=>'col-sm-2 control-label']) !!}
                               <div class="col-sm-10">
-                                {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Deskripsi of the product', 'id'=>'name']) !!}
-                                @if ($errors->has('name'))
+                                {!! Form::text('deskripsi',null,['class'=>'form-control', 'placeholder'=>'Deskripsi of the product', 'id'=>'deskripsi']) !!}
+                                @if ($errors->has('deskripsi'))
                                   <span class="help-block">
-                                    <strong>{{ $errors->first('name') }}</strong>
+                                    <strong>{{ $errors->first('deskripsi') }}</strong>
                                   </span>
                                 @endif
                               </div>
@@ -95,7 +95,7 @@
                         <div class="form-group">
                             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
                           <div class="col-sm-10">
-                            <a href="{{ url('product') }}" class="btn btn-default">
+                            <a href="{{ url('main-product') }}" class="btn btn-default">
                               <i class="fa fa-repeat"></i>&nbsp;Cancel
                             </a>&nbsp;
                             <button type="submit" class="btn btn-info" id="btn-submit-product">
@@ -181,19 +181,39 @@
             </div>
             {!! Form::close() !!}
 
-            <div class="row">
+            <!-- <div class="row" id="child" style="">
                 <div class="col-lg-12">
                     <div class="box">
                         <div class="box-header with-border">
 
                         </div>
-                        <div class="box-body">
+                        <div class="box-body table-responsive">
+                          <table class="table table-bordered" id="table-product">
+                            <thead>
+                                <tr>
+                                  <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                                  <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                                  <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                                  <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
+                            </tbody>
+                          </table>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         <!-- </div> -->
 
     </div>
+@endsection
+
+@section('additional_scripts')
+    <script type="text/javascript">
+
+    </script>
 @endsection

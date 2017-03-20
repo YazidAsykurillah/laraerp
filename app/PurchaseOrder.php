@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\User;
+use App\MainProduct;
 use App\Product;
 use App\PurchaseOrderInvoice;
 use App\PurchaseReturn;
@@ -32,6 +33,11 @@ class PurchaseOrder extends Model
     public function products()
     {
         return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'purchase_order_id');
+    }
+
+    public function main_products()
+    {
+        return $this->belongsTo('App\MainProduct');
     }
 
     //relation to purchase order invoice

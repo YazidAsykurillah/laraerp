@@ -138,10 +138,7 @@ class DatatablesController extends Controller
         ]);
         $data_main_products = Datatables::of($main_products)
             ->editColumn('code', function($main_products){
-                $code_html  ='<a href="'.url('main-product/'.$main_products->id).'" class="btn btn-link btn-xs" target="_" title="Click to see the detail">';
-                $code_html .=   '<i class="fa fa-link">&nbsp;'.$main_products->code.'</i>';
-                $code_html .='</a>&nbsp;';
-                return $code_html;
+                return $main_products->code;
             })
             ->editColumn('family_id', function($main_products){
                 return $main_products->family->name;
@@ -163,7 +160,10 @@ class DatatablesController extends Controller
                 return $actions_html;
             })
             ->addColumn('actions', function($main_products){
-                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/show').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Klik untuk mengedit main produk ini">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';

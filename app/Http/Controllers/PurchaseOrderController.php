@@ -12,6 +12,7 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\MainProduct;
+use App\Product;
 
 
 class PurchaseOrderController extends Controller

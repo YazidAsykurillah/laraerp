@@ -123,7 +123,7 @@
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-product">
+            <table class="table table-bordered" id="table-product" style="width:100%">
               <thead>
                 <tr>
                     <th style="width:5%;">#</th>
@@ -299,7 +299,7 @@
     $('#searchid input').keyup(function() {
       tableProduct.columns($(this).data('id')).search(this.value).draw();
     });
-    
+
     //ENDBlock search input and select
 
   </script>
