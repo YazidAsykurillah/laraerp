@@ -4,9 +4,9 @@
         <!-- Logo -->
         <a href="{{ url('home') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>LA</b>RAV</span>
+          <span class="logo-mini"><b>CATRA</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>LA</b>RAV</span>
+          <span class="logo-lg"><b>CATRA</b></span>
         </a>
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -14,12 +14,12 @@
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          
+
           <!-- Navbar Right Menu -->
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account Menu -->
-              
+
               <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -32,7 +32,7 @@
                   <!-- The user image in the menu -->
                   <li class="user-header">
                     {!! Html::image('img/admin-lte/user2-160x160.jpg', 'User Image', ['class'=>'img-circle']) !!}
-                    
+
                     <p>
                       {{ Auth::user()->name }}
                       <small>Member since Nov. 2012</small>
@@ -49,7 +49,7 @@
                   </li>
                 </ul>
               </li>
-              
+
             </ul>
           </div>
 

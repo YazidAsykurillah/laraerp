@@ -35,17 +35,30 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
               <thead>
-                <tr>
-                  <th style="width:40%">Product Name</th>
-                  <th style="width:20%">Description</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                </tr>
+                  <tr>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                  </tr>
               </thead>
               <tbody>
                 @if($purchase_order->products->count() > 0)
                   @foreach($purchase_order->products as $product)
+                  <tr>
+                      <td>{{ $product->main_product->family->name}}</td>
+                      <td>{{ $product->name }}</td>
+                      <td>{{ $product->description }}</td>
+                      <td>{{ $product->}}</td>
+                      <td></td>
+                      <td></td>
+                  </tr>
                   <tr id="tr_product_{{$product->id}}">
+                    <td>
+                      {{ $product->main_product->family->name}}
+                    </td>
                     <td>
                       <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
                       {{ $product->name }}
@@ -53,10 +66,11 @@
                     <td>
                       {{ $product->description }}
                     </td>
+                    <td>{{ $product->main_product->unit->name }}</td>
                     <td>
                       <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
                     </td>
-                    <td>{{ $product->main_product->unit->name }}</td>
+                    <td>{{ $product->main_product->category->name}}</td>
                   </tr>
                   @endforeach
                 @else
@@ -150,28 +164,24 @@
             <table class="table table-bordered" id="table-product">
               <thead>
                   <tr>
-                    <th style="width:5%;">#</th>
-                    <th>Main Product</th>
-                    <th>Sub Product</th>
-                    <th>Description</th>
-                    <th>Stock</th>
-                    <th>Minimum Stock</th>
-                    <th>Family</th>
-                    <th>Category</th>
-                    <th>Unit</th>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
                   </tr>
                 </thead>
                 <thead id="searchid">
                   <tr>
-                    <th style="width:5%;"></th>
-                    <th>Main Product</th>
-                    <th>Sub Product</th>
-                    <th>Description</th>
-                    <th>Stock</th>
-                    <th>Minimum Stock</th>
-                    <th>Family</th>
-                    <th>Category</th>
-                    <th>Unit</th>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
                   </tr>
               </thead>
               <tbody>
@@ -208,24 +218,24 @@
     var selected = [];
     //initially push selected products to var selected
     @foreach($purchase_order->products as $product)
-      selected.push({{$product->id}});
+      selected.push({{$product->main_product_id}});
     @endforeach
+    console.log(selected);
     //ENDinitially push selected products to var selected
+
     var tableProduct =  $('#table-product').DataTable({
       processing :true,
       serverSide : true,
       pageLength : 10,
-      ajax : '{!! route('datatables.getProducts') !!}',
+      ajax : '{!! route('datatables.getMainProducts') !!}',
       columns :[
           {data: 'rownum', name: 'rownum', searchable:false},
-          { data: 'main_product_id', name: 'main_product_id'},
+          { data: 'family_id', name: 'family_id'},
           { data: 'name', name: 'name'},
+          { data: 'image', name: 'image'},
           { data: 'description', name: 'description'},
-          { data: 'stock', name: 'stock' },
-          { data: 'minimum_stock', name: 'minimum_stock' },
-          { data: 'family_id', name: 'family_id' },
-          { data: 'category_id', name: 'category_id' },
           { data: 'unit_id', name: 'unit_id' },
+          { data: 'category_id', name: 'category_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -238,33 +248,78 @@
 
     });
 
-    tableProduct.on('click', 'tr', function () {
+
+    tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
         var index = $.inArray(id, selected);
         if ( index === -1 ) {
             selected.push(id);
             $('#table-selected-products').append(
-              '<tr id="tr_product_'+id+'">'+
+              '<tr class="tr_product_'+id+'">'+
+                '<td id="sub_tabel_product_family"><b>'+
+                    tableProduct.row(this).data().family_id+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().name+
+                    tableProduct.row(this).data().image+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().description+
+                '</b></td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().unit_id+
+                '</b></td>'+
                 '<td>'+
-                  '<input type="hidden" name="product_id[]" value="'+id+'" />'+
-                  tableProduct.row(this).data().name+
+                    '<input type="text" name="parent_quantity" class="quantity form-control" style="" value="" />'+
                 '</td>'+
-                '<td>'+
-                  tableProduct.row(this).data().description+
-                '</td>'+
-                '<td>'+
-                  '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-                '</td>'+
-                '<td>'+
-                  tableProduct.row(this).data().unit_id+
-                '</td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().category_id+
+                '</b></td>'+
               '</tr>'
             );
+            var token = $("meta[name='csrf-token']").attr('content');
+            //alert(token);
+            //panggil controller tampilan sub product
+            $.ajax({
+                url: '{!!URL::to('callSubProduct')!!}',
+                type : 'POST',
+                data : 'id='+id+'&_token='+token,
+                beforeSend: function(){
+
+                } ,
+                success: function(response){
+                    $.each(response,function(index,value){
+                        $('#table-selected-products').append(
+                          '<tr class="tr_product_'+id+'">'+
+                            '<td>'+
+                                '<input type="hidden" name="product_id[]" value="'+value.id+'" />'+
+                                value.family+
+                            '</td>'+
+                            '<td>'+
+                                value.name+
+                            '</td>'+
+                            '<td>'+
+                                value.description+
+                            '</td>'+
+                            '<td>'+
+                                value.unit+
+                            '</td>'+
+                            '<td>'+
+                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                            '</td>'+
+                            '<td>'+
+                                value.category+
+                            '</td>'+
+                          '</tr>'
+                        );
+                    });
+                },
+            })
 
         } else {
             selected.splice( index, 1 );
-            $('#tr_product_'+id).remove();
+            $('.tr_product_'+id).remove();
         }
 
         $(this).toggleClass('selected');

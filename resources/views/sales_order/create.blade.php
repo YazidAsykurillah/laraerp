@@ -34,15 +34,17 @@
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <tr>
-                <th style="width:40%">Product Name</th>
-                <th style="width:20%">Description</th>
-                <th style="width:20%">Quantity</th>
-                <th style="width:20%">Unit</th>
-              </tr>
-              <tr id="tr-no-product-selected">
-                <td colspan="4">No product selected</td>
-              </tr>
+                <tr>
+                  <th style="width:15%">Family</th>
+                  <th style="width:15%">Code</th>
+                  <th style="width:20%">Description</th>
+                  <th style="width:15%">Unit</th>
+                  <th style="width:15%">Quantity</th>
+                  <th style="width:20%">Category</th>
+                </tr>
+                <tr id="tr-no-product-selected">
+                  <td colspan="6">No product selected</td>
+                </tr>
             </table>
           </div>
 
@@ -153,30 +155,26 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-product">
               <thead>
-                <tr>
-                  <th style="width:5%;">#</th>
-                  <th>Main Product</th>
-                  <th>Sub Product</th>
-                  <th>Description</th>
-                  <th>Stock</th>
-                  <th>Minimum Stock</th>
-                  <th>Family</th>
-                  <th>Category</th>
-                  <th>Unit</th>
-                </tr>
-              </thead>
-              <thead id="searchid">
-                <tr>
-                  <th style="width:5%;"></th>
-                  <th>Main Product</th>
-                  <th>Sub Product</th>
-                  <th>Description</th>
-                  <th>Stock</th>
-                  <th>Minimum Stock</th>
-                  <th>Family</th>
-                  <th>Category</th>
-                  <th>Unit</th>
-                </tr>
+                  <tr>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
+                  </tr>
+                </thead>
+                <thead id="searchid">
+                  <tr>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
+                  </tr>
               </thead>
               <tbody>
 
@@ -215,17 +213,15 @@
       processing :true,
       serverSide : true,
       pageLength:10,
-      ajax : '{!! route('datatables.getProducts') !!}',
+      ajax : '{!! route('datatables.getMainProducts') !!}',
       columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'main_product_id', name: 'main_product_id'},
-        { data: 'name', name: 'name'},
-        { data: 'description', name: 'description'},
-        { data: 'stock', name: 'stock' },
-        { data: 'minimum_stock', name: 'minimum_stock' },
-        { data: 'family_id', name: 'family_id' },
-        { data: 'category_id', name: 'category_id' },
-        { data: 'unit_id', name: 'unit_id' },
+          {data: 'rownum', name: 'rownum', searchable:false},
+          { data: 'family_id', name: 'family_id'},
+          { data: 'name', name: 'name'},
+          { data: 'image', name: 'image'},
+          { data: 'description', name: 'description'},
+          { data: 'unit_id', name: 'unit_id' },
+          { data: 'category_id', name: 'category_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -238,43 +234,77 @@
     tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
-        var product_name = tableProduct.row(this).data().name;
-        var stock = tableProduct.row(this).data().stock;
-        var minimum_stock = tableProduct.row(this).data().minimum_stock;
-        //alert('ahi'+minimum_stock);
-        if(stock < minimum_stock){ //product out of the stock, prevent this product to be added on the selected product
-          alertify.error(product_name+" is out of the stock");
-          return false;
-        }
-        else{
-          var index = $.inArray(id, selected);
-          if ( index === -1 ) {
-              selected.push(id);
-              $('#table-selected-products').append(
-                '<tr id="tr_product_'+id+'">'+
-                  '<td>'+
-                    '<input type="hidden" name="product_id[]" value="'+id+'" />'+
+        var index = $.inArray(id, selected);
+        if ( index === -1 ) {
+            selected.push(id);
+            $('#table-selected-products').append(
+              '<tr class="tr_product_'+id+'">'+
+                '<td><b>'+
+                    tableProduct.row(this).data().family_id+
+                '</b></td>'+
+                '<td><b>'+
                     tableProduct.row(this).data().name+
-                  '</td>'+
-                  '<td>'+
+                    tableProduct.row(this).data().image+
+                '</b></td>'+
+                '<td><b>'+
                     tableProduct.row(this).data().description+
-                  '</td>'+
-                  '<td>'+
-                    '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-                  '</td>'+
-                  '<td>'+
+                '</b></td>'+
+                '<td><b>'+
                     tableProduct.row(this).data().unit_id+
-                  '</td>'+
-                '</tr>'
-              );
-          } else {
-              selected.splice( index, 1 );
-              $('#tr_product_'+id).remove();
-          }
+                '</b></td>'+
+                '<td>'+
+                    '<input type="text" name="parent_quantity" class="quantity form-control" style="" value="" />'+
+                '</td>'+
+                '<td><b>'+
+                    tableProduct.row(this).data().category_id+
+                '</b></td>'+
+              '</tr>'
+            );
+            var token = $("meta[name='csrf-token']").attr('content');
+            //alert(token);
+            //panggil controller tampilan sub product
+            $.ajax({
+                url: '{!!URL::to('callSubProduct')!!}',
+                type : 'POST',
+                data : 'id='+id+'&_token='+token,
+                beforeSend: function(){
 
-          $(this).toggleClass('selected');
+                } ,
+                success: function(response){
+                    $.each(response,function(index,value){
+                        $('#table-selected-products').append(
+                          '<tr class="tr_product_'+id+'">'+
+                            '<td>'+
+                                '<input type="hidden" name="product_id[]" value="'+value.id+'" />'+
+                                value.family+
+                            '</td>'+
+                            '<td>'+
+                                value.name+
+                            '</td>'+
+                            '<td>'+
+                                value.description+
+                            '</td>'+
+                            '<td>'+
+                                value.unit+
+                            '</td>'+
+                            '<td>'+
+                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                            '</td>'+
+                            '<td>'+
+                                value.category+
+                            '</td>'+
+                          '</tr>'
+                        );
+                    });
+                },
+            })
+
+        } else {
+            selected.splice( index, 1 );
+            $('.tr_product_'+id).remove();
         }
 
+        $(this).toggleClass('selected');
 
     } );
 

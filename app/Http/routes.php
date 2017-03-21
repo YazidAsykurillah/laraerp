@@ -26,6 +26,7 @@ Route::post('deleteMainProduct','MainProductController@destroy');
 Route::post('main-product.destroy_product','MainProductController@destroy_product');
 Route::put('main-product.update_product','MainProductController@update_product');
 Route::post('main-product.store_product','MainProductController@store_product');
+Route::get('main-product/{id}/show','MainProductController@show_product');
 Route::resource('main-product','MainProductController');
 
 
@@ -144,6 +145,8 @@ Route::resource('customer', 'CustomerController');
 
 
 //Sales Order
+    //call sub product
+    Route::post('callSubProduct','SalesOrderController@callSubProduct');
 	//Save
 	Route::post('storeSalesOrder', 'SalesOrderController@store');
 	//Update sales order status

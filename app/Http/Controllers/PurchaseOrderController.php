@@ -12,6 +12,10 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\MainProduct;
+<<<<<<< HEAD
+=======
+use App\Product;
+>>>>>>> 39dec3a25b0899df488885da18101e51e5d11572
 
 
 class PurchaseOrderController extends Controller
@@ -273,8 +277,16 @@ class PurchaseOrderController extends Controller
             $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
             foreach($list_sub_product as $ls){
                 array_push($results, array(
+<<<<<<< HEAD
                     'id'=>$ls->id,
                     'name'=>$ls->name,
+=======
+                    'family'=>MainProduct::find($request->id)->family->name,
+                    'id'=>$ls->id,
+                    'name'=>$ls->name,
+                    'description'=>$ls->description,
+                    'unit'=>MainProduct::find($request->id)->unit->name,
+>>>>>>> 39dec3a25b0899df488885da18101e51e5d11572
                     'category'=>MainProduct::find($request->id)->category->name,
                 ));
             }

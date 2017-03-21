@@ -126,7 +126,7 @@ class DatatablesController extends Controller
     public function getMainProducts(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $main_products = MainProduct::select([
+        $main_products = MainProduct::with('product')->select([
             \DB::raw('@rownum := @rownum + 1 AS rownum'),
             'id',
             'code',
@@ -138,10 +138,7 @@ class DatatablesController extends Controller
         ]);
         $data_main_products = Datatables::of($main_products)
             ->editColumn('code', function($main_products){
-                $code_html  ='<a href="'.url('main-product/'.$main_products->id).'" class="btn btn-link btn-xs" target="_" title="Click to see the detail">';
-                $code_html .=   '<i class="fa fa-link">&nbsp;'.$main_products->code.'</i>';
-                $code_html .='</a>&nbsp;';
-                return $code_html;
+                return $main_products->code;
             })
             ->editColumn('family_id', function($main_products){
                 return $main_products->family->name;
@@ -158,12 +155,15 @@ class DatatablesController extends Controller
             ->editColumn('image', function($main_products){
                 $actions_html = '';
                 if($main_products->image != NULL){
-                    $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$main_products->image.'"></a>';
+                    $actions_html = '<a href="#" class="thumbnail"><img src="'.url('img/products/thumb_'.$main_products->image).'"></a>';
                 }
                 return $actions_html;
             })
             ->addColumn('actions', function($main_products){
-                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/show').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Klik untuk mengedit main produk ini">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
