@@ -75,15 +75,20 @@
                   <tbody>
                       @if($sales_order->products->count() > 0)
                         @foreach($sales_order->products as $product)
+                        @if($product->name == $product->main_product->name.'.01')
+                        <tr>
+                            <td>{{ $product->main_product->name}}</td>
+                        </tr>
+                        @endif
                         <tr>
                             <td>{{ $product->name }}</td>
                             <td>{{ $product->description }}</td>
                             <td>{{ $product->pivot->quantity }}</td>
                             <td>{{ $product->main_product->unit->name }}</td>
                         </tr>
-                      <tr>
                         @endforeach
                       @else
+                      <tr>
                         <td colspan="3">There are no product</td>
                       </tr>
                       @endif

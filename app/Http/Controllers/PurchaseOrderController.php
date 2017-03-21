@@ -143,10 +143,13 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($id);
         $supplier_options = Supplier::lists('name', 'id');
         $total_price = $this->count_total_price($purchase_order);
+        //$main_product = MainProduct::findOrFail($purchase_order->)
+        $main_product = $purchase_order->products;
         return view('purchase_order.edit')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
-            ->with('supplier_options', $supplier_options);
+            ->with('supplier_options', $supplier_options)
+            ->with('main_product',$main_product);
     }
 
     /**

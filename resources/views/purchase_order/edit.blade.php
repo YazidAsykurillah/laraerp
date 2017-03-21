@@ -46,15 +46,14 @@
               </thead>
               <tbody>
                 @if($purchase_order->products->count() > 0)
+                    {{ $purchase_order->products->first()}}
                   @foreach($purchase_order->products as $product)
+                  @if($purchase_order->products->first() == $product)
                   <tr>
-                      <td>{{ $product->main_product->family->name}}</td>
-                      <td>{{ $product->name }}</td>
-                      <td>{{ $product->description }}</td>
-                      <td>{{ $product->}}</td>
                       <td></td>
-                      <td></td>
+                      <td>{{ $product->main_product->name}}</td>
                   </tr>
+                  @endif
                   <tr id="tr_product_{{$product->id}}">
                     <td>
                       {{ $product->main_product->family->name}}
@@ -73,6 +72,7 @@
                     <td>{{ $product->main_product->category->name}}</td>
                   </tr>
                   @endforeach
+
                 @else
                 <tr id="tr-no-product-selected">
                   <td>There are no product</td>

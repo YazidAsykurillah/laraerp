@@ -8,7 +8,7 @@ use App\MainProduct;
 use App\Family;
 use App\Category;
 use App\Unit;
-
+use App\Product;
 class Product extends Model
 {
     protected $table = 'products';

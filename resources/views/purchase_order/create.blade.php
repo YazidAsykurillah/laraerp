@@ -211,7 +211,24 @@
               '<tr class="tr_product_'+id+'">'+
                 '<td><b>'+
                     tableProduct.row(this).data().family_id+
-                '</b></td>'+
+                '</b><br/>'+
+                '<label for="persediaan_account">Inventory Account</label>'+
+                '<select name="select_account" id="select_account">'+
+                    '<option value="">Select Account</option>'+
+                '@foreach(list_parent('52') as $as)'+
+                    '@if($as->level == 1)'+
+                    '<optgroup label="{{ $as->name }}">'+
+                    '@endif'+
+                    '@foreach(list_child('2',$as->id) as $sub)'+
+                    '<option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>'+
+                    '@endforeach'+
+                '@endforeach'+
+                '</select>'+
+                '<p></p>'+
+                '<button id="btn-select-account" class="btn btn-xs btn-primary" title="Click to send this piutang">'+
+                  '<i class="fa fa-save"></i>&nbsp;Send'+
+                '</button>'+
+                '</td>'+
                 '<td><b>'+
                     tableProduct.row(this).data().name+
                     tableProduct.row(this).data().image+

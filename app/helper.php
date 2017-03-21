@@ -13,6 +13,13 @@
         // return $s_i_p;
     }
 
+    function main_product($key)
+    {
+        $main_product = \DB::table('products')->where('main_product_id',$key)->groupBy('main_product_id')->get();
+
+        return $main_product;
+    }
+
     function child_chart_account($key)
     {
         $child_chart_account = \DB::table('sub_chart_accounts')->where('parent_id',$key)->orderBy('account_number','asc')->get();
