@@ -45,16 +45,8 @@
                   </tr>
               </thead>
               <tbody>
-<<<<<<< HEAD
                 @if($purchase_order->products->count() > 0)
-                    {{ $purchase_order->products->first()}}
                   @foreach($purchase_order->products as $product)
-                  @if($purchase_order->products->first() == $product)
-                  <tr>
-                      <td></td>
-                      <td>{{ $product->main_product->name}}</td>
-                  </tr>
-                  @endif
                   <tr id="tr_product_{{$product->id}}">
                     <td>
                       {{ $product->main_product->family->name}}
@@ -73,37 +65,15 @@
                     <td>{{ $product->main_product->category->name}}</td>
                   </tr>
                   @endforeach
-
                 @else
                 <tr id="tr-no-product-selected">
                   <td>There are no product</td>
-=======
-              
-                @if(count($row_display))
-                @foreach($row_display as $row)
-                <tr>
-                  <td></td>
-                  <td><strong>{{ $row['main_product'] }}</strong></td>
->>>>>>> 4d59e6990a1e165f533374ae237567a169f2fc29
                 </tr>
-                @foreach($row['ordered_products'] as $or)
-                <tr>
-                  <td>
-                    <input type="text" name="product_id[]" value="{{ $or['product_id'] }} " />
-                    {{ $or['family'] }}
-                  </td>
-                  <td>{{ $or['code'] }} </td>
-                  <td>{{ $or['description'] }} </td>
-                  <td>{{ $or['description'] }} </td>
-                  <td>{{ $or['quantity'] }}</td>
-                  <td>{{ $or['category'] }}</td>
-                </tr>
-                @endforeach
-                @endforeach
-                @else
                 @endif
               </tbody>
-              <tfoot></tfoot>
+              <tfoot>
+
+              </tfoot>
             </table>
           </div>
 

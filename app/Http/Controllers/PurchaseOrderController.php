@@ -12,7 +12,9 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\MainProduct;
+
 use App\Product;
+
 
 
 class PurchaseOrderController extends Controller
@@ -143,13 +145,70 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($id);
         $supplier_options = Supplier::lists('name', 'id');
         $total_price = $this->count_total_price($purchase_order);
+<<<<<<< HEAD
         //$main_product = MainProduct::findOrFail($purchase_order->)
         $main_product = $purchase_order->products;
+=======
+        
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            } 
+        }
+        
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            ];
+        }
+        /*echo '<pre>';
+        print_r($row_display);
+        echo '</pre>';
+
+        exit();*/
+>>>>>>> 4d59e6990a1e165f533374ae237567a169f2fc29
         return view('purchase_order.edit')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
             ->with('supplier_options', $supplier_options)
+<<<<<<< HEAD
             ->with('main_product',$main_product);
+=======
+            ->with('row_display', $row_display);
+    }
+
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+        
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_purchase_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('purchase_order_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
+
+>>>>>>> 4d59e6990a1e165f533374ae237567a169f2fc29
     }
 
     /**
@@ -277,11 +336,16 @@ class PurchaseOrderController extends Controller
             $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
             foreach($list_sub_product as $ls){
                 array_push($results, array(
+
+                    'id'=>$ls->id,
+                    'name'=>$ls->name,
+
                     'family'=>MainProduct::find($request->id)->family->name,
                     'id'=>$ls->id,
                     'name'=>$ls->name,
                     'description'=>$ls->description,
                     'unit'=>MainProduct::find($request->id)->unit->name,
+
                     'category'=>MainProduct::find($request->id)->category->name,
                 ));
             }
