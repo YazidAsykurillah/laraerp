@@ -45,31 +45,35 @@
                   </tr>
               </thead>
               <tbody>
-              
-                @if(count($row_display))
-                @foreach($row_display as $row)
-                <tr>
-                  <td></td>
-                  <td><strong>{{ $row['main_product'] }}</strong></td>
-                </tr>
-                @foreach($row['ordered_products'] as $or)
-                <tr>
-                  <td>
-                    <input type="text" name="product_id[]" value="{{ $or['product_id'] }} " />
-                    {{ $or['family'] }}
-                  </td>
-                  <td>{{ $or['code'] }} </td>
-                  <td>{{ $or['description'] }} </td>
-                  <td>{{ $or['description'] }} </td>
-                  <td>{{ $or['quantity'] }}</td>
-                  <td>{{ $or['category'] }}</td>
-                </tr>
-                @endforeach
-                @endforeach
+                @if($purchase_order->products->count() > 0)
+                  @foreach($purchase_order->products as $product)
+                  <tr id="tr_product_{{$product->id}}">
+                    <td>
+                      {{ $product->main_product->family->name}}
+                    </td>
+                    <td>
+                      <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
+                      {{ $product->name }}
+                    </td>
+                    <td>
+                      {{ $product->description }}
+                    </td>
+                    <td>{{ $product->main_product->unit->name }}</td>
+                    <td>
+                      <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
+                    </td>
+                    <td>{{ $product->main_product->category->name}}</td>
+                  </tr>
+                  @endforeach
                 @else
+                <tr id="tr-no-product-selected">
+                  <td>There are no product</td>
+                </tr>
                 @endif
               </tbody>
-              <tfoot></tfoot>
+              <tfoot>
+
+              </tfoot>
             </table>
           </div>
 
