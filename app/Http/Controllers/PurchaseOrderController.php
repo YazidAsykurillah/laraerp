@@ -11,6 +11,7 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 
 use App\PurchaseOrder;
 use App\Supplier;
+use App\MainProduct;
 
 
 class PurchaseOrderController extends Controller
@@ -268,8 +269,16 @@ class PurchaseOrderController extends Controller
     public function callSubProduct(Request $request)
     {
         if($request->ajax()){
+            $results = array();
             $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
-            return response()->json($list_sub_product);
+            foreach($list_sub_product as $ls){
+                array_push($results, array(
+                    'id'=>$ls->id,
+                    'name'=>$ls->name,
+                    'category'=>MainProduct::find($request->id)->category->name,
+                ));
+            }
+            return response()->json($results);
         }
     }
 }
