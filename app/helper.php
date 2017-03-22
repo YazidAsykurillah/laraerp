@@ -85,7 +85,18 @@
 
     function list_transaction($key)
     {
-        $list_transaction = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->sum('amount');
+        $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','K']])->sum('amount');
+        $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','D']])->sum('amount');
+        // if(count($list_transaction_k) == 0){
+        //     return $list_transaction_d;
+        // }
+        return $list_transaction_d-$list_transaction_k;
 
-        return $list_transaction;
+    }
+
+    function list_transaction_d($key)
+    {
+        $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['reference',$key]])->where([['type','D']])->sum('amount');
+
+        return $list_transaction_d;
     }
