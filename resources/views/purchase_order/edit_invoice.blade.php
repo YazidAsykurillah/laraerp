@@ -37,11 +37,11 @@
             <table class="table table-bordered" id="table-selected-products">
                 <thead>
                     <tr>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
                         <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Quantity</th>
+                        <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
                         <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
                     </tr>
@@ -50,14 +50,30 @@
                   @if(count($row_display))
                       @foreach($row_display as $row)
                           <tr>
-                            <td><strong>{{ $row['family'] }}</strong></td>
+                            <td>
+                                <strong>
+                                {{ $row['family'] }}<br>
+                                </strong>
+                                <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }} " />
+                                <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                    <option value="">Inventory Account</option>
+                                @foreach(list_account_hutang('52') as $as)
+                                    @if($as->level == 1)
+                                    <optgroup label="{{ $as->name }}">
+                                    @endif
+                                    @foreach(list_sub_hutang('2',$as->id) as $sub)
+                                    <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                    @endforeach
+                                @endforeach
+                                </select>
+                            </td>
                             <td><strong>{{ $row['main_product'] }}</strong></td>
                             <td><strong>{{ $row['description'] }}</strong></td>
                             <td><strong>{{ $row['unit'] }}</strong></td>
                             <td><strong>{{ $row['quantity'] }}</strong></td>
                             <td><strong>{{ $row['category'] }}</strong></td>
                             <td>
-                                <input type="text" name="price_parent" class="price_parent">
+                                <input type="text" name="price_parent[]" class="price_parent">
                             </td>
                           </tr>
                           @foreach($row['ordered_products'] as $or)
@@ -102,6 +118,7 @@
                 @endif
               </div>
             </div>
+
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -111,6 +128,23 @@
                     <strong>{{ $errors->first('bill_price') }}</strong>
                   </span>
                 @endif
+              </div>
+            </div>
+
+            <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}">
+              {!! Form::label('select_account', 'Accounts Payable', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                  <select name="select_account" id="select_account" class="form-control">
+                      <option value="">Select Account</option>
+                  @foreach(list_account_hutang('56') as $as)
+                      @if($as->level == 1)
+                      <optgroup label="{{ $as->name }}">
+                      @endif
+                      @foreach(list_sub_hutang('2',$as->id) as $sub)
+                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                      @endforeach
+                  @endforeach
+                  </select>
               </div>
             </div>
 
@@ -169,6 +203,12 @@
 
     //set autonumeric to price classes field
     $('.price').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+
+    //set autonumeric to price classes field
+    $('.price_parent').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

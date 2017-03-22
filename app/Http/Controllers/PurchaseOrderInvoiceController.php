@@ -113,10 +113,28 @@ class PurchaseOrderInvoiceController extends Controller
                 \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
                 //Now time to sync the products
                 $purchase_order->products()->sync($syncData);
-
+                $inv_account = [];
+                foreach ($request->parent_product_id as $key => $value) {
+                    // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
+                    // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
+                    //$inv_account->save();
+                    array_push($inv_account,[
+                        'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
+                        'sub_chart_account_id' =>$request->inventory_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->purchase_order_id,
+                        'source'=>'purchase_order_invoices',
+                        'type'=>'K',
+                    ]);
+                }
+                \DB::table('transaction_chart_accounts')->insert($inv_account);
                 $transaction_sub_chart_account = New TransactionChartAccount;
                 $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
                 $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+                $transaction_sub_chart_account->reference = $request->purchase_order_id;
+                $transaction_sub_chart_account->source = 'purchase_order_invoices';
+                $transaction_sub_chart_account->type = 'K';
                 $transaction_sub_chart_account->save();
             }
 
@@ -242,6 +260,33 @@ class PurchaseOrderInvoiceController extends Controller
         \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
         //Now time to sync the products
         $purchase_order->products()->sync($syncData);
+
+        //DELETE transaction chart account reference
+        \DB::table('transaction_chart_accounts')->where('reference',$request->purchase_order_id)->delete();
+        //NOW SAVE transaction chart account
+        $inv_account = [];
+        foreach ($request->parent_product_id as $key => $value) {
+            // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
+            // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
+            //$inv_account->save();
+            array_push($inv_account,[
+                'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
+                'sub_chart_account_id' =>$request->inventory_account[$key],
+                'created_at'=>date('Y-m-d H:i:s'),
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'reference'=>$request->purchase_order_id,
+                'source'=>'purchase_order_invoices',
+                'type'=>'K',
+            ]);
+        }
+        \DB::table('transaction_chart_accounts')->insert($inv_account);
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->reference = $request->purchase_order_id;
+        $transaction_sub_chart_account->source = 'purchase_order_invoices';
+        $transaction_sub_chart_account->type = 'K';
+        $transaction_sub_chart_account->save();
 
         return redirect('purchase-order-invoice')
             ->with('successMessage', "Invoice has been updated");
