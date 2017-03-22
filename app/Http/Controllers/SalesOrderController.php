@@ -14,6 +14,8 @@ use App\Driver;
 use App\Vehicle;
 use App\MainProduct;
 
+use App\Product;
+
 class SalesOrderController extends Controller
 {
     /**
@@ -102,11 +104,38 @@ class SalesOrderController extends Controller
         $sales_returns = $sales_order->sales_returns;
         $total_price = $this->count_total_price($sales_order);
 
+        $main_product = $sales_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($sales_order->products->count()){
+            foreach($sales_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            ];
+        }
+
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
             ->with('invoice', $invoice)
-            ->with('sales_returns', $sales_returns);
+            ->with('sales_returns', $sales_returns)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     protected function count_total_price($sales_order)
@@ -136,6 +165,34 @@ class SalesOrderController extends Controller
 
             return response('404');
         }
+
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_sales_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('sales_order_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
+
 
     }
 

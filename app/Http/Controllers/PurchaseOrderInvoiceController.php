@@ -21,6 +21,8 @@ use App\Cash;
 use App\BankPurchaseInvoicePayment;
 use App\CashPurchaseInvoicePayment;
 use App\TransactionChartAccount;
+use App\MainProduct;
+use App\Product;
 use DB;
 
 class PurchaseOrderInvoiceController extends Controller
@@ -43,15 +45,45 @@ class PurchaseOrderInvoiceController extends Controller
         return $sum_price;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$id)
     {
 
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
         $payment_methods = PaymentMethod::lists('name', 'id');
+        $main_product = $purchase_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            ];
+        }
+        // echo '<pre>';
+        // echo print_r($row_display);
+        // echo '</pre>';
+        // exit();
         return view('purchase_order.create_invoice')
             ->with('total_price', $this->count_total_price($purchase_order))
             ->with('purchase_order', $purchase_order)
-            ->with('payment_methods', $payment_methods);
+            ->with('payment_methods', $payment_methods)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     public function store(StorePurchaseOrderInvoiceRequest $request)
@@ -81,6 +113,11 @@ class PurchaseOrderInvoiceController extends Controller
                 \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
                 //Now time to sync the products
                 $purchase_order->products()->sync($syncData);
+
+                $transaction_sub_chart_account = New TransactionChartAccount;
+                $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
+                $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+                $transaction_sub_chart_account->save();
             }
 
             $response = [
@@ -105,9 +142,37 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
         $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
+        $main_product = $purchase_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>'',
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $purchase_order->id)
+            ];
+        }
+        // print_r($this->get_product_lists($mp_id,$id));
+        // exit();
         return view('purchase_order.show_invoice')
             ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -120,9 +185,35 @@ class PurchaseOrderInvoiceController extends Controller
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
         $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
+        $main_product = $purchase_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>'',
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $purchase_order->id)
+            ];
+        }
         return view('purchase_order.edit_invoice')
             ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -185,6 +276,42 @@ class PurchaseOrderInvoiceController extends Controller
 
         return redirect('purchase-order-invoice')
         ->with('successMessage', 'Invoice has been deleted');
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+        $total_quantity = [];
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_purchase_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('purchase_order_id', '=', $po_id)
+                        ->first();
+            $total_quantity[] = $counter->quantity;
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                    'price'=>$counter->price,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        $sum_qty = array_sum($total_quantity);
+        return $product_id_arr;
+
+
+    }
+
+    protected function sum_qty($sm)
+    {
+        return array_sum($sm);
     }
 
     public function completePurchaseInvoice(Request $request)

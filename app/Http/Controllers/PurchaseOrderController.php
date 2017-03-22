@@ -127,11 +127,38 @@ class PurchaseOrderController extends Controller
         $purchase_returns = $purchase_order->purchase_returns;
         $total_price = $this->count_total_price($purchase_order);
 
+        $main_product = $purchase_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            ];
+        }
+
         return view('purchase_order.show')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
             ->with('invoice', $invoice)
-            ->with('purchase_returns', $purchase_returns);
+            ->with('purchase_returns', $purchase_returns)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -145,24 +172,28 @@ class PurchaseOrderController extends Controller
         $purchase_order = PurchaseOrder::findOrFail($id);
         $supplier_options = Supplier::lists('name', 'id');
         $total_price = $this->count_total_price($purchase_order);
-<<<<<<< HEAD
         //$main_product = MainProduct::findOrFail($purchase_order->)
         $main_product = $purchase_order->products;
-=======
-        
+
         $row_display = [];
         $main_products_arr = [];
         if($purchase_order->products->count()){
             foreach($purchase_order->products as $prod){
                 array_push($main_products_arr, $prod->main_product->id);
-            } 
+            }
         }
-        
+
         $main_products = array_unique($main_products_arr);
 
         foreach($main_products as $mp_id){
             $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
                 'ordered_products'=>$this->get_product_lists($mp_id, $id)
             ];
         }
@@ -171,21 +202,19 @@ class PurchaseOrderController extends Controller
         echo '</pre>';
 
         exit();*/
->>>>>>> 4d59e6990a1e165f533374ae237567a169f2fc29
+
         return view('purchase_order.edit')
             ->with('purchase_order', $purchase_order)
             ->with('total_price', $total_price)
             ->with('supplier_options', $supplier_options)
-<<<<<<< HEAD
-            ->with('main_product',$main_product);
-=======
+            ->with('main_product',$main_product)
             ->with('row_display', $row_display);
     }
 
 
     protected function get_product_lists($mp_id, $po_id)
     {
-        
+
         $product_id_arr = [];
         $product_ids = MainProduct::find($mp_id)->product;
         foreach($product_ids as $pid){
@@ -208,7 +237,7 @@ class PurchaseOrderController extends Controller
         }
         return $product_id_arr;
 
->>>>>>> 4d59e6990a1e165f533374ae237567a169f2fc29
+
     }
 
     /**

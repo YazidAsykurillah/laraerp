@@ -62,28 +62,40 @@
 
                 <table class="table table-bordered" id="table-selected-products">
                   <thead>
-
                     <tr>
-                      <th style="width:40%">Product Name</th>
-                      <th style="width:20%">Description</th>
-                      <th style="width:20%">Quantity</th>
-                      <th style="width:20%">Unit</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @if($purchase_order->products->count() > 0)
-                      @foreach($purchase_order->products as $product)
-                      <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->description }}</td>
-                        <td>{{ $product->pivot->quantity }}</td>
-                        <td>{{ $product->main_product->unit->name }}</td>
-                      </tr>
-                    <tr>
-                      @endforeach
+                      @if(count($row_display))
+                          @foreach($row_display as $row)
+                              <tr>
+                                <td><strong>{{ $row['family'] }}</strong></td>
+                                <td><strong>{{ $row['main_product'] }}</strong></td>
+                                <td><strong>{{ $row['description'] }}</strong></td>
+                                <td><strong>{{ $row['unit'] }}</strong></td>
+                                <td><strong>{{ $row['quantity'] }}</strong></td>
+                                <td><strong>{{ $row['category'] }}</strong></td>
+                              </tr>
+                              @foreach($row['ordered_products'] as $or)
+                              <tr>
+                                <td>{{ $or['family'] }}</td>
+                                <td>{{ $or['code'] }} </td>
+                                <td>{{ $or['description'] }} </td>
+                                <td>{{ $or['unit'] }} </td>
+                                <td>{{ $or['quantity'] }}</td>
+                                <td>{{ $or['category'] }}</td>
+                              </tr>
+                              @endforeach
+                          @endforeach
                     @else
-                      <td colspan="3">There are no product</td>
-                    </tr>
+                    <tr id="tr-no-product-selected">
+                      <td>There are no product</td>
                     @endif
                   </tbody>
                   <tfoot>

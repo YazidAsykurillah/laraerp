@@ -35,41 +35,58 @@
 
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <thead>
-                <tr>
-                  <th style="width:40%">Product Name</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                  <th style="width:20%">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if($purchase_order->products->count() > 0)
-                  @foreach($purchase_order->products as $product)
-                  <tr>
-                    <td>
-                      <input type="hidden"  name="product_id[]"  value="{{ $product->id }}" />
-                      {{ $product->name }}
-                    </td>
-                    <td>
-                      <input type="hidden"  name="quantity[]" value="{{ $product->pivot->quantity }}" />
-                      {{ $product->pivot->quantity }}
-                    </td>
-                    <td>
-                      {{ $product->main_product->unit->name }}
-                    </td>
-                    <td>
-                      <input type="text"  name="price[]" class="price form-control" />
-                    </td>
-                  </tr>
+                <thead>
+                    <tr>
+                      <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                      <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                      <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                      <th style="width:10%;background-color:#3c8dbc;color:white">Quantity</th>
+                      <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if(count($row_display))
+                    <?php $sum_qty = 0; ?>
+                    @foreach($row_display as $row)
+                        <tr>
+                          <td>{{ $row['family'] }}</td>
+                          <td><strong>{{ $row['main_product'] }}</strong></td>
+                          <td>{{ $row['description'] }}</td>
+                          <td>{{ $row['unit'] }}</td>
+                          <td>{{ $sum_qty }}</td>
+                          <td>{{ $row['category'] }}</td>
+                          <td>
+                              <input type="text" name="price_parent" class="price_parent">
+                          </td>
+                        </tr>
+                        @foreach($row['ordered_products'] as $or)
+                        <tr>
+                          <td>
+                            <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                            {{ $or['family'] }}
+                          </td>
+                          <td>{{ $or['code'] }} </td>
+                          <td>{{ $or['description'] }} </td>
+                          <td>{{ $or['unit'] }} </td>
+                          <td>
+                            <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}">
+                            {{ $or['quantity'] }}
+                          </td>
+                          <td>{{ $or['category'] }}</td>
+                          <td>
+                            <input type="text" name="price[]" class="price">
+                          </td>
+                        </tr>
+                        @endforeach
+                    @endforeach
+              @else
+              <tr id="tr-no-product-selected">
+                <td>There are no product</td>
+              @endif
 
-                  @endforeach
-                @else
-                <tr>
-                  <td>There are no product</td>
-                </tr>
-                @endif
-              </tbody>
+                </tbody>
             </table>
 
           </div>
@@ -87,18 +104,6 @@
               </div>
             </div>
 
-            <!-- <div class="form-group{{ $errors->has('payment_method_id') ? ' has-error' : '' }}">
-              {!! Form::label('payment_method_id', 'Payment Method', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-6">
-                {{ Form::select('payment_method_id', $payment_methods, null, ['class'=>'form-control', 'placeholder'=>'Select payment method', 'id'=>'payment_method_id']) }}
-                @if ($errors->has('payment_method_id'))
-                  <span class="help-block">
-                    <strong>{{ $errors->first('payment_method_id') }}</strong>
-                  </span>
-                @endif
-              </div>
-            </div> -->
-
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -108,6 +113,23 @@
                     <strong>{{ $errors->first('bill_price') }}</strong>
                   </span>
                 @endif
+              </div>
+            </div>
+
+            <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
+              {!! Form::label('bill_price', 'Hutang to Account', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                  <select name="select_account" id="select_account" class="form-control">
+                      <option value="">Select Account</option>
+                  @foreach(list_account_hutang('56') as $as)
+                      @if($as->level == 1)
+                      <optgroup label="{{ $as->name }}">
+                      @endif
+                      @foreach(list_sub_hutang('2',$as->id) as $sub)
+                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                      @endforeach
+                  @endforeach
+                  </select>
               </div>
             </div>
 
@@ -163,6 +185,10 @@
     //     aDec:'.'
     // });
     //set autonumeric to price classes field
+    $('.price_parent').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
     $('.price').autoNumeric('init',{
         aSep:',',
         aDec:'.'

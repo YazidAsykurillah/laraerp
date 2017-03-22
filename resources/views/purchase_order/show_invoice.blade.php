@@ -41,42 +41,44 @@
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <thead>
-
-                <tr>
-                  <th style="width:20%">Product Name</th>
-                  <th style="width:20%">Description</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                  <th style="width:20%">Price</th>
-                </tr>
-              </thead>
+                <thead>
+                    <tr>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Quantity</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                    </tr>
+                </thead>
               <tbody>
-                @if($purchase_order->products->count() > 0)
-                  @foreach($purchase_order->products as $product)
-                  <tr>
-                    <td>
-                      {{ $product->name }}
-                    </td>
-                    <td>
-                      {{ $product->description }}
-                    </td>
-                    <td>
-                      {{ $product->pivot->quantity }}
-                    </td>
-                    <td>
-                      {{ $product->main_product->unit->name }}
-                    </td>
-                    <td>
-                      {{ number_format($product->pivot->price) }}
-                    </td>
-                  </tr>
-
-                  @endforeach
+                  @if(count($row_display))
+                      @foreach($row_display as $row)
+                          <tr>
+                            <td><strong>{{ $row['family'] }}</strong></td>
+                            <td><strong>{{ $row['main_product'] }}</strong></td>
+                            <td><strong>{{ $row['description'] }}</strong></td>
+                            <td><strong>{{ $row['unit'] }}</strong></td>
+                            <td><strong>{{ $row['quantity'] }}</strong></td>
+                            <td><strong>{{ $row['category'] }}</strong></td>
+                            <td></td>
+                          </tr>
+                          @foreach($row['ordered_products'] as $or)
+                          <tr>
+                            <td>{{ $or['family'] }}</td>
+                            <td>{{ $or['code'] }} </td>
+                            <td>{{ $or['description'] }} </td>
+                            <td>{{ $or['unit'] }} </td>
+                            <td>{{ $or['quantity'] }}</td>
+                            <td>{{ $or['category'] }}</td>
+                            <td>{{ number_format($or['price']) }}</td>
+                          </tr>
+                          @endforeach
+                      @endforeach
                 @else
-                <tr>
+                <tr id="tr-no-product-selected">
                   <td>There are no product</td>
-                </tr>
                 @endif
               </tbody>
             </table>
@@ -108,7 +110,7 @@
                 <td style="width:30%;"><strong>Notes</strong></td>
                 <td>{{ $purchase_order_invoice->notes }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td style="width:30%"><strong>Hutang to Account</strong></td>
                 <td>
                     <select name="select_account" id="select_account">
@@ -127,7 +129,7 @@
                       <i class="fa fa-save"></i>&nbsp;Submit
                     </button>
                 </td>
-              </tr>
+              </tr> -->
             </table>
 
           </div>

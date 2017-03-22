@@ -35,45 +35,62 @@
 
             <div class="table-responsive">
               <table class="table table-bordered" id="table-selected-products">
-                <thead>
-                  <tr>
-                    <th style="width:20%">Product Name</th>
-                    <th style="width:20%">Quantity</th>
-                    <th style="width:20%">Unit</th>
-                    <th style="width:20%">Price Per Unit</th>
-                    <th style="width:20%">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @if($sales_order->products->count() > 0)
-                    @foreach($sales_order->products as $product)
-                    <tr>
-                      <td>
-                        <input type="hidden"  name="product_id[]"  value="{{ $product->id }}" />
-                        {{ $product->name }}
-                      </td>
-                      <td>
-                        <input type="hidden"  name="quantity[]" value="{{ $product->pivot->quantity }}" class="quantity" />
-                        {{ $product->pivot->quantity }}
-                      </td>
-                      <td>
-                        {{ $product->main_product->unit->name }}
-                      </td>
-                      <td>
-                        <input type="text"  name="price_per_unit[]" class="price_per_unit form-control" />
-                      </td>
-                      <td>
-                        <input type="text"  name="price[]" class="price form-control" />
-                      </td>
-                    </tr>
+                  <thead>
+                      <tr>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                        <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Price Per Unit</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  @if(count($row_display))
+                      <?php $sum_qty = 0; ?>
+                      @foreach($row_display as $row)
+                          <tr>
+                            <td>{{ $row['family'] }}</td>
+                            <td><strong>{{ $row['main_product'] }}</strong></td>
+                            <td>{{ $row['description'] }}</td>
+                            <td>{{ $row['unit'] }}</td>
+                            <td>{{ $sum_qty }}</td>
+                            <td>{{ $row['category'] }}</td>
+                            <td>
+                                <!-- <input type="text" name="price_parent" class="price_parent"> -->
+                            </td>
+                          </tr>
+                          @foreach($row['ordered_products'] as $or)
+                          <tr>
+                            <td>
+                              <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                              {{ $or['family'] }}
+                            </td>
+                            <td>{{ $or['code'] }} </td>
+                            <td>{{ $or['description'] }} </td>
+                            <td>{{ $or['unit'] }} </td>
+                            <td>
+                              <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
+                              {{ $or['quantity'] }}
+                            </td>
+                            <td>{{ $or['category'] }}</td>
+                            <td>
+                              <input type="text" name="price_per_unit[]" class="price_per_unit">
+                            </td>
+                            <td>
+                              <input type="text" name="price[]" class="price">
+                            </td>
+                          </tr>
+                          @endforeach
+                      @endforeach
+                @else
+                <tr id="tr-no-product-selected">
+                  <td>There are no product</td>
+                @endif
 
-                    @endforeach
-                  @else
-                  <tr>
-                    <td>There are no product</td>
-                  </tr>
-                  @endif
-                </tbody>
+                  </tbody>
               </table>
 
             </div>

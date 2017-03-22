@@ -43,44 +43,49 @@
       <div class="box-body">
         <div class="table-responsive">
           <table class="table table-bordered" id="table-selected-products">
-            <thead>
-              <tr>
-                <th style="width:20%">Product Name</th>
-                <th style="width:20%">Description</th>
-                <th style="width:10%">Quantity</th>
-                <th style="width:20%">Unit</th>
-                <th style="width:15%">Price Per Unit</th>
-                <th style="width:15%">Price</th>
-              </tr>
-            </thead>
+              <thead>
+                  <tr>
+                    <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
+                    <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                    <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Price Per Unit</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                  </tr>
+              </thead>
             <tbody>
-              @if($sales_order->products->count() > 0)
-                @foreach($sales_order->products as $product)
-                <tr>
-                  <td>
-                    {{ $product->name }}
-                  </td>
-                  <td>
-                    {{ $product->description }}
-                  </td>
-                  <td>
-                    {{ $product->pivot->quantity }}
-                  </td>
-                  <td>
-                    {{ $product->main_product->unit->name }}
-                  </td>
-                  <td>
-                    {{ number_format($product->pivot->price_per_unit) }}
-                  </td>
-                  <td>
-                    {{ number_format($product->pivot->price) }}
-                  </td>
-                </tr>
-                @endforeach
+                @if(count($row_display))
+                    <?php $x = 0; ?>
+                    @foreach($row_display as $row)
+                        <tr>
+                          <td><strong>{{ $row['family'] }}</strong></td>
+                          <td><strong>{{ $row['main_product'] }}</strong></td>
+                          <td><strong>{{ $row['description'] }}</strong></td>
+                          <td><strong>{{ $row['unit'] }}</strong></td>
+                          <td><strong></strong></td>
+                          <td><strong>{{ $row['category'] }}</strong></td>
+                          <td></td>
+                          <td>{{ $x }}</td>
+                        </tr>
+                        @foreach($row['ordered_products'] as $or)
+                        <tr>
+                          <td>{{ $or['family'] }}</td>
+                          <td>{{ $or['code'] }} </td>
+                          <td>{{ $or['description'] }} </td>
+                          <td>{{ $or['unit'] }} </td>
+                          <td>{{ $or['quantity'] }}</td>
+                          <td>{{ $or['category'] }}</td>
+                          <td>{{ number_format($or['price_per_unit']) }}</td>
+                          <td>{{ number_format($or['price']) }}</td>
+                        </tr>
+                        @endforeach
+                    @endforeach
+                    <?php $x = $x+3;?>
               @else
-                <tr>
-                  <td>There are no product</td>
-                </tr>
+              <tr id="tr-no-product-selected">
+                <td>There are no product</td>
               @endif
             </tbody>
         </table>

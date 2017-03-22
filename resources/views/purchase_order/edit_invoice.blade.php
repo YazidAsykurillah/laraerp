@@ -35,39 +35,54 @@
           {!! Form::model($purchase_order_invoice, ['route'=>['purchase-order-invoice.update', $purchase_order_invoice->id], 'id'=>'form-edit-purchase-order-invoice', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
-              <thead>
-                <tr>
-                  <th style="width:40%">Product Name</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                  <th style="width:20%">Price</th>
-                </tr>
-              </thead>
+                <thead>
+                    <tr>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Quantity</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                    </tr>
+                </thead>
               <tbody>
-                @if($purchase_order->products->count() > 0)
-                  @foreach($purchase_order->products as $product)
-                  <tr>
-                    <td>
-                      <input type="hidden"  name="product_id[]"  value="{{ $product->id }}" />
-                      {{ $product->name }}
-                    </td>
-                    <td>
-                      <input type="hidden"  name="quantity[]" value="{{ $product->pivot->quantity }}" />
-                      {{ $product->pivot->quantity }}
-                    </td>
-                    <td>
-                      {{ $product->unit->name }}
-                    </td>
-                    <td>
-                      <input type="text"  name="price[]" class="price form-control" value="{{ $product->pivot->price }}" />
-                    </td>
-                  </tr>
-
-                  @endforeach
+                  @if(count($row_display))
+                      @foreach($row_display as $row)
+                          <tr>
+                            <td><strong>{{ $row['family'] }}</strong></td>
+                            <td><strong>{{ $row['main_product'] }}</strong></td>
+                            <td><strong>{{ $row['description'] }}</strong></td>
+                            <td><strong>{{ $row['unit'] }}</strong></td>
+                            <td><strong>{{ $row['quantity'] }}</strong></td>
+                            <td><strong>{{ $row['category'] }}</strong></td>
+                            <td>
+                                <input type="text" name="price_parent" class="price_parent">
+                            </td>
+                          </tr>
+                          @foreach($row['ordered_products'] as $or)
+                          <tr>
+                              <td>
+                                <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                                {{ $or['family'] }}
+                              </td>
+                              <td>{{ $or['code'] }} </td>
+                              <td>{{ $or['description'] }} </td>
+                              <td>{{ $or['unit'] }} </td>
+                              <td>
+                                  <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}">
+                                  {{ $or['quantity'] }}
+                              </td>
+                              <td>{{ $or['category'] }}</td>
+                              <td>
+                                <input type="text" name="price[]" value="{{ number_format($or['price']) }}" class="price">
+                              </td>
+                          </tr>
+                          @endforeach
+                      @endforeach
                 @else
-                <tr>
+                <tr id="tr-no-product-selected">
                   <td>There are no product</td>
-                </tr>
                 @endif
               </tbody>
             </table>
