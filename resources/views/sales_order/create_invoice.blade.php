@@ -39,10 +39,14 @@
                       <tr>
                         <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+<<<<<<< HEAD
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Description</th>
+=======
                         <th style="width:5%;background-color:#3c8dbc;color:white">Description</th>
+>>>>>>> 49c54335c39a881f92028c13af4e2954b072b9b3
                         <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
                         <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Category</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Price Per Unit</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
                       </tr>
@@ -53,6 +57,23 @@
                       @foreach($row_display as $row)
                           <tr>
                             <td>
+<<<<<<< HEAD
+                              <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                              {{ $row['family'] }}<br>
+                              <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                <option value="">Inventory Account</option>
+                                @foreach(list_account_inventory('52') as $as)
+                                  @if($as->level ==1)
+                                  <optgroup label="{{ $as->name}}">
+                                  @endif
+                                  @foreach(list_sub_inventory('2',$as->id) as $sub)
+                                    <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                                  @endforeach
+                                @endforeach
+                              </select>
+                            </td>
+                            <td><strong>{{ $row['main_product'] }}</strong></td>
+=======
                                 <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                 {{ $row['family'] }}
                                 <select name="inventory_account[]" id="inventory_account" class="col-md-12">
@@ -81,6 +102,7 @@
                                 </a>
                                 @endif
                             </td>
+>>>>>>> 49c54335c39a881f92028c13af4e2954b072b9b3
                             <td>{{ $row['description'] }}</td>
                             <td>{{ $row['unit'] }}</td>
                             <td>{{ $sum_qty }}</td>
@@ -141,11 +163,19 @@
               <div class="col-sm-6">
                   <select name="select_account" id="select_account" class="form-control">
                       <option value="">Select Account</option>
+<<<<<<< HEAD
+                  @foreach(list_account_piutang('49') as $as)
+                      @if($as->level == 1)
+                      <optgroup label="{{ $as->name }}">
+                      @endif
+                      @foreach(list_sub_piutang('2',$as->id) as $sub)
+=======
                   @foreach(list_account_hutang('49') as $as)
                       @if($as->level == 1)
                       <optgroup label="{{ $as->name }}">
                       @endif
                       @foreach(list_sub_hutang('2',$as->id) as $sub)
+>>>>>>> 49c54335c39a881f92028c13af4e2954b072b9b3
                       <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
                       @endforeach
                   @endforeach
