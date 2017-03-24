@@ -56,11 +56,11 @@
                               {{ $row['family'] }}<br>
                               <select name="inventory_account[]" id="inventory_account" class="col-md-12">
                                   <option value="">Inventory Account</option>
-                              @foreach(list_account_hutang('52') as $as)
+                              @foreach(list_account_inventory('52') as $as)
                                   @if($as->level == 1)
                                   <optgroup label="{{ $as->name }}">
                                   @endif
-                                  @foreach(list_sub_hutang('2',$as->id) as $sub)
+                                  @foreach(list_sub_inventory('2',$as->id) as $sub)
                                   <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
                                   @endforeach
                               @endforeach

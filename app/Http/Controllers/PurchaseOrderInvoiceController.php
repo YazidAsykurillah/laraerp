@@ -126,7 +126,7 @@ class PurchaseOrderInvoiceController extends Controller
                         'updated_at'=>date('Y-m-d H:i:s'),
                         'reference'=>$po_id,
                         'source'=>'purchase_order_invoices',
-                        'type'=>'D',
+                        'type'=>'masuk',
                     ]);
                 }
                 \DB::table('transaction_chart_accounts')->insert($inv_account);
@@ -135,7 +135,7 @@ class PurchaseOrderInvoiceController extends Controller
                 $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
                 $transaction_sub_chart_account->reference = $po_id;
                 $transaction_sub_chart_account->source = 'purchase_order_invoices';
-                $transaction_sub_chart_account->type = 'K';
+                $transaction_sub_chart_account->type = 'keluar';
                 $transaction_sub_chart_account->save();
             }
 
@@ -178,6 +178,7 @@ class PurchaseOrderInvoiceController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
                 'quantity'=>'',
@@ -221,6 +222,7 @@ class PurchaseOrderInvoiceController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
                 'quantity'=>'',
@@ -263,7 +265,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order->products()->sync($syncData);
 
         //DELETE transaction chart account reference
-        \DB::table('transaction_chart_accounts')->where('reference',$request->purchase_order_id)->delete();
+        \DB::table('transaction_chart_accounts')->where('reference',$request->purchase_order_invoice_id)->delete();
         //NOW SAVE transaction chart account
         $inv_account = [];
         foreach ($request->parent_product_id as $key => $value) {
@@ -286,7 +288,7 @@ class PurchaseOrderInvoiceController extends Controller
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
         $transaction_sub_chart_account->reference = $request->purchase_order_invoice_id;
         $transaction_sub_chart_account->source = 'purchase_order_invoices';
-        $transaction_sub_chart_account->type = 'K';
+        $transaction_sub_chart_account->type = 'D';
         $transaction_sub_chart_account->save();
 
         return redirect('purchase-order-invoice')
@@ -441,16 +443,16 @@ class PurchaseOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
         $transaction_sub_chart_account->reference = $invoice_id;
-        $transaction_sub_chart_account->source = 'purchase_order_invoice';
-        $transaction_sub_chart_account->type = 'K';
+        $transaction_sub_chart_account->source = 'purchase_order_payment';
+        $transaction_sub_chart_account->type = 'keluar';
         $transaction_sub_chart_account->save();
 
         $trans_payment_k = New TransactionChartAccount;
         $trans_payment_k->amount = $amount;
         $trans_payment_k->sub_chart_account_id = 79;
         $trans_payment_k->reference = $invoice_id;
-        $trans_payment_k->source = 'purchase_order_invoice';
-        $trans_payment_k->type = 'D';
+        $trans_payment_k->source = 'purchase_order_payment';
+        $trans_payment_k->type = 'masuk';
         $trans_payment_k->save();
         if($save){
             //update invoice's paid_price

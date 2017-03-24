@@ -91,12 +91,56 @@ class NeracaController extends Controller
         //
     }
 
-    public function neraca_montly_print(Request $request)
+    public function neraca_sort_submit(Request $request)
+    {
+        $sort_by_year = $request->sort_by_year;
+        if($sort_by_year == 'y'){
+            true;
+            $year = $request->years;
+            $year_in = 'y';
+            if(true){
+                $chart_account = \DB::table('chart_accounts')->get();
+                return view('neraca.index')
+                    ->with('chart_account',$chart_account)
+                    ->with('year',$year)
+                    ->with('year_in',$year_in);
+            }// }else{
+            //     $chart_account = \DB::table('chart_accounts')->get();
+            //     return view('neraca.index')
+            //         ->with('chart_account',$chart_account);
+            // }
+        }elseif ($sort_by_year == 'm') {
+            true;
+            $month_start = $request->list_months_start;
+            $year_start = $request->list_years_start;
+            $month_end = $request->list_months_end;
+            $year_end = $request->list_years_end;
+            $month_in = 'm';
+            if(true){
+                $chart_account = \DB::table('chart_accounts')->get();
+                return view('neraca.index')
+                    ->with('chart_account',$chart_account)
+                    ->with('month_start',$month_start)
+                    ->with('year_start',$year_start)
+                    ->with('month_end',$month_end)
+                    ->with('year_end',$year_end)
+                    ->with('month_in',$month_in);
+            }
+        }else{
+            $chart_account = \DB::table('chart_accounts')->get();
+            return view('neraca.index')
+                ->with('chart_account',$chart_account);
+        }
+
+    }
+
+    public function neraca_print(Request $request)
     {
         $data['sort_by_month_start'] = $request->sort_by_month_start;
         $data['sort_by_month_year_start'] = $request->sort_by_month_year_start;
         $data['sort_by_month_end'] = $request->sort_by_month_end;
         $data['sort_by_month_year_end'] = $request->sort_by_month_year_end;
+        $data['sort_year_start'] = $request->years;
         $data['chart_account'] = ChartAccount::all();
 
         $pdf = \PDF::loadView('pdf.neraca_montly',$data);

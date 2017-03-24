@@ -78,7 +78,20 @@
                           @foreach($row_display as $row)
                               <tr>
                                 <td><strong>{{ $row['family'] }}</strong></td>
-                                <td><strong>{{ $row['main_product'] }}</strong></td>
+                                <td>
+                                    <strong>
+                                        {{ $row['main_product'] }}
+                                    </strong>
+                                    @if($row['image'] != NULL)
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                    </a>
+                                    @else
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                    </a>
+                                    @endif
+                                </td>
                                 <td><strong>{{ $row['description'] }}</strong></td>
                                 <td><strong>{{ $row['unit'] }}</strong></td>
                                 <td><strong>{{ $row['quantity'] }}</strong></td>

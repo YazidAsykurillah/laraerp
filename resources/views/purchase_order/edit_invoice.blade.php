@@ -57,17 +57,30 @@
                                 <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }} " />
                                 <select name="inventory_account[]" id="inventory_account" class="col-md-12">
                                     <option value="">Inventory Account</option>
-                                @foreach(list_account_hutang('52') as $as)
+                                @foreach(list_account_inventory('52') as $as)
                                     @if($as->level == 1)
                                     <optgroup label="{{ $as->name }}">
                                     @endif
-                                    @foreach(list_sub_hutang('2',$as->id) as $sub)
+                                    @foreach(list_sub_inventory('2',$as->id) as $sub)
                                     <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
                                     @endforeach
                                 @endforeach
                                 </select>
                             </td>
-                            <td><strong>{{ $row['main_product'] }}</strong></td>
+                            <td>
+                                <strong>
+                                    {{ $row['main_product'] }}
+                                </strong>
+                                @if($row['image'] != NULL)
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                </a>
+                                @else
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                </a>
+                                @endif
+                            </td>
                             <td><strong>{{ $row['description'] }}</strong></td>
                             <td><strong>{{ $row['unit'] }}</strong></td>
                             <td><strong>{{ $row['quantity'] }}</strong></td>
