@@ -144,6 +144,7 @@ class PurchaseOrderController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
                 'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),

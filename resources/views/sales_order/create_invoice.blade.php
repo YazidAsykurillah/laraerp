@@ -37,9 +37,9 @@
               <table class="table table-bordered" id="table-selected-products">
                   <thead>
                       <tr>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:5%;background-color:#3c8dbc;color:white">Description</th>
                         <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
                         <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
@@ -52,14 +52,42 @@
                       <?php $sum_qty = 0; ?>
                       @foreach($row_display as $row)
                           <tr>
-                            <td>{{ $row['family'] }}</td>
-                            <td><strong>{{ $row['main_product'] }}</strong></td>
+                            <td>
+                                <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                                {{ $row['family'] }}
+                                <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                    <option value="">Inventory Account</option>
+                                    @foreach(list_account_inventory('52') as $as)
+                                        @if($as->level == 1)
+                                            <optgroup label="{{ $as->name}}">
+                                        @endif
+                                        @foreach(list_sub_inventory('2',$as->id) as $sub)
+                                            <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <strong>
+                                    {{ $row['main_product'] }}
+                                </strong>
+                                @if($row['image'] != NULL)
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                </a>
+                                @else
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                </a>
+                                @endif
+                            </td>
                             <td>{{ $row['description'] }}</td>
                             <td>{{ $row['unit'] }}</td>
                             <td>{{ $sum_qty }}</td>
                             <td>{{ $row['category'] }}</td>
+                            <td></td>
                             <td>
-                                <!-- <input type="text" name="price_parent" class="price_parent"> -->
+                                <input type="text" name="price_parent[]" class="price_parent">
                             </td>
                           </tr>
                           @foreach($row['ordered_products'] as $or)
@@ -99,7 +127,7 @@
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                {!! Form::text('bill_price',$total_price,['class'=>'form-control', 'placeholder'=>'Bill price of the invoice', 'id'=>'bill_price']) !!}
+                {!! Form::text('bill_price','',['class'=>'form-control', 'placeholder'=>'Bill price of the invoice', 'id'=>'bill_price']) !!}
                 @if ($errors->has('bill_price'))
                   <span class="help-block">
                     <strong>{{ $errors->first('bill_price') }}</strong>
@@ -107,6 +135,24 @@
                 @endif
               </div>
             </div>
+
+            <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}">
+              {!! Form::label('select_account', 'Accounts Receivable', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                  <select name="select_account" id="select_account" class="form-control">
+                      <option value="">Select Account</option>
+                  @foreach(list_account_hutang('49') as $as)
+                      @if($as->level == 1)
+                      <optgroup label="{{ $as->name }}">
+                      @endif
+                      @foreach(list_sub_hutang('2',$as->id) as $sub)
+                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                      @endforeach
+                  @endforeach
+                  </select>
+              </div>
+            </div>
+
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -118,6 +164,7 @@
                 @endif
               </div>
             </div>
+
             <div class="form-group">
                 {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -165,6 +212,11 @@
     });
     //set autonumeric to price classes field
     $('.price').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+
+    $('.price_parent').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

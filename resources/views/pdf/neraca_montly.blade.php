@@ -80,10 +80,10 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction($sub->id) == '')
+                                            @if(list_transaction_cash_bank($sub->id) == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            <td>{{ number_format(list_transaction_cash_bank($sub->id)) }}</td>
                                             @endif
                                         </tr>
                                         @endforeach
@@ -109,10 +109,10 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction($sub->id) == '')
+                                            @if(list_transaction_piutang($sub->id) == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            <td>{{ number_format(list_transaction_piutang($sub->id)) }}</td>
                                             @endif
                                         </tr>
                                         @endforeach
@@ -138,10 +138,10 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction($sub->id) == '')
+                                            @if(list_transaction_inventory($sub->id) == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            <td>{{ number_format(list_transaction_inventory($sub->id)) }}</td>
                                             @endif
                                         </tr>
                                         @endforeach
@@ -259,10 +259,10 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction($sub->id) == '')
+                                            @if(list_transaction_hutang($sub->id) == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                            <td>{{ number_format(list_transaction_hutang($sub->id)) }}</td>
                                             @endif
                                         </tr>
                                         @endforeach

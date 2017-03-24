@@ -64,6 +64,7 @@ class SalesOrderInvoiceController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
 
@@ -130,6 +131,27 @@ class SalesOrderInvoiceController extends Controller
                 \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
                 //Now time to sync the products
                 $sales_order->products()->sync($syncData);
+                //account inventory and receivable save
+                $inv_account = [];
+                foreach ($request->parent_product_id as $key => $value) {
+                    array_push($inv_account,[
+                        'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                        'sub_chart_account_id'=>$request->inventory_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'keluar',
+                    ]);
+                }
+                \DB::table('transaction_chart_accounts')->insert($inv_account);
+                $transaction_sub_chart_account = New TransactionChartAccount;
+                $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
+                $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+                $transaction_sub_chart_account->reference = $sales_order_invoice_id;
+                $transaction_sub_chart_account->source = 'sales_order_invoices';
+                $transaction_sub_chart_account->type = 'masuk';
+                $transaction_sub_chart_account->save();
             }
 
             $response = [
@@ -172,6 +194,7 @@ class SalesOrderInvoiceController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
 
@@ -214,6 +237,7 @@ class SalesOrderInvoiceController extends Controller
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
 
@@ -255,6 +279,33 @@ class SalesOrderInvoiceController extends Controller
         \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
         //now time to sync the product
         $sales_order->products()->sync($syncData);
+
+        //DELETE transaction chart account reference
+        \DB::table('transaction_chart_accounts')->where('reference',$request->sales_order_invoice_id)->delete();
+        //NOW SAVE transaction chart account
+        $inv_account = [];
+        foreach ($request->parent_product_id as $key => $value) {
+            // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
+            // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
+            //$inv_account->save();
+            array_push($inv_account,[
+                'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
+                'sub_chart_account_id' =>$request->inventory_account[$key],
+                'created_at'=>date('Y-m-d H:i:s'),
+                'updated_at'=>date('Y-m-d H:i:s'),
+                'reference'=>$request->sales_order_invoice_id,
+                'source'=>'sales_order_invoices',
+                'type'=>'keluar',
+            ]);
+        }
+        \DB::table('transaction_chart_accounts')->insert($inv_account);
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
+        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->reference = $request->sales_order_invoice_id;
+        $transaction_sub_chart_account->source = 'sales_order_invoices';
+        $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->save();
         return redirect('sales-order-invoice')
             ->with('successMessage','has been update');
     }
@@ -401,7 +452,18 @@ class SalesOrderInvoiceController extends Controller
         $transaction_sub_chart_account = New TransactionChartAccount;
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->reference = $invoice_id;
+        $transaction_sub_chart_account->source = 'sales_order_invoices';
+        $transaction_sub_chart_account->type = 'masuk';
         $transaction_sub_chart_account->save();
+
+        $trans_payment_k = New TransactionChartAccount;
+        $trans_payment_k->amount = $amount;
+        $trans_payment_k->sub_chart_account_id = 34;
+        $trans_payment_k->reference = $invoice_id;
+        $trans_payment_k->source = 'sales_order_invoices';
+        $trans_payment_k->type = 'keluar';
+        $trans_payment_k->save();
         if($save){
             //update invoice's paid_price
             $sales_order_invoice->paid_price = $new_paid_price;
