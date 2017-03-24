@@ -43,28 +43,16 @@
 
     function list_account_inventory($key)
     {
-<<<<<<< HEAD
-      $list_account_inventory = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
-
-      return $list_account_inventory;
-=======
         $list_account_inventory = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
 
         return $list_account_inventory;
->>>>>>> 49c54335c39a881f92028c13af4e2954b072b9b3
-    }
+      }
 
     function list_sub_inventory($key,$id)
     {
-<<<<<<< HEAD
-      $list_sub_inventory = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
-
-      return $list_sub_inventory;
-=======
         $list_sub_inventory = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
 
         return $list_sub_inventory;
->>>>>>> 49c54335c39a881f92028c13af4e2954b072b9b3
     }
 
     function list_account_piutang($key)
