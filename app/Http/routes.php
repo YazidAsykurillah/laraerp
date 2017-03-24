@@ -31,7 +31,7 @@ Route::resource('main-product','MainProductController');
 
 
 //neraca
-Route::post('neraca.neraca_sort_submit','NeracaController@neraca_sort_submit');
+Route::post('neraca/submit','NeracaController@neraca_sort_submit');
 Route::post('neraca.neraca_print','NeracaController@neraca_print');
 Route::resource('neraca','NeracaController');
 

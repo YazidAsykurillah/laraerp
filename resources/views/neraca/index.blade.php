@@ -21,7 +21,7 @@
 
 @section('content')
     <div class="row">
-        {!! Form::open(['url'=>'neraca.neraca_sort_submit','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
+        {!! Form::open(['url'=>'neraca/submit','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
@@ -45,9 +45,6 @@
                         <div class="col-sm-offset-1 col-sm-11">
                             <div class="radio">
                                 <label><input type="radio" id="sort_by_month_start" name="sort_by_year" value="m"> Sort by month</label>
-                                <input type="text" name="sort_by_month_year_start" id="sort_by_month_year_start" value="">
-                                <input type="text" id="sort_by_month_end" name="sort_by_month_end" value="">
-                                <input type="text" name="sort_by_month_year_end" id="sort_by_month_year_end" value="">
                             </div>
                         </div>
                     </div>
@@ -56,18 +53,18 @@
                         <div class="col-sm-2">
                             <select class="form-control" name="list_months_start" id="list_months_start">
                                 <option>Select Month</option>
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="May">May</option>
-                                <option value="June">June</option>
-                                <option value="July">July</option>
-                                <option value="August">August</option>
-                                <option value="September">September</option>
-                                <option value="October">October</option>
-                                <option value="November">November</option>
-                                <option value="December">December</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -79,18 +76,18 @@
                         <div class="col-sm-2">
                             <select class="form-control" name="list_months_end" id="list_months_end">
                                 <option>Select Month</option>
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="May">May</option>
-                                <option value="June">June</option>
-                                <option value="July">July</option>
-                                <option value="August">August</option>
-                                <option value="September">September</option>
-                                <option value="October">October</option>
-                                <option value="November">November</option>
-                                <option value="December">December</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -123,16 +120,20 @@
                     <h4>NERACA</h4>
                     <h4 id="sort_target">
                         @if(isset($year_in))
-                            {{ $year }}
+                            Tahun&nbsp;{{ $year }}
                         @elseif(isset($month_in))
-                            {{ $month_start }}&nbsp;&nbsp;{{ $year_start }}&nbsp;&nbsp;sampai&nbsp;&nbsp;{{ $month_end }}&nbsp;&nbsp;{{ $year_end}}
+                            Bulan&nbsp;{{ $conv_month_start }}&nbsp;Tahun&nbsp;{{ $year_start }}&nbsp;sampai&nbsp;Bulan&nbsp;{{ $conv_month_end }}&nbsp;Tahun&nbsp;{{ $year_end}}
+                        @else
+                            {{ date('Y') }}
                         @endif
                     </h4>
                 </center>
-                @if(isset($year))
+                @if(isset($year_in))
                 <div class="form-group pull-right">
                     {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                     <div class="col-sm-3">
+                        <input type="hidden" name="sort_target_year" id="sort_target_year" value="{{ $year }}">
+                        <input type="hidden" name="sort_target" id="sort_target" value="y">
                         <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
                             <i class="fa fa-print"></i>&nbsp;
                         </button>
@@ -142,6 +143,11 @@
                 <div class="form-group pull-right">
                     {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                     <div class="col-sm-3">
+                        <input type="hidden" name="sort_target" id="sort_target" value="m">
+                        <input type="hidden" name="sort_target_months_start" id="sort_by_month_year_start" value="{{ $month_start }}">
+                        <input type="hidden" name="sort_target_years_start" id="sort_by_month_end" value="{{ $year_start }}">
+                        <input type="hidden" name="sort_target_months_end" id="sort_by_month_year_end" value="{{ $month_end }}">
+                        <input type="hidden" name="sort_target_years_end" id="sort_by_month_year_end" value="{{ $year_end }}">
                         <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
                             <i class="fa fa-print"></i>&nbsp;
                         </button>
@@ -156,7 +162,7 @@
                         <tr>
                             <th>No.Akun</th>
                             <th>Deskripsi</th>
-                            <th>BULAN</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,17 +190,23 @@
                                 <tr>
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(isset($year))
-                                        @if(list_transaction_cash_bank($sub->id,$year) == '')
+                                    @if(isset($year_in))
+                                        @if(list_transaction_cash_bank($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,$year)) }}</td>
+                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,$year,'y','')) }}</td>
+                                        @endif
+                                    @elseif(isset($month_in))
+                                        @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_cash_bank($sub->id,date('Y')) == '')
+                                        @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,date('Y'))) }}</td>
+                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -221,17 +233,23 @@
                                 <tr>
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(isset($year))
-                                        @if(list_transaction_piutang($sub->id,$year) == '')
+                                    @if(isset($year_in))
+                                        @if(list_transaction_piutang($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_piutang($sub->id,$year)) }}</td>
+                                        <td>{{ number_format(list_transaction_piutang($sub->id,$year,'y','')) }}</td>
+                                        @endif
+                                    @elseif(isset($month_in))
+                                        @if(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_piutang($sub->id,date('Y')) == '')
+                                        @if(list_transaction_piutang($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_piutang($sub->id,date('Y'))) }}</td>
+                                        <td>{{ number_format(list_transaction_piutang($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -258,17 +276,23 @@
                                 <tr>
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(isset($year))
-                                        @if(list_transaction_inventory($sub->id,$year) == '')
+                                    @if(isset($year_in))
+                                        @if(list_transaction_inventory($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_inventory($sub->id,$year)) }}</td>
+                                        <td>{{ number_format(list_transaction_inventory($sub->id,$year,'y','')) }}</td>
+                                        @endif
+                                    @elseif(isset($month_in))
+                                        @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_inventory($sub->id,date('Y')) == '')
+                                        @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_inventory($sub->id,date('Y'))) }}</td>
+                                        <td>{{ number_format(list_transaction_inventory($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -387,17 +411,23 @@
                                 <tr>
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(isset($year))
-                                        @if(list_transaction_hutang($sub->id,$year) == '')
+                                    @if(isset($year_in))
+                                        @if(list_transaction_hutang($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_hutang($sub->id,$year)) }}</td>
+                                        <td>{{ number_format(list_transaction_hutang($sub->id,$year,'y','')) }}</td>
+                                        @endif
+                                    @elseif(isset($month_in))
+                                        @if(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_hutang($sub->id,date('Y')) == '')
+                                        @if(list_transaction_hutang($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_hutang($sub->id,date('Y'))) }}</td>
+                                        <td>{{ number_format(list_transaction_hutang($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -510,14 +540,8 @@
         // });
 
         $('#btn-submit-neraca-print').on('click',function(){
-            var sortMonth = document.getElementById('sort_by_month_start');
-            if(sortMonth.checked){
-                $('#sort_by_month_start').val($('#list_months_start').val());
-                $('#sort_by_month_year_start').val($('#list_years_start').val());
-                $('#sort_by_month_end').val($('#list_months_end').val());
-                $('#sort_by_month_year_end').val($('#list_years_end').val());
-                // alert($('#year_selected').val());
-            }
+            var sort_target = $('#sort_target').text();
+            $('#cont_sort_target').val(sort_target);
         });
     </script>
 @endsection
