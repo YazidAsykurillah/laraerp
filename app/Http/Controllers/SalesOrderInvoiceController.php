@@ -130,6 +130,20 @@ class SalesOrderInvoiceController extends Controller
                 \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
                 //Now time to sync the products
                 $sales_order->products()->sync($syncData);
+
+                // save account inventory to table transaction chart accounts
+                $inv_account = [];
+                foreach ($request->parent_product_id as $key => $value) {
+                  array_push($inv_account,[
+                    'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                    'sub_chart_account_id'=>
+                    'created_at'=>
+                    'updated_at'=>
+                    'reference'=>
+                    'source'=>
+                    'type'=>
+                  ]);
+                }
             }
 
             $response = [
