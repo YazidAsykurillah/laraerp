@@ -43,7 +43,13 @@
                     <div class="box-header with-border">
                         <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
                         <h4>NERACA</h4>
-                        <h4 style="line-height:1.7">DARI BULAN {{ $sort_by_month_start }} TAHUN {{ $sort_by_month_year_start }} KE DARI BULAN {{ $sort_by_month_end }} TAHUN {{ $sort_by_month_year_end }}</h4>
+                        <h4 style="line-height:1.7">
+                            @if(isset($sort_target_y))
+                                Tahun{{ $sort_target_year }}
+                            @elseif(isset($sort_target_m))
+                                Bulan&nbsp;{{ $month_start }}&nbsp;Tahun&nbsp;{{ $year_start}}&nbsp;sampai&nbsp;Bulan&nbsp;{{ $month_end}}&nbsp;Tahun&nbsp;{{ $year_end}}
+                            @endif
+                        </h4>
                     </div>
                     <br/>
                     <div class="box-body">
@@ -80,10 +86,24 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction_cash_bank($sub->id) == '')
-                                            <td>0,00</td>
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_cash_bank($sub->id,$sort_target_year,'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_cash_bank($sub->id,$sort_target_year,'y','')) }}</td>
+                                                @endif
+                                            @elseif(isset($sort_target_m))
+                                                @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                                @endif
                                             @else
-                                            <td>{{ number_format(list_transaction_cash_bank($sub->id)) }}</td>
+                                                @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}</td>
+                                                @endif
                                             @endif
                                         </tr>
                                         @endforeach
@@ -109,10 +129,24 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction_piutang($sub->id) == '')
-                                            <td>0,00</td>
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_piutang($sub->id,$sort_target_year,'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_piutang($sub->id,$sort_target_year,'y','')) }}</td>
+                                                @endif
+                                            @elseif(isset($sort_target_m))
+                                                @if(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                                @endif
                                             @else
-                                            <td>{{ number_format(list_transaction_piutang($sub->id)) }}</td>
+                                                @if(list_transaction_piutang($sub->id,date('Y'),'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_piutang($sub->id,date('Y'),'y','')) }}</td>
+                                                @endif
                                             @endif
                                         </tr>
                                         @endforeach
@@ -138,10 +172,24 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction_inventory($sub->id) == '')
-                                            <td>0,00</td>
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_inventory($sub->id,$sort_target_year,'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_inventory($sub->id,$sort_target_year,'y','')) }}</td>
+                                                @endif
+                                            @elseif(isset($sort_target_m))
+                                                @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                                @endif
                                             @else
-                                            <td>{{ number_format(list_transaction_inventory($sub->id)) }}</td>
+                                                @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_inventory($sub->id,date('Y'),'y','')) }}</td>
+                                                @endif
                                             @endif
                                         </tr>
                                         @endforeach
@@ -259,10 +307,24 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(list_transaction_hutang($sub->id) == '')
-                                            <td>0,00</td>
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_hutang($sub->id,$sort_target_year,'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_hutang($sub->id,$sort_target_year,'y','')) }}</td>
+                                                @endif
+                                            @elseif(isset($sort_target_m))
+                                                @if(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                                @endif
                                             @else
-                                            <td>{{ number_format(list_transaction_hutang($sub->id)) }}</td>
+                                                @if(list_transaction_hutang($sub->id,date('Y'),'y','') == '')
+                                                <td>0,00</td>
+                                                @else
+                                                <td>{{ number_format(list_transaction_hutang($sub->id,date('Y'),'y','')) }}</td>
+                                                @endif
                                             @endif
                                         </tr>
                                         @endforeach
