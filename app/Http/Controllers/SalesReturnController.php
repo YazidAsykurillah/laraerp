@@ -110,16 +110,25 @@ class SalesReturnController extends Controller
         // echo '</pre>';
         // exit();
         $return_account = [];
+        $amount = [];
         foreach ($request->parent_product_id as $key => $value) {
-                array_push($return_account,[
-                    'amount'=>array('amount_return_per_unit'=>$request->child_product_id[$key]),
-                    'sub_chart_account_id'=>$request->return_account[$key],
-                    'created_at'=>date('Y-m-d H:i:s'),
-                    'updated_at'=>date('Y-m-d H:i:s'),
-                    'reference'=>$request->sales_order_invoice_id,
-                    'source'=>'sales_order_invoices',
-                    'type'=>'masuk',
+            foreach ($request->child_product_id as $k => $v) {
+                if($request->main_product_id_return[$k] == $request->parent_product_id[$key])
+                array_push($amount,[
+                    'qty'=>$request->amount_return_per_unit[$k],
+                    'child_id'=>$request->child_product_id[$k],
+                    'parent_id'=>$request->main_product_id_return[$k],
                 ]);
+            }
+            array_push($return_account,[
+            'amount'=>$amount,
+            'sub_chart_account_id'=>$request->return_account[$key],
+            'created_at'=>date('Y-m-d H:i:s'),
+            'updated_at'=>date('Y-m-d H:i:s'),
+            'reference'=>$request->sales_order_invoice_id,
+            'source'=>'sales_order_invoices',
+            'type'=>'masuk',
+            ]);
         }
         print_r($return_account);
         exit();

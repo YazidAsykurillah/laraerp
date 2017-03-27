@@ -109,7 +109,7 @@
                                       <td><strong>{{ $row['category'] }}</strong></td>
                                       <td></td>
                                       <td></td>
-                                      <td>{{ Form::hidden('parent_return[]',null,['class'=>'parent_return form-control']) }}</td>
+                                      <td>{{ Form::text('parent_return[]',null,['class'=>'parent_return form-control']) }}</td>
                                       <td></td>
                                     </tr>
                                     @foreach($row['ordered_products'] as $or)
@@ -162,6 +162,7 @@
                     {!! Form::hidden('sales_order_invoice_id',$so_id->id) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box footer -->
+                <button id="tes">TES</button>
             </div>
         </div>
     </div>
@@ -184,11 +185,14 @@
         var the_value = parseInt($(this).val());
         var price_item = $(this).parent().parent().find('.price_item').html().replace(/,/gi,'');
         var price_per_unit = parseInt($(this).parent().parent().find('.price_per_unit').val(the_value*price_item));
-        //$('.parent_return').val(price_return+price_return);
         if(the_value > salesed_qty){
             alertify.error('Returned quantity can not be greater than salesed quantity');
         }
         return false;
+    });
+    $('#tes').on('click', function(){
+        var price_per_unit = parseInt($(this).parent().parent().find('.salesed_qty').html();
+        $('.parent_return').val(price_per_unit+price_per_unit);
     });
 
 </script>
