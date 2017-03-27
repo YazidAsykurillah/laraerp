@@ -212,6 +212,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                            <tr>
+                                <td></td>
+                                <td style="border-top:1px solid black"><b>Total {{ $cash_bank->name }}</b></td>
+                                <td style="border-top:1px solid black">0,00</td>
+                            </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $piutang)
@@ -255,6 +260,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $piutang->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $persediaan)
@@ -298,6 +308,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $persediaan->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $aktiva_lancar_lainnya)
@@ -327,6 +342,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $aktiva_lancar_lainnya->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $nilai_history)
@@ -356,6 +376,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $nilai_history->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $akumulasi_penyusutan)
@@ -385,8 +410,18 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $akumulasi_penyusutan->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td style="border-top:1px solid black"><b>Total Aktiva-Aktiva</b></td>
+                            <td style="border-top:1px solid black">0,00</td>
+                        </tr>
                         <tr>
                             <td></td>
                             <td><b>Kewajiban dan Ekuitas</b></td>
@@ -433,6 +468,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $kewajiban_lancar_lainnya)
@@ -462,6 +502,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban_lancar_lainnya->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $kewajiban_jangka_panjang)
@@ -491,6 +536,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban_jangka_panjang->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
                         @foreach($chart_account as $equitas)
@@ -520,8 +570,18 @@
                                 </tr>
                                 @endforeach
                             @endforeach
+                              <tr>
+                                  <td></td>
+                                  <td style="border-top:1px solid black"><b>Total {{ $equitas->name }}</b></td>
+                                  <td style="border-top:1px solid black">0,00</td>
+                              </tr>
                             @endif
                         @endforeach
+                        <tr>
+                            <td></td>
+                            <td style="border-top:1px solid black"><b>Total Kewajiban dan Equitas</b></td>
+                            <td style="border-top:1px solid black">0,00</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
