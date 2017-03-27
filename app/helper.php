@@ -49,7 +49,6 @@
 
     }
 
-
     function list_sub_inventory($key,$id)
     {
         $list_sub_inventory = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();

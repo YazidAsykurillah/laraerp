@@ -73,42 +73,20 @@ class SalesReturnController extends Controller
      */
     public function store(Request $request)
     {
-        // var_dump($request->product_id);
-        // exit();
-        // $return_account = [];
-        // foreach ($request->child_product_id as $key => $value) {
-        //     array_push($return_account,[
-        //         // 'child_product_id'=>$request->child_product_id[$key],
-        //         // 'returned_quantity'=>$request->returned_quantity[$key],
-        //         'main_product_id'=>$request->main_product_id_return[$key],
-        //         'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
-        //     ]);
-        // }
-        //
-        // // echo '<pre>';
-        // // print_r($return_account);
-        // // echo '</pre>';
-        // // exit();
-        // $sum_return_account = [];
-        // foreach($return_account as $key=>$value){
-        //     foreach($value as $v=>$l){
-        //         if(isset($sum_return_account[$v])){
-        //             array_push($sum_return_account,array($sum_return_account[$v]+=$l))
-        //             ;
-        //         }
-        //         else{
-        //             $sum_return_account[$v] = $l;
-        //         }
-        //
-        //     }
-        //
-        // }
-        // unset($sum_return_account['main_product_id']);
-        //
-        // echo '<pre>';
-        // print_r($sum_return_account);
-        // echo '</pre>';
-        // exit();
+
+        $temp_sales_return_data = [];
+        foreach($request->child_product_id as $key=>$value){
+            array_push($temp_sales_return_data, array(
+                'sales_order_id'=>$request->sales_order_id,
+                'main_product_id'=>$request->main_product_id_return[$key],
+                'child_product_id'=>$request->child_product_id[$key],
+                'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
+            ));
+        }
+
+        \DB::table('temp_sales_return')->insert($temp_sales_return_data);
+
+
         $return_account = [];
         $amount = [];
         foreach ($request->parent_product_id as $key => $value) {
@@ -129,9 +107,23 @@ class SalesReturnController extends Controller
             'source'=>'sales_order_invoices',
             'type'=>'masuk',
             ]);
+            $total_amount = \DB::table('temp_sales_return')
+                ->where('sales_order_id', $request->sales_order_id)
+                ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
+            array_push($return_account, array(
+                'amount'=>$total_amount,
+                'sub_chart_account_id'=>$request->return_account[$key],
+                'reference'=>$request->sales_order_invoice_id
+            ));
         }
-        print_r($return_account);
-        exit();
+
+        \DB::table('transaction_chart_accounts')->insert($return_account);
+        //now delete the temp_sales_return
+        \DB::table('temp_sales_return')
+            ->where('sales_order_id', '=', $request->sales_order_id)
+            ->delete();
+
+
         if($request->ajax()){
             foreach ($request->product_id as $key => $value) {
                 $sales_return = new SalesReturn;

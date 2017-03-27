@@ -162,7 +162,6 @@
                     {!! Form::hidden('sales_order_invoice_id',$so_id->id) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box footer -->
-                <button id="tes">TES</button>
             </div>
         </div>
     </div>
@@ -189,10 +188,6 @@
             alertify.error('Returned quantity can not be greater than salesed quantity');
         }
         return false;
-    });
-    $('#tes').on('click', function(){
-        var price_per_unit = parseInt($(this).parent().parent().find('.salesed_qty').html();
-        $('.parent_return').val(price_per_unit+price_per_unit);
     });
 
 </script>
@@ -230,14 +225,14 @@
             type: 'POST',
             data: $(this).serialize(),
             beforeSend : function(){
-                $('#btn-submit-sales-return').prop('disabled',true);
+                //$('#btn-submit-sales-return').prop('disabled',true);
             },
             success : function(response){
                 if(response == 'storeSalesReturnOk'){
                     window.location.href = '{{ URL::to("sales-return") }}';
                 }
                 else{
-                    $('btn-submit-sales-return').prop('disabled',false);
+                    //$('btn-submit-sales-return').prop('disabled',false);
                     alertify.error(response);
                     console.log(response);
                 }
