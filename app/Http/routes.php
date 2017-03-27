@@ -184,8 +184,12 @@ Route::resource('customer', 'CustomerController');
 	Route::post('update-role-permission', 'RoleController@updateRolePermission');
 	Route::resource('role', 'RoleController');
 
+//Permission
+	Route::resource('permission','PermissionController');
+
 Route::controller('datatables', 'DatatablesController',[
 	'getRoles'=>'datatables.getRoles',
+	'getPermissions'=>'datatables.getPermissions',
 	'getUsers'=>'datatables.getUsers',
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',

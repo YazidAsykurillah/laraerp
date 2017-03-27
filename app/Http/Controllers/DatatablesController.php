@@ -10,6 +10,7 @@ use Yajra\Datatables\Datatables;
 
 use App\User;
 use App\Role;
+use App\Permission;
 use App\Product;
 use App\Supplier;
 use App\Customer;
@@ -836,6 +837,33 @@ class DatatablesController extends Controller
 
         return $datatables->make(true);
     }
+    //ENDBuild roles data
+
+    //Build permissions data
+    public function getPermissions(Request $request){
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $permissions = Permission::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'slug',
+            'description'
+        ]);
+        $datatables = Datatables::of($permissions)
+        ->addColumn('actions', function($permissions){
+                    $actions_html ='<a href="'.url('permission/'.$permissions->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this role">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+
+                    return $actions_html;
+            });
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $datatables->make(true);
+    }
+    //ENDBuild permissions data
 
     //Function to get vehicle list
     public function getVehicles(Request $request){
