@@ -14,6 +14,8 @@ class AddColumnReferenceAtTableTransactionChartAccounts extends Migration
     {
         Schema::table('transaction_chart_accounts',function(Blueprint $table){
             $table->integer('reference');
+            $table->string('source');
+            $table->string('type');
         });
     }
 
@@ -25,7 +27,7 @@ class AddColumnReferenceAtTableTransactionChartAccounts extends Migration
     public function down()
     {
         Schema::table('transaction_chart_accounts',function(Blueprint $table){
-            $table->dropColumn('reference');
+            $table->dropColumn(['reference','source','type']);
         });
     }
 }

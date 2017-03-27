@@ -1,27 +1,27 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Neraca
+    Lost and Profit
 @endsection
 
 @section('page_header')
     <h1>
-        Neraca
-        <small>Neraca List</small>
+        Lost&nbsp;&amp;&nbsp;Profit
+        <small>Lost&nbsp;&amp;Profit List</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('neraca') }}"><i class="fa fa-dashboard"></i> Neraca</a></li>
+        <li><a href="{{ URL::to('lost-profit') }}"><i class="fa fa-dashboard"></i> Lost&nbsp;&amp;&nbsp;Profit</a></li>
         <li class="active"><i></i>Index</li>
     </ol>
 @endsection
 
 @section('content')
     <div class="row">
-        {!! Form::open(['url'=>'neraca/submit','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
+        {!! Form::open(['url'=>'lost-profit/submit','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
@@ -114,10 +114,10 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                {!! Form::open(['url'=>'neraca.neraca_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca','files'=>true]) !!}
+                {!! Form::open(['url'=>'lost_profit.lost_profit_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca','files'=>true]) !!}
                 <center>
                     <h3 class="box-title">CATRA<small>TEXTILE</small></h3>
-                    <h4>NERACA</h4>
+                    <h4>LABA RUGI</h4>
                     <h4 id="sort_target">
                         @if(isset($year_in))
                             Tahun&nbsp;{{ $year }}
@@ -171,14 +171,14 @@
                             <td><b>Aktiva-Aktiva</b></td>
                             <td></td>
                         </tr>
-                        @foreach($chart_account as $cash_bank)
-                            @if($cash_bank->id == 51)
+                        @foreach($chart_account as $pendapatan)
+                            @if($pendapatan->id == 61)
                             <tr>
                                 <td></td>
-                                <td><b>{{ $cash_bank->name}}</b></td>
+                                <td><b>{{ $pendapatan->name}}</b></td>
                                 <td></td>
                             </tr>
-                            @foreach(list_parent('51') as $as)
+                            @foreach(list_parent('61') as $as)
                                 @if($as->level == 1)
                                 <tr>
                                     <td style="padding-left:20px;">{{ $as->account_number }}</td>
@@ -191,22 +191,22 @@
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
                                     @if(isset($year_in))
-                                        @if(list_transaction_cash_bank($sub->id,$year,'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,$year,'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}</td>
                                         @endif
                                     @elseif(isset($month_in))
-                                        @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -214,22 +214,22 @@
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td style="border-top:1px solid black">Total {{ $cash_bank->name }}</td>
+                                <td style="border-top:1px solid black">Total {{ $pendapatan->name }}</td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
                             @endif
                         @endforeach
-                        @foreach($chart_account as $piutang)
-                            @if($piutang->id == 49)
+                        @foreach($chart_account as $harga_pokok_penjualan)
+                            @if($harga_pokok_penjualan->id == 63)
                             <tr>
                                 <td></td>
-                                <td><b>{{ $piutang->name}}</b></td>
+                                <td><b>{{ $harga_pokok_penjualan->name}}</b></td>
                                 <td></td>
                             </tr>
-                            @foreach(list_parent('49') as $as)
+                            @foreach(list_parent('63') as $as)
                                 @if($as->level == 1)
                                 <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                    <td style="padding-left:20px;">{{ $as->account_number }}</td>
                                     <td style="padding-left:20px;">{{ $as->name}}</td>
                                     <td></td>
                                 </tr>
@@ -239,22 +239,22 @@
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
                                     @if(isset($year_in))
-                                        @if(list_transaction_piutang($sub->id,$year,'y','') == '')
+                                        @if(list_transaction_harga_pokok_penjualan($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_piutang($sub->id,$year,'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year,'y','')) }}</td>
                                         @endif
                                     @elseif(isset($month_in))
-                                        @if(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        @if(list_transaction_harga_pokok_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                        <td>{{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_piutang($sub->id,date('Y'),'y','') == '')
+                                        @if(list_transaction_harga_pokok_penjualan($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_piutang($sub->id,date('Y'),'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_harga_pokok_penjualan($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -262,22 +262,22 @@
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td style="border-top:1px solid black">Total {{ $piutang->name }}</td>
+                                <td style="border-top:1px solid black">Total {{ $harga_pokok_penjualan->name }}</td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
                             @endif
                         @endforeach
-                        @foreach($chart_account as $persediaan)
-                            @if($persediaan->id == 52)
+                        @foreach($chart_account as $beban_operasi)
+                            @if($beban_operasi->id == 64)
                             <tr>
                                 <td></td>
-                                <td><b>{{ $persediaan->name}}</b></td>
+                                <td><b>{{ $beban_operasi->name}}</b></td>
                                 <td></td>
                             </tr>
-                            @foreach(list_parent('52') as $as)
+                            @foreach(list_parent('64') as $as)
                                 @if($as->level == 1)
                                 <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                    <td style="padding-left:20px;">{{ $as->account_number }}</td>
                                     <td style="padding-left:20px;">{{ $as->name}}</td>
                                     <td></td>
                                 </tr>
@@ -287,22 +287,22 @@
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
                                     @if(isset($year_in))
-                                        @if(list_transaction_inventory($sub->id,$year,'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_inventory($sub->id,$year,'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}</td>
                                         @endif
                                     @elseif(isset($month_in))
-                                        @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_inventory($sub->id,date('Y'),'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -310,129 +310,27 @@
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td style="border-top:1px solid black">Total {{ $persediaan->name }}</td>
+                                <td style="border-top:1px solid black">Total {{ $beban_operasi->name }}</td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
                             @endif
                         @endforeach
-                        @foreach($chart_account as $aktiva_lancar_lainnya)
-                            @if($aktiva_lancar_lainnya->id == 50)
                             <tr>
                                 <td></td>
-                                <td><b>{{ $aktiva_lancar_lainnya->name}}</b></td>
+                                <td style="border-top:1px solid black">Total Pendapatan</td>
+                                <td style="border-top:1px solid black;border-bottom:1px solid black">0,00</td>
+                            </tr>
+                        @foreach($chart_account as $pendapatan_lainnya)
+                            @if($pendapatan_lainnya->id == 62)
+                            <tr>
+                                <td></td>
+                                <td><b>{{ $pendapatan_lainnya->name}}</b></td>
                                 <td></td>
                             </tr>
-                            @foreach(list_parent('50') as $as)
+                            @foreach(list_parent('62') as $as)
                                 @if($as->level == 1)
                                 <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:20px;">{{ $as->name}}</td>
-                                    <td></td>
-                                </tr>
-                                @endif
-                                @foreach(list_child('2',$as->id) as $sub)
-                                <tr>
-                                    <td style="padding-left:40px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
-                                    @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td></td>
-                                <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}</td>
-                                <td style="border-top:1px solid black">0,00</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        @foreach($chart_account as $nilai_history)
-                            @if($nilai_history->id == 68)
-                            <tr>
-                                <td></td>
-                                <td><b>{{ $nilai_history->name}}</b></td>
-                                <td></td>
-                            </tr>
-                            @foreach(list_parent('68') as $as)
-                                @if($as->level == 1)
-                                <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:20px;">{{ $as->name}}</td>
-                                    <td></td>
-                                </tr>
-                                @endif
-                                @foreach(list_child('2',$as->id) as $sub)
-                                <tr>
-                                    <td style="padding-left:40px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
-                                    @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td></td>
-                                <td style="border-top:1px solid black">Total {{ $nilai_history->name }}</td>
-                                <td style="border-top:1px solid black">0,00</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        @foreach($chart_account as $akumulasi_penyusutan)
-                            @if($akumulasi_penyusutan->id == 55)
-                            <tr>
-                                <td></td>
-                                <td><b>{{ $akumulasi_penyusutan->name}}</b></td>
-                                <td></td>
-                            </tr>
-                            @foreach(list_parent('55') as $as)
-                                @if($as->level == 1)
-                                <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:20px;">{{ $as->name}}</td>
-                                    <td></td>
-                                </tr>
-                                @endif
-                                @foreach(list_child('2',$as->id) as $sub)
-                                <tr>
-                                    <td style="padding-left:40px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
-                                    @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td></td>
-                                <td style="border-top:1px solid black">Total {{ $akumulasi_penyusutan->name }}</td>
-                                <td style="border-top:1px solid black">0,00</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        <tr>
-                            <td></td>
-                            <td><b>Kewajiban dan Ekuitas</b></td>
-                            <td></td>
-                        </tr>
-                        @foreach($chart_account as $kewajiban)
-                            @if($kewajiban->id == 56)
-                            <tr>
-                                <td></td>
-                                <td><b>{{ $kewajiban->name}}</b></td>
-                                <td></td>
-                            </tr>
-                            @foreach(list_parent('56') as $as)
-                                @if($as->level == 1)
-                                <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                    <td style="padding-left:20px;">{{ $as->account_number }}</td>
                                     <td style="padding-left:20px;">{{ $as->name}}</td>
                                     <td></td>
                                 </tr>
@@ -442,22 +340,22 @@
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
                                     @if(isset($year_in))
-                                        @if(list_transaction_hutang($sub->id,$year,'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year,'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_hutang($sub->id,$year,'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}</td>
                                         @endif
                                     @elseif(isset($month_in))
-                                        @if(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        @if(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
                                         @endif
                                     @else
-                                        @if(list_transaction_hutang($sub->id,date('Y'),'y','') == '')
+                                        @if(list_transaction_pendapatan($sub->id,date('Y'),'y','') == '')
                                         <td>0,00</td>
                                         @else
-                                        <td>{{ number_format(list_transaction_hutang($sub->id,date('Y'),'y','')) }}</td>
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}</td>
                                         @endif
                                     @endif
                                 </tr>
@@ -465,22 +363,22 @@
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td style="border-top:1px solid black">Total {{ $kewajiban->name }}</td>
+                                <td style="border-top:1px solid black">Total {{ $pendapatan_lainnya->name }}</td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
                             @endif
                         @endforeach
-                        @foreach($chart_account as $kewajiban_lancar_lainnya)
-                            @if($kewajiban_lancar_lainnya->id == 58)
+                        @foreach($chart_account as $beban_lainnya)
+                            @if($beban_lainnya->id == 65)
                             <tr>
                                 <td></td>
-                                <td><b>{{ $kewajiban_lancar_lainnya->name}}</b></td>
+                                <td><b>{{ $beban_lainnya->name}}</b></td>
                                 <td></td>
                             </tr>
-                            @foreach(list_parent('58') as $as)
+                            @foreach(list_parent('65') as $as)
                                 @if($as->level == 1)
                                 <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                    <td style="padding-left:20px;">{{ $as->account_number }}</td>
                                     <td style="padding-left:20px;">{{ $as->name}}</td>
                                     <td></td>
                                 </tr>
@@ -489,85 +387,31 @@
                                 <tr>
                                     <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                     <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
+                                    @if(isset($year_in))
+                                        @if(list_transaction_pendapatan($sub->id,$year,'y','') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}</td>
+                                        @endif
+                                    @elseif(isset($month_in))
+                                        @if(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}</td>
+                                        @endif
                                     @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
+                                        @if(list_transaction_pendapatan($sub->id,date('Y'),'y','') == '')
+                                        <td>0,00</td>
+                                        @else
+                                        <td>{{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}</td>
+                                        @endif
                                     @endif
                                 </tr>
                                 @endforeach
                             @endforeach
                             <tr>
                                 <td></td>
-                                <td style="border-top:1px solid black">Total {{ $kewajiban_lancar_lainnya->name }}</td>
-                                <td style="border-top:1px solid black">0,00</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        @foreach($chart_account as $kewajiban_jangka_panjang)
-                            @if($kewajiban_jangka_panjang->id == 59)
-                            <tr>
-                                <td></td>
-                                <td><b>{{ $kewajiban_jangka_panjang->name}}</b></td>
-                                <td></td>
-                            </tr>
-                            @foreach(list_parent('59') as $as)
-                                @if($as->level == 1)
-                                <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:20px;">{{ $as->name}}</td>
-                                    <td>0,00</td>
-                                </tr>
-                                @endif
-                                @foreach(list_child('2',$as->id) as $sub)
-                                <tr>
-                                    <td style="padding-left:40px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
-                                    @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td></td>
-                                <td style="border-top:1px solid black">Total {{ $kewajiban_jangka_panjang->name }}</td>
-                                <td style="border-top:1px solid black">0,00</td>
-                            </tr>
-                            @endif
-                        @endforeach
-                        @foreach($chart_account as $equitas)
-                            @if($equitas->id == 60)
-                            <tr>
-                                <td></td>
-                                <td><b>{{ $equitas->name}}</b></td>
-                                <td></td>
-                            </tr>
-                            @foreach(list_parent('60') as $as)
-                                @if($as->level == 1)
-                                <tr>
-                                    <td style="padding-left:20px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:20px;">{{ $as->name}}</td>
-                                    <td>0,00</td>
-                                </tr>
-                                @endif
-                                @foreach(list_child('2',$as->id) as $sub)
-                                <tr>
-                                    <td style="padding-left:40px;">{{ $sub->account_number}}</td>
-                                    <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                    @if(list_transaction($sub->id) == '')
-                                    <td>0,00</td>
-                                    @else
-                                    <td>{{ number_format(list_transaction($sub->id)) }}</td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            @endforeach
-                            <tr>
-                                <td></td>
-                                <td style="border-top:1px solid black">Total {{ $equitas->name }}</td>
+                                <td style="border-top:1px solid black">Total {{ $beban_lainnya->name }}</td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
                             @endif
@@ -577,21 +421,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('additional_scripts')
-    <script type="text/javascript">
-        // $('#btn-submit-neraca').on('click',function(){
-        //     var sortYear = document.getElementById('sort_by_year');
-        //     if(sortYear.checked){
-        //         var year = $('#years').val();
-        //         $('#sort_target').text(year);
-        //     }
-        // });
-
-        $('#btn-submit-neraca-print').on('click',function(){
-            var sort_target = $('#sort_target').text();
-            $('#cont_sort_target').val(sort_target);
-        });
-    </script>
 @endsection

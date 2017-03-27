@@ -45,9 +45,9 @@
           <table class="table table-bordered" id="table-selected-products">
               <thead>
                   <tr>
-                    <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
+                    <th style="width:5%;background-color:#3c8dbc;color:white">Description</th>
                     <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
                     <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
@@ -60,8 +60,32 @@
                     <?php $x = 0; ?>
                     @foreach($row_display as $row)
                         <tr>
-                          <td><strong>{{ $row['family'] }}</strong></td>
-                          <td><strong>{{ $row['main_product'] }}</strong></td>
+                          <td>
+                              <strong>
+                                  {{ $row['family'] }}
+                              </strong>
+                              <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                  @foreach(list_account_inventory('52') as $as)
+                                      @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
+                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                      @endif
+                                  @endforeach
+                              </select>
+                          </td>
+                          <td>
+                              <strong>
+                                  {{ $row['main_product'] }}
+                              </strong>
+                              @if($row['image'] != NULL)
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                              </a>
+                              @else
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                              </a>
+                              @endif
+                          </td>
                           <td><strong>{{ $row['description'] }}</strong></td>
                           <td><strong>{{ $row['unit'] }}</strong></td>
                           <td><strong></strong></td>
@@ -115,7 +139,7 @@
             <td style="width:30%;"><strong>Notes</strong></td>
             <td>{{ $sales_order_invoice->notes }}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td style="width:30%"><strong>Piutang to Account</strong></td>
             <td>
                 <select name="select_account" id="select_account">
@@ -134,7 +158,7 @@
                   <i class="fa fa-save"></i>&nbsp;Submit
                 </button>
             </td>
-          </tr>
+          </tr> -->
         </table>
       </div><!-- /.box-body -->
       <div class="box-footer clearfix"></div>

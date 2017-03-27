@@ -17,6 +17,11 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//lost&profit
+Route::post('lost-profit/submit','LostProfitController@lost_profit_sort_submit');
+Route::post('lost-profit.lost_profit_print','LostProfitController@lost_profit_print');
+Route::resource('lost-profit','LostProfitController');
+
 //family
 Route::post('deleteFamily','FamilyController@destroy');
 Route::resource('family','FamilyController');
@@ -31,7 +36,8 @@ Route::resource('main-product','MainProductController');
 
 
 //neraca
-Route::post('neraca.neraca_montly_print','NeracaController@neraca_montly_print');
+Route::post('neraca/submit','NeracaController@neraca_sort_submit');
+Route::post('neraca.neraca_print','NeracaController@neraca_print');
 Route::resource('neraca','NeracaController');
 
 //sub chart account

@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\RequestSubmitNeraca;
 
 use App\ChartAccount;
 
-use App\Helpers\Helper;
+use App\Helpers\Helpers;
 
-class NeracaController extends Controller
+class LostProfitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +19,9 @@ class NeracaController extends Controller
      */
     public function index()
     {
-        $chart_account = \DB::table('chart_accounts')->get();
-        $sub_chart_account = \DB::table('sub_chart_accounts')->get();
-        return view('neraca.index')
+    $chart_account = \DB::table('chart_accounts')->get();
+    $sub_chart_account = \DB::table('sub_chart_accounts')->get();
+    return view('lost_profit.index')
             ->with('chart_account',$chart_account);
     }
 
@@ -33,7 +32,7 @@ class NeracaController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -92,7 +91,7 @@ class NeracaController extends Controller
         //
     }
 
-    public function neraca_sort_submit(Request $request)
+    public function lost_profit_sort_submit(Request $request)
     {
         $sort_by_year = $request->sort_by_year;
         if($sort_by_year == 'y'){
@@ -101,7 +100,7 @@ class NeracaController extends Controller
             $year_in = 'y';
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('neraca.index')
+                return view('lost_profit.index')
                     ->with('chart_account',$chart_account)
                     ->with('year',$year)
                     ->with('year_in',$year_in);
@@ -203,7 +202,7 @@ class NeracaController extends Controller
             }
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('neraca.index')
+                return view('lost_profit.index')
                     ->with('chart_account',$chart_account)
                     ->with('month_start',$month_start)
                     ->with('year_start',$year_start)
@@ -215,13 +214,12 @@ class NeracaController extends Controller
             }
         }else{
             $chart_account = \DB::table('chart_accounts')->get();
-            return view('neraca.index')
+            return view('lost_profit.index')
                 ->with('chart_account',$chart_account);
         }
-
     }
 
-    public function neraca_print(Request $request)
+    public function lost_profit_print(Request $request)
     {
         $sort_target = $request->sort_target;
         if($sort_target == 'y'){
@@ -231,8 +229,8 @@ class NeracaController extends Controller
             if(true){
                 $data['chart_account'] = ChartAccount::all();
 
-                $pdf = \PDF::loadView('pdf.neraca_montly',$data);
-                return $pdf->stream('neraca_montly.pdf');
+                $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
+                return $pdf->stream('lost_profit_montly.pdf');
             }
         }elseif ($sort_target == 'm') {
             true;
@@ -246,8 +244,8 @@ class NeracaController extends Controller
             if(true){
                 $data['chart_account'] = ChartAccount::all();
 
-                $pdf = \PDF::loadView('pdf.neraca_montly',$data);
-                return $pdf->stream('neraca_montly.pdf');
+                $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
+                return $pdf->stream('lost_profit_montly.pdf');
             }
         }
     }

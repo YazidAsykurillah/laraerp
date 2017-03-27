@@ -41,6 +41,24 @@
         return $list_sub_cash_bank;
     }
 
+    function list_account_inventory($key)
+    {
+        $list_account_inventory = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
+
+        return $list_account_inventory;
+<<<<<<< HEAD
+    }
+=======
+      }
+>>>>>>> d6a567034d387462bce6a6aa207e0e9bce28d61b
+
+    function list_sub_inventory($key,$id)
+    {
+        $list_sub_inventory = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+
+        return $list_sub_inventory;
+    }
+
     function list_account_piutang($key)
     {
         $list_account_piutang = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
@@ -83,9 +101,130 @@
         return $list_child;
     }
 
+    function list_transaction_cash_bank($key,$date,$sort,$end)
+    {
+        if($sort == 'y'){
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_d;
+             }
+                return $list_transaction_d-$list_transaction_k;
+        }elseif ($sort == 'm') {
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_d;
+             }
+                return $list_transaction_d-$list_transaction_k;
+        }
+
+
+    }
+
+    function list_transaction_inventory($key,$date,$sort,$end)
+    {
+        if($sort == 'y'){
+            $list_transaction_purchase = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_sales = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_purchase) == 0){
+                 return $list_transaction_purchase;
+             }
+            return $list_transaction_purchase-$list_transaction_sales;
+        }elseif ($sort == 'm') {
+            $list_transaction_purchase = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_sales = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_purchase) == 0){
+                 return $list_transaction_purchase;
+             }
+            return $list_transaction_purchase-$list_transaction_sales;
+        }
+    }
+
+    function list_transaction_hutang($key,$date,$sort,$end)
+    {
+        if($sort == 'y')
+        {
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_d;
+             }
+                return $list_transaction_k-$list_transaction_d;
+        }elseif ($sort == 'm') {
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_d;
+             }
+                return $list_transaction_k-$list_transaction_d;
+        }
+    }
+
+    function list_transaction_piutang($key,$date,$sort,$end)
+    {
+        if($sort == 'y')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }elseif ($sort == 'm')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }
+    }
+
+    function list_transaction_pendapatan($key,$date,$sort,$end)
+    {
+        if($sort == 'y')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }elseif ($sort == 'm')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }
+    }
+
+    function list_transaction_harga_pokok_penjualan($key,$date,$sort,$end)
+    {
+        if($sort == 'y')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where('created_at','like',$date.'%')->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->where('created_at','like',$date.'%')->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }elseif ($sort == 'm')
+        {
+            $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+            if(count($list_transaction_k) == 0){
+                 return $list_transaction_m;
+             }
+                return $list_transaction_m-$list_transaction_k;
+        }
+    }
+
     function list_transaction($key)
     {
-        $list_transaction = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->sum('amount');
-
-        return $list_transaction;
+        return '';
     }
