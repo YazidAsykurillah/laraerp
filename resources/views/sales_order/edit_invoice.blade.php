@@ -65,6 +65,28 @@
                                                   <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
                                                   @endforeach
                                               @endforeach
+                                              </select><br/><br/><br/>
+                                              <select name="sales_order_account[]" id="sales_order_account" class="col-md-12">
+                                                  <option value="">Sales Account</option>
+                                                  @foreach(list_parent('61') as $sales_account)
+                                                    @if($sales_account->level ==1)
+                                                        <optgroup label="{{ $sales_account->name }}">
+                                                    @endif
+                                                    @foreach(list_child('2',$sales_account->id) as $sub)
+                                                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                                    @endforeach
+                                                  @endforeach
+                                              </select><br/><br/>
+                                              <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12">
+                                                  <option value="">Cost of Goods Account</option>
+                                                  @foreach(list_parent('63') as $sales_account)
+                                                    @if($sales_account->level ==1)
+                                                        <optgroup label="{{ $sales_account->name }}">
+                                                    @endif
+                                                    @foreach(list_child('2',$sales_account->id) as $sub)
+                                                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                                    @endforeach
+                                                  @endforeach
                                               </select>
                                           </td>
                                           <td>

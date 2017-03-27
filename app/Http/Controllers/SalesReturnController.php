@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\SalesOrder;
 use App\SalesReturn;
 use App\Product;
+use App\MainProduct;
 
 class SalesReturnController extends Controller
 {
@@ -31,8 +32,37 @@ class SalesReturnController extends Controller
     public function create(Request $request)
     {
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        $so_id = $sales_order->sales_order_invoice;
+        $main_product = $sales_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($sales_order->products->count()){
+            foreach($sales_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $request->sales_order_id),
+            ];
+        }
         return view('sales_return.create')
-            ->with('sales_order', $sales_order);
+            ->with('sales_order', $sales_order)
+            ->with('so_id',$so_id)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -43,8 +73,6 @@ class SalesReturnController extends Controller
      */
     public function store(Request $request)
     {
-        // var_dump($request->product_id);
-        // exit();
         if($request->ajax()){
             foreach ($request->product_id as $key => $value) {
                 $sales_return = new SalesReturn;
@@ -55,6 +83,62 @@ class SalesReturnController extends Controller
                 $sales_return->created_by = \Auth::user()->id;
                 $sales_return->save();
             }
+            $temp_sales_return_data = [];
+            foreach($request->child_product_id as $key=>$value){
+                array_push($temp_sales_return_data, array(
+                    'sales_order_id'=>$request->sales_order_id,
+                    'main_product_id'=>$request->main_product_id_return[$key],
+                    'child_product_id'=>$request->child_product_id[$key],
+                    'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
+                ));
+            }
+
+            \DB::table('temp_sales_return')->insert($temp_sales_return_data);
+
+
+            $inv_account = [];
+            $return_account = [];
+            $cost_goods_account = [];
+            foreach ($request->parent_product_id as $key => $value) {
+                $total_amount = \DB::table('temp_sales_return')
+                    ->where('sales_order_id', $request->sales_order_id)
+                    ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
+                    array_push($inv_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->inventory_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'masuk',
+                    ]);
+                    array_push($return_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->return_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'masuk',
+                    ]);
+                    array_push($cost_goods_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->cost_goods_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'keluar',
+                    ]);
+            }
+            \DB::table('transaction_chart_accounts')->insert($inv_account);
+            \DB::table('transaction_chart_accounts')->insert($return_account);
+            \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            //now delete the temp_sales_return
+            \DB::table('temp_sales_return')
+                ->where('sales_order_id', '=', $request->sales_order_id)
+                ->delete();
+
             return response("storeSalesReturnOk");
         }else{
             return "Please enable javascript";
@@ -118,6 +202,36 @@ class SalesReturnController extends Controller
         $sales_return->delete();
         return redirect('sales-return')
             ->with('successMessage',"$sales_return->codehas been delete");
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_sales_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('sales_order_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                    'price'=>$counter->price,
+                    'price_per_unit'=>$counter->price_per_unit,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
+
+
     }
 
     public function changeToAccept(request $request)

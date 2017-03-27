@@ -17,6 +17,11 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//lost&profit
+Route::post('lost-profit/submit','LostProfitController@lost_profit_sort_submit');
+Route::post('lost-profit.lost_profit_print','LostProfitController@lost_profit_print');
+Route::resource('lost-profit','LostProfitController');
+
 //family
 Route::post('deleteFamily','FamilyController@destroy');
 Route::resource('family','FamilyController');
@@ -185,8 +190,12 @@ Route::resource('customer', 'CustomerController');
 	Route::post('update-role-permission', 'RoleController@updateRolePermission');
 	Route::resource('role', 'RoleController');
 
+//Permission
+	Route::resource('permission','PermissionController');
+
 Route::controller('datatables', 'DatatablesController',[
 	'getRoles'=>'datatables.getRoles',
+	'getPermissions'=>'datatables.getPermissions',
 	'getUsers'=>'datatables.getUsers',
 	'getProducts'=>'datatables.getProducts',
 	'getSuppliers'=>'datatables.getSuppliers',
