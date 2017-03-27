@@ -226,14 +226,14 @@
             type: 'POST',
             data: $(this).serialize(),
             beforeSend : function(){
-                $('#btn-submit-sales-return').prop('disabled',true);
+                //$('#btn-submit-sales-return').prop('disabled',true);
             },
             success : function(response){
                 if(response == 'storeSalesReturnOk'){
                     window.location.href = '{{ URL::to("sales-return") }}';
                 }
                 else{
-                    $('btn-submit-sales-return').prop('disabled',false);
+                    //$('btn-submit-sales-return').prop('disabled',false);
                     alertify.error(response);
                     console.log(response);
                 }
