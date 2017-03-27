@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\SalesOrder;
 use App\SalesReturn;
 use App\Product;
+use App\MainProduct;
 
 class SalesReturnController extends Controller
 {
@@ -31,8 +32,37 @@ class SalesReturnController extends Controller
     public function create(Request $request)
     {
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        $so_id = $sales_order->sales_order_invoice;
+        $main_product = $sales_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($sales_order->products->count()){
+            foreach($sales_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $request->sales_order_id),
+            ];
+        }
         return view('sales_return.create')
-            ->with('sales_order', $sales_order);
+            ->with('sales_order', $sales_order)
+            ->with('so_id',$so_id)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -45,6 +75,54 @@ class SalesReturnController extends Controller
     {
         // var_dump($request->product_id);
         // exit();
+        // $return_account = [];
+        // foreach ($request->child_product_id as $key => $value) {
+        //     array_push($return_account,[
+        //         // 'child_product_id'=>$request->child_product_id[$key],
+        //         // 'returned_quantity'=>$request->returned_quantity[$key],
+        //         'main_product_id'=>$request->main_product_id_return[$key],
+        //         'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
+        //     ]);
+        // }
+        //
+        // // echo '<pre>';
+        // // print_r($return_account);
+        // // echo '</pre>';
+        // // exit();
+        // $sum_return_account = [];
+        // foreach($return_account as $key=>$value){
+        //     foreach($value as $v=>$l){
+        //         if(isset($sum_return_account[$v])){
+        //             array_push($sum_return_account,array($sum_return_account[$v]+=$l))
+        //             ;
+        //         }
+        //         else{
+        //             $sum_return_account[$v] = $l;
+        //         }
+        //
+        //     }
+        //
+        // }
+        // unset($sum_return_account['main_product_id']);
+        //
+        // echo '<pre>';
+        // print_r($sum_return_account);
+        // echo '</pre>';
+        // exit();
+        $return_account = [];
+        foreach ($request->parent_product_id as $key => $value) {
+                array_push($return_account,[
+                    'amount'=>array('amount_return_per_unit'=>$request->child_product_id[$key]),
+                    'sub_chart_account_id'=>$request->return_account[$key],
+                    'created_at'=>date('Y-m-d H:i:s'),
+                    'updated_at'=>date('Y-m-d H:i:s'),
+                    'reference'=>$request->sales_order_invoice_id,
+                    'source'=>'sales_order_invoices',
+                    'type'=>'masuk',
+                ]);
+        }
+        print_r($return_account);
+        exit();
         if($request->ajax()){
             foreach ($request->product_id as $key => $value) {
                 $sales_return = new SalesReturn;
@@ -55,6 +133,8 @@ class SalesReturnController extends Controller
                 $sales_return->created_by = \Auth::user()->id;
                 $sales_return->save();
             }
+
+
             return response("storeSalesReturnOk");
         }else{
             return "Please enable javascript";
@@ -118,6 +198,36 @@ class SalesReturnController extends Controller
         $sales_return->delete();
         return redirect('sales-return')
             ->with('successMessage',"$sales_return->codehas been delete");
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_sales_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('sales_order_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                    'price'=>$counter->price,
+                    'price_per_unit'=>$counter->price_per_unit,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
+
+
     }
 
     public function changeToAccept(request $request)
