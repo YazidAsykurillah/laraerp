@@ -54,7 +54,7 @@
                                           <strong>
                                               {{ $row['family'] }}
                                           </strong>
-                                          <input type="text" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                                          <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                           <select name="inventory_account[]" id="inventory_account" class="col-md-12">
                                             <option value="">Inventory Account</option>
                                             @foreach(list_account_inventory('52') as $as)
@@ -109,7 +109,7 @@
                                       <td><strong>{{ $row['category'] }}</strong></td>
                                       <td></td>
                                       <td></td>
-                                      <td>{{ Form::text('parent_return[]',null,['class'=>'parent_return form-control']) }}</td>
+                                      <td>{{ Form::hidden('parent_return[]',null,['class'=>'parent_return form-control']) }}</td>
                                       <td></td>
                                     </tr>
                                     @foreach($row['ordered_products'] as $or)
@@ -117,9 +117,9 @@
                                       <td>{{ Form::checkbox('product_id[]',$or['product_id'],false,['class'=>'sales-id-checkbox']) }}</td>
                                       <td>
                                           {{ $or['family'] }}
-                                          <input type="text" name="child_product_id[]" value="{{ $or['product_id'] }}" class="child_product_id" disabled/>
-                                          {{ Form::text('main_product_id_return[]',$row['main_product_id'],['class'=>'main_product_id_return form-control','disabled']) }}
-                                          {{ Form::text('amount_return_per_unit[]',null,['class'=>'price_per_unit form-control','disabled']) }}
+                                          <input type="hidden" name="child_product_id[]" value="{{ $or['product_id'] }}" class="child_product_id" disabled/>
+                                          {{ Form::hidden('main_product_id_return[]',$row['main_product_id'],['class'=>'main_product_id_return form-control','disabled']) }}
+                                          {{ Form::hidden('amount_return_per_unit[]',null,['class'=>'price_per_unit form-control','disabled']) }}
                                       </td>
                                       <td>{{ $or['code'] }} </td>
                                       <td>{{ $or['description'] }} </td>

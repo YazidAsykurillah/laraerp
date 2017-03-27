@@ -73,57 +73,6 @@ class SalesReturnController extends Controller
      */
     public function store(Request $request)
     {
-
-        $temp_sales_return_data = [];
-        foreach($request->child_product_id as $key=>$value){
-            array_push($temp_sales_return_data, array(
-                'sales_order_id'=>$request->sales_order_id,
-                'main_product_id'=>$request->main_product_id_return[$key],
-                'child_product_id'=>$request->child_product_id[$key],
-                'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
-            ));
-        }
-
-        \DB::table('temp_sales_return')->insert($temp_sales_return_data);
-
-
-        $return_account = [];
-        $amount = [];
-        foreach ($request->parent_product_id as $key => $value) {
-            foreach ($request->child_product_id as $k => $v) {
-                if($request->main_product_id_return[$k] == $request->parent_product_id[$key])
-                array_push($amount,[
-                    'qty'=>$request->amount_return_per_unit[$k],
-                    'child_id'=>$request->child_product_id[$k],
-                    'parent_id'=>$request->main_product_id_return[$k],
-                ]);
-            }
-            array_push($return_account,[
-            'amount'=>$amount,
-            'sub_chart_account_id'=>$request->return_account[$key],
-            'created_at'=>date('Y-m-d H:i:s'),
-            'updated_at'=>date('Y-m-d H:i:s'),
-            'reference'=>$request->sales_order_invoice_id,
-            'source'=>'sales_order_invoices',
-            'type'=>'masuk',
-            ]);
-            $total_amount = \DB::table('temp_sales_return')
-                ->where('sales_order_id', $request->sales_order_id)
-                ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
-            array_push($return_account, array(
-                'amount'=>$total_amount,
-                'sub_chart_account_id'=>$request->return_account[$key],
-                'reference'=>$request->sales_order_invoice_id
-            ));
-        }
-
-        \DB::table('transaction_chart_accounts')->insert($return_account);
-        //now delete the temp_sales_return
-        \DB::table('temp_sales_return')
-            ->where('sales_order_id', '=', $request->sales_order_id)
-            ->delete();
-
-
         if($request->ajax()){
             foreach ($request->product_id as $key => $value) {
                 $sales_return = new SalesReturn;
@@ -134,7 +83,61 @@ class SalesReturnController extends Controller
                 $sales_return->created_by = \Auth::user()->id;
                 $sales_return->save();
             }
+            $temp_sales_return_data = [];
+            foreach($request->child_product_id as $key=>$value){
+                array_push($temp_sales_return_data, array(
+                    'sales_order_id'=>$request->sales_order_id,
+                    'main_product_id'=>$request->main_product_id_return[$key],
+                    'child_product_id'=>$request->child_product_id[$key],
+                    'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
+                ));
+            }
 
+            \DB::table('temp_sales_return')->insert($temp_sales_return_data);
+
+
+            $inv_account = [];
+            $return_account = [];
+            $cost_goods_account = [];
+            foreach ($request->parent_product_id as $key => $value) {
+                $total_amount = \DB::table('temp_sales_return')
+                    ->where('sales_order_id', $request->sales_order_id)
+                    ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
+                    array_push($inv_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->inventory_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'masuk',
+                    ]);
+                    array_push($return_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->return_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'masuk',
+                    ]);
+                    array_push($cost_goods_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->cost_goods_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->sales_order_invoice_id,
+                        'source'=>'sales_order_invoices',
+                        'type'=>'keluar',
+                    ]);
+            }
+            \DB::table('transaction_chart_accounts')->insert($inv_account);
+            \DB::table('transaction_chart_accounts')->insert($return_account);
+            \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            //now delete the temp_sales_return
+            \DB::table('temp_sales_return')
+                ->where('sales_order_id', '=', $request->sales_order_id)
+                ->delete();
 
             return response("storeSalesReturnOk");
         }else{
