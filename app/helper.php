@@ -46,7 +46,11 @@
         $list_account_inventory = \DB::table('sub_chart_accounts')->where([['chart_account_id',$key]])->get();
 
         return $list_account_inventory;
+<<<<<<< HEAD
     }
+=======
+      }
+>>>>>>> d6a567034d387462bce6a6aa207e0e9bce28d61b
 
     function list_sub_inventory($key,$id)
     {
