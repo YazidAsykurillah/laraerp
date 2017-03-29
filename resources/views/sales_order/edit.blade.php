@@ -35,30 +35,65 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
               <thead>
-                <tr>
-                  <th style="width:40%">Product Name</th>
-                  <th style="width:20%">Quantity</th>
-                  <th style="width:20%">Unit</th>
-                </tr>
+                  <tr>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                  </tr>
               </thead>
               <tbody>
-                @if($sales_order->products->count() > 0)
-                  @foreach($sales_order->products as $product)
-                  <tr id="tr_product_{{$product->id}}">
-                    <td>
-                      <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
-                      {{ $product->name }}
-                    </td>
-                    <td>
-                      <input type="text" name="quantity[]" class="quantity form-control" style="" value="{{ $product->pivot->quantity }}" />
-                    </td>
-                    <td>{{ $product->unit->name }}</td>
-                  </tr>
-                  @endforeach
+                  @if(count($row_display))
+                      @foreach($row_display as $row)
+                        <?php $sum_qty = 0; ?>
+                          <tr class="tr_product_{{ $row['main_product_id'] }}">
+                            <td><strong>{{ $row['family'] }}</strong></td>
+                            <td>
+                                <strong>
+                                    {{ $row['main_product'] }}
+                                </strong>
+                                @if($row['image'] != NULL)
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                </a>
+                                @else
+                                <a href="#" class="thumbnail">
+                                    {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                </a>
+                                @endif
+                            </td>
+                            <td><strong>{{ $row['description'] }}</strong></td>
+                            <td><strong>{{ $row['unit'] }}</strong></td>
+                            <td>
+                                <input type="text" name="parent_stock" value="" class="target_qty">
+                            </td>
+                            <td><strong>{{ $row['category'] }}</strong></td>
+                          </tr>
+                          @foreach($row['ordered_products'] as $or)
+                          <tr class="tr_product_{{ $row['main_product_id'] }}">
+                            <td>
+                              <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                              {{ $or['family'] }}
+                            </td>
+                            <td>{{ $or['code'] }} </td>
+                            <td>{{ $or['description'] }} </td>
+                            <td>{{ $or['unit'] }} </td>
+                            <td>
+                                <input type="text" name="quantity[]" value="{{ $or['quantity'] }}">
+                                <?php $sum_qty += $or['quantity']; ?>
+                            </td>
+                            <td>{{ $or['category'] }}</td>
+                          </tr>
+                          @endforeach
+                          <tr style="display:none">
+                              <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
+                          </tr>
+                      @endforeach
                 @else
                 <tr id="tr-no-product-selected">
                   <td>There are no product</td>
-                </tr>
                 @endif
               </tbody>
               <tfoot>
@@ -165,7 +200,7 @@
 
   <!--Modal Display product datatables-->
   <div class="modal fade" id="modal-display-products" tabindex="-1" role="dialog" aria-labelledby="modal-display-productsLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="width:80%">
       <div class="modal-content">
 
         <div class="modal-header">
@@ -176,22 +211,26 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-product">
               <thead>
-                <tr>
-                  <th style="width:5%;">#</th>
-                  <th style="width:10%;">Code</th>
-                  <th>Product Name</th>
-                  <th>Stock</th>
-                  <th>Minimum Stock</th>
-                </tr>
-              </thead>
-              <thead id="searchid">
-                <tr>
-                  <th style="width:5%;"></th>
-                  <th>Code</th>
-                  <th>Product Name</th>
-                  <th>Stock</th>
-                  <th>Minimum Stock</th>
-                </tr>
+                  <tr>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
+                  </tr>
+                </thead>
+                <thead id="searchid">
+                  <tr>
+                      <th style="width:5%;">#</th>
+                      <th>Family</th>
+                      <th>Code</th>
+                      <th>Image</th>
+                      <th>Description</th>
+                      <th>Unit</th>
+                      <th>Category</th>
+                  </tr>
               </thead>
               <tbody>
 
@@ -234,13 +273,15 @@
       processing :true,
       serverSide : true,
       pageLength : 10,
-      ajax : '{!! route('datatables.getProducts') !!}',
+      ajax : '{!! route('datatables.getMainProducts') !!}',
       columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
-        {data: 'code', name: 'code' },
-        {data: 'name', name: 'name' },
-        {data: 'stock', name: 'stock' },
-        {data: 'minimum_stock', name: 'minimum_stock' },
+          {data: 'rownum', name: 'rownum', searchable:false},
+          { data: 'family_id', name: 'family_id'},
+          { data: 'name', name: 'name'},
+          { data: 'image', name: 'image'},
+          { data: 'description', name: 'description'},
+          { data: 'unit_id', name: 'unit_id' },
+          { data: 'category_id', name: 'category_id' },
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -293,7 +334,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
     });
@@ -346,5 +387,13 @@
         }
       });
     });
+  </script>
+
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum_qty');
+      for(var a = 0; a < sum.length; a++){
+          document.getElementsByClassName('target_qty')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
+
   </script>
 @endSection

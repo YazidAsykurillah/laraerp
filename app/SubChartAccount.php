@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Cash;
 use App\Bank;
+use App\TransactionChartAccount;
 
 class SubChartAccount extends Model
 {
@@ -13,9 +14,9 @@ class SubChartAccount extends Model
 
     protected $fillable = ['reference','account_number','chart_account_id'];
 
-    // public function chart_account()
-    // {
-    //     return $this->
-    // }
+    public function transaction_chart_account()
+    {
+        return $this->hasMany('App\TransactionChartAccount');
+    }
 
 }

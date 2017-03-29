@@ -30,6 +30,7 @@ use App\Vehicle;
 use App\ChartAccount;
 use App\SubChartAccount;
 use App\MainProduct;
+use App\TransactionChartAccount;
 
 class DatatablesController extends Controller
 {
@@ -967,4 +968,47 @@ class DatatablesController extends Controller
 
     }
     //ENDFunction to get product list
+
+    //Function to get transaction
+    public function getTransactionChartAccounts(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $trans_chart_account = TransactionChartAccount::select([
+            \DB::raw('@rownum := @rownum + 1 AS rownum'),
+            'id',
+            'sub_chart_account_id',
+            'amount',
+            'created_at',
+        ])->where([['source','biaya_operasi'],['type','!=','keluar']]);
+        $datatables = Datatables::of($trans_chart_account)
+        ->editColumn('account_number', function($trans_chart_account){
+             return $trans_chart_account->sub_chart_account->account_number;
+
+        })
+        ->editColumn('name', function($trans_chart_account){
+            return $trans_chart_account->sub_chart_account->name;
+        })
+        ->editColumn('amount', function($trans_chart_account){
+            return number_format($trans_chart_account->amount);
+        })
+        ->addColumn('actions', function($trans_chart_account){
+            $actions_html ='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+            $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+            $actions_html .='</a>&nbsp;';
+            $actions_html .='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this beban operasi">';
+            $actions_html .=    '<i class="fa fa-edit"></i>';
+            $actions_html .='</a>&nbsp;';
+            $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-text="'.$trans_chart_account->sub_chart_account->name.'">';
+            $actions_html .=    '<i class="fa fa-trash"></i>';
+            $actions_html .='</button>';
+
+            return $actions_html;
+        });
+
+        if($keyword = $request->get('search')['value']){
+            $trans_chart_account->filterColumn('rownum','whereRaw','@rownum + 1 like ?', ["%{$keyword}"]);
+        }
+
+        return $datatables->make(true);
+    }
 }

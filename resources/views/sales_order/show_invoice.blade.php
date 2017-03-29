@@ -57,8 +57,8 @@
               </thead>
             <tbody>
                 @if(count($row_display))
-                    <?php $x = 0; ?>
                     @foreach($row_display as $row)
+                    <?php $sum = 0; $sum_qty = 0;?>
                         <tr>
                           <td>
                               <strong>
@@ -88,10 +88,10 @@
                           </td>
                           <td><strong>{{ $row['description'] }}</strong></td>
                           <td><strong>{{ $row['unit'] }}</strong></td>
-                          <td><strong></strong></td>
+                          <td><strong class="target_qty"></strong></td>
                           <td><strong>{{ $row['category'] }}</strong></td>
                           <td></td>
-                          <td>{{ $x }}</td>
+                          <td><strong class="target_sum"></strong></td>
                         </tr>
                         @foreach($row['ordered_products'] as $or)
                         <tr>
@@ -99,14 +99,23 @@
                           <td>{{ $or['code'] }} </td>
                           <td>{{ $or['description'] }} </td>
                           <td>{{ $or['unit'] }} </td>
-                          <td>{{ $or['quantity'] }}</td>
+                          <td>
+                              {{ $or['quantity'] }}
+                              <?php $sum_qty += $or['quantity']; ?>
+                          </td>
                           <td>{{ $or['category'] }}</td>
                           <td>{{ number_format($or['price_per_unit']) }}</td>
-                          <td>{{ number_format($or['price']) }}</td>
+                          <td>
+                              {{ number_format($or['price']) }}
+                              <?php $sum += $or['price']; ?>
+                          </td>
                         </tr>
                         @endforeach
+                        <tr style="display:none">
+                          <td colspan="3" class="sum">{{ number_format($sum) }}</td>
+                          <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
+                        </tr>
                     @endforeach
-                    <?php $x = $x+3;?>
               @else
               <tr id="tr-no-product-selected">
                 <td>There are no product</td>
@@ -224,7 +233,18 @@
 @endsection
 
 @section('additional_scripts')
+  {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
+    $('.price_per_unit').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+
+    $('.price').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+
     $('#btn-pay-invoice').on('click', function(e) {
         var id = $(this).attr('data-id');
         var code = $(this).attr('data-text');
@@ -239,5 +259,12 @@
         $('#amount_piutang').val($('#bill_price').text().replace(',','')-$('#paid_price').text().replace(',',''));
         $('#modal-select-account').modal('show');
     });
+  </script>
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum');
+      for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('target_sum')[a].innerHTML = document.getElementsByClassName('sum')[a].innerHTML;
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
   </script>
 @endsection

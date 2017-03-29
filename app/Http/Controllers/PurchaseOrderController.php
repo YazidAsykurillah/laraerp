@@ -190,6 +190,7 @@ class PurchaseOrderController extends Controller
             $row_display[] = [
                 'main_product_id'=>MainProduct::find($mp_id)->id,
                 'main_product'=>MainProduct::find($mp_id)->name,
+                'image'=>MainProduct::find($mp_id)->image,
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,

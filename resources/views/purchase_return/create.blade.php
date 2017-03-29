@@ -33,30 +33,87 @@
           <table class="table table-bordered" id="table-selected-products">
             <thead>
               <tr>
-                <th style="width:5%"></th>
-                <th style="width:20%">Product Name</th>
-                <th style="width:20%">Purchased Qty</th>
-                <th style="width:20%">Returned Qty</th>
-                <th style="width:35%">Notes</th>
+                  <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Description</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                  <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Price</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Returned Qty</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Notes</th>
               </tr>
             </thead>
             <tbody>
-              @if($purchase_order->products->count() > 0)
+                @if(count($row_display))
+                    @foreach($row_display as $row)
+                        <tr>
+                          <td colspan="2">
+                              <strong>
+                                  {{ $row['family'] }}
+                              </strong>
+                              <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                              <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                <option value="">Inventory Account</option>
+                                @foreach(list_account_inventory('52') as $as)
+                                  @if($as->level ==1)
+                                  <optgroup label="{{ $as->name}}">
+                                  @endif
+                                  @foreach(list_sub_inventory('2',$as->id) as $sub)
+                                    <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                                  @endforeach
+                                @endforeach
+                              </select>
+                          </td>
+                          <td>
+                              <strong>
+                                  {{ $row['main_product'] }}
+                              </strong>
+                              @if($row['image'] != NULL)
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                              </a>
+                              @else
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                              </a>
+                              @endif
+                          </td>
+                          <td><strong>{{ $row['description'] }}</strong></td>
+                          <td><strong>{{ $row['unit'] }}</strong></td>
+                          <td><strong>{{ $row['quantity'] }}</strong></td>
+                          <td><strong>{{ $row['category'] }}</strong></td>
+                          <td></td>
+                          <td>{{ Form::hidden('parent_return[]',null,['class'=>'parent_return form-control']) }}</td>
+                          <td></td>
+                        </tr>
+                        @foreach($row['ordered_products'] as $or)
+                        <tr id="row_sales_{{$or['product_id'] }}">
+                          <td>{{ Form::checkbox('product_id[]',$or['product_id'],false,['class'=>'purchase-id-checkbox']) }}</td>
+                          <td>
+                              {{ $or['family'] }}
+                              <input type="text" name="child_product_id[]" value="{{ $or['product_id'] }}" class="child_product_id" disabled/>
+                              {{ Form::text('main_product_id_return[]',$row['main_product_id'],['class'=>'main_product_id_return form-control','disabled']) }}
+                              {{ Form::text('amount_return_per_unit[]',null,['class'=>'price_per_unit form-control','disabled']) }}
+                          </td>
+                          <td>{{ $or['code'] }} </td>
+                          <td>{{ $or['description'] }} </td>
+                          <td>{{ $or['unit'] }} </td>
+                          <td class="salesed_qty">{{ $or['quantity'] }}</td>
+                          <td>{{ $or['category'] }}</td>
+                          <td class="price">{{ number_format($or['price']) }}</td>
+                          <td>
+                              {{ Form::text('returned_quantity[]',null,['class'=>'returned_quantity form-control','disabled']) }}
+                          </td>
+                          <td>{{ Form::text('notes[]',null,['class'=>'notes form-control','disabled']) }}</td>
+                        </tr>
+                        @endforeach
 
-                @foreach($purchase_order->products as $product)
-                <tr id="row_product_{{$product->id}}">
-                  <td>{{ Form::checkbox('product_id[]', $product->id, false, ['class'=>'product-id-checkbox']) }}</td>
-                  <td>{{ $product->name }}</td>
-                  <td class="purchased_qty">{{ $product->pivot->quantity }}</td>
-                  <td>{{ Form::text('returned_quantity[]',null, ['class'=>'returned_quantity form-control', 'disabled']) }}</td>
-                  <td>{{ Form::text('notes[]',null, ['class'=>'notes form-control', 'disabled']) }}</td>
-                </tr>
-
-                @endforeach
+                    @endforeach
               @else
-                <tr>
-                  <td colspan="5">There are no product</td>
-                </tr>
+              <tr id="tr-no-product-selected">
+                <td>There are no product</td>
               @endif
 
             </tbody>
@@ -79,6 +136,7 @@
             </div>
           </div>
           {!! Form::hidden('purchase_order_id', $purchase_order->id) !!}
+          {!! Form::hidden('purchase_order_invoice_id',$po_id->id) !!}
           {!! Form::close() !!}
         </div>
 
@@ -104,8 +162,10 @@
 <!--Block Compare Control returned quantity to purchased quantity-->
 <script type="text/javascript">
   $('.returned_quantity').on('keyup', function(){
-    var salesed_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
+    var purchased_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
     var the_value = parseInt($(this).val());
+    var price_item = $(this).parent().parent().find('.price').html().replace(/,/gi,'');
+    var price_per_unit = parseInt($(this).parent().parent().find('.price_per_unit').val(the_value*price_item));
     if(the_value > purchased_qty){
       alertify.error('Returned quantity can not be greater than purchased quantity');
     }
@@ -116,14 +176,21 @@
 
 
 <script type="text/javascript">
-  $('.product-id-checkbox').on('click', function(){
+  $('.purchase-id-checkbox').on('click', function(){
     if($(this).is(':checked') == true){
       $(this).parent().parent().find('.returned_quantity').prop('disabled', false);
+      $(this).parent().parent().find('.child_product_id').prop('disabled',false);
+      $(this).parent().parent().find('.main_product_id_return').prop('disabled',false);
+      $(this).parent().parent().find('.price_per_unit').prop('disabled',false);
       $(this).parent().parent().find('.notes').prop('disabled', false);
+      $(this).parent().parent().find('.returned_quantity').focus();
     }
     else{
       $(this).parent().parent().find('.returned_quantity').prop('disabled', true);
       $(this).parent().parent().find('.returned_quantity').val('');
+      $(this).parent().parent().find('.child_product_id').prop('disabled',true);
+      $(this).parent().parent().find('.main_product_id_return').prop('disabled',true);
+      $(this).parent().parent().find('.price_per_unit').prop('disabled',true);
       $(this).parent().parent().find('.notes').val('');
       $(this).parent().parent().find('.notes').prop('disabled', true);
     }

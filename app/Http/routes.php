@@ -17,6 +17,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//biaya operasi
+Route::post('deleteTransChartAccount','BiayaOperasiController@destroy');
+Route::resource('biaya-operasi','BiayaOperasiController');
+
 //lost&profit
 Route::post('lost-profit/submit','LostProfitController@lost_profit_sort_submit');
 Route::post('lost-profit.lost_profit_print','LostProfitController@lost_profit_print');
@@ -218,4 +222,5 @@ Route::controller('datatables', 'DatatablesController',[
     'getChartAccounts' =>'datatables.getChartAccounts',
     'getMainProducts' =>'datatables.getMainProducts',
     'getSubChartAccounts' =>'datatables.getSubChartAccounts',
+    'getTransactionChartAccounts' =>'datatables.getTransactionChartAccounts',
 ]);

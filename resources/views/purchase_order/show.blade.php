@@ -74,6 +74,7 @@
                   <tbody>
                       @if(count($row_display))
                           @foreach($row_display as $row)
+                          <?php $sum_qty = 0; ?>
                               <tr>
                                 <td><strong>{{ $row['family'] }}</strong></td>
                                 <td>
@@ -92,7 +93,7 @@
                                 </td>
                                 <td><strong>{{ $row['description'] }}</strong></td>
                                 <td><strong>{{ $row['unit'] }}</strong></td>
-                                <td><strong></strong></td>
+                                <td><strong class="target_qty"></strong></td>
                                 <td><strong>{{ $row['category'] }}</strong></td>
                               </tr>
                               @foreach($row['ordered_products'] as $or)
@@ -101,10 +102,16 @@
                                 <td>{{ $or['code'] }} </td>
                                 <td>{{ $or['description'] }} </td>
                                 <td>{{ $or['unit'] }} </td>
-                                <td>{{ $or['quantity'] }}</td>
+                                <td>
+                                    {{ $or['quantity'] }}
+                                    <?php $sum_qty += $or['quantity']; ?>
+                                </td>
                                 <td>{{ $or['category'] }}</td>
                               </tr>
                               @endforeach
+                              <tr style="display:none">
+                                <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
+                              </tr>
                           @endforeach
                     @else
                     <tr id="tr-no-product-selected">
@@ -444,6 +451,14 @@
           html: true
       });
   });
+</script>
+
+<script type="text/javascript">
+    var sum = document.getElementsByClassName('sum_qty');
+    for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+    }
+
 </script>
 
 @endSection

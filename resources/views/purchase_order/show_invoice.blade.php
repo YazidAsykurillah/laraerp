@@ -55,6 +55,7 @@
               <tbody>
                   @if(count($row_display))
                       @foreach($row_display as $row)
+                        <?php $sum = 0; $sum_qty = 0;?>
                           <tr>
                             <td>
                                 <strong>
@@ -84,9 +85,9 @@
                             </td>
                             <td><strong>{{ $row['description'] }}</strong></td>
                             <td><strong>{{ $row['unit'] }}</strong></td>
-                            <td><strong>{{ $row['quantity'] }}</strong></td>
+                            <td><strong class="target_qty">{{ $row['quantity'] }}</strong></td>
                             <td><strong>{{ $row['category'] }}</strong></td>
-                            <td></td>
+                            <td><strong class="target_sum"></strong></td>
                           </tr>
                           @foreach($row['ordered_products'] as $or)
                           <tr>
@@ -94,11 +95,21 @@
                             <td>{{ $or['code'] }} </td>
                             <td>{{ $or['description'] }} </td>
                             <td>{{ $or['unit'] }} </td>
-                            <td>{{ $or['quantity'] }}</td>
+                            <td>
+                                {{ $or['quantity'] }}
+                                <?php $sum_qty += $or['quantity']; ?>
+                            </td>
                             <td>{{ $or['category'] }}</td>
-                            <td>{{ number_format($or['price']) }}</td>
+                            <td>
+                                {{ number_format($or['price']) }}
+                                <?php $sum += $or['price']; ?>
+                            </td>
                           </tr>
                           @endforeach
+                          <tr style="display:none">
+                            <td colspan="3" class="sum">{{ number_format($sum) }}</td>
+                            <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
+                          </tr>
                       @endforeach
                 @else
                 <tr id="tr-no-product-selected">
@@ -248,5 +259,11 @@
         $('#modal-select-account').modal('show');
     });
   </script>
-
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum');
+      for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('target_sum')[a].innerHTML = document.getElementsByClassName('sum')[a].innerHTML;
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
+  </script>
 @endSection

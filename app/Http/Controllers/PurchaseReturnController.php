@@ -12,6 +12,7 @@ use App\Http\Requests\StorePurchaseReturnRequest;
 use App\PurchaseOrder;
 use App\PurchaseReturn;
 use App\Product;
+use App\MainProduct;
 
 class PurchaseReturnController extends Controller
 {
@@ -33,8 +34,37 @@ class PurchaseReturnController extends Controller
     public function create(Request $request)
     {
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+        $po_id = $purchase_order->purchase_order_invoice;
+        $main_product = $purchase_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($purchase_order->products->count()){
+            foreach($purchase_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $request->purchase_order_id),
+            ];
+        }
         return view('purchase_return.create')
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('po_id',$po_id)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     /**
@@ -48,14 +78,14 @@ class PurchaseReturnController extends Controller
         $error[]= 'returned_quantity is higher than stock';
         $error[]= 'returned_quantity is higher than stock again';
         return $error;
-        
+
     }
 
     public function store(StorePurchaseReturnRequest $request)
     {
         if($request->ajax()){
-            
-            /*foreach($request->product_id as $key=>$value){  
+
+            /*foreach($request->product_id as $key=>$value){
                 $current_stock =  \DB::table('products')->where('id', $request->product_id[$key])->first()->stock;
                 $returned_quantity = $request->returned_quantity[$key];
                 if($current_stock < $returned_quantity){
@@ -72,13 +102,69 @@ class PurchaseReturnController extends Controller
                 $purchase_return->created_by = \Auth::user()->id;
                 $purchase_return->save();
             }
-            
+
+            $temp_purchase_return_data = [];
+            foreach($request->child_product_id as $key=>$value){
+                array_push($temp_purchase_return_data, array(
+                    'purchase_order_id'=>$request->purchase_order_id,
+                    'main_product_id'=>$request->main_product_id_return[$key],
+                    'child_product_id'=>$request->child_product_id[$key],
+                    'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
+                ));
+            }
+
+            \DB::table('temp_purchase_return')->insert($temp_purchase_return_data);
+
+
+            $inv_account = [];
+            //$return_account = [];
+            //$cost_goods_account = [];
+            foreach ($request->parent_product_id as $key => $value) {
+                $total_amount = \DB::table('temp_purchase_return')
+                    ->where('purchase_order_id', $request->purchase_order_id)
+                    ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
+                    array_push($inv_account,[
+                        'amount'=>$total_amount,
+                        'sub_chart_account_id'=>$request->inventory_account[$key],
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s'),
+                        'reference'=>$request->purchase_order_invoice_id,
+                        'source'=>'purchase_order_invoices',
+                        'type'=>'keluar',
+                    ]);
+                    // array_push($return_account,[
+                    //     'amount'=>$total_amount,
+                    //     'sub_chart_account_id'=>$request->return_account[$key],
+                    //     'created_at'=>date('Y-m-d H:i:s'),
+                    //     'updated_at'=>date('Y-m-d H:i:s'),
+                    //     'reference'=>$request->sales_order_invoice_id,
+                    //     'source'=>'sales_order_invoices',
+                    //     'type'=>'masuk',
+                    // ]);
+                    // array_push($cost_goods_account,[
+                    //     'amount'=>$total_amount,
+                    //     'sub_chart_account_id'=>$request->cost_goods_account[$key],
+                    //     'created_at'=>date('Y-m-d H:i:s'),
+                    //     'updated_at'=>date('Y-m-d H:i:s'),
+                    //     'reference'=>$request->sales_order_invoice_id,
+                    //     'source'=>'sales_order_invoices',
+                    //     'type'=>'keluar',
+                    // ]);
+            }
+            \DB::table('transaction_chart_accounts')->insert($inv_account);
+            // \DB::table('transaction_chart_accounts')->insert($return_account);
+            // \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            //now delete the temp_sales_return
+            \DB::table('temp_purchase_return')
+                ->where('purchase_order_id', '=', $request->purchase_order_id)
+                ->delete();
+
             return response("storePurchaseReturnOk");
         }
         else{
             return "Please enable javascript";
         }
-        
+
 
 
     }
@@ -152,7 +238,7 @@ class PurchaseReturnController extends Controller
         $current_stock = $product->stock;
         //product quantity to be returned
         $qty_to_return = $purchase_return->quantity;
-        
+
         //compare to product quantities to return and current product stock
         //if current product stock is lower than quantities to be returned, then throw an errror
         if($qty_to_return > $current_stock){
@@ -168,9 +254,9 @@ class PurchaseReturnController extends Controller
             $purchase_return->status = 'sent';
             $purchase_return->save();
             return redirect('purchase-return')
-                ->with('successMessage', "$product_name on $purchase_order_ref has been returned to the supplier");    
+                ->with('successMessage', "$product_name on $purchase_order_ref has been returned to the supplier");
         }
-        
+
     }
 
     public function changeToCompleted(Request $request){
@@ -192,6 +278,32 @@ class PurchaseReturnController extends Controller
         $product->save();
         return redirect('purchase-return')
             ->with('successMessage', "$product_name has been added back to inventory from $purchase_order_ref");
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_purchase_order')
+                        ->where('product_id','=', $pid->id)
+                        ->where('purchase_order_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->quantity,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                    'price'=>$counter->price,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
     }
 
 }

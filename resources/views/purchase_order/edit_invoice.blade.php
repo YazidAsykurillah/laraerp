@@ -49,6 +49,7 @@
               <tbody>
                   @if(count($row_display))
                       @foreach($row_display as $row)
+                        <?php $sum_qty = 0; $sum = 0; ?>
                           <tr>
                             <td>
                                 <strong>
@@ -83,7 +84,7 @@
                             </td>
                             <td><strong>{{ $row['description'] }}</strong></td>
                             <td><strong>{{ $row['unit'] }}</strong></td>
-                            <td><strong>{{ $row['quantity'] }}</strong></td>
+                            <td><strong class="target_qty">{{ $row['quantity'] }}</strong></td>
                             <td><strong>{{ $row['category'] }}</strong></td>
                             <td>
                                 <input type="text" name="price_parent[]" class="price_parent">
@@ -101,13 +102,19 @@
                               <td>
                                   <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}">
                                   {{ $or['quantity'] }}
+                                  <?php $sum_qty += $or['quantity']; ?>
                               </td>
                               <td>{{ $or['category'] }}</td>
                               <td>
                                 <input type="text" name="price[]" value="{{ number_format($or['price']) }}" class="price">
+                                <?php $sum += $or['price']; ?>
                               </td>
                           </tr>
                           @endforeach
+                          <tr style="display:none">
+                            <td colspan="3" class="sum">{{ number_format($sum) }}</td>
+                            <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
+                          </tr>
                       @endforeach
                 @else
                 <tr id="tr-no-product-selected">
@@ -249,6 +256,14 @@
       $('#btn-submit-purchase-order-invoice').attr('disable','disabled');
     });
   //ENDBlock handle form create purchase order submission
+  </script>
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum');
+      for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('price_parent')[a].value = document.getElementsByClassName('sum')[a].innerHTML;
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
+
   </script>
 
 @endSection

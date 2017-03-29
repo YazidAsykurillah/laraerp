@@ -47,20 +47,34 @@
               <tbody>
               @if(count($row_display))
                   @foreach($row_display as $row)
+                    <?php $sum_qty = 0; ?>
                       <tr class="tr_product_{{ $row['main_product_id'] }}">
-                        <td>{{ $row['family'] }}</td>
-                        <td><strong>{{ $row['main_product'] }}</strong></td>
-                        <td>{{ $row['description'] }}</td>
-                        <td>{{ $row['unit'] }}</td>
+                        <td><strong>{{ $row['family'] }}</strong></td>
                         <td>
-                            <input type="text" name="parent_stock" value="{{ $row['quantity'] }}">
+                            <strong>
+                                {{ $row['main_product'] }}
+                            </strong>
+                            @if($row['image'] != NULL)
+                            <a href="#" class="thumbnail">
+                                {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                            </a>
+                            @else
+                            <a href="#" class="thumbnail">
+                                {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                            </a>
+                            @endif
                         </td>
-                        <td>{{ $row['category'] }}</td>
+                        <td><strong>{{ $row['description'] }}</strong></td>
+                        <td><strong>{{ $row['unit'] }}</strong></td>
+                        <td>
+                            <input type="text" name="parent_stock" value="" class="target_qty">
+                        </td>
+                        <td><strong>{{ $row['category'] }}</strong></td>
                       </tr>
                       @foreach($row['ordered_products'] as $or)
                       <tr class="tr_product_{{ $row['main_product_id'] }}">
                         <td>
-                          <input type="text" name="product_id[]" value="{{ $or['product_id'] }} " />
+                          <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
                           {{ $or['family'] }}
                         </td>
                         <td>{{ $or['code'] }} </td>
@@ -68,10 +82,14 @@
                         <td>{{ $or['unit'] }} </td>
                         <td>
                             <input type="text" name="quantity[]" value="{{ $or['quantity'] }}">
+                            <?php $sum_qty += $or['quantity']; ?>
                         </td>
                         <td>{{ $or['category'] }}</td>
                       </tr>
                       @endforeach
+                      <tr style="display:none">
+                          <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
+                      </tr>
                   @endforeach
             @else
             <tr id="tr-no-product-selected">
@@ -336,7 +354,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
     });
@@ -389,5 +407,13 @@
         }
       });
     });
+  </script>
+
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum_qty');
+      for(var a = 0; a < sum.length; a++){
+          document.getElementsByClassName('target_qty')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
+
   </script>
 @endsection

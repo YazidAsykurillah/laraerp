@@ -76,6 +76,7 @@
                   <tbody>
                       @if(count($row_display))
                           @foreach($row_display as $row)
+                          <?php $sum = 0;?>
                               <tr>
                                 <td><strong>{{ $row['family'] }}</strong></td>
                                 <td>
@@ -94,7 +95,7 @@
                                 </td>
                                 <td><strong>{{ $row['description'] }}</strong></td>
                                 <td><strong>{{ $row['unit'] }}</strong></td>
-                                <td><strong>{{ $row['quantity'] }}</strong></td>
+                                <td><strong class="target_sum"></strong></td>
                                 <td><strong>{{ $row['category'] }}</strong></td>
                               </tr>
                               @foreach($row['ordered_products'] as $or)
@@ -103,10 +104,16 @@
                                 <td>{{ $or['code'] }} </td>
                                 <td>{{ $or['description'] }} </td>
                                 <td>{{ $or['unit'] }} </td>
-                                <td>{{ $or['quantity'] }}</td>
+                                <td>
+                                    {{ $or['quantity'] }}
+                                    <?php $sum += $or['quantity']; ?>
+                                </td>
                                 <td>{{ $or['category'] }}</td>
                               </tr>
                               @endforeach
+                              <tr style="display:none">
+                                <td colspan="6" class="sum">{{ $sum }}</td>
+                              </tr>
                           @endforeach
                     @else
                     <tr id="tr-no-product-selected">
@@ -352,7 +359,14 @@
     </div>
     <!-- ENDSection Return -->
   </div>
+@endsection
 
+@section('additional_scripts')
+    <script type="text/javascript">
+        var sum = document.getElementsByClassName('sum');
+        for(var a = 0; a < sum.length; a++){
+            document.getElementsByClassName('target_sum')[a].innerHTML = document.getElementsByClassName('sum')[a].innerHTML;
+        }
 
-
+    </script>
 @endsection
