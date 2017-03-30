@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
+    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-files-o"></i> Sales Order</a></li>
     <li class="active"><i></i>Create</li>
   </ol>
 @endsection
@@ -26,7 +26,7 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Products</h3>
+          <h3 class="box-title">Products Added</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
             <i class="fa fa-list"></i>&nbsp;Select Products
           </a>
@@ -35,12 +35,12 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
                 <tr>
-                  <th style="width:15%">Family</th>
-                  <th style="width:15%">Code</th>
-                  <th style="width:20%">Description</th>
-                  <th style="width:15%">Unit</th>
-                  <th style="width:15%">Quantity</th>
-                  <th style="width:20%">Category</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                  <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
+                  <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
                 </tr>
                 <tr id="tr-no-product-selected">
                   <td colspan="6">No product selected</td>
@@ -66,9 +66,9 @@
         <div class="box-body">
 
             <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
-              {!! Form::label('customer_id', 'customer', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('customer_id', 'Customer Name', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                {{ Form::select('customer_id', $customer_options, null, ['class'=>'form-control', 'placeholder'=>'Select customer', 'id'=>'customer_id']) }}
+                {{ Form::select('customer_id', $customer_options, null, ['class'=>'form-control', 'placeholder'=>'Select Customer', 'id'=>'customer_id']) }}
                 @if ($errors->has('customer_id'))
                   <span class="help-block">
                     <strong>{{ $errors->first('customer_id') }}</strong>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
-              {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('notes', 'Notes', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
                 {{ Form::textarea('notes', null,['class'=>'form-control', 'placeholder'=>'Notes of Sales Order', 'id'=>'notes']) }}
                 @if ($errors->has('notes'))
@@ -90,8 +90,8 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-10">
+                {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+              <div class="col-sm-9">
                 <a href="{{ url('sales-order') }}" class="btn btn-default">
                   <i class="fa fa-repeat"></i>&nbsp;Cancel
                 </a>&nbsp;
@@ -111,13 +111,13 @@
     <div class="col-md-6">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Drivers and Transport</h3>
+                <h3 class="box-title">Driver and Vehicle</h3>
             </div>
             <div class="box-body">
                 <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
-                    {!! Form::label('driver_id','Driver',['class'=>'col-sm-2 control-label']) !!}
+                    {!! Form::label('driver_id','Driver Name',['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-6">
-                        {{ Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select driver','id'=>'driver_id']) }}
+                        {{ Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select Driver','id'=>'driver_id']) }}
                         @if($errors->has('driver_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('driver_id') }}</strong>
@@ -126,16 +126,19 @@
                     </div>
                 </div>
                 <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
-                    {!! Form::label('vehicle_id','Vehicle',['class'=>'col-sm-2 control-label']) !!}
+                    {!! Form::label('vehicle_id','Vehicle Number',['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-6">
-                        {{ Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select vehicle','id'=>'vehicle_id']) }}
+                        {{ Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select Vehicle','id'=>'vehicle_id']) }}
                         @if($errors->has('vehicle_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('vehicle_id') }}</strong>
                         </span>
                         @endif
                     </div>
-                    </div>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+
             </div>
         </div>
   </div>
@@ -149,36 +152,39 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-display-productsLabel">Sub Products list</h4>
+          <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-product">
+            <table class="table table-bordered" id="table-product" style="width:100%">
               <thead>
                   <tr>
-                      <th style="width:5%;">#</th>
-                      <th>Family</th>
-                      <th>Code</th>
-                      <th>Image</th>
-                      <th>Description</th>
-                      <th>Unit</th>
-                      <th>Category</th>
+                      <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                      <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                      <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
+                      <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
                   </tr>
                 </thead>
                 <thead id="searchid">
                   <tr>
                       <th style="width:5%;">#</th>
-                      <th>Family</th>
-                      <th>Code</th>
-                      <th>Image</th>
-                      <th>Description</th>
-                      <th>Unit</th>
-                      <th>Category</th>
+                      <th style="width:10%;">Family</th>
+                      <th style="width:20%;">Code</th>
+                      <th style="width:15%;">Image</th>
+                      <th style="width:20%;">Description</th>
+                      <th style="width:15%;">Unit</th>
+                      <th style="width:15%;">Category</th>
                   </tr>
-              </thead>
+                </thead>
               <tbody>
 
               </tbody>
+              <tfoot>
+
+              </tfoot>
             </table>
           </div>
         </div>
@@ -320,7 +326,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 9) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 
@@ -329,14 +335,14 @@
     $('#searchid input').keyup(function() {
       tableProduct.columns($(this).data('id')).search(this.value).draw();
     });
-    $('#searchid select').change(function () {
-      if($(this).val() == ""){
-        tableProduct.columns($(this).data('id')).search('').draw();
-      }
-      else{
-        tableProduct.columns($(this).data('id')).search(this.value).draw();
-      }
-    });
+    // $('#searchid select').change(function () {
+    //   if($(this).val() == ""){
+    //     tableProduct.columns($(this).data('id')).search('').draw();
+    //   }
+    //   else{
+    //     tableProduct.columns($(this).data('id')).search(this.value).draw();
+    //   }
+    // });
     //ENDBlock search input and select
 
   </script>

@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
+    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-files-o"></i> Sales Order</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -25,7 +25,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Sales Order</h3>
-          <a href="{{ URL::to('sales-order/create')}}" class="btn btn-primary pull-right" title="Create new sales-order">
+          <a href="{{ URL::to('sales-order/create')}}" class="btn btn-primary pull-right" title="Add new sales order">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -33,26 +33,26 @@
           <table class="table table-bordered" id="table-sales-order">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:10%;">Code</th>
-                <th>Customer</th>
-                <th>Creator</th>
-                <th style="width:20%;">Date Created</th>
-                <th style="width:20%;">Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Customer</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Creator</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Date Created</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
-            <!-- <thead id="searchid">
+            <thead id="searchid">
               <tr>
-                <th style="width:5%;">#</th>
+                <th style="width:5%;"></th>
                 <th style="width:10%;">Code</th>
-                <th>Customer</th>
-                <th>Creator</th>
+                <th style="width:15%;">Customer</th>
+                <th style="width:15%;">Creator</th>
                 <th style="width:20%;">Date Created</th>
                 <th style="width:20%;">Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:15%;"></th>
               </tr>
-            </thead> -->
+            </thead>
             <tbody>
 
             </tbody>

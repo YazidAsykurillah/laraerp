@@ -25,7 +25,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Order</h3>
-          <a href="{{ URL::to('purchase-order/create')}}" class="btn btn-primary pull-right" title="Create new purchase order">
+          <a href="{{ URL::to('purchase-order/create')}}" class="btn btn-primary pull-right" title="Add new purchase order">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -33,24 +33,24 @@
           <table class="table table-bordered" id="table-purchase-order">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:15%;">Code</th>
-                <th style="width:20%">Supplier</th>
-                <th style="width:20%">Creator</th>
-                <th style="width:20%;">Date Created</th>
-                <th style="width:10%;">Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Supplier</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Creator</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Date Created</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">
               <tr>
                   <th style="width:5%;"></th>
-                  <th style="width:15%;">Code</th>
-                  <th style="width:20%">Supplier</th>
-                  <th style="width:20%">Creator</th>
+                  <th style="width:10%;">Code</th>
+                  <th style="width:15%">Supplier</th>
+                  <th style="width:15%">Creator</th>
                   <th style="width:20%;">Date Created</th>
-                  <th style="width:10%;">Status</th>
-                  <th style="width:10%;text-align:center;"></th>
+                  <th style="width:20%;">Status</th>
+                  <th style="width:15%;"></th>
               </tr>
             </thead>
             <tbody>

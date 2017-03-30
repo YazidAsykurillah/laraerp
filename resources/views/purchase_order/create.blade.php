@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
+    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order</a></li>
     <li class="active"><i></i>Create</li>
   </ol>
 @endsection
@@ -26,7 +26,7 @@
     <div class="col-lg-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Products</h3>
+          <h3 class="box-title">Products Added</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
             <i class="fa fa-list"></i>&nbsp;Select Products
           </a>
@@ -66,9 +66,9 @@
         <div class="box-body">
 
             <div class="form-group{{ $errors->has('supplier_id') ? ' has-error' : '' }}">
-              {!! Form::label('supplier_id', 'Supplier', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('supplier_id', 'Supplier Name', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                {{ Form::select('supplier_id', $supplier_options, null, ['class'=>'form-control', 'placeholder'=>'Select supplier', 'id'=>'supplier_id']) }}
+                {{ Form::select('supplier_id', $supplier_options, null, ['class'=>'form-control', 'placeholder'=>'Select Supplier', 'id'=>'supplier_id']) }}
                 @if ($errors->has('supplier_id'))
                   <span class="help-block">
                     <strong>{{ $errors->first('supplier_id') }}</strong>
@@ -78,9 +78,9 @@
             </div>
 
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
-              {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('notes', 'Notes', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                {{ Form::textarea('notes', null,['class'=>'form-control', 'placeholder'=>'Notes of purchase order', 'id'=>'notes']) }}
+                {{ Form::textarea('notes', null,['class'=>'form-control', 'placeholder'=>'Notes of Purchase Order', 'id'=>'notes']) }}
                 @if ($errors->has('notes'))
                   <span class="help-block">
                     <strong>{{ $errors->first('notes') }}</strong>
@@ -90,8 +90,8 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-10">
+                {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+              <div class="col-sm-9">
                 <a href="{{ url('purchase-order') }}" class="btn btn-default">
                   <i class="fa fa-repeat"></i>&nbsp;Cancel
                 </a>&nbsp;
@@ -126,29 +126,32 @@
             <table class="table table-bordered" id="table-product" style="width:100%">
               <thead>
                 <tr>
-                    <th style="width:5%;">#</th>
-                    <th>Family</th>
-                    <th>Code</th>
-                    <th>Image</th>
-                    <th>Description</th>
-                    <th>Unit</th>
-                    <th>Category</th>
+                    <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                    <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
+                    <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
                 </tr>
               </thead>
               <thead id="searchid">
                 <tr>
                     <th style="width:5%;">#</th>
-                    <th>Family</th>
-                    <th>Code</th>
-                    <th>Image</th>
-                    <th>Description</th>
-                    <th>Unit</th>
-                    <th>Category</th>
+                    <th style="width:10%;">Family</th>
+                    <th style="width:20%;">Code</th>
+                    <th style="width:15%;">Image</th>
+                    <th style="width:20%;">Description</th>
+                    <th style="width:15%;">Unit</th>
+                    <th style="width:15%;">Category</th>
                 </tr>
               </thead>
               <tbody>
 
               </tbody>
+              <tfoot>
+
+              </tfoot>
             </table>
           </div>
         </div>

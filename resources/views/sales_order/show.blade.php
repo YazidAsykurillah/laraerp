@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
+    <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-files-o"></i></i> Sales Order</a></li>
     <li class="active">{{ $sales_order->code }}</li>
   </ol>
 @endsection
@@ -45,7 +45,7 @@
               <h3 class="box-title">General Information</h3>
               <div class="pull-right">
                 <a href="{{ url('sales-order/'.$sales_order->id.'/printDO') }}" class="btn btn-default btn-xs">
-                    <i class="fa fa-file"></i>&nbsp;Delivery Orders
+                    <i class="fa fa-file"></i>&nbsp;Delivery Order
                 </a>
                 <a href="{{ url('sales-order/'.$sales_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
                   <i class='fa fa-print'></i>&nbsp;Print
@@ -127,7 +127,7 @@
               </div>
 
               <div class="row">
-                <div class="col-md-3">Customer</div>
+                <div class="col-md-3">Customer Name</div>
                 <div class="col-md-1">:</div>
                 <div class="col-md-8">
                   {{ $sales_order->customer->name }}
@@ -160,7 +160,13 @@
                     <input type="hidden" name="sales_order_id" value="{{ $sales_order->id}}" />
                     <button type="submit" class="btn btn-info btn-xs">Update Status</button>
                   {!! Form::close() !!}
-
+                  <br/>
+                  <div class="alert alert-info">
+                    <p>
+                      <i class="fa fa-info-circle"></i>&nbsp;
+                      Invoices can be made if this status "Processing".
+                    </p>
+                  </div>
                 </div>
               </div>
               <br/>
@@ -169,6 +175,22 @@
                 <div class="col-md-1">:</div>
                 <div class="col-md-8">
                   {!! nl2br($sales_order->notes) !!}
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3">Driver Name</div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-8">
+                  {!! nl2br($sales_order->driver->name) !!}
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3">Vehicle Number</div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-8">
+                  {!! nl2br($sales_order->vehicle->number_of_vehicle) !!}
                 </div>
               </div>
             </div><!-- /.box-body -->
@@ -186,7 +208,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title"> Invoice <small>Related invoice with the sales order</small></h3>
+              <h3 class="box-title">Invoice <small>Invoice that related with this sales order</small></h3>
               <div class="pull-right">
                 @if($sales_order->status == 'processing')
                 @if($invoice->count() < 1)

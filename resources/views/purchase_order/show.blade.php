@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
+    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order</a></li>
     <li class="active">{{ $purchase_order->code }}</li>
   </ol>
 @endsection
@@ -42,7 +42,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Purchase Order Detail</h3>
+              <h3 class="box-title">General Information</h3>
               <div class="pull-right">
                 <a href="{{ url('purchase-order/'.$purchase_order->id.'/printPdf') }}" class="btn btn-default btn-xs">
                   <i class='fa fa-print'></i>&nbsp;Print
@@ -125,7 +125,7 @@
               </div>
 
               <div class="row">
-                <div class="col-md-3">Supplier</div>
+                <div class="col-md-3">Supplier Name</div>
                 <div class="col-md-1">:</div>
                 <div class="col-md-8">
                   {{ $purchase_order->supplier->name }}
@@ -150,11 +150,27 @@
                     <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to accept this purchase order">
                       <i class="fa fa-sign-in"></i>&nbsp;Accept
                     </button>
+                    <br/>
+                    <br/>
+                    <div class="alert alert-info">
+                      <p>
+                        <i class="fa fa-info-circle"></i>&nbsp;
+                        Invoices can be made if this status "Accept".
+                      </p>
+                    </div>
                   @endif
                   @if($purchase_order->status == 'accepted')
                     <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
                       <i class="fa fa-sign-in"></i>&nbsp;Complete
                     </button>
+                    <br/>
+                    <br/>
+                    <div class="alert alert-success">
+                      <p>
+                        <i class="fa fa-info-circle"></i>&nbsp;
+                        Invoices can already be made.
+                      </p>
+                    </div>
                   @endif
                 </div>
               </div>
@@ -181,7 +197,7 @@
         <div class="col-lg-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title"> Invoice <small>Invoice that related with this purchase order</small></h3>
+              <h3 class="box-title">Invoice <small>Invoice that related with this purchase order</small></h3>
               <div class="pull-right">
                 @if($purchase_order->status == 'posted' || $purchase_order->status =='completed')
 
