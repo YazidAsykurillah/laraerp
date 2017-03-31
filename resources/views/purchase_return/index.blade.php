@@ -36,6 +36,7 @@
                 <th>Returned Qty</th>
                 <th>Created At</th>
                 <th style="width:10%;">Status</th>
+                <th>Supplier Name</th>
                 <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -161,6 +162,7 @@
         { data: 'quantity', name: 'quantity' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
+        { data: 'supplier_name', name: 'supplier_name'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });

@@ -166,6 +166,7 @@
                       <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                      <th>ID</th>
                   </tr>
                 </thead>
                 <thead id="searchid">
@@ -177,6 +178,7 @@
                       <th style="width:20%;">Description</th>
                       <th style="width:15%;">Unit</th>
                       <th style="width:15%;">Category</th>
+                      <th>ID</th>
                   </tr>
                 </thead>
               <tbody>
@@ -219,15 +221,16 @@
       processing :true,
       serverSide : true,
       pageLength:10,
-      ajax : '{!! route('datatables.getMainProducts') !!}',
+      ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
           {data: 'rownum', name: 'rownum', searchable:false},
-          { data: 'family_id', name: 'family_id'},
+          { data: 'family_id', name: 'family.name'},
           { data: 'name', name: 'name'},
           { data: 'image', name: 'image'},
           { data: 'description', name: 'description'},
           { data: 'unit_id', name: 'unit_id' },
           { data: 'category_id', name: 'category_id' },
+          { data: 'id', name:'id', searchable: false, visible: true},
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -246,6 +249,7 @@
             $('#table-selected-products').append(
               '<tr class="tr_product_'+id+'">'+
                 '<td><b>'+
+                    '<input type="text" name="product_id[]" value="'+id+'" />'+
                     tableProduct.row(this).data().family_id+
                 '</b></td>'+
                 '<td><b>'+
@@ -259,51 +263,51 @@
                     tableProduct.row(this).data().unit_id+
                 '</b></td>'+
                 '<td>'+
-                    '<input type="text" name="parent_quantity" class="quantity form-control" style="" value="" />'+
+                    '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
                 '</td>'+
                 '<td><b>'+
                     tableProduct.row(this).data().category_id+
                 '</b></td>'+
               '</tr>'
             );
-            var token = $("meta[name='csrf-token']").attr('content');
-            //alert(token);
-            //panggil controller tampilan sub product
-            $.ajax({
-                url: '{!!URL::to('callSubProduct')!!}',
-                type : 'POST',
-                data : 'id='+id+'&_token='+token,
-                beforeSend: function(){
-
-                } ,
-                success: function(response){
-                    $.each(response,function(index,value){
-                        $('#table-selected-products').append(
-                          '<tr class="tr_product_'+id+'">'+
-                            '<td>'+
-                                '<input type="hidden" name="product_id[]" value="'+value.id+'" />'+
-                                value.family+
-                            '</td>'+
-                            '<td>'+
-                                value.name+
-                            '</td>'+
-                            '<td>'+
-                                value.description+
-                            '</td>'+
-                            '<td>'+
-                                value.unit+
-                            '</td>'+
-                            '<td>'+
-                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
-                            '</td>'+
-                            '<td>'+
-                                value.category+
-                            '</td>'+
-                          '</tr>'
-                        );
-                    });
-                },
-            })
+            // var token = $("meta[name='csrf-token']").attr('content');
+            // //alert(token);
+            // //panggil controller tampilan sub product
+            // $.ajax({
+            //     url: '{!!URL::to('callSubProduct')!!}',
+            //     type : 'POST',
+            //     data : 'id='+id+'&_token='+token,
+            //     beforeSend: function(){
+            //
+            //     } ,
+            //     success: function(response){
+            //         $.each(response,function(index,value){
+            //             $('#table-selected-products').append(
+            //               '<tr class="tr_product_'+id+'">'+
+            //                 '<td>'+
+            //                     '<input type="text" name="product_id[]" value="'+value.id+'" />'+
+            //                     value.family+
+            //                 '</td>'+
+            //                 '<td>'+
+            //                     value.name+
+            //                 '</td>'+
+            //                 '<td>'+
+            //                     value.description+
+            //                 '</td>'+
+            //                 '<td>'+
+            //                     value.unit+
+            //                 '</td>'+
+            //                 '<td>'+
+            //                     '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+            //                 '</td>'+
+            //                 '<td>'+
+            //                     value.category+
+            //                 '</td>'+
+            //               '</tr>'
+            //             );
+            //         });
+            //     },
+            // })
 
         } else {
             selected.splice( index, 1 );

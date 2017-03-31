@@ -84,21 +84,21 @@ class DatatablesController extends Controller
     //Function to get product list
     public function getProducts(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
-        $products = Product::select([
+        $products = Product::with('main_product','family')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id',
             'name',
             'description',
             'stock',
             'minimum_stock',
-            'main_product_id'
+            'main_product_id',
         ]);
         $datatables = Datatables::of($products)
         ->editColumn('main_products_name', function($products){
             return $products->main_product->name;
         })
         ->editColumn('family_id', function($products){
-            return $products->main_product->family->name;
+            return $products->main_product->family->id;
         })
         ->editColumn('category_id', function($products){
             return $products->main_product->category->name;
@@ -286,6 +286,13 @@ class DatatablesController extends Controller
                 }
                 return $status_label;
             })
+            ->editColumn('invoice', function($purchase_orders){
+                if(count($purchase_orders->purchase_order_invoice) == 1){
+                    return 'Available';
+                }else{
+                    return 'Unavailable';
+                }
+            })
             ->addColumn('actions', function($purchase_orders){
                 $actions_html ='<a href="'.url('purchase-order/'.$purchase_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-external-link-square"></i>';
@@ -339,9 +346,12 @@ class DatatablesController extends Controller
 
                 return $purchase_order_invoices->creator->name;
             })
-            // ->editColumn('payment_method', function($purchase_order_invoices){
-            //     return $purchase_order_invoices->payment_method->code;
-            // })
+            ->editColumn('due_date', function($purchase_order_invoices){
+                return '';
+            })
+            ->editColumn('debt', function($purchase_order_invoices){
+                return (number_format($purchase_order_invoices->bill_price-$purchase_order_invoices->paid_price));
+            })
             ->editColumn('status', function($purchase_order_invoices){
 
                 return strtoupper($purchase_order_invoices->status);
@@ -404,6 +414,9 @@ class DatatablesController extends Controller
                 }
 
                 return $status_label.$status_action;
+            })
+            ->editColumn('supplier_name', function($purchase_returns){
+                return $purchase_returns->purchase_order->supplier->name;
             })
             ->addColumn('actions', function($purchase_returns){
                 $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';

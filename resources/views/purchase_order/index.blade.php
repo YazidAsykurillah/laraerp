@@ -38,7 +38,8 @@
                 <th style="width:15%;background-color:#3c8dbc;color:white">Supplier</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Creator</th>
                 <th style="width:20%;background-color:#3c8dbc;color:white">Date Created</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
+                <th style="width:10%;background-color:#3c8dbc;color:white">Status</th>
+                <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
                 <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
@@ -49,7 +50,8 @@
                   <th style="width:15%">Supplier</th>
                   <th style="width:15%">Creator</th>
                   <th style="width:20%;">Date Created</th>
-                  <th style="width:20%;">Status</th>
+                  <th style="width:10%;">Status</th>
+                  <th style="width:10%;">Invoice</th>
                   <th style="width:15%;"></th>
               </tr>
             </thead>
@@ -165,6 +167,7 @@
         { data: 'creator', name: 'created_by.name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
+        { data: 'invoice', name: 'invoice'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });
