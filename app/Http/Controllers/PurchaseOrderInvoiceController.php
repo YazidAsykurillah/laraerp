@@ -69,7 +69,7 @@ class PurchaseOrderInvoiceController extends Controller
                 'description'=>MainProduct::find($mp_id)->product->first()->description,
                 'family'=>MainProduct::find($mp_id)->family->name,
                 'unit'=>MainProduct::find($mp_id)->unit->name,
-
+                'image'=>MainProduct::find($mp_id)->image,
                 'category'=>MainProduct::find($mp_id)->category->name,
                 'ordered_products'=>$this->get_product_lists($mp_id, $id)
             ];
@@ -114,21 +114,57 @@ class PurchaseOrderInvoiceController extends Controller
                 \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
                 //Now time to sync the products
                 $purchase_order->products()->sync($syncData);
+
+                // insert temp purchase invoice
+                $temp_purchase_invoice_data = [];
+                foreach($request->product_id as $key=>$value){
+                    array_push($temp_purchase_invoice_data, array(
+                        'purchase_order_id'=>$request->purchase_order_id,
+                        'main_product_id'=>$request->main_product_id_child[$key],
+                        'child_product_id'=>$request->product_id[$key],
+                        'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key])),
+                    ));
+                }
+
+                \DB::table('temp_purchase_invoice')->insert($temp_purchase_invoice_data);
+                // $inv_account = [];
+                // foreach ($request->parent_product_id as $key => $value) {
+                //     // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
+                //     // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
+                //     //$inv_account->save();
+                //     array_push($inv_account,[
+                //         'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
+                //         'sub_chart_account_id' =>$request->inventory_account[$key],
+                //         'created_at'=>date('Y-m-d H:i:s'),
+                //         'updated_at'=>date('Y-m-d H:i:s'),
+                //         'reference'=>$po_id,
+                //         'source'=>'purchase_order_invoices',
+                //         'type'=>'masuk',
+                //     ]);
+                // }
+
                 $inv_account = [];
                 foreach ($request->parent_product_id as $key => $value) {
-                    // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
-                    // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
-                    //$inv_account->save();
-                    array_push($inv_account,[
-                        'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
-                        'sub_chart_account_id' =>$request->inventory_account[$key],
-                        'created_at'=>date('Y-m-d H:i:s'),
-                        'updated_at'=>date('Y-m-d H:i:s'),
-                        'reference'=>$po_id,
-                        'source'=>'purchase_order_invoices',
-                        'type'=>'masuk',
-                    ]);
+                    $total_amount = \DB::table('temp_purchase_invoice')
+                        ->where('purchase_order_id', $request->purchase_order_id)
+                        ->where('main_product_id','=', $request->parent_product_id[$key])->sum('price_per_unit');
+                        array_push($inv_account,[
+                            'amount'=>$total_amount,
+                            'sub_chart_account_id'=>$request->inventory_account[$key],
+                            'created_at'=>date('Y-m-d H:i:s'),
+                            'updated_at'=>date('Y-m-d H:i:s'),
+                            'reference'=>$po_id,
+                            'source'=>'purchase_order_invoices',
+                            'type'=>'keluar',
+                        ]);
                 }
+
+                // now delete temp purchase invoice
+                \DB::table('temp_purchase_invoice')
+                    ->where('purchase_order_id', '=', $request->purchase_order_id)
+                    ->delete();
+
+                // save trans account hutang    
                 \DB::table('transaction_chart_accounts')->insert($inv_account);
                 $transaction_sub_chart_account = New TransactionChartAccount;
                 $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));

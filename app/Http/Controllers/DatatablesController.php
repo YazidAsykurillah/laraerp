@@ -98,21 +98,21 @@ class DatatablesController extends Controller
             return $products->main_product->name;
         })
         ->editColumn('family_id', function($products){
-            return $products->main_product->family->id;
+            return $products->main_product->family->name;
         })
         ->editColumn('category_id', function($products){
             return $products->main_product->category->name;
         })
         ->editColumn('unit_id', function($products){
             return $products->main_product->unit->name;
-        })
-        ->editColumn('image', function($products){
-            $actions_html = '';
-            if($products->image != NULL){
-                $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$products->image.'"></a>';
-            }
-            //return $actions_html;
         });
+        // // ->editColumn('image', function($products){
+        // //     $actions_html = '';
+        // //     if($products->image != NULL){
+        // //         $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$products->image.'"></a>';
+        // //     }
+        //     //return $actions_html;
+        // });
 
         if ($keyword = $request->get('search')['value']) {
             $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
@@ -315,9 +315,9 @@ class DatatablesController extends Controller
                 return $actions_html;
             });
 
-        /*if ($keyword = $request->get('search')['value']) {
-            $data_purchase_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }*/
+        // if ($keyword = $request->get('search')['value']) {
+        //     $data_purchase_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        // }
 
         return $data_purchase_orders->make(true);
 
@@ -419,8 +419,8 @@ class DatatablesController extends Controller
                 return $purchase_returns->purchase_order->supplier->name;
             })
             ->addColumn('actions', function($purchase_returns){
-                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
                 if($purchase_returns->status == 'posted'){
@@ -475,6 +475,13 @@ class DatatablesController extends Controller
 
                 return $status_label;
 
+            })
+            ->editColumn('invoice', function($sales_orders){
+                if(count($sales_orders->sales_order_invoice) == 1){
+                    return 'Available';
+                }else{
+                    return 'Unavailable';
+                }
             })
             ->addColumn('actions', function($sales_orders){
                 $actions_html ='<a href="'.url('sales-order/'.$sales_orders->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';

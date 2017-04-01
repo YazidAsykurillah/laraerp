@@ -14,9 +14,9 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order </a></li>
-    <li><a href="{{ URL::to('purchase-order/'.$purchase_order_invoice->purchase_order->id) }}"><i class="fa fa-dashboard"></i> {{ $purchase_order_invoice->purchase_order->code }} </a></li>
-    <li>Invoice</li>
+    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order </a></li>
+    <li><a href="{{ URL::to('purchase-order/'.$purchase_order_invoice->purchase_order->id) }}"> {{ $purchase_order_invoice->purchase_order->code }} </a></li>
+    <li><a href="{{ URL::to('purchase-order-invoice') }}">Invoices</a></li>
     <li class="active">{{ $purchase_order_invoice->code }}</li>
   </ol>
 @endsection
@@ -128,6 +128,18 @@
               <tr>
                 <td style="width:30%;"><strong>Paid Price</strong></td>
                 <td id="paid_price">{{ number_format($purchase_order_invoice->paid_price) }}</td>
+              </tr>
+              <tr>
+                <td style="width:30%;"><strong>Accounts Payable</strong></td>
+                <td id="paid_price">
+                    <select name="inventory_account[]" id="inventory_account" class="col-md-4">
+                    @foreach(list_account_hutang('56') as $as)
+                        @if($as->name == 'HUTANG DAGANG IDR')
+                            <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                        @endif
+                    @endforeach
+                   </select>
+                </td>
               </tr>
               <tr>
                 <td style="width:30%;"><strong>Status</strong></td>

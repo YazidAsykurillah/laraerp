@@ -137,7 +137,7 @@
               </thead>
               <thead id="searchid">
                 <tr>
-                    <th style="width:5%;">#</th>
+                    <th style="width:5%;"></th>
                     <th style="width:10%;">Family</th>
                     <th style="width:20%;">Code</th>
                     <th style="width:15%;">Image</th>
@@ -293,7 +293,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 7) {
+      if ($(this).index() != 0) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 

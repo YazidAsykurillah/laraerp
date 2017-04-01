@@ -74,25 +74,51 @@
                     </tr>
                   </thead>
                   <tbody>
-                      @if($sales_order->products->count() > 0)
-                        @foreach($sales_order->products as $product)
-                        <tr id="tr_product_{{$product->id}}">
-                          <td>{{ $product->main_product->family->name }}</td>
-                          <td>
-                            <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
-                            {{ $product->name }}
-                          </td>
-                          <td>{{ $product->description }}</td>
-                          <td>{{ $product->main_product->unit->name }}</td>
-                          <td>{{ $product->pivot->quantity }}</td>
-                          <td>{{ $product->main_product->category->name }}</td>
-                        </tr>
-                        @endforeach
-                      @else
-                      <tr id="tr-no-product-selected">
-                        <td>There are no product</td>
-                      </tr>
-                      @endif
+                      @if(count($row_display))
+                          @foreach($row_display as $row)
+                          <?php $sum = 0;?>
+                              <tr>
+                                <td><strong>{{ $row['family'] }}</strong></td>
+                                <td>
+                                    <strong>
+                                        {{ $row['main_product'] }}
+                                    </strong>
+                                    @if($row['image'] != NULL)
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                    </a>
+                                    @else
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                    </a>
+                                    @endif
+                                </td>
+                                <td><strong>{{ $row['description'] }}</strong></td>
+                                <td><strong>{{ $row['unit'] }}</strong></td>
+                                <td><strong class="target_sum"></strong></td>
+                                <td><strong>{{ $row['category'] }}</strong></td>
+                              </tr>
+                              @foreach($row['ordered_products'] as $or)
+                              <tr>
+                                <td>{{ $or['family'] }}</td>
+                                <td>{{ $or['code'] }} </td>
+                                <td>{{ $or['description'] }} </td>
+                                <td>{{ $or['unit'] }} </td>
+                                <td>
+                                    {{ $or['quantity'] }}
+                                    <?php $sum += $or['quantity']; ?>
+                                </td>
+                                <td>{{ $or['category'] }}</td>
+                              </tr>
+                              @endforeach
+                              <tr style="display:none">
+                                <td colspan="6" class="sum">{{ $sum }}</td>
+                              </tr>
+                          @endforeach
+                    @else
+                    <tr id="tr-no-product-selected">
+                      <td>There are no product</td>
+                    @endif
                   </tbody>
                   <tfoot>
 
@@ -165,14 +191,6 @@
                 <div class="col-md-1">:</div>
                 <div class="col-md-8">
                   {!! nl2br($sales_order->vehicle->number_of_vehicle) !!}
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-3">Ship Date</div>
-                <div class="col-md-1">:</div>
-                <div class="col-md-8">
-                  {!! nl2br($sales_order->ship_date) !!}
                 </div>
               </div>
             </div><!-- /.box-body -->

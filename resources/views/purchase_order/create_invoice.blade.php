@@ -14,9 +14,9 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order/') }}"><i class="fa fa-dashboard"></i> Purchase Orders</a></li>
-    <li><a href="{{ URL::to('purchase-order/'.$purchase_order->id.'') }}"><i class="fa fa-dashboard"></i> {{ $purchase_order->code }}</a></li>
-    <li><a href="{{ URL::to('purchase-order-invoice') }}"><i class="fa fa-dashboard"></i> Invoices</a></li>
+    <li><a href="{{ URL::to('purchase-order/') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Orders</a></li>
+    <li><a href="{{ URL::to('purchase-order/'.$purchase_order->id.'') }}">{{ $purchase_order->code }}</a></li>
+    <li><a href="{{ URL::to('purchase-order-invoice') }}">Invoices</a></li>
     <li class="active">Create</li>
   </ol>
 @endsection
@@ -48,9 +48,9 @@
                 </thead>
                 <tbody>
                 @if(count($row_display))
-                    <?php $sum_qty = 0; ?>
                     @foreach($row_display as $row)
-                        <tr>
+                        <?php $sum_qty = 0; $sum = 0; ?>
+                        <tr id="row_parent_id_{{$row['main_product_id']}}">
                           <td>
                               <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }} " />
                               {{ $row['family'] }}<br>
@@ -66,19 +66,34 @@
                               @endforeach
                               </select>
                           </td>
-                          <td><strong>{{ $row['main_product'] }}</strong></td>
-                          <td>{{ $row['description'] }}</td>
-                          <td>{{ $row['unit'] }}</td>
-                          <td>{{ $sum_qty }}</td>
-                          <td>{{ $row['category'] }}</td>
                           <td>
-                              <input type="text" name="price_parent[]" class="price_parent">
+                              <strong>
+                                  {{ $row['main_product'] }}
+                              </strong>
+                              @if($row['image'] != NULL)
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                              </a>
+                              @else
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                              </a>
+                              @endif
+                          </td>
+                          <td><strong>{{ $row['description'] }}</strong></td>
+                          <td><strong>{{ $row['unit'] }}</strong></td>
+                          <td><strong class="target_qty">{{ $sum_qty }}</strong></td>
+                          <td><strong>{{ $row['category'] }}</strong></td>
+                          <td>
+                              <input type="hidden" name="price_parent[]" class="price_parent" id="total_price_parent_{{$row['main_product_id']}}">
                           </td>
                         </tr>
                         @foreach($row['ordered_products'] as $or)
+                        <?php $sum_child = 0;?>
                         <tr>
                           <td>
                             <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                            <input type="hidden" name="main_product_id_child[]" value="{{ $row['main_product_id'] }} " />
                             {{ $or['family'] }}
                           </td>
                           <td>{{ $or['code'] }} </td>
@@ -87,13 +102,18 @@
                           <td>
                             <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}">
                             {{ $or['quantity'] }}
+                            <?php $sum_qty += $or['quantity']; ?>
                           </td>
                           <td>{{ $or['category'] }}</td>
                           <td>
-                            <input type="text" name="price[]" class="price">
+                            <input type="text" name="price[]" class="price" data-parent-product-id="{{ $row['main_product_id']}}">
                           </td>
                         </tr>
                         @endforeach
+                        <tr style="display:none">
+                          <td colspan="3" class="sum"></td>
+                          <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
+                        </tr>
                     @endforeach
               @else
               <tr id="tr-no-product-selected">
@@ -172,7 +192,7 @@
             {!! Form::hidden('purchase_order_id', $purchase_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->
-
+        <!-- <button id-"tes" onclick="tes()">TES</button> -->
       </div><!-- /.box -->
     </div>
   </div>
@@ -211,6 +231,7 @@
     //block handle price value keyup event
     $('.price').on('keyup',function(){
         fill_the_bill_price();
+        sum_parent_price();
     });
 
     function fill_the_bill_price(){
@@ -223,6 +244,18 @@
             aSep:',',
             aDec:'.'
         });
+    }
+
+    function sum_parent_price(){
+        var sum = 0;
+        var dataParentId = 0;
+        $('.price').each(function(){
+            sum += +$(this).val().replace(/,/g,'');
+            dataParentId = $(this).attr('data-parent-product-id');
+            $('#total_price_parent_'+dataParentId).val(sum);
+
+        })
+        $(this).parent().find('#total_price_parent').remove();
     }
 
   </script>
@@ -262,6 +295,25 @@
       });
     });
   //ENDBlock handle form create purchase order submission
+  </script>
+
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum');
+      for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
+
+      function tes()
+      {
+          var sum_count = document.getElementsByClassName('sum');
+          var b = [];
+          for(var i = 0; i < sum_count.length; i++){
+              b[i] = document.getElementsByClassName('sum_qty')[i].innerHTML;
+              for(var j = 0; j < b[i]; j++ ){
+                  document.getElementsByClassName('price_parent')[i].value += document.getElementsByClassName('price')[j].value;
+              }
+          }
+      }
   </script>
 
 @endSection

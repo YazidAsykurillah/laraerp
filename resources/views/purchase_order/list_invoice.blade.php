@@ -14,8 +14,8 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
-    <li class="active">Invoices</li>
+    <li><a href="{{ URL::to('purchase-order-invoice') }}"><i class="fa fa-dashboard"></i> Purchase Invoice</a></li>
+    <li class="active">Index</li>
   </ol>
 @endsection
 
@@ -113,8 +113,8 @@
         { data:'paid_price', name:'paid_price'},
         { data:'created_at', name:'created_at'},
         { data:'creator', name:'creator.name'},
-        { data:'due_date', name:'due_date'},
-        { data:'debt', name:'debt'},
+        { data:'due_date', name:'due_date', searchable: false},
+        { data:'debt', name:'debt', searchable: false},
         { data:'status', name:'status'},
         //{ data:'payment_method', name:'payment_method.code' },
         { data:'actions', name:'actions', orderable:false, searchable:false, className:'dt-center'},

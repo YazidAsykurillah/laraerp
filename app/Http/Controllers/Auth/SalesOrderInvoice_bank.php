@@ -395,7 +395,7 @@ class SalesOrderInvoiceController extends Controller
                         ->where('product_id','=', $pid->id)
                         ->where('sales_order_id', '=', $po_id)
                         ->first();
-            $total_quantity[] = $counter;
+            $total_quantity[] = $counter->quantity;
             if(count($counter)){
                 array_push($product_id_arr,array(
                     'family'=>Product::findOrFail($pid->id)->main_product->family->name,

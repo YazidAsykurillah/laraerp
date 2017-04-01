@@ -37,109 +37,109 @@
               <table class="table table-bordered" id="table-selected-products">
                   <thead>
                       <tr>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Description</th>
+                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
                         <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
                         <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Category</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Price Per Unit</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Price Per Unit</th>
+                        <th style="width:10%;background-color:#3c8dbc;color:white">Price</th>
                       </tr>
                   </thead>
                   <tbody>
-                  @if(count($row_display))
-                      <?php $sum_qty = 0; ?>
-                      @foreach($row_display as $row)
-                          <tr>
-                            <td>
-                              <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
-                              {{ $row['family'] }}<br>
-                              <select name="inventory_account[]" id="inventory_account" class="col-md-12">
-                                <option value="">Inventory Account</option>
-                                @foreach(list_account_inventory('52') as $as)
-                                  @if($as->level ==1)
-                                  <optgroup label="{{ $as->name}}">
-                                  @endif
-                                  @foreach(list_sub_inventory('2',$as->id) as $sub)
-                                    <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
-                                  @endforeach
-                                @endforeach
-                              </select><br/><br/>
-                              <select name="sales_order_account[]" id="sales_order_account" class="col-md-12">
-                                  <option value="">Sales Account</option>
-                                  @foreach(list_parent('61') as $sales_account)
-                                    @if($sales_account->level ==1)
-                                        <optgroup label="{{ $sales_account->name }}">
-                                    @endif
-                                    @foreach(list_child('2',$sales_account->id) as $sub)
-                                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                    @endforeach
-                                  @endforeach
-                              </select><br/><br/>
-                              <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12">
-                                  <option value="">Cost of Goods Account</option>
-                                  @foreach(list_parent('63') as $sales_account)
-                                    @if($sales_account->level ==1)
-                                        <optgroup label="{{ $sales_account->name }}">
-                                    @endif
-                                    @foreach(list_child('2',$sales_account->id) as $sub)
-                                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                    @endforeach
-                                  @endforeach
-                              </select>
-                            </td>
-                            <td>
-                                <strong>
-                                    {{ $row['main_product'] }}
-                                </strong>
-                                @if($row['image'] != NULL)
-                                <a href="#" class="thumbnail">
-                                    {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
-                                </a>
-                                @else
-                                <a href="#" class="thumbnail">
-                                    {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
-                                </a>
-                                @endif
-                            </td>
-                            <td>{{ $row['description'] }}</td>
-                            <td>{{ $row['unit'] }}</td>
-                            <td>{{ $sum_qty }}</td>
-                            <td>{{ $row['category'] }}</td>
-                            <td></td>
-                            <td>
-                                <input type="text" name="price_parent[]" class="price_parent">
-                            </td>
-                          </tr>
-                          @foreach($row['ordered_products'] as $or)
-                          <tr>
-                            <td>
-                              <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
-                              {{ $or['family'] }}
-                            </td>
-                            <td>{{ $or['code'] }} </td>
-                            <td>{{ $or['description'] }} </td>
-                            <td>{{ $or['unit'] }} </td>
-                            <td>
-                              <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
-                              {{ $or['quantity'] }}
-                            </td>
-                            <td>{{ $or['category'] }}</td>
-                            <td>
-                              <input type="text" name="price_per_unit[]" class="price_per_unit">
-                            </td>
-                            <td>
-                              <input type="text" name="price[]" class="price">
-                            </td>
-                          </tr>
-                          @endforeach
-                      @endforeach
-                @else
-                <tr id="tr-no-product-selected">
-                  <td>There are no product</td>
-                @endif
 
+                      @if(count($row_display))
+                          <?php $sum_qty = 0; ?>
+                          @foreach($row_display as $row)
+                              <tr>
+                                <td>
+                                  <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                                  {{ $row['family'] }}<br>
+                                  <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                    <option value="">Inventory Account</option>
+                                    @foreach(list_account_inventory('52') as $as)
+                                      @if($as->level ==1)
+                                      <optgroup label="{{ $as->name}}">
+                                      @endif
+                                      @foreach(list_sub_inventory('2',$as->id) as $sub)
+                                        <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                                      @endforeach
+                                    @endforeach
+                                  </select><br/><br/>
+                                  <select name="sales_order_account[]" id="sales_order_account" class="col-md-12">
+                                      <option value="">Sales Account</option>
+                                      @foreach(list_parent('61') as $sales_account)
+                                        @if($sales_account->level ==1)
+                                            <optgroup label="{{ $sales_account->name }}">
+                                        @endif
+                                        @foreach(list_child('2',$sales_account->id) as $sub)
+                                            <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                        @endforeach
+                                      @endforeach
+                                  </select><br/><br/>
+                                  <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12">
+                                      <option value="">Cost of Goods Account</option>
+                                      @foreach(list_parent('63') as $sales_account)
+                                        @if($sales_account->level ==1)
+                                            <optgroup label="{{ $sales_account->name }}">
+                                        @endif
+                                        @foreach(list_child('2',$sales_account->id) as $sub)
+                                            <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                                        @endforeach
+                                      @endforeach
+                                  </select>
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ $row['main_product'] }}
+                                    </strong>
+                                    @if($row['image'] != NULL)
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                    </a>
+                                    @else
+                                    <a href="#" class="thumbnail">
+                                        {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                    </a>
+                                    @endif
+                                </td>
+                                <td>{{ $row['description'] }}</td>
+                                <td>{{ $row['unit'] }}</td>
+                                <td>{{ $sum_qty }}</td>
+                                <td>{{ $row['category'] }}</td>
+                                <td></td>
+                                <td>
+                                    <input type="text" name="price_parent[]" class="price_parent">
+                                </td>
+                              </tr>
+                              @foreach($row['ordered_products'] as $or)
+                              <tr>
+                                <td>
+                                  <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                                  {{ $or['family'] }}
+                                </td>
+                                <td>{{ $or['code'] }} </td>
+                                <td>{{ $or['description'] }} </td>
+                                <td>{{ $or['unit'] }} </td>
+                                <td>
+                                  <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
+                                  {{ $or['quantity'] }}
+                                </td>
+                                <td>{{ $or['category'] }}</td>
+                                <td>
+                                  <input type="text" name="price_per_unit[]" class="price_per_unit">
+                                </td>
+                                <td>
+                                  <input type="text" name="price[]" class="price">
+                                </td>
+                              </tr>
+                              @endforeach
+                          @endforeach
+                      @else
+                      <tr id="tr-no-product-selected">
+                      <td>There are no product</td>
+                      @endif
                   </tbody>
               </table>
 

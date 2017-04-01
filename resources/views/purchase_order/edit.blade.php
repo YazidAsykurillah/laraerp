@@ -14,7 +14,8 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-dashboard"></i> Purchase Order</a></li>
+    <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order</a></li>
+    <li><a href="{{ URL::to('purchase-order/'.$purchase_order->id.'/edit') }}"><i></i> {{ $purchase_order->code }}</a></li>
     <li class="active"><i></i>Edit</li>
   </ol>
 @endsection

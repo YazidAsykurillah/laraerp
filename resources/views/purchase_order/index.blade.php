@@ -83,9 +83,9 @@
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="text" id="purchase_order_id" name="purchase_order_id">
-          <input type="text" name="payment_id" id="payment-id">
-          <input type="text" name="bank_purchase_id" id="bank_purchase_id">
+          <input type="hidden" id="purchase_order_id" name="purchase_order_id">
+          <input type="hidden" name="payment_id" id="payment-id">
+          <input type="hidden" name="bank_purchase_id" id="bank_purchase_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -167,7 +167,7 @@
         { data: 'creator', name: 'created_by.name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
-        { data: 'invoice', name: 'invoice'},
+        { data: 'invoice', name: 'invoice', searchable: false},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });
@@ -187,7 +187,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 6) {
+          if ($(this).index() != 0 && $(this).index() != 7) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
 

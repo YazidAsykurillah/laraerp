@@ -28,7 +28,7 @@
       <a data-toggle="tab" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
+      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payment</a>
     </li>
     <li>
       <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
@@ -336,23 +336,23 @@
 
             </div><!-- /.box-header -->
             <div class="box-body">
-
               <div class="table-responsive">
-
-                <table class="table">
+                <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Product</th>
-                      <th>Returned Quantity</th>
-                      <th>Notes</th>
-                      <th>Status</th>
+                      <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                      <th style="width:25%;background-color:#3c8dbc;color:white">Code</th>
+                      <th style="width:25%;background-color:#3c8dbc;color:white">Returned Quantity</th>
+                      <th style="width:25%;background-color:#3c8dbc;color:white">Notes</th>
+                      <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                   @if($purchase_returns->count() > 0)
-
+                  <?php $no = 1; ?>
                     @foreach($purchase_returns as $purchase_return)
                     <tr>
+                      <td> {{ $no++ }}</td>
                       <td> {{ $purchase_return->product->name }}</td>
                       <td> {{ $purchase_return->quantity }}</td>
                       <td> {{ $purchase_return->notes }}</td>

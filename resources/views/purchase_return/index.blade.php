@@ -30,27 +30,28 @@
           <table class="table table-bordered" id="table-purchase-return">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th>Product</th>
-                <th style="width:20%;">PO Reference</th>
-                <th>Returned Qty</th>
-                <th>Created At</th>
-                <th style="width:10%;">Status</th>
-                <th>Supplier Name</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">PO Code</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Returned Qty</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Created At</th>
+                <th style="width:10%;background-color:#3c8dbc;color:white">Status</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Supplier Name</th>
+                <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
-            <!-- <thead id="searchid">
+            <thead id="searchid">
                 <tr>
-                    <th style="width:5%;">#</th>
-                    <th>Product</th>
-                    <th style="width:20%;">PO Reference</th>
-                    <th>Returned Qty</th>
-                    <th>Created At</th>
+                    <th style="width:5%;"></th>
+                    <th style="width:15%;">Code</th>
+                    <th style="width:15%;">PO Code</th>
+                    <th style="width:15%;">Returned Qty</th>
+                    <th style="width:15%;">Created At</th>
                     <th style="width:10%;">Status</th>
-                    <th style="width:10%;text-align:center;">Actions</th>
+                    <th style="width:15%;">Supplier Name</th>
+                    <th style="width:10%;text-align:center;"></th>
                 </tr>
-            </thead> -->
+            </thead>
             <tbody>
 
             </tbody>
@@ -162,7 +163,7 @@
         { data: 'quantity', name: 'quantity' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
-        { data: 'supplier_name', name: 'supplier_name'},
+        { data: 'supplier_name', name: 'supplier_name', searchable: false},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
     });
@@ -178,7 +179,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 6) {
+          if ($(this).index() != 0 && $(this).index() != 7) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
 

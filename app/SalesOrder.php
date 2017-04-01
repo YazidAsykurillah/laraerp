@@ -22,7 +22,7 @@ class SalesOrder extends Model
 {
     protected $table = 'sales_orders';
 
-    protected $fillable = ['code', 'creator', 'customer_id', 'notes', 'status','driver_id','vehicle_id'];
+    protected $fillable = ['code', 'creator', 'customer_id', 'notes', 'status','driver_id','vehicle_id','ship_date'];
 
     public function customer()
     {

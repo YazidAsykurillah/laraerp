@@ -29,34 +29,69 @@
         <div class="box-header with-border">
           <h3 class="box-title">Edit Purchase Order Return</h3>
         </div><!-- /.box-header -->
-        <div class="box-body table-responsive">
-          {!! Form::model($purchase_return, ['route'=>['purchase-return.update', $purchase_return->id], 'id'=>'form-edit-purchase-return', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Purchase Order Referense</th>
-                  <th>Purchased Quantity</th>
-                  <th>Product</th>
-                  <th>Returned Quantity</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ $purchase_return->purchase_order->code }}</td>
-                  <td class="purchased_qty">
-                    {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
-                  </td>
-                  <td>{{ $purchase_return->product->name }}</td>
-                  <td>
-                    {{ Form::text('quantity',null, ['class'=>'returned_quantity form-control']) }}
-                  </td>
-                  <td>
-                    {{ Form::text('notes',null, ['class'=>'notes form-control']) }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="box-body">
+            <div class="table-responsive">
+              {!! Form::model($purchase_return, ['route'=>['purchase-return.update', $purchase_return->id], 'id'=>'form-edit-purchase-return', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">PO Code</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Purchased Quantity</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Returned Quantity</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ $purchase_return->purchase_order->code }}</td>
+                      <td>{{ $purchase_return->product->name }}</td>
+                      <td class="purchased_qty">
+                        {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                      </td>
+                      <td>
+                        {{ Form::text('quantity',null, ['class'=>'returned_quantity form-control']) }}
+                      </td>
+                      <td>
+                        {{ Form::text('notes',null, ['class'=>'notes form-control']) }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-3">Status</div>
+              <div class="col-md-1">:</div>
+              <div class="col-md-3">
+                <p>{{ strtoupper($purchase_return->status) }}</p>
+                @if($purchase_return->status == 'posted')
+                  <button type="button" id="btn-send-purchase-return" class="btn btn-warning btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Sent">
+                    <i class="fa fa-sign-in"></i>&nbsp;Send
+                  </button>
+                @endif
+                @if($purchase_return->status == 'sent')
+                  <button type="button" id="btn-complete-purchase-return" class="btn btn-success btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Completed">
+                    <i class="fa fa-check"></i>&nbsp;Complete
+                  </button>
+                @endif
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-3">Supplier Name</div>
+              <div class="col-md-1">:</div>
+              <div class="col-md-3">
+                <p>{{ $purchase_return->purchase_order->supplier->name }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">Created At</div>
+              <div class="col-md-1">:</div>
+              <div class="col-md-3">
+                <p>{{ $purchase_return->created_at }}</p>
+              </div>
+            </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
           <div class="form-group">
@@ -75,7 +110,7 @@
         </div>
 
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -84,7 +119,7 @@
 
 
 @section('additional_scripts')
- 
+
 {!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
     $('.returned_quantity').autoNumeric('init',{
@@ -119,5 +154,5 @@
     });
   //ENDBlock handle form edit purchase order submission
 </script>
- 
+
 @endsection

@@ -65,6 +65,18 @@
         </div><!-- /.box-header -->
         <div class="box-body">
 
+            <div class="form-group{{ $errors->has('do_number') ? ' has-error' : '' }}">
+              {!! Form::label('do_number', 'D.O Number', ['class'=>'col-sm-3 control-label']) !!}
+              <div class="col-sm-6">
+                  <input type="text" class="form-control" placeholder="D.O Number" id="do_number" autocomplete="off" value="SO-{{$sales_order->id+1}}" name="do_number">
+                  @if($errors->has('do_number'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('do_number') }}</strong>
+                      </span>
+                  @endif
+              </div>
+            </div>
+
             <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
               {!! Form::label('customer_id', 'Customer Name', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
@@ -136,6 +148,17 @@
                         @endif
                     </div>
                 </div>
+                <div class="form-group{{ $errors->has('ship_date') ? ' has-error' : '' }}">
+                  {!! Form::label('ship_date', 'Ship Date', ['class'=>'col-sm-3 control-label']) !!}
+                  <div class="col-sm-6">
+                      {{ Form::text('ship_date',null,['class'=>'form-control','placeholder'=>'Ship Date','id'=>'ship_date','autocomplete'=>'off']) }}
+                      @if($errors->has('ship_date'))
+                          <span class="help-block">
+                              <strong>{{ $errors->first('ship_date') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+                </div>
             </div>
             <div class="box-footer clearfix">
 
@@ -162,23 +185,21 @@
                       <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                       <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
                       <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
+                      <!-- <th style="width:15%;background-color:#3c8dbc;color:white">Image</th> -->
                       <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
-                      <th>ID</th>
                   </tr>
                 </thead>
                 <thead id="searchid">
                   <tr>
-                      <th style="width:5%;">#</th>
+                      <th style="width:5%;"></th>
                       <th style="width:10%;">Family</th>
                       <th style="width:20%;">Code</th>
-                      <th style="width:15%;">Image</th>
+                      <!-- <th style="width:15%;">Image</th> -->
                       <th style="width:20%;">Description</th>
                       <th style="width:15%;">Unit</th>
                       <th style="width:15%;">Category</th>
-                      <th>ID</th>
                   </tr>
                 </thead>
               <tbody>
@@ -205,7 +226,16 @@
 @section('additional_scripts')
   <!--Auto numeric plugin-->
   {!! Html::script('js/autoNumeric.js') !!}
-
+  <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+  {!! Html::style('css/datepicker/jquery-ui.css') !!}
+  {!! Html::script('js/jquery-ui.js') !!}
+  <script>
+      $( function() {
+        $( "#ship_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+      } );
+  </script>
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();
@@ -224,13 +254,12 @@
       ajax : '{!! route('datatables.getProducts') !!}',
       columns :[
           {data: 'rownum', name: 'rownum', searchable:false},
-          { data: 'family_id', name: 'family.name'},
+          { data: 'family_id', name: 'family_id', searchable:false},
           { data: 'name', name: 'name'},
-          { data: 'image', name: 'image'},
-          { data: 'description', name: 'description'},
-          { data: 'unit_id', name: 'unit_id' },
-          { data: 'category_id', name: 'category_id' },
-          { data: 'id', name:'id', searchable: false, visible: true},
+        //   { data: 'image', name: 'image', searchable:false},
+          { data: 'description', name: 'description', searchable:false},
+          { data: 'unit_id', name: 'unit_id' , searchable:false, searchable:false},
+          { data: 'category_id', name: 'category_id' , searchable:false},
       ],
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
@@ -247,27 +276,27 @@
         if ( index === -1 ) {
             selected.push(id);
             $('#table-selected-products').append(
-              '<tr class="tr_product_'+id+'">'+
-                '<td><b>'+
-                    '<input type="text" name="product_id[]" value="'+id+'" />'+
+              '<tr id="tr_product_'+id+'">'+
+                '<td>'+
+                    '<input type="hidden" name="product_id[]" value="'+id+'" />'+
                     tableProduct.row(this).data().family_id+
-                '</b></td>'+
-                '<td><b>'+
+                '</td>'+
+                '<td>'+
                     tableProduct.row(this).data().name+
-                    tableProduct.row(this).data().image+
-                '</b></td>'+
-                '<td><b>'+
+
+                '</td>'+
+                '<td>'+
                     tableProduct.row(this).data().description+
-                '</b></td>'+
-                '<td><b>'+
+                '</td>'+
+                '<td>'+
                     tableProduct.row(this).data().unit_id+
-                '</b></td>'+
+                '</td>'+
                 '<td>'+
                     '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
                 '</td>'+
-                '<td><b>'+
+                '<td>'+
                     tableProduct.row(this).data().category_id+
-                '</b></td>'+
+                '</td>'+
               '</tr>'
             );
             // var token = $("meta[name='csrf-token']").attr('content');
@@ -311,7 +340,7 @@
 
         } else {
             selected.splice( index, 1 );
-            $('.tr_product_'+id).remove();
+            $('#tr_product_'+id).remove();
         }
 
         $(this).toggleClass('selected');
@@ -330,7 +359,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 7) {
+      if ($(this).index() != 0 && $(this).index() != 8) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
 

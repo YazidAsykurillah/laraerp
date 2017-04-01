@@ -38,11 +38,12 @@ class SalesOrderController extends Controller
         $customer_options = Customer::lists('name', 'id');
         $driver_options = Driver::lists('name','id');
         $vehicle_options = Vehicle::lists('number_of_vehicle','id');
-
+        $sales_order = \DB::table('sales_orders')->latest()->first();
         return view('sales_order.create')
             ->with('customer_options', $customer_options)
             ->with('driver_options',$driver_options)
-            ->with('vehicle_options',$vehicle_options);
+            ->with('vehicle_options',$vehicle_options)
+            ->with('sales_order',$sales_order);
     }
 
     /**
@@ -59,14 +60,15 @@ class SalesOrderController extends Controller
                 'notes'=>$request->notes,
                 'creator'=>\Auth::user()->id,
                 'driver_id'=>$request->driver_id,
-                'vehicle_id'=>$request->vehicle_id
+                'vehicle_id'=>$request->vehicle_id,
+                'ship_date'=>$request->ship_date,
             ];
 
             $save = SalesOrder::create($data);
             $sales_order_id = $save->id;
 
             //update the code for this sales order
-            $code = \DB::table('sales_orders')->where('id', $sales_order_id)->update(['code'=>'SO-'.$sales_order_id]);
+            $code = \DB::table('sales_orders')->where('id', $sales_order_id)->update(['code'=>$request->do_number]);
             $sales_order = SalesOrder::find($sales_order_id);
 
             //Build sync data to store the relation w/ products
@@ -104,38 +106,11 @@ class SalesOrderController extends Controller
         $sales_returns = $sales_order->sales_returns;
         $total_price = $this->count_total_price($sales_order);
 
-        $main_product = $sales_order->products;
-
-        $row_display = [];
-        $main_products_arr = [];
-        if($sales_order->products->count()){
-            foreach($sales_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
-            }
-        }
-
-        $main_products = array_unique($main_products_arr);
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'quantity'=>MainProduct::find($mp_id)->product,
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $id)
-            ];
-        }
-
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
             ->with('invoice', $invoice)
-            ->with('sales_returns', $sales_returns)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
+            ->with('sales_returns', $sales_returns);
     }
 
     protected function count_total_price($sales_order)
@@ -155,39 +130,41 @@ class SalesOrderController extends Controller
             $vehicle_options = Vehicle::lists('number_of_vehicle','id');
             $total_price = $this->count_total_price($sales_order);
             //$main_product = MainProduct::findOrFail($purchase_order->)
-            $main_product = $sales_order->products;
-
-            $row_display = [];
-            $main_products_arr = [];
-            if($sales_order->products->count()){
-                foreach($sales_order->products as $prod){
-                    array_push($main_products_arr, $prod->main_product->id);
-                }
-            }
-
-            $main_products = array_unique($main_products_arr);
-
-            foreach($main_products as $mp_id){
-                $row_display[] = [
-                    'main_product_id'=>MainProduct::find($mp_id)->id,
-                    'main_product'=>MainProduct::find($mp_id)->name,
-                    'image'=>MainProduct::find($mp_id)->image,
-                    'description'=>MainProduct::find($mp_id)->product->first()->description,
-                    'family'=>MainProduct::find($mp_id)->family->name,
-                    'unit'=>MainProduct::find($mp_id)->unit->name,
-                    'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-                    'category'=>MainProduct::find($mp_id)->category->name,
-                    'ordered_products'=>$this->get_product_lists($mp_id, $id)
-                ];
-            }
+            // $main_product = $sales_order->products;
+            //
+            // $row_display = [];
+            // $main_products_arr = [];
+            // if($sales_order->products->count()){
+            //     foreach($sales_order->products as $prod){
+            //         array_push($main_products_arr, $prod->main_product->id);
+            //     }
+            // }
+            //
+            // $main_products = array_unique($main_products_arr);
+            //
+            // foreach($main_products as $mp_id){
+            //     $row_display[] = [
+            //         'main_product_id'=>MainProduct::find($mp_id)->id,
+            //         'main_product'=>MainProduct::find($mp_id)->name,
+            //         'image'=>MainProduct::find($mp_id)->image,
+            //         'description'=>MainProduct::find($mp_id)->product->first()->description,
+            //         'family'=>MainProduct::find($mp_id)->family->name,
+            //         'unit'=>MainProduct::find($mp_id)->unit->name,
+            //         'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+            //         'category'=>MainProduct::find($mp_id)->category->name,
+            //         'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            //     ];
+            // }
+            // print_r($sales_order->id);
+            // exit();
             return view('sales_order.edit')
                 ->with('sales_order', $sales_order)
                 ->with('total_price', $total_price)
                 ->with('customer_options', $customer_options)
                 ->with('driver_options',$driver_options)
-                ->with('vehicle_options',$vehicle_options)
-                ->with('main_product',$main_product)
-                ->with('row_display', $row_display);
+                ->with('vehicle_options',$vehicle_options);
+                // ->with('main_product',$main_product)
+                // ->with('row_display', $row_display);
         }
         else{
 
@@ -237,10 +214,12 @@ class SalesOrderController extends Controller
 
             $id = $request->id;
             $sales_order = SalesOrder::findOrFail($id);
+            $sales_order->code = $request->do_number;
             $sales_order->customer_id = $request->customer_id;
             $sales_order->notes = $request->notes;
             $sales_order->driver_id = $request->driver_id;
             $sales_order->vehicle_id = $request->vehicle_id;
+            $sales_order->ship_date = $request->ship_date;
             $update = $sales_order->save();
 
             //Build sync data to update PO relation w/ products
