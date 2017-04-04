@@ -48,11 +48,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $sum_balance = 0; ?>
                                         @foreach($data_hutang as $dat)
+                                        <?php $sum_bill_price = 0; $sum_paid_price = 0;?>
                                             <tr>
                                                 <td>{{ $dat['code'] }}</td>
                                                 <td colspan="3">{{ $dat['name'] }}</td>
+<<<<<<< HEAD
                                                 <td colspan="2"></td>
+=======
+                                                <td colspan="2" class="target_sum"></td>
+>>>>>>> 114a33c613be846042a42c4fc88e574ebdceaab7
                                                 <td><a data-toggle="collapse" href=".demo{{$dat['id']}}">detail</a></td>
                                             </tr>
                                             <tr class="demo{{ $dat['id']}} collapse">
@@ -70,14 +76,32 @@
                                                     <td>{{ $pur['code'] }}</td>
                                                     <td>{{ $pur['created_at'] }}</td>
                                                     <td></td>
-                                                    <td>{{ number_format($pur['bill_price']) }}</td>
-                                                    <td>{{ number_format($pur['paid_price']) }}</td>
+                                                    <td>
+                                                        {{ number_format($pur['bill_price']) }}
+                                                        <?php $sum_bill_price += $pur['bill_price']; ?>
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($pur['paid_price']) }}
+                                                        <?php $sum_paid_price += $pur['paid_price']; ?>
+                                                    </td>
                                                     <td></td>
                                                 </tr>
                                             @endforeach
-
+                                            <tr style="display:none">
+                                              <td colspan="3" class="sum">
+                                                  {{ number_format($sum_bill_price-$sum_paid_price) }}
+                                                  <?php $sum_balance += $sum_bill_price-$sum_paid_price; ?>
+                                              </td>
+                                            </tr>
                                         @endforeach
+                                            <tr>
+                                                <td colspan="6" align="right">Total Hutang</td>
+                                                <td>{{ number_format($sum_balance) }}</td>
+                                            </tr>
                                     </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -95,9 +119,10 @@
 @endsection
 
 @section('additional_scripts')
-    <!-- <script type="text/javascript">
-        $(document).ready(function(){
-                $('.collapse').collapse('hide');
-        });
-    </script> -->
+<script type="text/javascript">
+    var sum = document.getElementsByClassName('sum');
+    for(var a = 0; a < sum.length; a++){
+      document.getElementsByClassName('target_sum')[a].innerHTML = document.getElementsByClassName('sum')[a].innerHTML;
+    }
+</script>
 @endsection
