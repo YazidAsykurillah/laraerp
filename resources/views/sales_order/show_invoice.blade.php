@@ -64,9 +64,23 @@
                               <strong>
                                   {{ $row['family'] }}
                               </strong>
-                              <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                              <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                   @foreach(list_account_inventory('52') as $as)
                                       @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
+                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                      @endif
+                                  @endforeach
+                              </select><br><br><br>
+                              <select name="sales_account[]" id="sales_account" class="col-md-12" style="display:none">
+                                  @foreach(list_parent('61') as $as)
+                                      @if($as->name == 'PENJUALAN'.' '.$row['family'])
+                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                      @endif
+                                  @endforeach
+                              </select><br><br>
+                              <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12" style="display:none">
+                                  @foreach(list_parent('63') as $as)
+                                      @if($as->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
                                           <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
                                       @endif
                                   @endforeach

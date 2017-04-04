@@ -80,7 +80,7 @@
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="hidden" id="purchase_order_id" name="purchase_order_id">
+          <input type="hidden" id="purchase_return_id" name="purchase_return_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -172,7 +172,7 @@
     tablePurchaseReturn.on('click', '.btn-delete-purchase-return', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
-      $('#purchase_order_id').val(id);
+      $('#purchase_return_id').val(id);
       $('#purchase-return-name-to-delete').text(code);
       $('#modal-delete-purchase-return').modal('show');
     });

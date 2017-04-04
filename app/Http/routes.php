@@ -151,6 +151,7 @@ Route::resource('customer', 'CustomerController');
 	Route::post('sendPurchaseReturn', 'PurchaseReturnController@changeToSent');
 	//Save Purchase Return
 	Route::post('storePurchaseReturn', 'PurchaseReturnController@store');
+  Route::post('deletePurchaseReturn','PurchaseReturnController@destroy');
 	Route::resource('purchase-return', 'PurchaseReturnController');
 
 

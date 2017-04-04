@@ -65,7 +65,7 @@
                         <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
                             {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-6">
-                            <select name="select_account" class="form-control">
+                            <select name="cash_account" class="form-control">
                                 <option value="">Select Account</option>
                             @foreach(list_account_cash_bank('51') as $as)
                                 @if($as->level == 1)
@@ -164,7 +164,7 @@
                           <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
                               {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
                               <div class="col-sm-6">
-                              <select name="select_account" class="form-control">
+                              <select name="transfer_account" class="form-control">
                                   <option value="">Select Account</option>
                               @foreach(list_account_cash_bank('51') as $as)
                                   @if($as->level == 1)
@@ -193,7 +193,7 @@
                               <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                 <i class="fa fa-save"></i>&nbsp;Submit
                               </button>
-                              
+
                             </div>
                           </div>
                         {!! Form::close() !!}

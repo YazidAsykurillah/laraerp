@@ -131,13 +131,31 @@ class SalesOrderInvoiceController extends Controller
                 \DB::table('product_sales_order')->where('sales_order_id','=',$sales_order->id)->delete();
                 //Now time to sync the products
                 $sales_order->products()->sync($syncData);
+
+                // insert temp sales invoice
+                $temp_sales_invoice_data = [];
+                foreach ($request->product_id as $key => $value) {
+                  array_push($temp_sales_invoice_data, array(
+                    'sales_order_id'=>$request->sales_order_id,
+                    'main_product_id'=>$request->main_product_id_child[$key],
+                    'child_product_id'=>$request->product_id[$key],
+                    'price_per_unit'=>floatval(preg_replace('#[^0-9.]#','',$request->price[$key])),
+                  ));
+                }
+                //save temp sales invoice
+                \DB::table('temp_sales_invoice')->insert($temp_sales_invoice_data);
+
+
                 //account inventory and receivable save
                 $inv_account = [];
                 $sales_account = [];
                 $cost_goods_account = [];
                 foreach ($request->parent_product_id as $key => $value) {
+                    $total_amount = \DB::table('temp_sales_invoice')
+                      ->where('sales_order_id',$request->sales_order_id)
+                      ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
                     array_push($inv_account,[
-                        'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                        'amount'=>$total_amount,
                         'sub_chart_account_id'=>$request->inventory_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -146,7 +164,7 @@ class SalesOrderInvoiceController extends Controller
                         'type'=>'keluar',
                     ]);
                     array_push($sales_account,[
-                        'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                        'amount'=>$total_amount,
                         'sub_chart_account_id'=>$request->sales_order_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -155,7 +173,7 @@ class SalesOrderInvoiceController extends Controller
                         'type'=>'masuk',
                     ]);
                     array_push($cost_goods_account,[
-                        'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                        'amount'=>$total_amount,
                         'sub_chart_account_id'=>$request->cost_goods_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -164,9 +182,18 @@ class SalesOrderInvoiceController extends Controller
                         'type'=>'masuk',
                     ]);
                 }
+
+                //now delete temp sales invoice
+                \DB::table('temp_sales_invoice')
+                  ->where('sales_order_id','=',$request->sales_order_id)
+                  ->delete();
+
+                //now save $inv_account,$sales_account,$cost_goods_account
                 \DB::table('transaction_chart_accounts')->insert($inv_account);
                 \DB::table('transaction_chart_accounts')->insert($sales_account);
                 \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+
+                //now save account receivable
                 $transaction_sub_chart_account = New TransactionChartAccount;
                 $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
                 $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
@@ -303,16 +330,30 @@ class SalesOrderInvoiceController extends Controller
 
         //DELETE transaction chart account reference
         \DB::table('transaction_chart_accounts')->where('reference',$request->sales_order_invoice_id)->delete();
+
+        // insert temp sales invoice
+        $temp_sales_invoice_data = [];
+        foreach ($request->product_id as $key => $value) {
+          array_push($temp_sales_invoice_data, array(
+            'sales_order_id'=>$request->sales_order_id,
+            'main_product_id'=>$request->main_product_id_child[$key],
+            'child_product_id'=>$request->product_id[$key],
+            'price_per_unit'=>floatval(preg_replace('#[^0-9.]#','',$request->price[$key])),
+          ));
+        }
+        //save temp sales invoice
+        \DB::table('temp_sales_invoice')->insert($temp_sales_invoice_data);
+
         //NOW SAVE transaction chart account
         $inv_account = [];
         $sales_account = [];
         $cost_goods_account = [];
         foreach ($request->parent_product_id as $key => $value) {
-            // $inv_account->amount =  floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key]));
-            // $inv_account->sub_chart_account_id = $request->inventory_account[$key];
-            //$inv_account->save();
+            $total_amount = \DB::table('temp_sales_invoice')
+              ->where('sales_order_id',$request->sales_order_id)
+              ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
             array_push($inv_account,[
-                'amount' =>floatval(preg_replace('#[^0-9.]#', '', $request->price_parent[$key])),
+                'amount' =>$total_amount,
                 'sub_chart_account_id' =>$request->inventory_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -321,7 +362,7 @@ class SalesOrderInvoiceController extends Controller
                 'type'=>'keluar',
             ]);
             array_push($sales_account,[
-                'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                'amount'=>$total_amount,
                 'sub_chart_account_id'=>$request->sales_order_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -330,7 +371,7 @@ class SalesOrderInvoiceController extends Controller
                 'type'=>'masuk',
             ]);
             array_push($cost_goods_account,[
-                'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->price_parent[$key])),
+                'amount'=>$total_amount,
                 'sub_chart_account_id'=>$request->cost_goods_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -339,9 +380,16 @@ class SalesOrderInvoiceController extends Controller
                 'type'=>'masuk',
             ]);
         }
+
+        //now delete temp sales invoice
+        \DB::table('temp_sales_invoice')
+          ->where('sales_order_id','=',$request->sales_order_id)
+          ->delete();
+
         \DB::table('transaction_chart_accounts')->insert($inv_account);
         \DB::table('transaction_chart_accounts')->insert($sales_account);
         \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+
         $transaction_sub_chart_account = New TransactionChartAccount;
         $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;

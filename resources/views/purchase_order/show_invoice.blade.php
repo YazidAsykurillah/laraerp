@@ -61,7 +61,7 @@
                                 <strong>
                                     {{ $row['family'] }}
                                 </strong>
-                                <select name="inventory_account[]" id="inventory_account" class="col-md-12">
+                                <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                     @foreach(list_account_inventory('52') as $as)
                                         @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
                                             <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
@@ -129,7 +129,7 @@
                 <td style="width:30%;"><strong>Paid Price</strong></td>
                 <td id="paid_price">{{ number_format($purchase_order_invoice->paid_price) }}</td>
               </tr>
-              <tr>
+              <tr style="display:none">
                 <td style="width:30%;"><strong>Accounts Payable</strong></td>
                 <td id="paid_price">
                     <select name="inventory_account[]" id="inventory_account" class="col-md-4">

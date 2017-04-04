@@ -55,37 +55,25 @@
                                               {{ $row['family'] }}
                                           </strong>
                                           <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
-                                          <select name="inventory_account[]" id="inventory_account" class="col-md-12">
-                                            <option value="">Inventory Account</option>
+                                          <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                             @foreach(list_account_inventory('52') as $as)
-                                              @if($as->level ==1)
-                                              <optgroup label="{{ $as->name}}">
+                                              @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
+                                              <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
                                               @endif
-                                              @foreach(list_sub_inventory('2',$as->id) as $sub)
-                                                <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
-                                              @endforeach
                                             @endforeach
                                           </select><br/><br/><br/>
-                                          <select name="return_account[]" id="return_account" class="col-md-12">
-                                              <option value="">Return Account</option>
+                                          <select name="return_account[]" id="return_account" class="col-md-12" style="display:none">
                                               @foreach(list_parent('61') as $return_account)
-                                                @if($return_account->level ==1)
-                                                    <optgroup label="{{ $return_account->name }}">
+                                                @if($return_account->name == 'RETURN PENJUALAN'.' '.$row['family'])
+                                                <option value="{{ $return_account->id}}">{{ $return_account->account_number }}&nbsp;&nbsp;{{ $return_account->name}}</option>
                                                 @endif
-                                                @foreach(list_child('2',$return_account->id) as $sub)
-                                                    <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                                @endforeach
                                               @endforeach
                                           </select><br/><br/>
-                                          <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12">
-                                              <option value="">Cost of Goods Account</option>
-                                              @foreach(list_parent('63') as $sales_account)
-                                                @if($sales_account->level ==1)
-                                                    <optgroup label="{{ $sales_account->name }}">
+                                          <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12" style="display:none">
+                                              @foreach(list_parent('63') as $cost_goods_account)
+                                                @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
+                                                <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name}}</option>
                                                 @endif
-                                                @foreach(list_child('2',$sales_account->id) as $sub)
-                                                    <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                                @endforeach
                                               @endforeach
                                           </select>
                                       </td>

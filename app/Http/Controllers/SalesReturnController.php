@@ -201,7 +201,7 @@ class SalesReturnController extends Controller
         $sales_return = SalesReturn::findOrFail($request->sales_return_id);
         $sales_return->delete();
         return redirect('sales-return')
-            ->with('successMessage',"$sales_return->codehas been delete");
+            ->with('successMessage',"$sales_return->codehas been deleted");
     }
 
     protected function get_product_lists($mp_id, $po_id)

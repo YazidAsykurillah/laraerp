@@ -50,43 +50,31 @@
                   <tbody>
 
                       @if(count($row_display))
-                          <?php $sum_qty = 0; ?>
                           @foreach($row_display as $row)
-                              <tr>
+                          <?php $sum_qty = 0; $sum = 0; ?>
+                              <tr style="display:none">
                                 <td>
                                   <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                   {{ $row['family'] }}<br>
-                                  <select name="inventory_account[]" id="inventory_account" class="col-md-12">
-                                    <option value="">Inventory Account</option>
+                                  <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                     @foreach(list_account_inventory('52') as $as)
-                                      @if($as->level ==1)
-                                      <optgroup label="{{ $as->name}}">
+                                      @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
+                                        <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
                                       @endif
-                                      @foreach(list_sub_inventory('2',$as->id) as $sub)
-                                        <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
-                                      @endforeach
                                     @endforeach
                                   </select><br/><br/>
-                                  <select name="sales_order_account[]" id="sales_order_account" class="col-md-12">
-                                      <option value="">Sales Account</option>
+                                  <select name="sales_order_account[]" id="sales_order_account" class="col-md-12" style="display:none">
                                       @foreach(list_parent('61') as $sales_account)
-                                        @if($sales_account->level ==1)
-                                            <optgroup label="{{ $sales_account->name }}">
+                                        @if($sales_account->name == 'PENJUALAN'.' '.$row['family'])
+                                          <option value="{{ $as->id}}">{{ $sales_account->account_number }}&nbsp;&nbsp;{{ $sales_account->name }}</option>
                                         @endif
-                                        @foreach(list_child('2',$sales_account->id) as $sub)
-                                            <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                        @endforeach
                                       @endforeach
                                   </select><br/><br/>
-                                  <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12">
-                                      <option value="">Cost of Goods Account</option>
-                                      @foreach(list_parent('63') as $sales_account)
-                                        @if($sales_account->level ==1)
-                                            <optgroup label="{{ $sales_account->name }}">
+                                  <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12" style="display:none">
+                                      @foreach(list_parent('63') as $cost_goods_account)
+                                        @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
+                                          <option value="{{ $as->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name }}</option>
                                         @endif
-                                        @foreach(list_child('2',$sales_account->id) as $sub)
-                                            <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                                        @endforeach
                                       @endforeach
                                   </select>
                                 </td>
@@ -106,17 +94,18 @@
                                 </td>
                                 <td>{{ $row['description'] }}</td>
                                 <td>{{ $row['unit'] }}</td>
-                                <td>{{ $sum_qty }}</td>
+                                <td class="target_qty">{{ $sum_qty }}</td>
                                 <td>{{ $row['category'] }}</td>
                                 <td></td>
                                 <td>
-                                    <input type="text" name="price_parent[]" class="price_parent">
+                                    <input type="hidden" name="price_parent[]" class="price_parent">
                                 </td>
                               </tr>
                               @foreach($row['ordered_products'] as $or)
                               <tr>
                                 <td>
                                   <input type="hidden" name="product_id[]" value="{{ $or['product_id'] }} " />
+                                  <input type="hidden" name="main_product_id_child[]" value="{{ $row['main_product_id'] }} " />
                                   {{ $or['family'] }}
                                 </td>
                                 <td>{{ $or['code'] }} </td>
@@ -125,6 +114,7 @@
                                 <td>
                                   <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
                                   {{ $or['quantity'] }}
+                                  <?php $sum_qty += $or['quantity']; ?>
                                 </td>
                                 <td>{{ $or['category'] }}</td>
                                 <td>
@@ -135,6 +125,10 @@
                                 </td>
                               </tr>
                               @endforeach
+                              <tr style="display:none">
+                                <td colspan="3" class="sum"></td>
+                                <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
+                              </tr>
                           @endforeach
                       @else
                       <tr id="tr-no-product-selected">
@@ -158,18 +152,14 @@
               </div>
             </div>
 
-            <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}">
+            <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}" style="display:none">
               {!! Form::label('select_account', 'Accounts Receivable', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
                   <select name="select_account" id="select_account" class="form-control">
-                      <option value="">Select Account</option>
                   @foreach(list_account_hutang('49') as $as)
-                      @if($as->level == 1)
-                      <optgroup label="{{ $as->name }}">
-                      @endif
-                      @foreach(list_sub_hutang('2',$as->id) as $sub)
-                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                      @endforeach
+                    @if($as->name == 'PIUTANG DAGANG IDR')
+                        <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                    @endif
                   @endforeach
                   </select>
               </div>
@@ -311,6 +301,12 @@
       });
     });
   //ENDBlock handle form create Sales Order submission
+  </script>
+  <script type="text/javascript">
+      var sum = document.getElementsByClassName('sum');
+      for(var a = 0; a < sum.length; a++){
+        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+      }
   </script>
 
 @endSection

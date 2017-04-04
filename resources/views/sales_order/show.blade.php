@@ -74,25 +74,51 @@
                     </tr>
                   </thead>
                   <tbody>
-                      @if($sales_order->products->count() > 0)
-                        @foreach($sales_order->products as $product)
-                        <tr id="tr_product_{{$product->id}}">
-                          <td>{{ $product->main_product->family->name }}</td>
-                          <td>
-                            <input type="hidden" name="product_id[]" value="{{ $product->id}} " />
-                            {{ $product->name }}
-                          </td>
-                          <td>{{ $product->description }}</td>
-                          <td>{{ $product->main_product->unit->name }}</td>
-                          <td>{{ $product->pivot->quantity }}</td>
-                          <td>{{ $product->main_product->category->name }}</td>
-                        </tr>
+                    @if(count($row_display))
+                        @foreach($row_display as $row)
+                        <?php $sum_qty = 0; ?>
+                            <tr style="display:none">
+                              <td><strong>{{ $row['family'] }}</strong></td>
+                              <td>
+                                  <strong>
+                                      {{ $row['main_product'] }}
+                                  </strong>
+                                  @if($row['image'] != NULL)
+                                  <a href="#" class="thumbnail">
+                                      {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                  </a>
+                                  @else
+                                  <a href="#" class="thumbnail">
+                                      {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                  </a>
+                                  @endif
+                              </td>
+                              <td><strong>{{ $row['description'] }}</strong></td>
+                              <td><strong>{{ $row['unit'] }}</strong></td>
+                              <td><strong class="target_qty"></strong></td>
+                              <td><strong>{{ $row['category'] }}</strong></td>
+                            </tr>
+                            @foreach($row['ordered_products'] as $or)
+                            <tr>
+                              <td>{{ $or['family'] }}</td>
+                              <td>{{ $or['code'] }} </td>
+                              <td>{{ $or['description'] }} </td>
+                              <td>{{ $or['unit'] }} </td>
+                              <td>
+                                  {{ $or['quantity'] }}
+                                  <?php $sum_qty += $or['quantity']; ?>
+                              </td>
+                              <td>{{ $or['category'] }}</td>
+                            </tr>
+                            @endforeach
+                            <tr style="display:none">
+                              <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
+                            </tr>
                         @endforeach
-                      @else
-                      <tr id="tr-no-product-selected">
-                        <td>There are no product</td>
-                      </tr>
-                      @endif
+                  @else
+                  <tr id="tr-no-product-selected">
+                    <td>There are no product</td>
+                  @endif
                   </tbody>
                   <tfoot>
 
@@ -313,12 +339,15 @@
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title"> Sales Order Return <small>Related return with this sales order</small></h3>
+              @if($sales_order->sales_order_invoice == '')
+
+              @else
               <div class="pull-right">
                 <a href="{{ URL::to('sales-return/create/?sales_order_id='.$sales_order->id.'') }}" class="btn btn-default btn-xs">
                     <i class='fa fa-bookmark'></i>&nbsp;Create Return
                 </a>
               </div>
-
+              @endif
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">

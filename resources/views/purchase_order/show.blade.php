@@ -328,16 +328,21 @@
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Related Return</h3>
+              @if($purchase_order->purchase_order_invoice == '')
+
+              @else
               <div class="pull-right">
                 <a href="{{ url('purchase-return/create/?purchase_order_id='.$purchase_order->id.'') }}" class="btn btn-default btn-xs">
                   <i class='fa fa-reply'></i>&nbsp;Create Return
                 </a>
               </div>
-
+              @endif
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
                 <table class="table table-bordered">
+                  @if($purchase_returns->count() > 0)
+                  <?php $no = 1; ?>
                   <thead>
                     <tr>
                       <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
@@ -348,8 +353,6 @@
                     </tr>
                   </thead>
                   <tbody>
-                  @if($purchase_returns->count() > 0)
-                  <?php $no = 1; ?>
                     @foreach($purchase_returns as $purchase_return)
                     <tr>
                       <td> {{ $no++ }}</td>
@@ -362,7 +365,7 @@
                   @else
                   <tr>
                     <td colspan="4">
-                      <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related return to this purchase order</p>
+                      <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;Return can be made if an invoice has been created</p>
                     </td>
                   </tr>
                   @endif

@@ -106,11 +106,38 @@ class SalesOrderController extends Controller
         $sales_returns = $sales_order->sales_returns;
         $total_price = $this->count_total_price($sales_order);
 
+        $main_product = $sales_order->products;
+
+        $row_display = [];
+        $main_products_arr = [];
+        if($sales_order->products->count()){
+            foreach($sales_order->products as $prod){
+                array_push($main_products_arr, $prod->main_product->id);
+            }
+        }
+
+        $main_products = array_unique($main_products_arr);
+        foreach($main_products as $mp_id){
+            $row_display[] = [
+                'main_product_id'=>MainProduct::find($mp_id)->id,
+                'main_product'=>MainProduct::find($mp_id)->name,
+                'description'=>MainProduct::find($mp_id)->product->first()->description,
+                'image'=>MainProduct::find($mp_id)->image,
+                'family'=>MainProduct::find($mp_id)->family->name,
+                'unit'=>MainProduct::find($mp_id)->unit->name,
+                'quantity'=>MainProduct::find($mp_id)->product,
+                'category'=>MainProduct::find($mp_id)->category->name,
+                'ordered_products'=>$this->get_product_lists($mp_id, $id)
+            ];
+        }
+
         return view('sales_order.show')
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
             ->with('invoice', $invoice)
-            ->with('sales_returns', $sales_returns);
+            ->with('sales_returns', $sales_returns)
+            ->with('main_product',$main_product)
+            ->with('row_display', $row_display);
     }
 
     protected function count_total_price($sales_order)

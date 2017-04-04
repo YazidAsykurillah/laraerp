@@ -232,13 +232,8 @@
                             @endforeach
                             <tr>
                                 <td></td>
-<<<<<<< HEAD
-                                <td style="border-top:1px solid black"><b>Total {{ $cash_bank->name }}</b></td>
-                                <td style="border-top:1px solid black">0,00</td>
-=======
                                 <td style="border-top:1px solid black">Total {{ $cash_bank->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_cash_bank = $sum; ?></td>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             </tr>
                             @endif
                         @endforeach
@@ -293,19 +288,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $piutang->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $piutang->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_piutang = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $persediaan)
@@ -359,19 +346,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $persediaan->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $persediaan->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_inventory = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $aktiva_lancar_lainnya)
@@ -402,19 +381,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $aktiva_lancar_lainnya->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}<?php $sum_aktiva_lancar_lainnya = $sum; ?></td>
                                 <td style="border-top:1px solid black">0,00</td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $nilai_history)
@@ -447,19 +418,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $nilai_history->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $nilai_history->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_nilai_history = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $akumulasi_penyusutan)
@@ -493,30 +456,17 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $akumulasi_penyusutan->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $akumulasi_penyusutan->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_akumulasi_penyusutan = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         <tr>
                             <td></td>
-<<<<<<< HEAD
-                            <td style="border-top:1px solid black"><b>Total Aktiva-Aktiva</b></td>
-                            <td style="border-top:1px solid black">0,00</td>
-=======
                             <td style="border-top:1px solid black">Total Aktiva-Aktiva</td>
                             <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+$sum_nilai_history+$sum_akumulasi_penyusutan) }}</td>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                         </tr>
                         <tr>
                             <td></td>
@@ -580,19 +530,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $kewajiban->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $kewajiban_lancar_lainnya)
@@ -626,19 +568,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban_lancar_lainnya->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $kewajiban_lancar_lainnya->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban_lancar_lainnya = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $kewajiban_jangka_panjang)
@@ -672,19 +606,11 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $kewajiban_jangka_panjang->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $kewajiban_jangka_panjang->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban_jangka_panjang = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         @foreach($chart_account as $equitas)
@@ -718,30 +644,17 @@
                                 </tr>
                                 @endforeach
                             @endforeach
-<<<<<<< HEAD
-                              <tr>
-                                  <td></td>
-                                  <td style="border-top:1px solid black"><b>Total {{ $equitas->name }}</b></td>
-                                  <td style="border-top:1px solid black">0,00</td>
-                              </tr>
-=======
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total {{ $equitas->name }}</td>
                                 <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_equitas = $sum; ?></td>
                             </tr>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                             @endif
                         @endforeach
                         <tr>
                             <td></td>
-<<<<<<< HEAD
-                            <td style="border-top:1px solid black"><b>Total Kewajiban dan Equitas</b></td>
-                            <td style="border-top:1px solid black">0,00</td>
-=======
                             <td style="border-top:1px solid black">Total Kewajiban dan Equitas</td>
                             <td style="border-top:1px solid black">{{ number_format($sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang+$sum_equitas) }}</td>
->>>>>>> f79309a9c6fd099351d17daf9ae7d651eaf22504
                         </tr>
                     </tbody>
                 </table>

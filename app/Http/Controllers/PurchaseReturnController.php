@@ -37,34 +37,34 @@ class PurchaseReturnController extends Controller
         $po_id = $purchase_order->purchase_order_invoice;
         $main_product = $purchase_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($purchase_order->products->count()){
-            foreach($purchase_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
-            }
-        }
+          $row_display = [];
+          $main_products_arr = [];
+          if($purchase_order->products->count()){
+              foreach($purchase_order->products as $prod){
+                  array_push($main_products_arr, $prod->main_product->id);
+              }
+          }
 
-        $main_products = array_unique($main_products_arr);
+          $main_products = array_unique($main_products_arr);
 
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $request->purchase_order_id),
-            ];
-        }
-        return view('purchase_return.create')
-            ->with('purchase_order', $purchase_order)
-            ->with('po_id',$po_id)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
+          foreach($main_products as $mp_id){
+              $row_display[] = [
+                  'main_product_id'=>MainProduct::find($mp_id)->id,
+                  'main_product'=>MainProduct::find($mp_id)->name,
+                  'description'=>MainProduct::find($mp_id)->product->first()->description,
+                  'image'=>MainProduct::find($mp_id)->image,
+                  'family'=>MainProduct::find($mp_id)->family->name,
+                  'unit'=>MainProduct::find($mp_id)->unit->name,
+                  'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                  'category'=>MainProduct::find($mp_id)->category->name,
+                  'ordered_products'=>$this->get_product_lists($mp_id, $request->purchase_order_id),
+              ];
+          }
+          return view('purchase_return.create')
+              ->with('purchase_order', $purchase_order)
+              ->with('po_id',$po_id)
+              ->with('main_product',$main_product)
+              ->with('row_display', $row_display);
     }
 
     /**
@@ -219,9 +219,12 @@ class PurchaseReturnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $purchase_return = PurchaseReturn::findOrFail($request->purchase_return_id);
+        $purchase_return->delete();
+        return redirect('purchase-return')
+          ->with('successMessage',"$purchase_return->codehas been deleted");
     }
 
 

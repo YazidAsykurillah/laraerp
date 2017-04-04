@@ -419,13 +419,21 @@ class DatatablesController extends Controller
                 return $purchase_returns->purchase_order->supplier->name;
             })
             ->addColumn('actions', function($purchase_returns){
-                $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
-                $actions_html .='</a>&nbsp;';
                 //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
+                $actions_html = '';
                 if($purchase_returns->status == 'posted'){
+                    $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
                     $actions_html .='<a href="'.url('purchase-return/'.$purchase_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }elseif ($purchase_returns->status == 'sent') {
+                    $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
