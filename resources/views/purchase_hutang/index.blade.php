@@ -52,8 +52,7 @@
                                             <tr>
                                                 <td>{{ $dat['code'] }}</td>
                                                 <td colspan="3">{{ $dat['name'] }}</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td colspan="2"></td>
                                                 <td><a data-toggle="collapse" href=".demo{{$dat['id']}}">detail</a></td>
                                             </tr>
                                             <tr class="demo{{ $dat['id']}} collapse">
