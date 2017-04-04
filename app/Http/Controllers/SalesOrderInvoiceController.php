@@ -98,17 +98,21 @@ class SalesOrderInvoiceController extends Controller
             $sales_order_id = $request->sales_order_id;
             $sales_order_code = SalesOrder::findOrFail($sales_order_id)->code;
             $customer_invoice_term = SalesOrder::findOrFail($sales_order_id)->customer->invoice_term->day_many;
+            $sales_order_created_at = SalesOrder::findOrFail($sales_order_id)->created_at;
 
+            // $current = Carbon::now();
+            // $due_date = $current->addDays($customer_invoice_term);
+            $date = date_create($sales_order_created_at);
+            date_add($date,date_interval_create_from_date_string($customer_invoice_term.' days'));
+            $due_date = date_format($date,"Y-m-d");
 
-            $current = Carbon::now();
-            $due_date = $current->addDays($customer_invoice_term);
             $data = [
                 'code'=>'INV-'.$sales_order_code,
                 'sales_order_id' =>$request->sales_order_id,
                 'bill_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->bill_price)),
                 'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id,
-                'due_date'=> $due_date
+                'due_date'=> $due_date,
             ];
 
             $save = SalesOrderInvoice::create($data);
@@ -312,6 +316,7 @@ class SalesOrderInvoiceController extends Controller
         $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
         $sales_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#','',$request->bill_price));
         $sales_order_invoice->notes = $request->notes;
+        $sales_order_invoice->due_date =
         $sales_order_invoice->save();
         //UPDATE SUCCESS
 

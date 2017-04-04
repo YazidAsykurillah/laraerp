@@ -30,24 +30,25 @@
                     <h3 class="box-title">Edit Sales Order Return</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
+                    <div class="table-responsive"
                     {!! Form::model($sales_return,['route'=>['sales-return.update',$sales_return->id],'id'=>'form-edit-sales-return','class'=>'form-horizontal','method'=>'put','files'=>true]) !!}
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Sales Order Referense</th>
-                                <th>Sales Quantity</th>
-                                <th>Product</th>
-                                <th>Returned Quantity</th>
-                                <th>Notes</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">PO Code</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Salesed Quantity</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Returned Quantity</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{{ $sales_return->sales_order->code }}</td>
+                                <td>{{ $sales_return->product->name }}</td>
                                 <td class="salesed_qty">
                                     {{ \DB::table('product_sales_order')->select('quantity')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('quantity') }}
                                 </td>
-                                <td>{{ $sales_return->product->name }}</td>
                                 <td>
                                     {{ Form::text('quantity',null,['class'=>'returned_quantity form-control']) }}
                                 </td>
@@ -57,6 +58,29 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-3">Status</div>
+                        <div class="col-md-1">:</div>
+                        <div class="col-md-3">
+                            <p>{{ strtoupper($sales_return->status) }}</p>
+                        </div>
+                    </div><!-- /.row -->
+                    <div class="row">
+                      <div class="col-md-3">Customer Name</div>
+                      <div class="col-md-1">:</div>
+                      <div class="col-md-3">
+                        <p>{{ $sales_return->sales_order->customer->name }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">Created At</div>
+                      <div class="col-md-1">:</div>
+                      <div class="col-md-3">
+                        <p>{{ $sales_return->created_at }}</p>
+                      </div>
+                    </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
                     <div class="form-group">
@@ -70,7 +94,7 @@
                             </button>
                         </div>
                     </div>
-                    {!! Form::text('sales_return_id',$sales_return->id) !!}
+                    {!! Form::hidden('sales_return_id',$sales_return->id) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box-footer -->
             </div>

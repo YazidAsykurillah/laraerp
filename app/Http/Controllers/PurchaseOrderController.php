@@ -12,7 +12,7 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\MainProduct;
-
+use App\PurchaseOrderInvoice;
 use App\Product;
 
 
@@ -383,4 +383,45 @@ class PurchaseOrderController extends Controller
             return response()->json($results);
         }
     }
+
+    public function list_hutang(Request $request)
+    {
+        $supplier = Supplier::get();
+        $data_hutang = [];
+        foreach ($supplier as $sup) {
+            $data_hutang [] = [
+                'id'=>$sup->id,
+                'code'=>$sup->code,
+                'name'=>$sup->name,
+                'purchase'=>$this->list_purchase($sup->id)
+            ];
+        }
+
+
+        return view('purchase_hutang.index')
+            ->with('data_hutang',$data_hutang);
+    }
+
+    protected function list_purchase($supplier_id)
+    {
+        $purchase = \DB::table('purchase_orders')->where('supplier_id',$supplier_id)->get();
+        $data_purchase = [];
+        foreach ($purchase as $key) {
+            if(count(PurchaseOrder::findOrFail($key->id)->purchase_order_invoice) == 0){
+
+            }else{
+                $data_purchase [] =[
+                    'id'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->id,
+                    'code'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->code,
+                    'created_at'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->created_at,
+                    'due_date'=>'',
+                    'bill_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->bill_price,
+                    'paid_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->paid_price,
+                ];
+            }
+        }
+
+        return $data_purchase;
+    }
+
 }

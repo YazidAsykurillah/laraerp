@@ -72,32 +72,38 @@
                             <p>{{ $sales_order->customer->address }}</p>
                         </div>
                     </td>
-                    <td style="width:15%">Invoice No</td>
+                    <td style="width:15%;padding-left:30px">Invoice No</td>
                     <td style="width:2%">:</td>
                     <td style="width:25%">{{ $sales_order_invoice->code }}</td>
                 </tr>
                 <tr>
-                    <td>Invoice Date</td>
+                    <td style="width:15%;padding-left:30px">Invoice Date</td>
                     <td>:</td>
                     <td>{{ $sales_order_invoice->created_at }}</td>
                 </tr>
                 <tr>
-                    <td>Terms</td>
+                    <td style="width:15%;padding-left:30px">Terms</td>
                     <td>:</td>
-                    <td>{{ $invoice_term->name }}</td>
+                    <td>
+                        <?php
+                            $date = date_create($sales_order->created_at);
+                            date_add($date,date_interval_create_from_date_string($invoice_term->day_many.' days'));
+                        ?>
+                        {{ date_format($date,"Y-m-d h:i:s") }}&nbsp;&nbsp;(&nbsp;{{ $invoice_term->name }}&nbsp;)
+                    </td>
                 </tr>
                 <tr>
-                    <td>Ship Via</td>
+                    <td style="width:15%;padding-left:30px">Ship Via</td>
                     <td>:</td>
                     <td>{{ $sales_order->driver->name }}&nbsp;&nbsp;{{ $sales_order->vehicle->number_of_vehicle }}</td>
                 </tr>
                 <tr>
-                    <td>Ship Date</td>
+                    <td style="width:15%;padding-left:30px">Ship Date</td>
                     <td>:</td>
-                    <td>{{ $sales_order_invoice->created_at }}</td>
+                    <td>{{ $sales_order->ship_date }}</td>
                 </tr>
                 <tr>
-                    <td>D.O. No.</td>
+                    <td style="width:15%;padding-left:30px">D.O. No.</td>
                     <td>:</td>
                     <td>{{ $sales_order->code}}</td>
                 </tr>
@@ -135,7 +141,7 @@
                     @endforeach
                     <tr>
                         <td colspan="6" style="text-align:right">
-                            Total Meter :
+                            Total Invoice
                         </td>
                         <td style="text-align:right"> {{ number_format($mtr) }}.00</td>
                     </tr>

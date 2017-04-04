@@ -65,19 +65,8 @@
               <div class="col-md-1">:</div>
               <div class="col-md-3">
                 <p>{{ strtoupper($purchase_return->status) }}</p>
-                @if($purchase_return->status == 'posted')
-                  <button type="button" id="btn-send-purchase-return" class="btn btn-warning btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Sent">
-                    <i class="fa fa-sign-in"></i>&nbsp;Send
-                  </button>
-                @endif
-                @if($purchase_return->status == 'sent')
-                  <button type="button" id="btn-complete-purchase-return" class="btn btn-success btn-xs" data-id="{{ $purchase_return->id}}" title="Change status to Completed">
-                    <i class="fa fa-check"></i>&nbsp;Complete
-                  </button>
-                @endif
               </div>
             </div>
-            <br/>
             <div class="row">
               <div class="col-md-3">Supplier Name</div>
               <div class="col-md-1">:</div>
@@ -99,7 +88,7 @@
             <div class="col-sm-10">
               <a href="{{ url('purchase-return') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
-              </a>&nbsp;
+              </a>
               <button type="submit" class="btn btn-info" id="btn-submit-purchase-return">
                 <i class="fa fa-save"></i>&nbsp;Submit
               </button>

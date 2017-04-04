@@ -49,30 +49,30 @@
                                 @if(count($row_display))
                                     @foreach($row_display as $row)
                                         <?php $sum_qty = 0; $sum = 0; ?>
-                                        <tr>
+                                        <tr style="display:none">
                                           <td>
                                               <strong>
                                                   {{ $row['family'] }}
                                               </strong>
                                               <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }} " />
                                               <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
-                                                  @foreach(list_account_inventory('52') as $as)
-                                                      @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
-                                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                                  @foreach(list_account_inventory('52') as $inventory_account)
+                                                      @if($inventory_account->name == 'PERSEDIAAN'.' '.$row['family'])
+                                                          <option value="{{ $inventory_account->id}}">{{ $inventory_account->account_number }}&nbsp;&nbsp;{{ $inventory_account->name }}</option>
                                                       @endif
                                                   @endforeach
                                               </select><br><br><br>
                                               <select name="sales_order_account[]" id="sales_account" class="col-md-12" style="display:none">
-                                                  @foreach(list_parent('61') as $as)
-                                                      @if($as->name == 'PENJUALAN'.' '.$row['family'])
-                                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                                  @foreach(list_parent('61') as $sales_account)
+                                                      @if($sales_account->name == 'PENJUALAN'.' '.$row['family'])
+                                                          <option value="{{ $sales_account->id}}">{{ $sales_account->account_number }}&nbsp;&nbsp;{{ $sales_account->name }}</option>
                                                       @endif
                                                   @endforeach
                                               </select><br><br>
                                               <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12" style="display:none">
-                                                  @foreach(list_parent('63') as $as)
-                                                      @if($as->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
-                                                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                                  @foreach(list_parent('63') as $cost_goods_account)
+                                                      @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
+                                                          <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name }}</option>
                                                       @endif
                                                   @endforeach
                                               </select>

@@ -69,17 +69,17 @@
                             <p>{{ $sales_order->customer->address }}</p>
                         </div>
                     </td>
-                    <td style="width:15%" class="field-so">Sales No</td>
+                    <td style="width:15%;padding-left:30px" class="field-so">Sales No</td>
                     <td style="width:2%">:</td>
                     <td style="width:25%">{{ $sales_order->code }}</td>
                 </tr>
                 <tr>
-                    <td class="field-so">Created At</td>
+                    <td style="width:15%;padding-left:30px" class="field-so">Created At</td>
                     <td>:</td>
                     <td>{{ $sales_order->created_at }}</td>
                 </tr>
                 <tr>
-                    <td class="field-so">Status</td>
+                    <td style="width:15%;padding-left:30px" class="field-so">Status</td>
                     <td>:</td>
                     <td>{{ $sales_order->status }}</td>
                 </tr>

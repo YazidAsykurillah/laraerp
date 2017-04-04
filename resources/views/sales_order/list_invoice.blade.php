@@ -32,28 +32,32 @@
           <table class="table table-bordered" id="table-sales-order-invoice-invoice">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:10%;">Code</th>
-                <th>Bill Price</th>
-                <th>Paid Price</th>
-                <th>Created At</th>
-                <th>Created By</th>
-                <th>Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                  <th style="width:3%;background-color:#3c8dbc;color:white">#</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Bill Price</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Paid Price</th>
+                  <th style="width:14%;background-color:#3c8dbc;color:white">Created At</th>
+                  <th style="width:13%;background-color:#3c8dbc;color:white">Created By</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Due Date</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Debt</th>
+                  <th style="width:10%;background-color:#3c8dbc;color:white">Status</th>
+                  <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
-            <!-- <thead id="searchid">
+            <thead id="searchid">
               <tr>
-                <th style="width:5%;">#</th>
+                <th style="width:3%;"></th>
                 <th style="width:10%;">Code</th>
-                <th>Sales Order</th>
-                <th>Bill Price</th>
-                <th>Paid Price</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:10%;">Bill Price</th>
+                <th style="width:10%;">Paid Price</th>
+                <th style="width:14%;">Created At</th>
+                <th style="width:13%;">Created By</th>
+                <th style="width:10%;">Due Date</th>
+                <th style="width:10%;">Debt</th>
+                <th style="width:10%;">Status</th>
+                <th style="width:10%;text-align:center;"></th>
               </tr>
-            </thead> -->
+            </thead>
             <tbody>
 
             </tbody>
@@ -109,6 +113,8 @@
         { data: 'paid_price', name: 'paid_price' },
         { data: 'created_at', name: 'created_at' },
         { data: 'created_by', name: 'created_by' },
+        { data:'due_date', name:'due_date', searchable: false},
+        { data:'debt', name:'debt', searchable: false},
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
@@ -124,12 +130,12 @@
     });
 
       // Setup - add a text input to each header cell
-    // $('#searchid th').each(function() {
-    //       if ($(this).index() != 0 && $(this).index() != 8) {
-    //           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
-    //       }
-    //
-    // });
+    $('#searchid th').each(function() {
+          if ($(this).index() != 0 && $(this).index() != 9) {
+              $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+          }
+
+    });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tablesalesOrderInvoice.columns($(this).data('id')).search(this.value).draw();

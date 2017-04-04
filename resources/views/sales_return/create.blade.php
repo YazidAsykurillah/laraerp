@@ -49,7 +49,7 @@
                         <tbody>
                             @if(count($row_display))
                                 @foreach($row_display as $row)
-                                    <tr>
+                                    <tr style="display:none">
                                       <td colspan="2">
                                           <strong>
                                               {{ $row['family'] }}

@@ -31,14 +31,14 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="table responsive">
-                        <table class="table table-striped">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>PO Refference</th>
-                                    <th>Product</th>
-                                    <th>Sales Quantity</th>
-                                    <th>Returned Quantity</th>
-                                    <th>Notes</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">PO Code</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Salesed Quantity</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Returned Quantity</th>
+                                  <th style="width:20%;background-color:#3c8dbc;color:white">Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,6 +72,21 @@
                             @endif
                         </div>
                     </div><!-- /.row -->
+                    <br/>
+                    <div class="row">
+                      <div class="col-md-3">Customer Name</div>
+                      <div class="col-md-1">:</div>
+                      <div class="col-md-3">
+                        <p>{{ $sales_return->sales_order->customer->name }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">Created At</div>
+                      <div class="col-md-1">:</div>
+                      <div class="col-md-3">
+                        <p>{{ $sales_return->created_at }}</p>
+                      </div>
+                    </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
 
@@ -132,7 +147,7 @@
           </div>
         </div>
       </div>
-    <!--ENDModal complete purchase-return-->
+    <!--ENDModal complete sales-return-->
 @endsection
 
 @section('additional_scripts')

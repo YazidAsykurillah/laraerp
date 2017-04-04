@@ -54,9 +54,12 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Product</h3>
-          <!-- <a href="{{ URL::to('stock_balance/create')}}" class="btn btn-primary pull-right" title="Create new stocks balance">
-            <i class="fa fa-plus"></i>&nbsp;Add New
-          </a> -->
+          <div class="pull-right">
+            <!--Show button create payment only when invoice status is NOT completed yet-->
+            <a href="{{ url('stock_balance/print') }}" class="btn btn-default btn-xs">
+                <i class="fa fa-print"></i>&nbsp;Print
+            </a>
+          </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive">

@@ -70,22 +70,29 @@
                             <p>{{ $sales_order->customer->address }}</p>
                         </div>
                     </td>
-                    <td style="width:15%">Delivery No</td>
+                    <td style="width:15%;padding-left:30px">Delivery No</td>
                     <td style="width:2%">:</td>
                     <td style="width:25%">{{ $sales_order->code }}</td>
                 </tr>
                 <tr>
-                    <td>Delivery Date</td>
+                    <td style="width:15%;padding-left:30px">Delivery Date</td>
                     <td>:</td>
-                    <td>{{ $sales_order->created_at }}</td>
+                    <td>{{ $sales_order->ship_date }}</td>
                 </tr>
                 <tr>
-                    <td>Terms</td>
+                    <td style="width:15%;padding-left:30px">Terms</td>
                     <td>:</td>
-                    <td>No database</td>
+                    <td style="display:none">
+                        <?php
+                            $date = date_create($sales_order->created_at);
+                            date_add($date,date_interval_create_from_date_string($invoice_term->day_many.' days'));
+                        ?>
+                        {{ date_format($date,"Y-m-d h:i:s") }}&nbsp;&nbsp;(&nbsp;{{ $invoice_term->name }}&nbsp;)
+                    </td>
+                    <td>CASH</td>
                 </tr>
                 <tr>
-                    <td>Ship Via</td>
+                    <td style="width:15%;padding-left:30px">Ship Via</td>
                     <td>:</td>
                     <td>{{ $sales_order->driver->name }}&nbsp;&nbsp;{{ $sales_order->vehicle->number_of_vehicle }}</td>
                 </tr>

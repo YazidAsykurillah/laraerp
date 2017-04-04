@@ -125,7 +125,7 @@
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the invoice', 'id'=>'code']) !!}
+                {!! Form::text('code','',['class'=>'form-control', 'placeholder'=>'Code of the invoice', 'id'=>'code']) !!}
                 @if ($errors->has('code'))
                   <span class="help-block">
                     <strong>{{ $errors->first('code') }}</strong>

@@ -86,6 +86,7 @@ Route::resource('category', 'CategoryController');
 
 //Stock Balance
 //Update
+Route::get('stock_balance/print','StockBalanceController@printStockBalance');
 Route::put('UpdateSalesOrder', 'SalesOrderController@update');
 Route::post('deleteStockBalance','StockBalanceController@destroy');
 Route::resource('stock_balance','StockBalanceController');
@@ -116,6 +117,8 @@ Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
 //Purchase orders
+    //purchase hutang
+    Route::get('purchase-hutang','PurchaseOrderController@list_hutang');
     //call sub product
     Route::post('callSubProduct','PurchaseOrderController@callSubProduct');
 	//complete purchase order

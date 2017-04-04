@@ -13,7 +13,7 @@ use App\Customer;
 use App\Driver;
 use App\Vehicle;
 use App\MainProduct;
-
+use App\InvoiceTerm;
 use App\Product;
 
 class SalesOrderController extends Controller
@@ -319,7 +319,9 @@ class SalesOrderController extends Controller
     public function printDO(Request $request)
     {
         $data['sales_order'] = SalesOrder::findOrFail($request->id);
-
+        $sales_order = SalesOrder::findOrFail($request->id);
+        $invoice_term_id = $sales_order->customer->invoice_term_id;
+        $data['invoice_term'] = InvoiceTerm::findOrFail($invoice_term_id);
         $pdf = \PDF::loadView('pdf.do_sales_order',$data);
         return $pdf->stream('do_sales_order.pdf');
     }

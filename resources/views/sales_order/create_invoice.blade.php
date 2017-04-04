@@ -73,7 +73,7 @@
                                   <select name="cost_goods_account[]" id="cost_goods_account" class="col-md-12" style="display:none">
                                       @foreach(list_parent('63') as $cost_goods_account)
                                         @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$row['family'])
-                                          <option value="{{ $as->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name }}</option>
+                                          <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name }}</option>
                                         @endif
                                       @endforeach
                                   </select>

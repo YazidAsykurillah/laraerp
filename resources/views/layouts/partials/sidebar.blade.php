@@ -33,6 +33,7 @@
           <li><a href="{{ url('purchase-order') }}"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
           <li><a href="{{ url('purchase-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="{{ url('purchase-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
+          <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Hutang</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -52,7 +53,7 @@
           <span>Inventory</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Main Products</a></li>
+          <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
           <!-- <li><a href="{{ url('product') }}"><i class="fa fa-circle-o"></i> Products</a></li> -->
           <li><a href="{{ url('stock_balance') }}"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
           <li><a href="{{ url('family') }}"><i class="fa fa-circle-o"></i> Product Family</a></li>

@@ -163,4 +163,12 @@ class StockBalanceController extends Controller
         return redirect('stock_balance')
             ->with('successMessage',"$stock_balance->code has been deleted");
     }
+
+    public function printStockBalance(Request $request)
+    {
+        $data['products'] = Product::get();
+        $pdf = \PDF::loadView('pdf.stock_balance',$data);
+        return $pdf->stream('stock_balance.pdf');
+    }
+
 }

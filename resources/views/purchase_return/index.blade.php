@@ -157,7 +157,7 @@
       serverSide : true,
       ajax : '{!! route('datatables.getPurchaseReturns') !!}',
       columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
+        { data: 'rownum', name: 'rownum', searchable:false},
         { data: 'product_id', name: 'product.name' },
         { data: 'purchase_order_id', name: 'purchase_order.code' },
         { data: 'quantity', name: 'quantity' },

@@ -438,6 +438,13 @@ class DatatablesController extends Controller
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
+                }elseif ($purchase_returns->status == 'completed') {
+                    $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
                 }
 
                 return $actions_html;
@@ -546,6 +553,12 @@ class DatatablesController extends Controller
 
                 return $sales_order_invoices->creator->name;
             })
+            ->editColumn('due_date', function($sales_order_invoices){
+                return $sales_order_invoices->due_date;
+            })
+            ->editColumn('debt', function($sales_order_invoices){
+                return (number_format($sales_order_invoices->bill_price-$sales_order_invoices->paid_price));
+            })
             ->editColumn('status', function($sales_order_invoices){
                 return strtoupper($sales_order_invoices->status);
             })
@@ -606,15 +619,22 @@ class DatatablesController extends Controller
 
                 return $status_label.$status_action;
             })
+            ->editColumn('customer_name', function($sales_returns){
+                return $sales_returns->sales_order->customer->name;
+            })
             ->addColumn('actions', function($sales_returns){
-                $actions_html ='<a href="'.url('sales-return/'.$sales_returns->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                $actions_html .=    '<i class="fa fa-eye"></i>';
+                $actions_html ='<a href="'.url('sales-return/'.$sales_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                 $actions_html .='</a>&nbsp;';
                 //only provide edit and delete button if the purchase return status is posted, otherwise DO NOT show them
                 if($sales_returns->status == 'posted'){
                     $actions_html .='<a href="'.url('sales-return/'.$sales_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }elseif ($sales_returns->status == 'resent'){
                     $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';

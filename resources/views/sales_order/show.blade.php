@@ -352,20 +352,22 @@
             <div class="box-body">
                 <div class="table-responsive">
 
-                  <table class="table">
+                  <table class="table table-bordered">
+                    @if($sales_returns->count() > 0)
+                    <?php $no = 1; ?>
                     <thead>
                       <tr>
-                        <th>Product</th>
-                        <th>Returned Quantity</th>
-                        <th>Notes</th>
-                        <th>Status</th>
+                        <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                        <th style="width:25%;background-color:#3c8dbc;color:white">Code</th>
+                        <th style="width:25%;background-color:#3c8dbc;color:white">Returned Quantity</th>
+                        <th style="width:25%;background-color:#3c8dbc;color:white">Notes</th>
+                        <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
                       </tr>
                     </thead>
-                    <tbody>
-                    @if($sales_returns->count() > 0)
-
+                    </tbody>
                       @foreach($sales_returns as $sales_return)
                       <tr>
+                        <td> {{ $no++ }}</td>
                         <td> {{ $sales_return->product->name }}</td>
                         <td> {{ $sales_return->quantity }}</td>
                         <td> {{ $sales_return->notes }}</td>
@@ -375,7 +377,7 @@
                     @else
                     <tr>
                       <td colspan="4">
-                        <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related return to this purchase order</p>
+                        <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;Return can be made if an invoice has been created</p>
                       </td>
                     </tr>
                     @endif

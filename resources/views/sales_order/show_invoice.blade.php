@@ -59,7 +59,7 @@
                 @if(count($row_display))
                     @foreach($row_display as $row)
                     <?php $sum = 0; $sum_qty = 0;?>
-                        <tr>
+                        <tr style="display:none">
                           <td>
                               <strong>
                                   {{ $row['family'] }}
