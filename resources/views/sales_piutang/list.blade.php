@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Purchase Hutang
+  Sales Piutang
 @endsection
 
 @section('page_header')
   <h1>
-    Purchase Order
-    <small>Purchase Hutang Detail</small>
+    Sales Order
+    <small>Sales Piutang Detail</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('purchase-hutang') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Hutang</a></li>
+    <li><a href="{{ URL::to('sales-piutang') }}"><i class="fa fa-cart-arrow-down"></i> Sales Piutang</a></li>
     <li class="active">Index</li>
   </ol>
 @endsection
@@ -22,34 +22,34 @@
 @section('content')
     <ul class="nav nav-tabs">
       <li class="active">
-        <a data-toggle="tab" href="#section-riwayat-hutang"><i class="fa fa-desktop"></i>&nbsp;Riwayat Hutang</a>
+        <a data-toggle="tab" href="#section-riwayat-piutang"><i class="fa fa-desktop"></i>&nbsp;Riwayat Piutang</a>
       </li>
       <li>
         <a data-toggle="tab" href="#section-belum-lunas"><i class="fa fa-bookmark"></i>&nbsp;Faktur Belum Lunas</a>
       </li>
     </ul>
     <div class="tab-content">
-        <div id="section-riwayat-hutang" class="tab-pane fade in active">
+        <div id="section-riwayat-piutang" class="tab-pane fade in active">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Supplier Summary</h3>
+                            <h3 class="box-title">Customer Summary</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Supplier Code</th>
-                                            <th style="width:40%;background-color:#3c8dbc;color:white" colspan="3">Supplier Name</th>
+                                            <th style="width:15%;background-color:#3c8dbc;color:white">Customer Code</th>
+                                            <th style="width:40%;background-color:#3c8dbc;color:white" colspan="3">Customer Name</th>
                                             <th style="width:30%;background-color:#3c8dbc;color:white" colspan="2">Balance</th>
                                             <th style="width:15%;background-color:#3c8dbc;color:white">Detail</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $sum_balance = 0; ?>
-                                        @foreach($data_hutang as $dat)
+                                        @foreach($data_piutang as $dat)
                                         <?php $sum_bill_price = 0; $sum_paid_price = 0;?>
                                             <tr>
                                                 <td>{{ $dat['code'] }}</td>
@@ -59,19 +59,19 @@
                                             </tr>
                                             <tr class="demo{{ $dat['id']}} collapse">
                                                 <th></th>
-                                                <th>Code Invoice</th>
-                                                <th>Created At</th>
-                                                <th>Due Date</th>
-                                                <th>Bill Price</th>
-                                                <th>Paid Price</th>
-                                                <th>Age</th>
+                                                <th style="background-color:#3c8dbc;color:white">Code Invoice</th>
+                                                <th style="background-color:#3c8dbc;color:white">Created At</th>
+                                                <th style="background-color:#3c8dbc;color:white">Due Date</th>
+                                                <th style="background-color:#3c8dbc;color:white">Bill Price</th>
+                                                <th style="background-color:#3c8dbc;color:white">Paid Price</th>
+                                                <th style="background-color:#3c8dbc;color:white">Age</th>
                                             </tr>
-                                            @foreach($dat['purchase'] as $pur)
+                                            @foreach($dat['sales'] as $pur)
                                                 <tr class="demo{{$dat['id']}} collapse">
                                                     <td></td>
                                                     <td>{{ $pur['code'] }}</td>
                                                     <td>{{ $pur['created_at'] }}</td>
-                                                    <td></td>
+                                                    <td>{{ $pur['due_date'] }}</td>
                                                     <td>
                                                         {{ number_format($pur['bill_price']) }}
                                                         <?php $sum_bill_price += $pur['bill_price']; ?>
@@ -91,8 +91,8 @@
                                             </tr>
                                         @endforeach
                                             <tr>
-                                                <td colspan="6" align="right">Total Hutang</td>
-                                                <td>{{ number_format($sum_balance) }}</td>
+                                                <td colspan="6" align="right">Total Piutang</td>
+                                                <td style="background-color:red;color:white">{{ number_format($sum_balance) }}</td>
                                             </tr>
                                     </tbody>
                                     <tfoot>
@@ -113,7 +113,7 @@
                 <div class="col-lg-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Supplier Summary</h3>
+                            <h3 class="box-title">Customer Summary</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -124,13 +124,13 @@
                                             <th style="width:20%;background-color:#3c8dbc;color:white">Tanggal Faktur</th>
                                             <th style="width:20%;background-color:#3c8dbc;color:white">Jatuh Tempo</th>
                                             <th style="width:15%;background-color:#3c8dbc;color:white">Nilai Faktur</th>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Hutang</th>
+                                            <th style="width:15%;background-color:#3c8dbc;color:white">Piutang</th>
                                             <th style="width:10%;background-color:#3c8dbc;color:white">Umur</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($data_hutang as $dat)
-                                            <?php $sum_bill_price = 0; $sum_hutang = 0; ?>
+                                        @foreach($data_piutang as $dat)
+                                            <?php $sum_bill_price = 0; $sum_piutang = 0; ?>
                                             <tr>
                                                 <td>{{ $dat['code']}}</td>
                                                 <td>{{ $dat['name']}}</td>
@@ -139,23 +139,23 @@
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                            @foreach($dat['purchase'] as $pur)
+                                            @foreach($dat['sales'] as $sal)
                                                 <tr>
-                                                    <td align="center">{{ $pur['code']}}</td>
-                                                    <td align="center">{{ $pur['created_at']}}</td>
-                                                    <td align="center">{{ $pur['due_date']}}</td>
+                                                    <td align="center">{{ $sal['code']}}</td>
+                                                    <td align="center">{{ $sal['created_at']}}</td>
+                                                    <td align="center">{{ $sal['due_date']}}</td>
                                                     <td align="center">
-                                                        {{ number_format($pur['bill_price'])}}
-                                                        <?php $sum_bill_price += $pur['bill_price']; ?>
+                                                        {{ number_format($sal['bill_price'])}}
+                                                        <?php $sum_bill_price += $sal['bill_price']; ?>
                                                     </td>
                                                     <td align="center">
-                                                        {{ number_format($pur['bill_price']-$pur['paid_price'])}}
-                                                        <?php $sum_hutang += $pur['bill_price']-$pur['paid_price']; ?>
+                                                        {{ number_format($sal['bill_price']-$sal['paid_price'])}}
+                                                        <?php $sum_piutang += $sal['bill_price']-$sal['paid_price']; ?>
                                                     </td>
                                                     <td align="center">
                                                         <?php
                                                             $date1 = date_create(date('Y-m-d'));
-                                                            $date2 = date_create($pur['due_date']);
+                                                            $date2 = date_create($sal['due_date']);
                                                             $diff = date_diff($date1,$date2);
                                                             echo $diff->format("%R%a days");
                                                         ?>
@@ -165,7 +165,7 @@
                                                 <tr>
                                                     <td colspan="3"></td>
                                                     <td align="center" style="background-color:blue;color:white">{{ number_format($sum_bill_price) }}</td>
-                                                    <td align="center" style="background-color:red;color:white">{{ number_format($sum_hutang)}}</td>
+                                                    <td align="center" style="background-color:red;color:white">{{ number_format($sum_piutang)}}</td>
                                                 </tr>
                                         @endforeach
                                     </tbody>

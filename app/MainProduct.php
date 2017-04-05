@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\MainProduct;
 use App\Product;
 use App\Family;
 use App\Category;

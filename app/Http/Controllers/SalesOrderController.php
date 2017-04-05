@@ -396,4 +396,45 @@ class SalesOrderController extends Controller
         }
     }
 
+    public function list_piutang(Request $request)
+    {
+        $customer = Customer::get();
+        $data_piutang = [];
+        foreach ($customer as $cus) {
+            $data_piutang [] = [
+                'id'=>$cus->id,
+                'code'=>$cus->code,
+                'name'=>$cus->name,
+                'sales'=>$this->list_sales($cus->id)
+            ];
+        }
+
+        return view('sales_piutang.list')
+            ->with('data_piutang',$data_piutang);
+    }
+
+    protected function list_sales($customer_id)
+    {
+        $sales = \DB::table('sales_orders')->where('customer_id',$customer_id)->get();
+        $data_sales = [];
+        foreach ($sales as $key) {
+            if(count(SalesOrder::findOrFail($key->id)->sales_order_invoice) == 0)
+            {
+
+            }else
+            {
+                $data_sales [] = [
+                    'id'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->id,
+                    'code'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->code,
+                    'created_at'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->created_at,
+                    'due_date'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->due_date,
+                    'bill_price'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->bill_price,
+                    'paid_price'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->paid_price,
+                ];
+            }
+        }
+
+        return $data_sales;
+    }
+
 }

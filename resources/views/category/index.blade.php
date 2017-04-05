@@ -30,36 +30,43 @@
               </a>
             </div><!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered">
-                <tr>
-                  <th style="width:5%;">#</th>
-                  <th style="width:10%;">Code</th>
-                  <th>Nama Kategori</th>
-                  <th style="width:10%;text-align:center;">Aksi</th>
-                </tr>
-                @if($categories->count() >0 )
-                  @foreach($categories as $category)
-                    <tr>
-                      <td>#</td>
-                      <td>{{ $category->code }}</td>
-                      <td>{{ $category->name }}</a>
-                      </td>
-                      <td style="text-align:center;">
-                        <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
-                          <i class="fa fa-edit"></i>
-                        </a>&nbsp;
-                        <button type="button" class="btn btn-danger btn-xs btn-delete-category" data-id="{{ $category->id }}" data-text="{{$category->name}}">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  @endforeach
-                @else
-                <tr>
-                  <td colspan="4">Tidak ada kategori terdaftar</td>
-                </tr>
-                @endif
-              </table>
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                          <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
+                          <th style="width:55%;background-color:#3c8dbc;color:white">Nama Kategori</th>
+                          <th style="width:20%;background-color:#3c8dbc;color:white">Created At</th>
+                          <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @if($categories->count() >0 )
+                          @foreach($categories as $category)
+                            <tr>
+                              <td>#</td>
+                              <td>{{ $category->code }}</td>
+                              <td>{{ $category->name }}</td>
+                              <td>{{ $category->created_at }}</td>
+                              <td style="text-align:center;">
+                                <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
+                                  <i class="fa fa-edit"></i>
+                                </a>&nbsp;
+                                <button type="button" class="btn btn-danger btn-xs btn-delete-category" data-id="{{ $category->id }}" data-text="{{$category->name}}">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          @endforeach
+                        @else
+                        <tr>
+                          <td colspan="4">Tidak ada kategori terdaftar</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                  </table>
+              </div>
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
 

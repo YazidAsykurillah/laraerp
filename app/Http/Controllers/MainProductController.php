@@ -256,4 +256,49 @@ class MainProductController extends Controller
             ->with('main_product',$main_product)
             ->with('product',$product);
     }
+
+    public function product_available(Request $request)
+    {
+        $main_products = MainProduct::get();
+        $data_main_products = [];
+        foreach ($main_products as $mp) {
+            $data_main_products [] = [
+                'id'=>$mp->id,
+                'code'=>$mp->code,
+                'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
+                'name'=>$mp->name,
+                'image'=>$mp->image,
+                'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
+                'family'=>MainProduct::findOrFail($mp->id)->family->name,
+                'category'=>MainProduct::findOrFail($mp->id)->category->name,
+                'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
+                'sub_products'=>MainProduct::findOrFail($mp->id)->product,
+            ];
+        }
+        return view('product.index_product_available')
+            ->with('data_main_products',$data_main_products);
+    }
+
+    public function product_all(Request $request)
+    {
+        $main_products = MainProduct::get();
+        $data_main_products = [];
+        foreach ($main_products as $mp) {
+            $data_main_products [] = [
+                'id'=>$mp->id,
+                'code'=>$mp->code,
+                'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
+                'name'=>$mp->name,
+                'image'=>$mp->image,
+                'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
+                'family'=>MainProduct::findOrFail($mp->id)->family->name,
+                'category'=>MainProduct::findOrFail($mp->id)->category->name,
+                'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
+                'sub_products'=>MainProduct::findOrFail($mp->id)->product,
+            ];
+        }
+        return view('product.index_product_all')
+            ->with('data_main_products',$data_main_products);
+    }
+
 }

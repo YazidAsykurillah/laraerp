@@ -30,15 +30,15 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-stock-balance">
+          <table class="display" id="table-stock-balance">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:10%;">Code</th>
-                <th style="width:20%;">Created By</th>
-                <th style="width:20%;">Created At</th>
-                <th style="width:20%;">Updated At</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Created By</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Created At</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Updated At</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
             <!-- <thead id="searchid">

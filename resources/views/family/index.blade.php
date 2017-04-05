@@ -29,40 +29,44 @@
                         <i class="fa fa-plus"></i>&nbsp;Add New
                     </a>
                 </div>
-                <div class="box-body">
-                    <table class="table table-bordered" id="table-family">
-                        <tr>
-                            <th style="width:5%">#</th>
-                            <th style="width:10%">Code</th>
-                            <th style="width:55%">Nama Family</th>
-                            <th style="width:20%">Created At</th>
-                            <th style="width:10%">Actions</th>
-                        </tr>
-                        @if($family->count() > 0)
-                            @foreach($family as $fam)
-                                <tr>
-                                    <td>#</td>
-                                    <td>{{ $fam->code }}</td>
-                                    <td>{{ $fam->name }}</td>
-                                    <td>{{ $fam->created_at }}</td>
-                                    <td>
-                                        <a href="{{ url('family/'.$fam->id) }}" class="btn btn-success btn-xs" title="Click for view this family">
-                                            <i class="fa fa-external-link-square"></i>
-                                        </a>&nbsp;
-                                        <a href="{{ url('family/'.$fam->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit family ini">
-                                          <i class="fa fa-edit"></i>
-                                        </a>&nbsp;
-                                        <button type="button" class="btn btn-danger btn-xs btn-delete-family" data-id="{{ $fam->id }}" data-text="{{$fam->name}}">
-                                          <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
+                <div class="box-body table-responsive">
+                    <table class="table table-striped table-hover" id="table-family">
+                        <thead>
                             <tr>
-                                <td colspan="4">Tidak ada family terdaftar</td>
+                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                                <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
+                                <th style="width:55%;background-color:#3c8dbc;color:white">Nama Family</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Created At</th>
+                                <th style="width:10%;background-color:#3c8dbc;color:white">Actions</th>
                             </tr>
-                        @endif
+                        </thead>
+                        <tbody>
+                            @if($family->count() > 0)
+                                @foreach($family as $fam)
+                                    <tr>
+                                        <td>#</td>
+                                        <td>{{ $fam->code }}</td>
+                                        <td>{{ $fam->name }}</td>
+                                        <td>{{ $fam->created_at }}</td>
+                                        <td>
+                                            <a href="{{ url('family/'.$fam->id) }}" class="btn btn-success btn-xs" title="Click for view this family">
+                                                <i class="fa fa-external-link-square"></i>
+                                            </a>&nbsp;
+                                            <a href="{{ url('family/'.$fam->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit family ini">
+                                              <i class="fa fa-edit"></i>
+                                            </a>&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs btn-delete-family" data-id="{{ $fam->id }}" data-text="{{$fam->name}}">
+                                              <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5">Tidak ada family terdaftar</td>
+                                </tr>
+                            @endif
+                        </tbody>
                     </table>
                 </div>
                 <div class="box-footer clearfix">

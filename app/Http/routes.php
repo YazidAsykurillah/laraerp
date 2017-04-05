@@ -31,6 +31,8 @@ Route::post('deleteFamily','FamilyController@destroy');
 Route::resource('family','FamilyController');
 
 //main product
+Route::get('product-all','MainProductController@product_all');
+Route::get('product-available','MainProductController@product_available');
 Route::post('deleteMainProduct','MainProductController@destroy');
 Route::post('main-product.destroy_product','MainProductController@destroy_product');
 Route::put('main-product.update_product','MainProductController@update_product');
@@ -159,6 +161,8 @@ Route::resource('customer', 'CustomerController');
 
 
 //Sales Order
+    //sales piutang
+    Route::get('sales-piutang','SalesOrderController@list_piutang');
     //call sub product
     Route::post('callSubProduct','SalesOrderController@callSubProduct');
 	//Save

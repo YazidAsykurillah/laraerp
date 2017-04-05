@@ -6,8 +6,8 @@
 
 @section('page_header')
     <h1>
-        Main Products
-        <small>Main Product Lists</small>
+        Products
+        <small>Producs Lists</small>
     </h1>
 @endsection
 
@@ -16,22 +16,22 @@
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Main Products</h3>
+                    <h3 class="box-title">Products</h3>
                     <a href="{{ URL::to('main-product/create') }}" class="btn btn-primary pull-right" title="Create new main product">
                         <i class="fa fa-plus"></i>&nbsp;Add New
                     </a>
                 </div>
                 <div class="box-body table-responsive">
-                    <table class="table table-bordered" id="table-main-product">
+                    <table class="display" id="table-main-product">
                         <thead>
                             <tr>
-                                <th style="width:5%">#</th>
-                                <th style="width:15%">Code</th>
-                                <th style="width:20%">Main Product Name</th>
-                                <th style="width:20%">Family</th>
-                                <th style="width:20%">Category</th>
-                                <th style="width:10%">Unit</th>
-                                <th style="width:10%;text-align:center">Actions</th>
+                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Main Product Name</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                                <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                                <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

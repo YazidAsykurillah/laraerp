@@ -29,38 +29,36 @@
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
-        <div class="box-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="table-unit">
+        <div class="box-body table-responsive">
+            <table class="display" id="table-unit">
               <thead>
                 <tr>
-                  <th style="width:5%;">#</th>
-                  <th>Name</th>
-                  <th style="width:20%;">Created At</th>
-                  <th style="width:20%;">Updated At</th>
-                  <th style="width:10%;text-align:center;">Actions</th>
+                  <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                  <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
+                  <th style="width:30%;background-color:#3c8dbc;color:white">Created At</th>
+                  <th style="width:30%;background-color:#3c8dbc;color:white">Updated At</th>
+                  <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
                 </tr>
               </thead>
-              <thead id="searchid">
+              <!-- <thead id="searchid">
                 <tr>
-                  <th style="width:5%;">#</th>
-                  <th>Name</th>
-                  <th style="width:20%;">Created At</th>
-                  <th style="width:20%;">Updated At</th>
-                  <th style="width:10%;text-align:center;">Actions</th>
+                    <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
+                    <th style="width:30%;background-color:#3c8dbc;color:white">Created At</th>
+                    <th style="width:30%;background-color:#3c8dbc;color:white">Updated At</th>
+                    <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
                 </tr>
-              </thead>
+              </thead> -->
               <tbody>
-                
+
               </tbody>
             </table>
-          </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -110,7 +108,7 @@
     });
 
     // Delete button handler
-    tableUnit.on('click', '.btn-delete-unit', function (e) { 
+    tableUnit.on('click', '.btn-delete-unit', function (e) {
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#unit_id').val(id);
@@ -123,13 +121,13 @@
           if ($(this).index() != 0 && $(this).index() != 5) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tableUnit.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
   </script>
 @endsection

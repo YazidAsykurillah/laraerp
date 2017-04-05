@@ -27,7 +27,7 @@
           <h3 class="box-title">Purchase Return</h3>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-purchase-return">
+          <table class="display" id="table-purchase-return">
             <thead>
               <tr>
                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
