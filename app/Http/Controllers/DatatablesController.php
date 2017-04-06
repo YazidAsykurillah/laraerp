@@ -194,8 +194,8 @@ class DatatablesController extends Controller
 
         $data_units = Datatables::of($units)
             ->addColumn('actions', function($units){
-                    $actions_html ='<a href="'.url('unit/'.$units->id.'').'" class="btn btn-default btn-xs" title="Click to view the detail">';
-                    $actions_html .=    '<i class="fa fa-eye"></i>';
+                    $actions_html ='<a href="'.url('unit/'.$units->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
                     $actions_html .='<a href="'.url('unit/'.$units->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this unit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';

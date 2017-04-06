@@ -25,9 +25,10 @@
         <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Select Period Neraca</h3>
+                    <h3 class="box-title">Search Period Neraca</h3>
+                    <a data-toggle="collapse" href="#collapse-lost-profit" title="Click to search lost and profit"><i class="fa fa-arrow-down pull-right"></i></a>
                 </div>
-                <div class="box-body">
+                <div class="box-body collapse" id="collapse-lost-profit">
                     <div class="form-group">
                         <div class="col-sm-offset-1 col-sm-11">
                             <div class="radio">
@@ -156,13 +157,13 @@
                 @endif
                 {!! Form::close() !!}
             </div>
-            <div class="box-body">
-                <table class="table-responsive table">
+            <div class="box-body table-responsive">
+                <table class="table table-striped" id="table-lost-profit">
                     <thead>
                         <tr>
-                            <th>No.Akun</th>
-                            <th>Deskripsi</th>
-                            <th>Amount</th>
+                            <th style="width:30%">No.Akun</th>
+                            <th style="width:40%">Deskripsi</th>
+                            <th style="width:40%">Amount</th>
                         </tr>
                     </thead>
                     <tbody>

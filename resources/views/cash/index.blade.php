@@ -30,22 +30,22 @@
                     </a>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive">
-                    <table class="table table-bordered" id="table-cash">
+                    <table class="display" id="table-cash">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th style="text-align:center">Actions</th>
+                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                                <th style="width:40%;background-color:#3c8dbc;color:white">Code</th>
+                                <th style="width:40%;background-color:#3c8dbc;color:white">Name</th>
+                                <th style="text-align:center;width:15%;background-color:#3c8dbc;color:white">Actions</th>
                             </tr>
                         </thead>
                         <thead id="searchid">
-                            <!-- <tr>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th style="text-align:center">Actions</th>
-                            </tr> -->
+                            <tr>
+                                <th style="width:5%;"></th>
+                                <th style="width:40%;">Code</th>
+                                <th style="width:40%;">Name</th>
+                                <th style="text-align:center;width:15%;"></th>
+                            </tr>
                         </thead>
                         <tbody>
 
@@ -113,7 +113,7 @@
 
         // Setup - add a text input to each header cell
       $('#searchid th').each(function() {
-            if ($(this).index() != 0 && $(this).index() != 5) {
+            if ($(this).index() != 0 && $(this).index() != 3) {
                 $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
             }
 

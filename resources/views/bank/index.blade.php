@@ -30,19 +30,26 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-bank">
+          <table class="display" id="table-bank">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Account Name</th>
-                <th>Account Number</th>
-                <th style="text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
+                <th style="width:25%;background-color:#3c8dbc;color:white">Account Name</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Account Number</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">
-
+              <tr>
+                <th style="width:5%;"></th>
+                <th style="width:15%;">Code</th>
+                <th style="width:20%;">Name</th>
+                <th style="width:25%;">Account Name</th>
+                <th style="width:20%;">Account Number</th>
+                <th style="width:15%;text-align:center;"></th>
+              </tr>
             </thead>
             <tbody>
 

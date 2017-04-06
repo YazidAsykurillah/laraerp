@@ -54,21 +54,17 @@
                                             <tr>
                                                 <td>{{ $dat['code'] }}</td>
                                                 <td colspan="3">{{ $dat['name'] }}</td>
-<<<<<<< HEAD
-                                                <td colspan="2"></td>
-=======
                                                 <td colspan="2" class="target_sum"></td>
->>>>>>> 114a33c613be846042a42c4fc88e574ebdceaab7
                                                 <td><a data-toggle="collapse" href=".demo{{$dat['id']}}">detail</a></td>
                                             </tr>
                                             <tr class="demo{{ $dat['id']}} collapse">
                                                 <th></th>
-                                                <th>Code Invoice</th>
-                                                <th>Created At</th>
-                                                <th>Due Date</th>
-                                                <th>Bill Price</th>
-                                                <th>Paid Price</th>
-                                                <th>Age</th>
+                                                <th style="background-color:#3c8dbc;color:white">Code Invoice</th>
+                                                <th style="background-color:#3c8dbc;color:white">Created At</th>
+                                                <th style="background-color:#3c8dbc;color:white">Due Date</th>
+                                                <th style="background-color:#3c8dbc;color:white">Bill Price</th>
+                                                <th style="background-color:#3c8dbc;color:white">Paid Price</th>
+                                                <th style="background-color:#3c8dbc;color:white">Age</th>
                                             </tr>
                                             @foreach($dat['purchase'] as $pur)
                                                 <tr class="demo{{$dat['id']}} collapse">

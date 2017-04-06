@@ -393,7 +393,7 @@ class PurchaseOrderController extends Controller
                 'id'=>$sup->id,
                 'code'=>$sup->code,
                 'name'=>$sup->name,
-                'balance'=>
+                'balance'=>'',
                 'purchase'=>$this->list_purchase($sup->id)
             ];
         }

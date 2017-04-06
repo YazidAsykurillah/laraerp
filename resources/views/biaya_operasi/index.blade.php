@@ -30,7 +30,7 @@
                     </a>
                 </div>
                 <div class="box-body table-responsive">
-                    <table class="table table-bordered" id="table-beban-operasi">
+                    <table class="display" id="table-beban-operasi">
                         <thead>
                             <tr>
                                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
