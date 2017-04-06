@@ -11,6 +11,11 @@ use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 
 use App\Supplier;
+use App\Cash;
+use App\Bank;
+use App\PurchaseOrder;
+use App\PurchaseOrderInvoice;
+use App\PurchaseInvoicePayment;
 
 class SupplierController extends Controller
 {
@@ -104,4 +109,174 @@ class SupplierController extends Controller
         return redirect('supplier')
             ->with('successMessage', "$supplier->name has been deleted");
     }
+
+    protected function payment_invoices($id)
+    {
+        $supplier = Supplier::findOrFail($id);
+        $banks = Bank::lists('name', 'id');
+        $cashs = Cash::lists('name','id');
+        $purchase = \DB::table('purchase_orders')->where('supplier_id',$id)->get();
+        $data_invoice = [];
+        foreach ($purchase as $key) {
+            if(count(PurchaseOrder::findOrFail($key->id)->purchase_order_invoice) == 0)
+            {
+
+            }else{
+                array_push($data_invoice,[
+                    'id'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->id,
+                    'code'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->code,
+                    'purchase_order_id'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->purchase_order_id,
+                    'bill_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->bill_price,
+                    'paid_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->paid_price,
+                    'status'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->status,
+                    'created_at'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->created_at,
+                ]);
+            }
+        }
+        // print_r($data_invoice);
+        // exit();
+        return view('supplier.payment_invoices')
+            ->with('supplier',$supplier)
+            ->with('banks',$banks)
+            ->with('cashs',$cashs)
+            ->with('data_invoice',$data_invoice);
+    }
+
+    public function store_invoice_payment_cash(Request $request)
+    {
+        $data_invoice_payment = [];
+        $invoice_payment_id = [];
+        $data_cash_invoice_payment = [];
+        $data_transaction_invoice_payment = [];
+        $data_transaction_invoice_payment_hutang = [];
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            \DB::table('purchase_order_invoices')->where('purchase_order_id',$request->purchase_order_id[$key])->update(['paid_price'=>$request->paid_price[$key]+floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key]))]);
+            array_push($data_invoice_payment,[
+                'purchase_order_invoice_id'=>$request->invoice_id[$key],
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'payment_method_id'=>$request->payment_method_id,
+                'receiver'=>\Auth::user()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+            array_push($data_transaction_invoice_payment,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>$request->cash_account,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>'purchase_order_payment',
+                'type'=>'keluar',
+            ]);
+            array_push($data_transaction_invoice_payment_hutang,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>79,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>'purchase_order_payment',
+                'type'=>'keluar',
+            ]);
+        }
+
+        //insert to table purchase invoice payments
+        \DB::table('purchase_invoice_payments')->insert($data_invoice_payment);
+        //insert to table transaction chart account
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment);
+        //insert to table transaction chart account "hutang"
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment_hutang);
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            array_push($data_cash_invoice_payment,[
+                'cash_id'=>$request->cash_id,
+                'purchase_invoice_payment_id'=>\DB::table('purchase_invoice_payments')->select('id')->where('purchase_order_invoice_id',$request->invoice_id[$key])->latest()->first()->id,
+            ]);
+        }
+        //insert to table cash purchase invoice payments
+        \DB::table('cash_purchase_invoice_payment')->insert($data_cash_invoice_payment);
+
+        // foreach ($data_cash_invoice_payment as $key) {
+        //         print_r($key['purchase_invoice_payment_id']->id);
+        // }
+        // print_r($data_cash_invoice_payment);
+        // exit();
+        $cash_value = Cash::findOrFail($request->cash_id);
+        $cash_value->value = $cash_value->value-floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
+        $cash_value->save();
+
+        return redirect('supplier')
+            ->with('successMessage','payment supplier invoice has been created');
+    }
+
+    public function store_invoice_payment_bank(Request $request)
+    {
+        $data_invoice_payment = [];
+        $invoice_payment_id = [];
+        $data_cash_invoice_payment = [];
+        $data_transaction_invoice_payment = [];
+        $data_transaction_invoice_payment_hutang = [];
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            \DB::table('purchase_order_invoices')->where('purchase_order_id',$request->purchase_order_id[$key])->update(['paid_price'=>$request->paid_price[$key]+floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key]))]);
+            array_push($data_invoice_payment,[
+                'purchase_order_invoice_id'=>$request->invoice_id[$key],
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'payment_method_id'=>$request->payment_method_id,
+                'receiver'=>\Auth::user()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+            array_push($data_transaction_invoice_payment,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>$request->transfer_account,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>'purchase_order_payment',
+                'type'=>'keluar',
+            ]);
+            array_push($data_transaction_invoice_payment_hutang,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>79,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>'purchase_order_payment',
+                'type'=>'keluar',
+            ]);
+        }
+
+        //insert to table purchase invoice payments
+        \DB::table('purchase_invoice_payments')->insert($data_invoice_payment);
+        //insert to table transaction chart account
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment);
+        //insert to table transaction chart account "hutang"
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment_hutang);
+
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            array_push($data_cash_invoice_payment,[
+                'bank_id'=>$request->bank_id,
+                'purchase_invoice_payment_id'=>\DB::table('purchase_invoice_payments')->select('id')->where('purchase_order_invoice_id',$request->invoice_id[$key])->latest()->first()->id,
+            ]);
+        }
+        //insert to table cash purchase invoice payments
+        \DB::table('bank_purchase_invoice_payment')->insert($data_cash_invoice_payment);
+
+        // foreach ($data_cash_invoice_payment as $key) {
+        //         print_r($key['purchase_invoice_payment_id']->id);
+        // }
+        // print_r($data_cash_invoice_payment);
+        // exit();
+        $bank_value = Bank::findOrFail($request->bank_id);
+        $bank_value->value = $bank_value->value-floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
+        $bank_value->save();
+
+        return redirect('supplier')
+            ->with('successMessage','payment supplier invoice has been created');
+    }
+
+
+
 }

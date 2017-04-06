@@ -68,7 +68,11 @@
             <div class="form-group{{ $errors->has('do_number') ? ' has-error' : '' }}">
               {!! Form::label('do_number', 'D.O Number', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                  <input type="text" class="form-control" placeholder="D.O Number" id="do_number" autocomplete="off" value="SO-{{$sales_order->id+1}}" name="do_number">
+                  @if(count($sales_order) == 0)
+                    <input type="text" class="form-control" placeholder="D.O Number" id="do_number" autocomplete="off" value="SO-01" name="do_number">
+                  @else
+                    <input type="text" class="form-control" placeholder="D.O Number" id="do_number" autocomplete="off" value="SO-{{$sales_order->id+1}}" name="do_number">
+                  @endif
                   @if($errors->has('do_number'))
                       <span class="help-block">
                           <strong>{{ $errors->first('do_number') }}</strong>

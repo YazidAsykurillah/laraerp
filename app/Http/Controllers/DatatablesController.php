@@ -52,6 +52,12 @@ class DatatablesController extends Controller
         ]);
 
         $data_customers = Datatables::of($customers)
+            ->editColumn('name', function($customers){
+                $actions_html = '<a href="'.url('customer/'.$customers->id.'/payment-invoices').'" class="btn btn-default btn-xs pull-right" title="Create payment for this invoice">';
+                $actions_html .='<i class="fa fa-money"></i>';
+                $actions_html .='</a>';
+                return $customers->name.$actions_html;
+            })
             ->editColumn('invoice_term_id', function($customers){
                 if(!is_null($customers->invoice_term_id)){
                     return $customers->invoice_term->name;
@@ -228,6 +234,12 @@ class DatatablesController extends Controller
             'primary_phone_number',
         ]);
         $data_suppliers = Datatables::of($suppliers)
+            ->editColumn('name', function($suppliers){
+                $actions_html = '<a href="'.url('supplier/'.$suppliers->id.'/payment-invoices').'" class="btn btn-default btn-xs pull-right" title="Create payment for this invoice">';
+                $actions_html .='<i class="fa fa-money"></i>';
+                $actions_html .='</a>';
+                return $suppliers->name.$actions_html;
+            })
             ->addColumn('actions', function($suppliers){
                     $actions_html ='<a href="'.url('supplier/'.$suppliers->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';

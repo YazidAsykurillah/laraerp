@@ -106,6 +106,9 @@ Route::post('deleteProduct', 'ProductController@destroy');
 Route::resource('product', 'ProductController');
 
 //Suppliers
+Route::post('supplier.store_invoice_payment_bank','SupplierController@store_invoice_payment_bank');
+Route::post('supplier.store_invoice_payment_cash','SupplierController@store_invoice_payment_cash');
+Route::get('supplier/{id}/payment-invoices','SupplierController@payment_invoices');
 Route::post('deleteSupplier', 'SupplierController@destroy');
 Route::resource('supplier', 'SupplierController');
 
@@ -115,6 +118,9 @@ Route::resource('unit', 'UnitController');
 
 
 //Customer
+Route::post('customer.store_invoice_payment_bank','CustomerController@store_invoice_payment_bank');
+Route::post('customer.store_invoice_payment_cash','CustomerController@store_invoice_payment_cash');
+Route::get('customer/{id}/payment-invoices','CustomerController@payment_invoices');
 Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
