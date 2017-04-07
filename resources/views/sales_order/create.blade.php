@@ -155,7 +155,7 @@
                 <div class="form-group{{ $errors->has('ship_date') ? ' has-error' : '' }}">
                   {!! Form::label('ship_date', 'Ship Date', ['class'=>'col-sm-3 control-label']) !!}
                   <div class="col-sm-6">
-                      {{ Form::text('ship_date',null,['class'=>'form-control','placeholder'=>'Ship Date','id'=>'ship_date','autocomplete'=>'off']) }}
+                      {{ Form::date('ship_date',\Carbon\Carbon::now(),['class'=>'form-control','placeholder'=>'Ship Date','id'=>'ship_date','autocomplete'=>'off']) }}
                       @if($errors->has('ship_date'))
                           <span class="help-block">
                               <strong>{{ $errors->first('ship_date') }}</strong>
@@ -233,13 +233,13 @@
   <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
   {!! Html::style('css/datepicker/jquery-ui.css') !!}
   {!! Html::script('js/jquery-ui.js') !!}
-  <script>
+  <!-- <script>
       $( function() {
         $( "#ship_date" ).datepicker({
             dateFormat: 'yy-mm-dd'
         });
       } );
-  </script>
+  </script> -->
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();

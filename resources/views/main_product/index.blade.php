@@ -27,10 +27,11 @@
                             <tr>
                                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                                 <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Main Product Name</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Product Name</th>
+                                <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                                <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
                                 <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                                <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
                                 <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
                             </tr>
                         </thead>
@@ -87,9 +88,10 @@
         { data: 'family_id', name: 'family_id' },
         { data: 'category_id', name: 'category_id' },
         { data: 'unit_id', name: 'unit_id'},
+        { data: 'description', name: 'description', searchable:false},
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
-      "order" :[[1,"desc"]]
+    
 
     });
 

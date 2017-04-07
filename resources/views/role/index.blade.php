@@ -30,15 +30,21 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-role">
+          <table class="display" id="table-role">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="">Role Name</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:80%;background-color:#3c8dbc;color:white">Role Name</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
-            
+            <thead id="searchid">
+              <tr>
+                <th style="width:5%;"></th>
+                <th style="width:80%;">Role Name</th>
+                <th style="width:15%;text-align:center;"></th>
+              </tr>
+            </thead>
             <tbody>
 
             </tbody>
@@ -98,5 +104,18 @@
       $('#role-name-to-delete').text(name);
       $('#modal-delete-role').modal('show');
     });
+
+      // Setup - add a text input to each header cell
+      $('#searchid th').each(function() {
+            if ($(this).index() != 0 && $(this).index() != 2) {
+                $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+            }
+
+      });
+      //Block search input and select
+      $('#searchid input').keyup(function() {
+        tableRole.columns($(this).data('id')).search(this.value).draw();
+      });
+      //ENDBlock search input and select
   </script>
 @endsection

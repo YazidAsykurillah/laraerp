@@ -23,7 +23,7 @@
 @section('content')
     {!! Form::model($vehicle,['route'=>['vehicle.update',$vehicle->id],'class'=>'form-horizontal','method'=>'put','files'=>true]) !!}
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Basic Information</h3>
@@ -31,7 +31,7 @@
                 <div class="box-body">
                     <div class="form-group{{ $errors->has('code') ? 'has-error' : '' }}">
                         {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
-                        <div class="col-sm-10">
+                        <div class="col-sm-4">
                             {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code']) !!}
                             @if($errors->has('code'))
                                 <span class="help-block">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
                         {!! Form::label('vehicle_cat','Vehicle',['class'=>'col-sm-2 control-label']) !!}
-                        <div class="col-sm-10">
+                        <div class="col-sm-4">
                             {{ Form::select('category',$vehicle_cat,null,['class'=>'form-control','id'=>'category']) }}
                             @if($errors->has('category'))
                             <span class="help-block">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group{{ $errors->has('code') ? 'has-errors' : '' }}">
                         {!! Form::label('number_of_vehicle','Number of Vehicle',['class'=>'col-sm-2 control-label']) !!}
-                        <div class="col-sm-10">
+                        <div class="col-sm-4">
                             {!! Form::text('number_of_vehicle',null,['class'=>'form-control','placeholder'=>'Number of the vehicle','id'=>'number_of_vehicle']) !!}
                             @if ($errors->has('number_of_vehicle'))
                               <span class="help-block">
@@ -68,13 +68,13 @@
     </div>
     <!--ROW Submission-->
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-12">
         <!--BOX submission buttons-->
         <div class="box">
           <div class="box-body">
             <div class="form-group">
                 {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-10">
+              <div class="col-sm-4">
                 <a href="{{ url('vehicle') }}" class="btn btn-default">
                   <i class="fa fa-repeat"></i>&nbsp;Cancel
                 </a>&nbsp;

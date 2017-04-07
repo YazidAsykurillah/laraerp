@@ -35,7 +35,8 @@
                             <tr>
                                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                                 <th style="width:40%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:40%;background-color:#3c8dbc;color:white">Name</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
+                                <th style="width:20%;background-color:#3c8dbc;color:white">Balance</th>
                                 <th style="text-align:center;width:15%;background-color:#3c8dbc;color:white">Actions</th>
                             </tr>
                         </thead>
@@ -43,7 +44,8 @@
                             <tr>
                                 <th style="width:5%;"></th>
                                 <th style="width:40%;">Code</th>
-                                <th style="width:40%;">Name</th>
+                                <th style="width:20%;">Name</th>
+                                <th style="width:20%;">Balance</th>
                                 <th style="text-align:center;width:15%;"></th>
                             </tr>
                         </thead>
@@ -97,6 +99,7 @@
                 {data: 'rownum' , name: 'rownum' , searchable: false},
                 {data: 'code' , name: 'code'},
                 {data: 'name' , name: 'name'},
+                {data: 'value' , name: 'value'},
                 {data: 'actions' ,  name: 'actions' , orderable: false , searchable: false , className: 'dt-center'},
             ],
             "order" : [[1, "asc"]]
@@ -113,7 +116,7 @@
 
         // Setup - add a text input to each header cell
       $('#searchid th').each(function() {
-            if ($(this).index() != 0 && $(this).index() != 3) {
+            if ($(this).index() != 0 && $(this).index() != 4) {
                 $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
             }
 

@@ -224,7 +224,7 @@ class MainProductController extends Controller
 
 
         //$product->save();
-        return redirect('main-product/'.$request->parent_id)
+        return redirect('main-product/'.$request->parent_id.'/show')
             ->with('successMessage', "Product has been added");
     }
 

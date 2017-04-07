@@ -69,13 +69,14 @@
         <ul class="treeview-menu">
           <li><a href="{{ url('bank') }}"><i class="fa fa-circle-o"></i> Bank</a></li>
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
+          <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
           <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
           <li><a href="#"><i class="fa fa-circle-o"></i> Ledger</a></li>
           <li><a href="{{ url('lost-profit') }}"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
-          <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
-          <li><a href="{{ url('neraca') }}"><i class="fa fa-circle-o"></i> Neraca</a></li>
           <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Hutang</a></li>
           <li><a href="{{ url('sales-piutang') }}"><i class="fa fa-circle-o"></i> List Piutang</a></li>
+          <li><a href="{{ url('neraca') }}"><i class="fa fa-circle-o"></i> Neraca</a></li>
+          <li><a href="{{ url('report') }}"><i class="fa fa-circle-o"></i> Report</a></li>
         </ul>
       </li>
       <li class="treeview">

@@ -33,14 +33,22 @@
           <table class="table table-bordered" id="table-user">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:20%;">Name</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:30%;background-color:#3c8dbc;color:white">Name</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Role</th>
+                <th style="width:30%;background-color:#3c8dbc;color:white">Email</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
-            
+            <thead id="searchid">
+              <tr>
+                <th style="width:5%;"></th>
+                <th style="width:30%;">Name</th>
+                <th style="width:20%;">Role</th>
+                <th style="width:30%;">Email</th>
+                <th style="width:15%;text-align:center;"></th>
+              </tr>
+            </thead>
             <tbody>
 
             </tbody>
@@ -105,7 +113,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 4) {
           $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
     });
@@ -128,6 +136,6 @@
     $('#form-delete-user').on('submit', function(){
       $('#btn-confirm-delete-user').prop('disabled', true);
     });
-    
+
   </script>
 @endsection

@@ -17,6 +17,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//report
+Route::post('report/search','ReportController@report_search');
+Route::resource('report','ReportController');
+
 //biaya operasi
 Route::post('deleteTransChartAccount','BiayaOperasiController@destroy');
 Route::resource('biaya-operasi','BiayaOperasiController');

@@ -51,15 +51,64 @@
 
             </div><!-- /.box-header -->
             <div class="box-body">
-
               <div class="row">
-                  <div class="col-md-2"><strong>Code</strong></div>
-                  <div class="col-md-6"><strong>{{ $purchase_order->code }}</strong></div>
-              </div>
-              <br/>
-
+                  <div class="col-md-2">Code</div>
+                  <div class="col-md-1">:</div>
+                  <div class="col-md-3">
+                    {{ $purchase_order->code }}
+                  </div>
+                  <div class="col-md-2">Supplier Name</div>
+                  <div class="col-md-1">:</div>
+                  <div class="col-md-3">
+                    {{ $purchase_order->supplier->name }}
+                  </div>
+              </div><br/>
+              <div class="row">
+                <div class="col-md-2">Notes</div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-3">
+                  {!! nl2br($purchase_order->notes) !!}
+                </div>
+              </div><br/>
+              <div class="row">
+                <div class="col-md-2">Created At</div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-3">
+                  {{ $purchase_order->created_at }}
+                </div>
+                <div class="col-md-2">Status</div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-3">
+                  {{ strtoupper($purchase_order->status) }}
+                  @if($purchase_order->status == 'posted')
+                    <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to accept this purchase order">
+                      <i class="fa fa-sign-in"></i>&nbsp;Accept
+                    </button>
+                    <br/>
+                    <br/>
+                    <div class="alert alert-info">
+                      <p>
+                        <i class="fa fa-info-circle"></i>&nbsp;
+                        Invoices can be made if this status "Accept".
+                      </p>
+                    </div>
+                  @endif
+                  @if($purchase_order->status == 'accepted')
+                    <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
+                      <i class="fa fa-sign-in"></i>&nbsp;Complete
+                    </button>
+                    <br/>
+                    <br/>
+                    <div class="alert alert-success">
+                      <p>
+                        <i class="fa fa-info-circle"></i>&nbsp;
+                        Invoices can already be made.
+                      </p>
+                    </div>
+                  @endif
+                </div>
+              </div><br/>
               <div class="table-responsive">
-
                 <table class="table table-bordered" id="table-selected-products">
                   <thead>
                     <tr>
@@ -122,65 +171,6 @@
 
                   </tfoot>
                 </table>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">Supplier Name</div>
-                <div class="col-md-1">:</div>
-                <div class="col-md-8">
-                  {{ $purchase_order->supplier->name }}
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-3">Created At</div>
-                <div class="col-md-1">:</div>
-                <div class="col-md-8">
-                  {{ $purchase_order->created_at }}
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-3">Status</div>
-                <div class="col-md-1">:</div>
-                <div class="col-md-8">
-                  {{ strtoupper($purchase_order->status) }}
-                  <br/>
-                  @if($purchase_order->status == 'posted')
-                    <button id="btn-accept" class="btn btn-xs btn-warning" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to accept this purchase order">
-                      <i class="fa fa-sign-in"></i>&nbsp;Accept
-                    </button>
-                    <br/>
-                    <br/>
-                    <div class="alert alert-info">
-                      <p>
-                        <i class="fa fa-info-circle"></i>&nbsp;
-                        Invoices can be made if this status "Accept".
-                      </p>
-                    </div>
-                  @endif
-                  @if($purchase_order->status == 'accepted')
-                    <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
-                      <i class="fa fa-sign-in"></i>&nbsp;Complete
-                    </button>
-                    <br/>
-                    <br/>
-                    <div class="alert alert-success">
-                      <p>
-                        <i class="fa fa-info-circle"></i>&nbsp;
-                        Invoices can already be made.
-                      </p>
-                    </div>
-                  @endif
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-3">Notes</div>
-                <div class="col-md-1">:</div>
-                <div class="col-md-8">
-                  {!! nl2br($purchase_order->notes) !!}
-                </div>
               </div>
             </div><!-- /.box-body -->
 
@@ -441,7 +431,13 @@
 
 
 @section('additional_scripts')
-
+<script type="text/javascript">
+$('document').ready(function(){
+   $('#table-selected-products').DataTable({
+     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+   });
+});
+</script>
 <script type="text/javascript">
   //Accept
   $('#btn-accept').on('click', function(event){

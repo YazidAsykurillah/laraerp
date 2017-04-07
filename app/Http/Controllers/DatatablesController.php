@@ -812,6 +812,9 @@ class DatatablesController extends Controller
         ]);
 
         $data_cashs = Datatables::of($cashs)
+            ->editColumn('value', function($cashs){
+                return number_format($cashs->value);
+            })
             ->addColumn('actions',function($cashs){
                 $actions_html ='<a href="'.url('cash/'.$cashs->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                 $actions_html .=    '<i class="fa fa-external-link-square"></i>';

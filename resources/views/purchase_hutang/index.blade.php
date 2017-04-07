@@ -55,7 +55,7 @@
                                                 <td>{{ $dat['code'] }}</td>
                                                 <td colspan="3">{{ $dat['name'] }}</td>
                                                 <td colspan="2" class="target_sum"></td>
-                                                <td><a data-toggle="collapse" href=".demo{{$dat['id']}}">detail</a></td>
+                                                <td><a data-toggle="collapse" href=".demo{{$dat['id']}}">Invoices</a></td>
                                             </tr>
                                             <tr class="demo{{ $dat['id']}} collapse">
                                                 <th></th>
@@ -90,13 +90,12 @@
                                               </td>
                                             </tr>
                                         @endforeach
-                                            <tr>
-                                                <td colspan="6" align="right">Total Hutang</td>
-                                                <td>{{ number_format($sum_balance) }}</td>
-                                            </tr>
                                     </tbody>
                                     <tfoot>
-
+                                        <tr>
+                                            <td colspan="6" align="right">Total Hutang</td>
+                                            <td style="background-color:red;color:white">{{ number_format($sum_balance) }}</td>
+                                        </tr>
                                     </tfoot>
                                 </table>
                             </div>

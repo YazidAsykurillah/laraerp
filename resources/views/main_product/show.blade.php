@@ -100,7 +100,7 @@
                           <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
                           <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
                           <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
-                          <th style="width:15%;background-color:#3c8dbc;color:white">Stock Minumum</th>
+                          <th style="width:15%;background-color:#3c8dbc;color:white;display:none">Stock Minumum</th>
                           <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
                         </tr>
                     </thead>
@@ -125,7 +125,7 @@
                           <td>
                               <input type="text" name="stock_parent" value="0">
                           </td>
-                          <td>
+                          <td style="display:none">
                               <input type="text" name="stock_minimum_parent" value="0">
                           </td>
                           <td>{{ $main_product->category->name}}</td>
@@ -143,7 +143,7 @@
                             <td>
                                 <input type="text" name="stock[]" value="{{ $key->stock }}">
                             </td>
-                            <td>
+                            <td style="display:none">
                                 <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
                             </td>
                             <td>{{ $main_product->category->name}}</td>

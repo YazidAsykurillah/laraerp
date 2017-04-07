@@ -30,28 +30,33 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-invoice-term">
+          <table class="display" id="table-invoice-term">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th>Name</th>
-                <th>Day Many(s)</th>
-                <th style="width:10%;text-align:center;">Actions</th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:40%;background-color:#3c8dbc;color:white">Name</th>
+                <th style="width:40%;background-color:#3c8dbc;color:white">Day Many(s)</th>
+                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">
-              
+                <tr>
+                  <th style="width:5%;"></th>
+                  <th style="width:40%;">Name</th>
+                  <th style="width:40%;">Day Many(s)</th>
+                  <th style="width:15%;text-align:center;"></th>
+                </tr>
             </thead>
             <tbody>
-              
+
             </tbody>
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
 
@@ -101,7 +106,7 @@
     });
 
     // Delete button handler
-    tableInvoiceTerm.on('click', '.btn-delete-invoice-term', function (e) { 
+    tableInvoiceTerm.on('click', '.btn-delete-invoice-term', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#sales_order_id').val(id);
@@ -111,19 +116,19 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 6) {
+          if ($(this).index() != 0 && $(this).index() != 3) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
-          
+
     });
     //Block search input and select
     $('#searchid input').keyup(function() {
       tableInvoiceTerm.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
     //Handler accept sales order
-    tableInvoiceTerm.on('click', '.btn-accept-invoice-term', function (e) { 
+    tableInvoiceTerm.on('click', '.btn-accept-invoice-term', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_accepted').val(id);
@@ -133,7 +138,7 @@
     //ENDHandler accept sales order
 
     //Handler complete sales order
-    tableInvoiceTerm.on('click', '.btn-complete-invoice-term', function (e) { 
+    tableInvoiceTerm.on('click', '.btn-complete-invoice-term', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
       $('#id_to_be_completed').val(id);

@@ -36,7 +36,7 @@
             <table class="table table-bordered" id="table-selected-products">
               <tr>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Product Name</th>
                 <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
@@ -128,7 +128,7 @@
                 <tr>
                     <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                     <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Product Name</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
                     <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
@@ -139,7 +139,7 @@
                 <tr>
                     <th style="width:5%;"></th>
                     <th style="width:10%;">Family</th>
-                    <th style="width:20%;">Code</th>
+                    <th style="width:20%;">Product Name</th>
                     <th style="width:15%;">Image</th>
                     <th style="width:20%;">Description</th>
                     <th style="width:15%;">Unit</th>

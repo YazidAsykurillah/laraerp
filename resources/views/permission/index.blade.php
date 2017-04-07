@@ -27,16 +27,23 @@
           <h3 class="box-title">Permission List</h3>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-permission">
+          <table class="display" id="table-permission">
             <thead>
               <tr>
-                <th style="width:5%;">#</th>
-                <th style="width:20%;">Permission Slug</th>
-                <th style="">Description</th>
-                <th style="width:5%;"></th>
+                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
+                <th style="width:40%;background-color:#3c8dbc;color:white">Permission Slug</th>
+                <th style="width:40%;background-color:#3c8dbc;color:white">Description</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white;text-align:center">Actions</th>
               </tr>
             </thead>
-            
+            <thead id="searchid">
+              <tr>
+                <th style="width:5%;"></th>
+                <th style="width:40%;">Permission Slug</th>
+                <th style="width:40%;">Description</th>
+                <th style="width:15%;"></th>
+              </tr>
+            </thead>
             <tbody>
 
             </tbody>
@@ -62,5 +69,17 @@
         {data: 'actions', name: 'actions', searchable:false, orderable:false},
       ],
     });
+    // Setup - add a text input to each header cell
+  $('#searchid th').each(function() {
+        if ($(this).index() != 0 && $(this).index() != 3) {
+            $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
+        }
+
+  });
+  //Block search input and select
+  $('#searchid input').keyup(function() {
+    tablePermission.columns($(this).data('id')).search(this.value).draw();
+  });
+  //ENDBlock search input and select
   </script>
 @endsection
