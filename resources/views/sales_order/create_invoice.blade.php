@@ -52,7 +52,7 @@
                       @if(count($row_display))
                           @foreach($row_display as $row)
                           <?php $sum_qty = 0; $sum = 0; ?>
-                              <tr style="display:none">
+                              <tr style="display:">
                                 <td>
                                   <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                   {{ $row['family'] }}<br>
@@ -63,10 +63,10 @@
                                       @endif
                                     @endforeach
                                   </select><br/><br/>
-                                  <select name="sales_order_account[]" id="sales_order_account" class="col-md-12" style="display:none">
+                                  <select name="sales_order_account[]" id="sales_order_account" class="col-md-12" style="display:">
                                       @foreach(list_parent('61') as $sales_account)
                                         @if($sales_account->name == 'PENJUALAN'.' '.$row['family'])
-                                          <option value="{{ $as->id}}">{{ $sales_account->account_number }}&nbsp;&nbsp;{{ $sales_account->name }}</option>
+                                          <option value="{{ $sales_account->id}}">{{ $sales_account->account_number }}&nbsp;&nbsp;{{ $sales_account->name }}</option>
                                         @endif
                                       @endforeach
                                   </select><br/><br/>
