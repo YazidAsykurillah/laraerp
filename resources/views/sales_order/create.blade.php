@@ -189,7 +189,7 @@
                       <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                       <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
                       <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                      <!-- <th style="width:15%;background-color:#3c8dbc;color:white">Image</th> -->
+                      <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
                       <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
@@ -200,7 +200,7 @@
                       <th style="width:5%;"></th>
                       <th style="width:10%;">Family</th>
                       <th style="width:20%;">Code</th>
-                      <!-- <th style="width:15%;">Image</th> -->
+                      <th style="width:15%;">Stock</th>
                       <th style="width:20%;">Description</th>
                       <th style="width:15%;">Unit</th>
                       <th style="width:15%;">Category</th>
@@ -224,6 +224,45 @@
     </div>
   </div>
 <!--ENDModal Display product datatables-->
+
+<!-- Modal view sub chart account -->
+<div class="modal fade" id="modal-view-product" tabindex="-1" role="dialog" aria-labelledby="modal-view-subChartAccountLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-delete-subChartAccountLabel">View Sub Chart Account</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box">
+              <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Informations</h3>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <tr>
+                      <td style="width:30%;">Name</td>
+                      <td>:</td>
+                      <td id="view_name_product"></td>
+                    </tr>
+                    <tr>
+                      <td style="width:30%;">Stock</td>
+                      <td>:</td>
+                      <td id="view_stock_product"></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="box-footer clearfix">
+
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal END -->
 @endsection
 
 
@@ -260,7 +299,7 @@
           {data: 'rownum', name: 'rownum', searchable:false},
           { data: 'family_id', name: 'family_id', searchable:false},
           { data: 'name', name: 'name'},
-        //   { data: 'image', name: 'image', searchable:false},
+          { data: 'stock', name: 'stock'},
           { data: 'description', name: 'description', searchable:false},
           { data: 'unit_id', name: 'unit_id' , searchable:false, searchable:false},
           { data: 'category_id', name: 'category_id' , searchable:false},
@@ -276,6 +315,8 @@
     tableProduct.on('click', 'tr', function(){
         //var id = this.id;
         var id = tableProduct.row(this).data().id;
+        var name = tableProduct.row(this).data().name;
+        var stock = tableProduct.row(this).data().stock;
         var index = $.inArray(id, selected);
         if ( index === -1 ) {
             selected.push(id);
@@ -287,7 +328,12 @@
                 '</td>'+
                 '<td>'+
                     tableProduct.row(this).data().name+
-
+                    '&nbsp;<button type="button" class="btn btn-info btn-xs btn-view-products" data-id="'+id+'" data-text="'+name+'" data-stock="'+stock+'" title="View Stock">'+
+                        '<i class="fa fa-external-link-square"></i>'+
+                    '</button>'+
+                '</td>'+
+                '<td class="stock_product" style="display:none">'+
+                    tableProduct.row(this).data().stock+
                 '</td>'+
                 '<td>'+
                     tableProduct.row(this).data().description+
@@ -296,13 +342,14 @@
                     tableProduct.row(this).data().unit_id+
                 '</td>'+
                 '<td>'+
-                    '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                    '<input type="text" name="quantity[]" class="quantity form-control" style=""/>'+
                 '</td>'+
                 '<td>'+
                     tableProduct.row(this).data().category_id+
                 '</td>'+
               '</tr>'
             );
+
             // var token = $("meta[name='csrf-token']").attr('content');
             // //alert(token);
             // //panggil controller tampilan sub product
@@ -420,4 +467,38 @@
     });
   //ENDBlock handle form create Sales Order submission
   </script>
+
+  <script type="text/javascript">
+      var tableSelectedProducts = $('#table-selected-products');
+      tableSelectedProducts.on('click','.btn-view-products',function(event){
+        event.preventDefault();
+        var name = $(this).attr('data-text');
+        var stock = $(this).attr('data-stock');
+        $('#view_name_product').text(name);
+        $('#view_stock_product').text(stock);
+        $('#modal-view-product').modal('show');
+      });
+      tableSelectedProducts.on('keyup','.quantity',function(){
+        var quantity = parseInt($(this).val());
+        var stock = parseInt($(this).parent().parent().find('.stock_product').html());
+        if(quantity > stock){
+          alertify.error('Sales quantity can not be greater than stock product');
+          $('#btn-submit-product').prop('disabled', true);
+        }
+        return false;
+      });
+  </script>
+
+  <script type="text/javascript">
+    // $('.quantity').on('keyup', function(){
+    //   // var quantity = parseInt($(this).val());
+    //   // //var stock = parseInt($(this).parent().parent().find('.stock_product').html());
+    //   // if(quantity > 2){
+    //   //   alertify.error('Sales quantity can not be greater than stock product');
+    //   // }
+    //   // return false;
+    //   alert('hai');
+    // });
+  </script>
+
 @endSection

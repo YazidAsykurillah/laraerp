@@ -111,14 +111,10 @@ class DatatablesController extends Controller
         })
         ->editColumn('unit_id', function($products){
             return $products->main_product->unit->name;
+        })
+        ->editColumn('stock', function($products){
+            return $products->stock;
         });
-        // // ->editColumn('image', function($products){
-        // //     $actions_html = '';
-        // //     if($products->image != NULL){
-        // //         $actions_html = '<a href="#" class="thumbnail"><img src="http://localhost/laraerp/public/img/products/thumb_'.$products->image.'"></a>';
-        // //     }
-        //     //return $actions_html;
-        // });
 
         if ($keyword = $request->get('search')['value']) {
             $datatables->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);

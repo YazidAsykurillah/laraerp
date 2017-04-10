@@ -332,7 +332,7 @@ class PurchaseOrderInvoiceController extends Controller
                 'updated_at'=>date('Y-m-d H:i:s'),
                 'reference'=>$request->purchase_order_invoice_id,
                 'source'=>'purchase_order_invoices',
-                'type'=>'keluar',
+                'type'=>'masuk',
             ]);
         }
 

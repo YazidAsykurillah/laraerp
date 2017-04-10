@@ -108,7 +108,7 @@
                                   <input type="hidden" name="main_product_id_child[]" value="{{ $row['main_product_id'] }} " />
                                   {{ $or['family'] }}
                                 </td>
-                                <td>{{ $or['code'] }} </td>
+                                <td>{{ $or['code'] }}</td>
                                 <td>{{ $or['description'] }} </td>
                                 <td>{{ $or['unit'] }} </td>
                                 <td>
