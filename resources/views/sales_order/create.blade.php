@@ -189,7 +189,7 @@
                       <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                       <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
                       <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
+                      <th style="width:15%;background-color:#3c8dbc;color:white;display:none">Stock</th>
                       <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                       <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
@@ -200,7 +200,7 @@
                       <th style="width:5%;"></th>
                       <th style="width:10%;">Family</th>
                       <th style="width:20%;">Code</th>
-                      <th style="width:15%;">Stock</th>
+                      <th style="width:15%;display:none">Stock</th>
                       <th style="width:20%;">Description</th>
                       <th style="width:15%;">Unit</th>
                       <th style="width:15%;">Category</th>
@@ -225,13 +225,13 @@
   </div>
 <!--ENDModal Display product datatables-->
 
-<!-- Modal view sub chart account -->
-<div class="modal fade" id="modal-view-product" tabindex="-1" role="dialog" aria-labelledby="modal-view-subChartAccountLabel">
+<!-- Modal view stock product -->
+<div class="modal fade" id="modal-view-product" tabindex="-1" role="dialog" aria-labelledby="modal-view-productLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-delete-subChartAccountLabel">View Sub Chart Account</h4>
+          <h4 class="modal-title" id="modal-view-productLabel">View Stock Product</h4>
         </div>
         <div class="modal-body">
             <div class="box">
@@ -299,7 +299,7 @@
           {data: 'rownum', name: 'rownum', searchable:false},
           { data: 'family_id', name: 'family_id', searchable:false},
           { data: 'name', name: 'name'},
-          { data: 'stock', name: 'stock'},
+          { data: 'stock', name: 'stock', visible: false},
           { data: 'description', name: 'description', searchable:false},
           { data: 'unit_id', name: 'unit_id' , searchable:false, searchable:false},
           { data: 'category_id', name: 'category_id' , searchable:false},
@@ -484,8 +484,9 @@
         if(quantity > stock){
           alertify.error('Sales quantity can not be greater than stock product');
           $('#btn-submit-product').prop('disabled', true);
+        }else if (quantity < stock) {
+          $('#btn-submit-product').prop('disabled', false);
         }
-        return false;
       });
   </script>
 

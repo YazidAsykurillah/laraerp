@@ -279,20 +279,7 @@ class DatatablesController extends Controller
                 return $purchase_orders->created_by->name;
             })
             ->editColumn('status', function($purchase_orders){
-                $status_label = '';
-
-                if($purchase_orders->status == 'posted'){
-                    $status_label = '<p>POSTED</p>';
-
-                }
-                else if($purchase_orders->status =='accepted'){
-                    $status_label = '<p>ACCEPTED</p>';
-
-                }
-                else{
-                    $status_label = '<p>COMPLETED</p>';
-                }
-                return $status_label;
+                return strtoupper($purchase_orders->status);
             })
             ->editColumn('invoice', function($purchase_orders){
                 if(count($purchase_orders->purchase_order_invoice) == 1){

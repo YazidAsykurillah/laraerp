@@ -20,12 +20,12 @@
 @endsection
 
 @section('content')
-  <ul class="nav nav-tabs">
-    <li class="active">
-      <a data-toggle="tab" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="active" role="presentation">
+      <a data-toggle="tab" aria-controls="section-general-information" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
     </li>
-    <li>
-      <a data-toggle="tab" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
+    <li role="presentation">
+      <a data-toggle="tab"aria-controls="section-invoice" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
     </li>
     <li>
       <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payment</a>
@@ -36,7 +36,7 @@
   </ul>
    <div class="tab-content">
     <!--General Information-->
-    <div id="section-general-information" class="tab-pane fade in active">
+    <div id="section-general-information" class="tab-pane fade in active" role="tabpane">
       <!-- Row Products-->
       <div class="row">
         <div class="col-lg-12">
@@ -109,7 +109,7 @@
                 </div>
               </div><br/>
               <div class="table-responsive">
-                <table class="table table-bordered" id="table-selected-products">
+                <table class="table table-bordered" id="table-selected-products" cellspacing="0" width="100%">
                   <thead>
                     <tr>
                         <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
@@ -165,6 +165,7 @@
                     @else
                     <tr id="tr-no-product-selected">
                       <td>There are no product</td>
+                   </tr>
                     @endif
                   </tbody>
                   <tfoot>
@@ -432,12 +433,19 @@
 
 @section('additional_scripts')
 <script type="text/javascript">
-$('document').ready(function(){
-   $('#table-selected-products').DataTable({
-     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
-   });
-});
+        $('#table-selected-products').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            // scrollY:        '50vh',
+            // scrollCollapse: true,
+            // paging:         false
+        });
+
+        // $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        // $($.fn.dataTable.tables(true)).DataTable()
+        //  .scroller.adjust();
+        // });
 </script>
+
 <script type="text/javascript">
   //Accept
   $('#btn-accept').on('click', function(event){

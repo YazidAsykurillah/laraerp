@@ -190,11 +190,6 @@
   </div>
   <!-- ENDRow Invoice-->
 
-
-
-
-
-
 @endsection
 
 
@@ -307,5 +302,4 @@
           }
       }
   </script>
-
 @endSection
