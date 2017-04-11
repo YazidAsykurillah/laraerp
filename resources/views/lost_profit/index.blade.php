@@ -23,7 +23,7 @@
     <div class="row">
         {!! Form::open(['url'=>'lost-profit/submit','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="box-header with-border">
                     <h3 class="box-title">Search Period Neraca</h3>
                     <a data-toggle="collapse" href="#collapse-lost-profit" title="Click to search lost and profit"><i class="fa fa-arrow-down pull-right"></i></a>
@@ -113,7 +113,7 @@
     </div>
 
     <div class="col-lg-12">
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
             <div class="box-header with-border">
                 {!! Form::open(['url'=>'lost-profit.lost_profit_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca','files'=>true]) !!}
                 <center>

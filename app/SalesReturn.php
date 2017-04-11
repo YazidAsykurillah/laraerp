@@ -8,6 +8,7 @@ use App\SalesOrder;
 use App\SalesReturn;
 use App\User;
 use App\Product;
+use App\ProductSalesOrder;
 
 class SalesReturn extends Model
 {
@@ -27,4 +28,5 @@ class SalesReturn extends Model
     {
         return $this->belongsTo('App\Product');
     }
+
 }

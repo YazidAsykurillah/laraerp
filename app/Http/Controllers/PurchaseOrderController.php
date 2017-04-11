@@ -366,19 +366,15 @@ class PurchaseOrderController extends Controller
             $results = array();
             $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
             foreach($list_sub_product as $ls){
-                array_push($results, array(
-
+                array_push($results,[
                     'id'=>$ls->id,
                     'name'=>$ls->name,
-
                     'family'=>MainProduct::find($request->id)->family->name,
-                    'id'=>$ls->id,
-                    'name'=>$ls->name,
                     'description'=>$ls->description,
                     'unit'=>MainProduct::find($request->id)->unit->name,
-
                     'category'=>MainProduct::find($request->id)->category->name,
-                ));
+                    'created_at'=>$ls->created_at,
+                ]);
             }
             return response()->json($results);
         }

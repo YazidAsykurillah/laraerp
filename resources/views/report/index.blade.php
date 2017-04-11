@@ -23,7 +23,7 @@
     <div class="row">
         {!! Form::open(['url'=>'report/search','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="box-header with-border">
                     <h3 class="box-title">Search Report</h3>
                     <a data-toggle="collapse" href="#collapse-report" title="Click to search report"><i class="fa fa-arrow-down pull-right"></i></a>
@@ -113,7 +113,7 @@
     @if(isset($report_type))
     <div class="row">
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="box-header with-border">
                     <h3 class="box-title">
                         @if($report_type == 0)
@@ -145,11 +145,15 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>No.Faktur</th>
-                                    <th>Tgl Faktur</th>
-                                    <th>Keterangan</th>
-                                    <th>Nilai Faktur</th>
-                                    <th>Customer</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Date</th>
+                                    <th style="width:20%;background-color:#3c8dbc;color:white">Customer</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Sub Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Disc(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Tax(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Nilai Faktur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Retur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Net</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,20 +161,44 @@
                                 @foreach($data_invoice as $d_i)
                                     <tr>
                                         <td>{{ $d_i['no_faktur'] }}</td>
-                                        <td>{{ $d_i['tgl_faktur'] }}</td>
-                                        <td>{{ $d_i['keterangan'] }}</td>
                                         <td>
-                                            {{ number_format($d_i['bill_price']) }}
-                                            <?php $sum_bill_price += $d_i['bill_price']; ?>
+                                            <?php
+                                                $datenya = date_create($d_i['tgl_faktur']);
+                                            ?>
+                                            {{ date_format($datenya,'d-m-Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
+                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['tax'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['bill_price']) }}
+                                        </td>
+                                            <?php $x = []; $sum = 0;?>
+                                            @foreach($d_i['return'] as $kj)
+
+                                                <?php array_push($x,[
+                                                    'price_per_unit'=>\DB::table('product_sales_order')->select('price_per_unit')->where('sales_order_id',$kj->sales_order_id)->where('product_id',$kj->product_id)->get()[0]->price_per_unit,
+                                                    'quantity'=>$kj->quantity
+                                                ]);
+                                                ?>
+                                            @endforeach
+                                            @foreach($x as $xx)
+                                                <?php $sum += $xx['price_per_unit']*$xx['quantity']; ?>
+                                            @endforeach
+                                            <td>{{ number_format($sum) }}</td>
+
+                                        <td>
+                                            {{ number_format($d_i['net']-$sum) }}
+                                            <?php $sum_bill_price += $d_i['net']-$sum; ?>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" align="right">Total</td>
-                                    <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
+                                    <td colspan="7" align="right">Total Net</td>
+                                    <td style="background-color:red;color:white" colspan="2">{{ number_format($sum_bill_price) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -215,11 +243,15 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>No.Faktur</th>
-                                    <th>Tgl Faktur</th>
-                                    <th>Keterangan</th>
-                                    <th>Nilai Faktur</th>
-                                    <th>Supplier</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Date</th>
+                                    <th style="width:20%;background-color:#3c8dbc;color:white">Supplier</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Sub Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Disc(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Tax(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Retur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Net</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -227,19 +259,28 @@
                                 @foreach($data_invoice as $d_i)
                                     <tr>
                                         <td>{{ $d_i['no_faktur'] }}</td>
-                                        <td>{{ $d_i['tgl_faktur'] }}</td>
-                                        <td>{{ $d_i['keterangan'] }}</td>
+                                        <td>
+                                            <?php
+                                                $datenya = date_create($d_i['tgl_faktur']);
+                                            ?>
+                                            {{ date_format($datenya,'Y-m-d') }}
+                                        </td>
+                                        <td>{{ $d_i['supplier'] }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
                                             {{ number_format($d_i['bill_price']) }}
                                             <?php $sum_bill_price += $d_i['bill_price']; ?>
                                         </td>
-                                        <td>{{ $d_i['supplier'] }}</td>
+                                        <td></td>
+                                        <td>{{ number_format($d_i['bill_price']-0) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" align="right">Total</td>
+                                    <td colspan="8" align="right">Total</td>
                                     <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
                                 </tr>
                             </tfoot>

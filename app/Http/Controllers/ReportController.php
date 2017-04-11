@@ -135,16 +135,36 @@ class ReportController extends Controller
         $data_invoice = [];
         switch($report_type){
             case 0:
+                //$return = '';
                 $sales_invoice = \DB::table('sales_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                // foreach ($sales_invoice as $key) {
+                //     $return = SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns;
+                //     //$price_per_unit = \DB::table('product_sales_order')->where('product_id',$)
+                //     // print_r(count($return) );
+                //     // exit();
+                // }
+                // $data_return = '';
+                // foreach ($return as $key) {
+                //     $data_return += $key->quantity*\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit;
+                // }
+                $return_data = [];
                 foreach ($sales_invoice as $key) {
+
                     array_push($data_invoice,[
                         'no_faktur'=>$key->code,
                         'tgl_faktur'=>$key->created_at,
-                        'keterangan'=>$key->notes,
+                        'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                        'sub_total'=>'',
+                        'disc'=>'',
+                        'tax'=>'',
                         'bill_price'=>$key->bill_price,
-                        'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name
+                        'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                        'net'=>$key->bill_price-0,
                     ]);
                 }
+
+                // print_r($data_invoice);
+                // exit();
                 break;
             case 1:
                 $sales_invoice = \DB::table('sales_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
@@ -257,4 +277,16 @@ class ReportController extends Controller
             ->with('data_customer',$data_customer)
             ->with('data_invoice',$data_invoice);
     }
+
+    // protected function display_table_product_sales_order($pro_id,$sales_order_id)
+    // {
+    //     $data_pro_sal_ord = \DB::table('product_sales_order')->where('product_id',$pro_id)->where('sales_order_id',$sales_order_id)->get();
+    //     $data_nya = [];
+    //     foreach ($data_pro_sal_ord as $key) {
+    //         array_push($data_nya,[
+    //             'price_per_unit'=>$key->price_per_unit,
+    //         ]);
+    //     }
+    //     return $data_nya;
+    // }
 }

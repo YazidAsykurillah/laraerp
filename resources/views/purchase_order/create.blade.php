@@ -36,7 +36,7 @@
             <table class="table table-bordered" id="table-selected-products">
               <tr>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Product Name</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Name</th>
                 <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
@@ -128,7 +128,7 @@
                 <tr>
                     <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                     <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Product Name</th>
+                    <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
                     <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
                     <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
@@ -139,7 +139,7 @@
                 <tr>
                     <th style="width:5%;"></th>
                     <th style="width:10%;">Family</th>
-                    <th style="width:20%;">Product Name</th>
+                    <th style="width:20%;">Name</th>
                     <th style="width:15%;">Image</th>
                     <th style="width:20%;">Description</th>
                     <th style="width:15%;">Unit</th>
@@ -244,7 +244,9 @@
 
                 } ,
                 success: function(response){
+                    //console.log(response);
                     $.each(response,function(index,value){
+                        //console.log(value);
                         $('#table-selected-products').append(
                           '<tr class="tr_product_'+id+'">'+
                             '<td>'+
@@ -271,19 +273,18 @@
                     });
                 },
             })
-
         } else {
             selected.splice( index, 1 );
             $('.tr_product_'+id).remove();
         }
 
         $(this).toggleClass('selected');
-
     } );
 
     $('#btn-set-product').on('click', function(){
       if(selected.length !== 0){
         $('#tr-no-product-selected').hide();
+
       }
       else{
         $('#tr-no-product-selected').show();
@@ -342,5 +343,9 @@
       });
     });
   //ENDBlock handle form create purchase order submission
+  </script>
+
+  <script type="text/javascript">
+      
   </script>
 @endSection
