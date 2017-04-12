@@ -25,7 +25,7 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Return Detail</h3>
         </div><!-- /.box-header -->
@@ -34,11 +34,11 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">PO Code</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Purchased Quantity</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Returned Quantity</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Notes</th>
+                    <th style="width:20%;">PO Code</th>
+                    <th style="width:20%;">Code</th>
+                    <th style="width:20%;">Purchased Quantity</th>
+                    <th style="width:20%;">Returned Quantity</th>
+                    <th style="width:20%;">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -60,7 +60,7 @@
             </div>
             <br/>
             <div class="row">
-              <div class="col-md-3">Status</div>
+              <div class="col-md-3"><strong>Status</strong></div>
               <div class="col-md-1">:</div>
               <div class="col-md-3">
                 <p>{{ strtoupper($purchase_return->status) }}</p>
@@ -78,14 +78,14 @@
             </div>
             <br/>
             <div class="row">
-              <div class="col-md-3">Supplier Name</div>
+              <div class="col-md-3"><strong>Supplier Name</strong></div>
               <div class="col-md-1">:</div>
               <div class="col-md-3">
                 <p>{{ $purchase_return->purchase_order->supplier->name }}</p>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-3">Created At</div>
+              <div class="col-md-3"><strong>Created At</strong></div>
               <div class="col-md-1">:</div>
               <div class="col-md-3">
                 <p>{{ $purchase_return->created_at }}</p>

@@ -21,26 +21,27 @@
 
 @section('content')
   <ul class="nav nav-tabs" role="tablist">
-    <li class="active" role="presentation">
-      <a data-toggle="tab" aria-controls="section-general-information" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
+    <li class="active" role="presentation" >
+      <a data-toggle="tab" aria-controls="section-general-information" href="#section-general-information" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
     </li>
     <li role="presentation">
-      <a data-toggle="tab"aria-controls="section-invoice" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
+      <a data-toggle="tab"aria-controls="section-invoice" href="#section-invoice" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payment</a>
+      <a data-toggle="tab" href="#section-invoice-payment" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payment</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
+      <a data-toggle="tab" href="#section-return" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-reply"></i>&nbsp;Return</a>
     </li>
   </ul>
    <div class="tab-content">
     <!--General Information-->
     <div id="section-general-information" class="tab-pane fade in active" role="tabpane">
       <!-- Row Products-->
+      <br>
       <div class="row">
         <div class="col-lg-12">
-          <div class="box">
+          <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
               <h3 class="box-title">General Information</h3>
               <div class="pull-right">
@@ -52,31 +53,31 @@
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="row">
-                  <div class="col-md-2">Code</div>
+                  <div class="col-md-2"><strong>Code</strong></div>
                   <div class="col-md-1">:</div>
                   <div class="col-md-3">
                     {{ $purchase_order->code }}
                   </div>
-                  <div class="col-md-2">Supplier Name</div>
+                  <div class="col-md-2"><strong>Supplier Name</strong></div>
                   <div class="col-md-1">:</div>
                   <div class="col-md-3">
                     {{ $purchase_order->supplier->name }}
                   </div>
               </div><br/>
               <div class="row">
-                <div class="col-md-2">Notes</div>
+                <div class="col-md-2"><strong>Notes</strong></div>
                 <div class="col-md-1">:</div>
                 <div class="col-md-3">
                   {!! nl2br($purchase_order->notes) !!}
                 </div>
               </div><br/>
               <div class="row">
-                <div class="col-md-2">Created At</div>
+                <div class="col-md-2"><strong>Created At</strong></div>
                 <div class="col-md-1">:</div>
                 <div class="col-md-3">
                   {{ $purchase_order->created_at }}
                 </div>
-                <div class="col-md-2">Status</div>
+                <div class="col-md-2"><strong>Status</strong></div>
                 <div class="col-md-1">:</div>
                 <div class="col-md-3">
                   {{ strtoupper($purchase_order->status) }}
@@ -94,12 +95,12 @@
                     </div>
                   @endif
                   @if($purchase_order->status == 'accepted')
-                    <button id="btn-complete" class="btn btn-xs btn-success" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
+                    <button id="btn-complete" class="btn btn-xs btn-default" style="background-color:#4CAF50;color:white" data-id="{{ $purchase_order->id }}" data-text="{{ $purchase_order->code }}" title="Click to complete this purchase order">
                       <i class="fa fa-sign-in"></i>&nbsp;Complete
                     </button>
                     <br/>
                     <br/>
-                    <div class="alert alert-success">
+                    <div class="alert alert-default" style="background-color:#4CAF50;color:white">
                       <p>
                         <i class="fa fa-info-circle"></i>&nbsp;
                         Invoices can already be made.
@@ -108,85 +109,101 @@
                   @endif
                 </div>
               </div><br/>
-              <div class="table-responsive">
-                <table class="table table-bordered" id="table-selected-products" cellspacing="0" width="100%">
-                  <thead>
-                    <tr>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      @if(count($row_display))
-                          @foreach($row_display as $row)
-                          <?php $sum_qty = 0; ?>
-                              <tr>
-                                <td><strong>{{ $row['family'] }}</strong></td>
-                                <td>
-                                    <strong>
-                                        {{ $row['main_product'] }}
-                                    </strong>
-                                    @if($row['image'] != NULL)
-                                    <a href="#" class="thumbnail">
-                                        {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
-                                    </a>
-                                    @else
-                                    <a href="#" class="thumbnail">
-                                        {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
-                                    </a>
-                                    @endif
-                                </td>
-                                <td><strong>{{ $row['description'] }}</strong></td>
-                                <td><strong>{{ $row['unit'] }}</strong></td>
-                                <td><strong class="target_qty"></strong></td>
-                                <td><strong>{{ $row['category'] }}</strong></td>
-                              </tr>
-                              @foreach($row['ordered_products'] as $or)
-                              <tr>
-                                <td>{{ $or['family'] }}</td>
-                                <td>{{ $or['code'] }} </td>
-                                <td>{{ $or['description'] }} </td>
-                                <td>{{ $or['unit'] }} </td>
-                                <td>
-                                    {{ $or['quantity'] }}
-                                    <?php $sum_qty += $or['quantity']; ?>
-                                </td>
-                                <td>{{ $or['category'] }}</td>
-                              </tr>
-                              @endforeach
-                              <tr style="display:none">
-                                <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
-                              </tr>
-                          @endforeach
-                    @else
-                    <tr id="tr-no-product-selected">
-                      <td>There are no product</td>
-                   </tr>
-                    @endif
-                  </tbody>
-                  <tfoot>
 
-                  </tfoot>
-                </table>
-              </div>
             </div><!-- /.box-body -->
 
           </div><!-- /.box -->
         </div>
       </div>
       <!-- ENDRow Products-->
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+                  <div class="box-header with-border">
+                      <h3 class="box-title">Product List</h3>
+                  </div>
+                  <div class="box-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered" id="table-selected-products">
+                          <thead>
+                            <tr style="">
+                                <th style="width:15%;">Family</th>
+                                <th style="width:15%;">Code</th>
+                                <th style="width:20%;">Description</th>
+                                <th style="width:15%;">Unit</th>
+                                <th style="width:15%;">Quantity</th>
+                                <th style="width:20%;">Category</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              @if(count($row_display))
+                                  @foreach($row_display as $row)
+                                  <?php $sum_qty = 0; ?>
+                                      <tr>
+                                        <td><strong>{{ $row['family'] }}</strong></td>
+                                        <td>
+                                            <strong>
+                                                {{ $row['main_product'] }}
+                                            </strong>
+                                            @if($row['image'] != NULL)
+                                            <a href="#" class="thumbnail">
+                                                {!! Html::image('img/products/thumb_'.$row['image'].'', $row['image']) !!}
+                                            </a>
+                                            @else
+                                            <a href="#" class="thumbnail">
+                                                {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                            </a>
+                                            @endif
+                                        </td>
+                                        <td><strong>{{ $row['description'] }}</strong></td>
+                                        <td><strong>{{ $row['unit'] }}</strong></td>
+                                        <td><strong class="target_qty"></strong></td>
+                                        <td><strong>{{ $row['category'] }}</strong></td>
+                                      </tr>
+                                      @foreach($row['ordered_products'] as $or)
+                                      <tr>
+                                        <td>{{ $or['family'] }}</td>
+                                        <td>{{ $or['code'] }} </td>
+                                        <td>{{ $or['description'] }} </td>
+                                        <td>{{ $or['unit'] }} </td>
+                                        <td>
+                                            {{ $or['quantity'] }}
+                                            <?php $sum_qty += $or['quantity']; ?>
+                                        </td>
+                                        <td>{{ $or['category'] }}</td>
+                                      </tr>
+                                      @endforeach
+                                      <tr style="display:none">
+                                        <td colspan="6" class="sum_qty">{{ $sum_qty }}</td>
+                                      </tr>
+                                  @endforeach
+                            @else
+                            <tr id="tr-no-product-selected">
+                              <td colspan="6">There are no product</td>
+                           </tr>
+                            @endif
+                          </tbody>
+                          <tfoot>
+
+                          </tfoot>
+                        </table>
+                      </div>
+                  </div>
+                  <div class="box-footer clearfix">
+
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
 
     <!--Section Invoice-->
     <div id="section-invoice" class="tab-pane fade">
+      <br>
       <!-- Row Invoice-->
       <div class="row">
         <div class="col-lg-12">
-          <div class="box">
+          <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
               <h3 class="box-title">Invoice <small>Invoice that related with this purchase order</small></h3>
               <div class="pull-right">
@@ -256,17 +273,18 @@
 
     <!-- Section Invoice Payment -->
     <div id="section-invoice-payment" class="tab-pane fade">
+      <br>
       <div class="row">
         <div class="col-lg-12">
-          <div class="box">
+          <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
               <h3 class="box-title">Invoice Payments <small>Related payment with the purchase order invoice</small></h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                  <table class="table" id="table-purchase-invoice-payment-transfer">
+                  <table class="table table-bordered" id="table-purchase-invoice-payment-transfer">
                     <thead>
-                      <tr>
+                      <tr style="">
                         <th>No</th>
                         <th>Payment Date</th>
                         <th>Payment Method</th>
@@ -313,10 +331,11 @@
 
     <!--Section Return-->
     <div id="section-return" class="tab-pane fade">
+      <br>
       <!-- Row Return-->
       <div class="row">
         <div class="col-lg-12">
-          <div class="box">
+          <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
               <h3 class="box-title">Related Return</h3>
               @if($purchase_order->purchase_order_invoice == '')
@@ -336,11 +355,11 @@
                   <?php $no = 1; ?>
                   <thead>
                     <tr>
-                      <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                      <th style="width:25%;background-color:#3c8dbc;color:white">Code</th>
-                      <th style="width:25%;background-color:#3c8dbc;color:white">Returned Quantity</th>
-                      <th style="width:25%;background-color:#3c8dbc;color:white">Notes</th>
-                      <th style="width:20%;background-color:#3c8dbc;color:white">Status</th>
+                      <th style="width:5%;">#</th>
+                      <th style="width:25%;">Code</th>
+                      <th style="width:25%;">Returned Quantity</th>
+                      <th style="width:25%;">Notes</th>
+                      <th style="width:20%;">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -433,12 +452,12 @@
 
 @section('additional_scripts')
 <script type="text/javascript">
-        $('#table-selected-products').DataTable({
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            // scrollY:        '50vh',
-            // scrollCollapse: true,
-            // paging:         false
-        });
+        // $('#table-selected-products').DataTable({
+        //     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        //     // scrollY:        '50vh',
+        //     // scrollCollapse: true,
+        //     // paging:         false
+        // });
 
         // $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         // $($.fn.dataTable.tables(true)).DataTable()

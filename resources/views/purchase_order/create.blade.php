@@ -24,7 +24,7 @@
   {!! Form::open(['route'=>'purchase-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-order']) !!}
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Products Added</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
@@ -33,14 +33,14 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-selected-products">
-              <tr>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Name</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+            <table class="table table-striped table-hover" id="table-selected-products">
+              <tr style="background-color:#3c8dbc;color:white">
+                <th style="width:15%;">Family</th>
+                <th style="width:15%;">Name</th>
+                <th style="width:20%;">Description</th>
+                <th style="width:15%;">Unit</th>
+                <th style="width:15%;">Quantity</th>
+                <th style="width:20%;">Category</th>
               </tr>
               <tr id="tr-no-product-selected">
                 <td colspan="6">No product selected</td>
@@ -59,7 +59,7 @@
   <!-- Row Supplier and Notes-->
   <div class="row">
     <div class="col-md-8">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Supplier and Notes</h3>
         </div><!-- /.box-header -->
@@ -123,16 +123,16 @@
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-product" style="width:100%">
+            <table class="table table-striped table-hover" id="table-product" style="width:100%">
               <thead>
-                <tr>
-                    <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                    <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Image</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+                <tr style="background-color:#3c8dbc;color:white">
+                    <th style="width:5%;">#</th>
+                    <th style="width:10%;">Family</th>
+                    <th style="width:20%;">Name</th>
+                    <th style="width:15%;">Image</th>
+                    <th style="width:20%;">Description</th>
+                    <th style="width:15%;">Unit</th>
+                    <th style="width:15%;">Category</th>
                 </tr>
               </thead>
               <thead id="searchid">
@@ -179,6 +179,11 @@
   </script>
 
   <script type="text/javascript">
+    // $('#table-selected-products').DataTable({
+    //     scrollY: '50vh',
+    //     scrollCollapse:true,
+    //     paging:false,
+    // });
 
     var selected = [];
 
@@ -196,6 +201,7 @@
           { data: 'unit_id', name: 'unit_id' },
           { data: 'category_id', name: 'category_id' },
       ],
+
       rowCallback: function(row, data){
         if($.inArray(data.id, selected) !== -1){
           $(row).addClass('selected');
@@ -271,6 +277,7 @@
                           '</tr>'
                         );
                     });
+
                 },
             })
         } else {
@@ -346,6 +353,12 @@
   </script>
 
   <script type="text/javascript">
-      
+    //   $(document).ready(function() {
+    //   $('#table-selected-products').DataTable( {
+    //       "scrollY":        "200px",
+    //       "scrollCollapse": true,
+    //       "paging":         false
+    //   } );
+    // } );
   </script>
 @endSection

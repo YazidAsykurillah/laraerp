@@ -25,7 +25,7 @@
   {!! Form::model($purchase_order, ['route'=>['purchase-order.update', $purchase_order->id], 'id'=>'form-edit-purchase-order', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Products</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
@@ -34,15 +34,15 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-selected-products">
+            <table class="table table-striped table-hover" id="table-selected-products">
               <thead>
-                  <tr>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                  <tr style="background-color:#3c8dbc;color:white">
+                    <th style="width:15%;">Family</th>
+                    <th style="width:15%;">Code</th>
+                    <th style="width:20%;">Description</th>
+                    <th style="width:15%;">Unit</th>
+                    <th style="width:15%;">Quantity</th>
+                    <th style="width:20%;">Category</th>
                   </tr>
               </thead>
               <tbody>
@@ -113,7 +113,7 @@
   <!-- Row Supplier and Notes-->
   <div class="row">
     <div class="col-md-8">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Supplier and Notes</h3>
         </div><!-- /.box-header -->
@@ -178,28 +178,28 @@
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-product">
+            <table class="table table-striped table-hover" id="table-product">
               <thead>
-                  <tr>
+                  <tr style="background-color:#3c8dbc;color:white">
                       <th style="width:5%;">#</th>
-                      <th>Family</th>
-                      <th>Code</th>
-                      <th>Image</th>
-                      <th>Description</th>
-                      <th>Unit</th>
-                      <th>Category</th>
+                      <th style="width:10%;">Family</th>
+                      <th style="width:20%;">Name</th>
+                      <th style="width:15%;">Image</th>
+                      <th style="width:20%;">Description</th>
+                      <th style="width:15%;">Unit</th>
+                      <th style="width:15%;">Category</th>
                   </tr>
                 </thead>
                 <thead id="searchid">
-                  <tr>
-                      <th style="width:5%;">#</th>
-                      <th>Family</th>
-                      <th>Code</th>
-                      <th>Image</th>
-                      <th>Description</th>
-                      <th>Unit</th>
-                      <th>Category</th>
-                  </tr>
+                    <tr>
+                        <th style="width:5%;"></th>
+                        <th style="width:10%;">Family</th>
+                        <th style="width:20%;">Name</th>
+                        <th style="width:15%;">Image</th>
+                        <th style="width:20%;">Description</th>
+                        <th style="width:15%;">Unit</th>
+                        <th style="width:15%;">Category</th>
+                    </tr>
               </thead>
               <tbody>
 

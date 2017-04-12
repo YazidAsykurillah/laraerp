@@ -22,22 +22,22 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
         <div class="box-header with-border">
           <h3 class="box-title">Purchase Return</h3>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="display" id="table-purchase-return">
+          <table class="table table-striped table-hover" id="table-purchase-return">
             <thead>
-              <tr>
-                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">PO Code</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Returned Qty</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Created At</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Status</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Supplier Name</th>
-                <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
+              <tr style="background-color:#3c8dbc;color:white">
+                <th style="width:5%;">#</th>
+                <th style="width:15%;">Code</th>
+                <th style="width:15%;">PO Code</th>
+                <th style="width:15%;">Returned Qty</th>
+                <th style="width:15%;">Created At</th>
+                <th style="width:10%;">Status</th>
+                <th style="width:15%;">Supplier Name</th>
+                <th style="width:10%;text-align:center;">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">

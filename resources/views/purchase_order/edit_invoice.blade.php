@@ -27,23 +27,23 @@
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Form Edit Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::model($purchase_order_invoice, ['route'=>['purchase-order-invoice.update', $purchase_order_invoice->id], 'id'=>'form-edit-purchase-order-invoice', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
           <div class="table-responsive">
-            <table class="table table-bordered" id="table-selected-products">
-                <thead>
+            <table class="table table-striped table-hover" id="table-selected-products">
+                <thead style="background-color:#3c8dbc;color:white">
                     <tr>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                        <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                      <th style="width:20%;">Family</th>
+                      <th style="width:15%;">Code</th>
+                      <th style="width:15%;">Description</th>
+                      <th style="width:10%;">Unit</th>
+                      <th style="width:5%;">Quantity</th>
+                      <th style="width:20%;">Category</th>
+                      <th style="width:15%;">Price</th>
                     </tr>
                 </thead>
               <tbody>

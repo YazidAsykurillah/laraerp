@@ -208,11 +208,13 @@
                                 <tr>
                                     <th>No.Faktur</th>
                                     <th>Tgl Faktur</th>
-                                    <th>Keterangan</th>
-                                    <th>Nilai Faktur</th>
-                                    <th>Return</th>
-                                    <th>Netto</th>
                                     <th>Customer</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Disc(%)</th>
+                                    <th>Disc(AMT)</th>
+                                    <th>Line Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -221,14 +223,16 @@
                                     <tr>
                                         <td>{{ $d_i['no_faktur'] }}</td>
                                         <td>{{ $d_i['tgl_faktur'] }}</td>
-                                        <td>{{ $d_i['keterangan'] }}</td>
-                                        <td>
-                                            {{ number_format($d_i['bill_price']) }}
-                                            <?php $sum_bill_price += $d_i['bill_price']; ?>
-                                        </td>
-                                        <td>{{ $d_i['return'] }}</td>
-                                        <td>{{ $d_i['netto'] }}</td>
                                         <td>{{ $d_i['customer'] }}</td>
+                                        <td>{{ $d_i['item'] }}</td>
+                                        <td>{{ number_format($d_i['unit_price']) }}</td>
+                                        <td>{{ $d_i['quantity'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['disc_amt'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['line_total']) }}
+                                            <?php $sum_bill_price += $d_i['line_total']; ?>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -239,7 +243,209 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        @elseif($report_type == 2)
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Date</th>
+                                    <th style="width:20%;background-color:#3c8dbc;color:white">Customer</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Sub Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Disc(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Tax(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Retur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Net</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $sum_bill_price = 0; ?>
+                                @foreach($data_invoice as $d_i)
+                                    <tr>
+                                        <td>{{ $d_i['no_faktur'] }}</td>
+                                        <td>
+                                            <?php
+                                                $datenya = date_create($d_i['tgl_faktur']);
+                                            ?>
+                                            {{ date_format($datenya,'d-m-Y') }}
+                                        </td>
+                                        <td>{{ $d_i['customer'] }}</td>
+                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['tax'] }}</td>
+                                        <?php $x = []; $sum = 0;?>
+                                        @foreach($d_i['total'] as $kj)
+
+                                            <?php array_push($x,[
+                                                'price_per_unit'=>\DB::table('product_sales_order')->select('price_per_unit')->where('sales_order_id',$kj->sales_order_id)->where('product_id',$kj->product_id)->get()[0]->price_per_unit,
+                                                'quantity'=>$kj->quantity
+                                            ]);
+                                            ?>
+                                        @endforeach
+                                        @foreach($x as $xx)
+                                            <?php $sum += $xx['price_per_unit']*$xx['quantity']; ?>
+                                        @endforeach
+                                        <td>- {{ number_format($sum) }}</td>
+                                        <td>{{ $d_i['return'] }}</td>
+                                        <td>
+                                            - {{ number_format($sum) }}
+                                            <?php $sum_bill_price += $sum-$d_i['return']; ?>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" align="right">Total</td>
+                                    <td style="background-color:red;color:white">- {{ number_format($sum_bill_price) }}</td>
+                                    <td align="right">Net</td>
+                                    <td style="background-color:red;color:white">- {{ number_format($sum_bill_price) }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        @elseif($report_type == 3)
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No.Faktur</th>
+                                    <th>Tgl Faktur</th>
+                                    <th>Customer</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Disc(%)</th>
+                                    <th>Disc(amt)</th>
+                                    <th>Line Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $sum_bill_price = 0; ?>
+                                @foreach($data_invoice as $d_i)
+                                    <tr>
+                                        <td>{{ $d_i['no_faktur'] }}</td>
+                                        <td>{{ $d_i['tgl_faktur'] }}</td>
+                                        <td>{{ $d_i['customer'] }}</td>
+                                        <td>{{ $d_i['item'] }}</td>
+                                        <td>{{ number_format($d_i['unit_price']) }}</td>
+                                        <td>{{ $d_i['quantity'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['disc_amt'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['unit_price']*$d_i['quantity']) }}
+                                            <?php $sum_bill_price += $d_i['unit_price']*$d_i['quantity']; ?>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8" align="right">Total</td>
+                                    <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
                         @elseif($report_type == 4)
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Date</th>
+                                    <th style="width:20%;background-color:#3c8dbc;color:white">Customer</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Sub Total</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Disc(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Tax(%)</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Nilai Faktur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Retur</th>
+                                    <th style="width:10%;background-color:#3c8dbc;color:white">Net</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $sum_bill_price = 0; ?>
+                                @foreach($data_invoice as $d_i)
+                                    <tr>
+                                        <td>{{ $d_i['no_faktur'] }}</td>
+                                        <td>
+                                            <?php
+                                                $datenya = date_create($d_i['tgl_faktur']);
+                                            ?>
+                                            {{ date_format($datenya,'d-m-Y') }}
+                                        </td>
+                                        <td>{{ $d_i['supplier'] }}</td>
+                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['tax'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['bill_price']) }}
+                                        </td>
+                                            <?php $x = []; $sum = 0;?>
+                                            @foreach($d_i['return'] as $kj)
+
+                                                <?php array_push($x,[
+                                                    'quantity_purchase_order'=>\DB::table('product_purchase_order')->select('quantity')->where('purchase_order_id',$kj->purchase_order_id)->where('product_id',$kj->product_id)->get()[0]->quantity,
+                                                    'price'=>\DB::table('product_purchase_order')->select('price')->where('purchase_order_id',$kj->purchase_order_id)->where('product_id',$kj->product_id)->get()[0]->price,
+                                                    'quantity'=>$kj->quantity
+                                                ]);
+                                                ?>
+                                            @endforeach
+                                            @foreach($x as $xx)
+                                                <?php $sum += (($xx['price']/$xx['quantity_purchase_order'])*$xx['quantity']); ?>
+                                            @endforeach
+                                            <td>{{ number_format($sum) }}</td>
+
+                                        <td>
+                                            {{ number_format($d_i['net']-$sum) }}
+                                            <?php $sum_bill_price += $d_i['net']-$sum; ?>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" align="right">Total Net</td>
+                                    <td style="background-color:red;color:white" colspan="2">{{ number_format($sum_bill_price) }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        @elseif($report_type == 5)
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No.Faktur</th>
+                                    <th>Tgl Faktur</th>
+                                    <th>Supplier</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Disc(%)</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $sum_bill_price = 0; ?>
+                                @foreach($data_invoice as $d_i)
+                                    <tr>
+                                        <td>{{ $d_i['no_faktur'] }}</td>
+                                        <td>{{ $d_i['tgl_faktur'] }}</td>
+                                        <td>{{ $d_i['supplier'] }}</td>
+                                        <td>{{ $d_i['item'] }}</td>
+                                        <td>{{ number_format($d_i['unit_price']) }}</td>
+                                        <td>{{ $d_i['quantity'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['price']) }}
+                                            <?php $sum_bill_price += $d_i['price']; ?>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" align="right">Total</td>
+                                    <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        @elseif($report_type == 6)
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -263,39 +469,55 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'Y-m-d') }}
+                                            {{ date_format($datenya,'d-m-Y') }}
                                         </td>
                                         <td>{{ $d_i['supplier'] }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['tax'] }}</td>
+                                        <?php $x = []; $sum = 0;?>
+                                        @foreach($d_i['total'] as $kj)
+                                            <?php array_push($x,[
+                                                'quantity_purchase_order'=>\DB::table('product_purchase_order')->select('quantity')->where('purchase_order_id',$kj->purchase_order_id)->where('product_id',$kj->product_id)->get()[0]->quantity,
+                                                'price'=>\DB::table('product_purchase_order')->select('price')->where('purchase_order_id',$kj->purchase_order_id)->where('product_id',$kj->product_id)->get()[0]->price,
+                                                'quantity'=>$kj->quantity
+                                            ]);
+                                            ?>
+                                        @endforeach
+                                        @foreach($x as $xx)
+                                            <?php $sum += (($xx['price']/$xx['quantity_purchase_order'])*$xx['quantity']); ?>
+                                        @endforeach
+                                        <td>- {{ number_format($sum) }}</td>
+                                        <td>{{ $d_i['return'] }}</td>
                                         <td>
-                                            {{ number_format($d_i['bill_price']) }}
-                                            <?php $sum_bill_price += $d_i['bill_price']; ?>
+                                            - {{ number_format($sum) }}
+                                            <?php $sum_bill_price += $sum-$d_i['return']; ?>
                                         </td>
-                                        <td></td>
-                                        <td>{{ number_format($d_i['bill_price']-0) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="8" align="right">Total</td>
-                                    <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
+                                    <td colspan="6" align="right">Total</td>
+                                    <td style="background-color:red;color:white">- {{ number_format($sum_bill_price) }}</td>
+                                    <td align="right">Net</td>
+                                    <td style="background-color:red;color:white">- {{ number_format($sum_bill_price) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
-                        @elseif($report_type == 5)
+                        @elseif($report_type == 7)
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>No.Faktur</th>
                                     <th>Tgl Faktur</th>
-                                    <th>Keterangan</th>
-                                    <th>Nilai Faktur</th>
-                                    <th>Return</th>
-                                    <th>Netto</th>
                                     <th>Supplier</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Disc(%)</th>
+                                    <th>Disc(amt)</th>
+                                    <th>Line Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -304,20 +526,22 @@
                                     <tr>
                                         <td>{{ $d_i['no_faktur'] }}</td>
                                         <td>{{ $d_i['tgl_faktur'] }}</td>
-                                        <td>{{ $d_i['keterangan'] }}</td>
-                                        <td>
-                                            {{ number_format($d_i['bill_price']) }}
-                                            <?php $sum_bill_price += $d_i['bill_price']; ?>
-                                        </td>
-                                        <td>{{ $d_i['return'] }}</td>
-                                        <td>{{ $d_i['netto'] }}</td>
                                         <td>{{ $d_i['supplier'] }}</td>
+                                        <td>{{ $d_i['item'] }}</td>
+                                        <td>{{ number_format($d_i['unit_price']) }}</td>
+                                        <td>{{ $d_i['quantity'] }}</td>
+                                        <td>{{ $d_i['disc'] }}</td>
+                                        <td>{{ $d_i['disc_amt'] }}</td>
+                                        <td>
+                                            {{ number_format($d_i['unit_price']*$d_i['quantity']) }}
+                                            <?php $sum_bill_price += $d_i['unit_price']*$d_i['quantity']; ?>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="6" align="right">Total</td>
+                                    <td colspan="8" align="right">Total</td>
                                     <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
                                 </tr>
                             </tfoot>

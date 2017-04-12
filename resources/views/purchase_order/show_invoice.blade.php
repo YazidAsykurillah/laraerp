@@ -42,14 +42,14 @@
           <div class="table-responsive">
             <table class="table table-bordered" id="table-selected-products">
                 <thead>
-                    <tr>
-                      <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                      <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                      <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                      <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                    <tr style="">
+                      <th style="width:20%;">Family</th>
+                      <th style="width:15%;">Code</th>
+                      <th style="width:15%;">Description</th>
+                      <th style="width:10%;">Unit</th>
+                      <th style="width:5%;">Quantity</th>
+                      <th style="width:20%;">Category</th>
+                      <th style="width:15%;">Price</th>
                     </tr>
                 </thead>
               <tbody>

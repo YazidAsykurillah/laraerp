@@ -63,7 +63,7 @@
               @endif
             </div>
           </div>
-          
+
         </div><!-- /.box-body -->
       </div>
       <!--ENDBOX Basic Informations-->
