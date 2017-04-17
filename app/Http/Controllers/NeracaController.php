@@ -120,40 +120,40 @@ class NeracaController extends Controller
             $conv_month_start ='';
             $conv_month_end ='';
             switch ($month_start) {
-                case 01:
+                case '01':
                     $conv_month_start = 'January';
                     break;
-                case 02:
+                case '02':
                     $conv_month_start = 'February';
                     break;
-                case 03:
+                case '03':
                     $conv_month_start = 'March';
                     break;
-                case 04:
+                case '04':
                     $conv_month_start = 'April';
                     break;
-                case 05:
+                case '05':
                     $conv_month_start = 'May';
                     break;
-                case 06:
+                case '06':
                     $conv_month_start = 'June';
                     break;
-                case 07:
+                case '07':
                     $conv_month_start = 'July';
                     break;
-                case 08:
+                case '08':
                     $conv_month_start = 'August';
                     break;
-                case 09:
+                case '09':
                     $conv_month_start = 'September';
                     break;
-                case 10:
+                case '10':
                     $conv_month_start = 'October';
                     break;
-                case 11:
+                case '11':
                     $conv_month_start = 'November';
                     break;
-                case 12:
+                case '12':
                     $conv_month_start = 'December';
                     break;
                 default:
@@ -161,40 +161,40 @@ class NeracaController extends Controller
                     break;
             }
             switch ($month_end) {
-                case 01:
+                case '01':
                     $conv_month_end = 'January';
                     break;
-                case 02:
+                case '02':
                     $conv_month_end = 'February';
                     break;
-                case 03:
+                case '03':
                     $conv_month_end = 'March';
                     break;
-                case 04:
+                case '04':
                     $conv_month_end = 'April';
                     break;
-                case 05:
+                case '05':
                     $conv_month_end = 'May';
                     break;
-                case 06:
+                case '06':
                     $conv_month_end = 'June';
                     break;
-                case 07:
+                case '07':
                     $conv_month_end = 'July';
                     break;
-                case 08:
+                case '08':
                     $conv_month_end = 'August';
                     break;
-                case 09:
+                case '09':
                     $conv_month_end = 'September';
                     break;
-                case 10:
+                case '10':
                     $conv_month_end = 'October';
                     break;
-                case 11:
+                case '11':
                     $conv_month_end = 'November';
                     break;
-                case 12:
+                case '12':
                     $conv_month_end = 'December';
                     break;
                 default:
