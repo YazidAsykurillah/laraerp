@@ -35,7 +35,7 @@
 
                     <p>
                       {{ Auth::user()->name }}
-                      <small>Member since {{ Auth::user()->created_at }}</small>
+                      <small>Member since {{ \Auth::user()->updated_at }}</small>
                     </p>
                   </li>
                   <!-- Menu Footer-->

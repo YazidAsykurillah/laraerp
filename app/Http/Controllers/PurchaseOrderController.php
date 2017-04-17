@@ -46,11 +46,18 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         if (\Auth::user()->can('purchase-order-module')) {
             return view('purchase_order.index');
         }else{
             return "tidak";
         }
+=======
+        if(\Auth::user()->can('purchase-order-module')){
+            return view('purchase_order.index');
+        }
+        return "403";
+>>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
     }
 
     /**
@@ -59,6 +66,7 @@ class PurchaseOrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
+<<<<<<< HEAD
     {
         if (\Auth::user()->can('create-purchase-order-module')) {
             $supplier_options = Supplier::lists('name', 'id');
@@ -67,6 +75,16 @@ class PurchaseOrderController extends Controller
         }else{
             return view('403');
         }
+=======
+    {   
+        if(\Auth::user()->can('create-purchase-order-module')){
+            $supplier_options = Supplier::lists('name', 'id');
+            return view('purchase_order.create')
+                ->with('supplier_options', $supplier_options);
+        }
+        return "403";
+        
+>>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
     }
 
     /**
