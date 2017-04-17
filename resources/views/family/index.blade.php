@@ -22,7 +22,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Family Product</h3>
                     <a href="{{ URL::to('family/create') }}" class="btn btn-primary pull-right" title="Create New Family">
@@ -32,19 +32,20 @@
                 <div class="box-body table-responsive">
                     <table class="table table-striped table-hover" id="table-family">
                         <thead>
-                            <tr>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:55%;background-color:#3c8dbc;color:white">Nama Family</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Created At</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Actions</th>
+                            <tr style="background-color:#3c8dbc;color:white">
+                                <th style="width:5%;">#</th>
+                                <th style="width:10%;">Code</th>
+                                <th style="width:55%;">Nama Family</th>
+                                <th style="width:20%;">Created At</th>
+                                <th style="width:10%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if($family->count() > 0)
+                            <?php $no = 1; ?>
                                 @foreach($family as $fam)
                                     <tr>
-                                        <td>#</td>
+                                        <td>{{ $no++ }}</td>
                                         <td>{{ $fam->code }}</td>
                                         <td>{{ $fam->name }}</td>
                                         <td>{{ $fam->created_at }}</td>

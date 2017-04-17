@@ -345,24 +345,45 @@ class ReportController extends Controller
                 // exit();
                 break;
             case 9:
-                $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
-                $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
-                $sales_join = \DB::table('sales_orders')
-                                ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
-                                ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
-                                ->where('sales_orders.customer_id','=',$customer_id[0]->id)
-                                ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                // print_r($sales_join);
-                // exit();
-                foreach ($sales_join as $key) {
-                    array_push($data_invoice,[
-                            'no_faktur'=>$key->code,
-                            'tgl_faktur'=>$key->created_at,
-                            'keterangan'=>$key->notes,
-                            'bill_price'=>$key->bill_price,
-                            'customer'=>$keyword,
-                        ]);
+                if($keyword == ''){
+                    // $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
+                    // $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
+                    $sales_join = \DB::table('sales_orders')
+                                    ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                    ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                                    ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    // print_r($sales_join);
+                    // exit();
+                    foreach ($sales_join as $key) {
+                        array_push($data_invoice,[
+                                'no_faktur'=>$key->code,
+                                'tgl_faktur'=>$key->created_at,
+                                'keterangan'=>$key->notes,
+                                'bill_price'=>$key->bill_price,
+                                'customer'=>$key->code,
+                            ]);
+                    }
+                }else{
+                    $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
+                    $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
+                    $sales_join = \DB::table('sales_orders')
+                                    ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                    ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                                    ->where('sales_orders.customer_id','=',$customer_id[0]->id)
+                                    ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    // print_r($sales_join);
+                    // exit();
+                    foreach ($sales_join as $key) {
+                        array_push($data_invoice,[
+                                'no_faktur'=>$key->code,
+                                'tgl_faktur'=>$key->created_at,
+                                'keterangan'=>$key->notes,
+                                'bill_price'=>$key->bill_price,
+                                'customer'=>$keyword,
+                            ]);
+                    }
                 }
+
                 break;
         }
 

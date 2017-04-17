@@ -23,7 +23,7 @@
 {!! Form::model($main_product,['route'=>['main-product.update', $main_product->id], 'class'=>'form-horizontal','method'=>'put','files'=>true]) !!}
 <div class="row">
     <div class="col-md-8">
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
                 <h3 class="box-title">Basic Informations</h3>
             </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
             <h3 class="box-title">Category and Family</h3>
           </div><!-- /.box-header -->
@@ -96,7 +96,7 @@
     </div>
     <div class="col-md-4">
       <!--BOX Image-->
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Main Product Image</h3>
         </div><!-- /.box-header -->
@@ -126,75 +126,77 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
             <h3 class="box-title">Sub Products</h3>
           </div><!-- /.box-header -->
-          <div class="box-body table-responsive">
-            <table class="table table-bordered" id="table-product">
-                <thead>
-                    <tr>
-                      <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                      <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
-                      <th style="width:15%;background-color:#3c8dbc;color:white">Stock Minumum</th>
-                      <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                    </tr>
-                </thead>
-              <tbody>
-                  <tr>
-                      <td>{{ $main_product->family->name }}</td>
-                      <td>
-                          <input type="hidden" name="parent_id" value="{{ $main_product->id}}">
-                          <span id="parent_code">{{$main_product->name}}</span>
-                          @if($main_product->image != NULL)
-                          <a href="#" class="thumbnail">
-                              {!! Html::image('img/products/thumb_'.$main_product->image.'', $main_product->image) !!}
-                          </a>
-                          @else
-                          <a href="#" class="thumbnail">
-                              {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
-                          </a>
-                          @endif
+          <div class="box-body">
+              <div class="box-responsive" style="max-height:500px">
+                <table class="table table-bordered" id="table-product">
+                    <thead>
+                        <tr>
+                          <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
+                          <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
+                          <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
+                          <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
+                          <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
+                          <th style="width:15%;background-color:#3c8dbc;color:white">Stock Minumum</th>
+                          <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
+                        </tr>
+                    </thead>
+                  <tbody>
+                      <tr>
+                          <td>{{ $main_product->family->name }}</td>
+                          <td>
+                              <input type="hidden" name="parent_id" value="{{ $main_product->id}}">
+                              <span id="parent_code">{{$main_product->name}}</span>
+                              @if($main_product->image != NULL)
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('img/products/thumb_'.$main_product->image.'', $main_product->image) !!}
+                              </a>
+                              @else
+                              <a href="#" class="thumbnail">
+                                  {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                              </a>
+                              @endif
+                              </td>
+                          <td id="parent_description"></td>
+                          <td>{{ $main_product->unit->name}}</td>
+                          <td>
+                              <input type="text" name="stock_parent" id="stock_parent">
                           </td>
-                      <td id="parent_description"></td>
-                      <td>{{ $main_product->unit->name}}</td>
-                      <td>
-                          <input type="text" name="stock_parent" id="stock_parent">
-                      </td>
-                      <td>
-                          <input type="text" name="stock_minimum_parent" value="0" id="minimum_stock_parent">
-                      </td>
-                      <td>{{ $main_product->category->name}}</td>
-                  </tr>
-                  <?php $no = 1; $sum = 0;?>
-                  @foreach($product as $key)
-                    <tr id="row_child_{{$key->id }}">
-                        <td>{{ $main_product->family->name }}</td>
-                        <td>
-                            <input type="hidden" name="id[]" value="{{ $key->id}}">
-                            <input type="hidden" name="child_code_hidden[]" value="{{ $key->name}}" class="child_code_hidden">
-                            <span class="child_code">{{ $key->name }}</span>
-                        </td>
-                        <td id="child_description">{{ $key->description }}</td>
-                        <td>{{ $main_product->unit->name}} </td>
-                        <td>
-                            <input type="text" name="stock[]" value="{{ $key->stock }}" class="stock">
-                        </td>
-                        <td>
-                            <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
-                        </td>
-                        <td>{{ $main_product->category->name}}</td>
-                    </tr>
-                    @if($key->stock)
-                        <?php $sum += $key->stock; ?>
-                    @endif
-                  @endforeach
-                  <p id="sum_availability" style="display:none"><?php echo $sum; ?></p>
-              </tbody>
-            </table>
+                          <td>
+                              <input type="text" name="stock_minimum_parent" value="0" id="minimum_stock_parent">
+                          </td>
+                          <td>{{ $main_product->category->name}}</td>
+                      </tr>
+                      <?php $no = 1; $sum = 0;?>
+                      @foreach($product as $key)
+                        <tr id="row_child_{{$key->id }}">
+                            <td>{{ $main_product->family->name }}</td>
+                            <td>
+                                <input type="hidden" name="id[]" value="{{ $key->id}}">
+                                <input type="hidden" name="child_code_hidden[]" value="{{ $key->name}}" class="child_code_hidden">
+                                <span class="child_code">{{ $key->name }}</span>
+                            </td>
+                            <td id="child_description">{{ $key->description }}</td>
+                            <td>{{ $main_product->unit->name}} </td>
+                            <td>
+                                <input type="text" name="stock[]" value="{{ $key->stock }}" class="stock">
+                            </td>
+                            <td>
+                                <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
+                            </td>
+                            <td>{{ $main_product->category->name}}</td>
+                        </tr>
+                        @if($key->stock)
+                            <?php $sum += $key->stock; ?>
+                        @endif
+                      @endforeach
+                      <p id="sum_availability" style="display:none"><?php echo $sum; ?></p>
+                  </tbody>
+                </table>
+            </div>
           </div><!-- /.box-body -->
           <div class="box-footer clearfix">
               <div class="form-group">

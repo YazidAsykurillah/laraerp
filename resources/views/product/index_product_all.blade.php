@@ -22,22 +22,22 @@
 @section('content')
 <div class="row">
   <div class="col-lg-12">
-    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
       <div class="box-header with-border">
-        <h3 class="box-title">Products All</h3>
+        <h3 class="box-title">Product All</h3>
       </div><!-- /.box-header -->
       <div class="box-body table-responsive">
-        <table class="display" id="table-product">
+        <table class="table table-striped table-hover" id="table-product">
           <thead>
-            <tr>
-                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Sub Code</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Stock</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
+            <tr style="background-color:#3c8dbc;color:white">
+                <th style="width:5%;">#</th>
+                <th style="width:20%;">Name</th>
+                <th style="width:10%;">Sub Code</th>
+                <th style="width:20%;">Description</th>
+                <th style="width:10%;">Stock</th>
+                <th style="width:10%;">Unit</th>
+                <th style="width:10%;">Family</th>
+                <th style="width:15%;">Category</th>
             </tr>
           </thead>
           <!-- <thead id="searchid">

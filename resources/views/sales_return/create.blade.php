@@ -24,26 +24,26 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Create Sales Order Return</h3>
                 </div><!-- /.box header -->
                 <div class="box-body table-responsive">
                     {!! Form::open(['route'=>'sales-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-return']) !!}
-                    <table class="table table-bordered" id="table-selected-sales">
+                    <table class="table table-striped table-hover" id="table-selected-sales">
                         <thead>
-                            <tr>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Description</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                                <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">Price/item</th>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">Price</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Returned Qty</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Notes</th>
+                            <tr style="background-color:#3c8dbc;color:white">
+                                <th style="width:5%;">#</th>
+                                <th style="width:10%;">Family</th>
+                                <th style="width:15%;">Code</th>
+                                <th style="width:10%;">Description</th>
+                                <th style="width:10%;">Unit</th>
+                                <th style="width:5%;">Quantity</th>
+                                <th style="width:15%;">Category</th>
+                                <th style="width:5%;">Price/item</th>
+                                <th style="width:5%;">Price</th>
+                                <th style="width:10%;">Returned Qty</th>
+                                <th style="width:10%;">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,6 +127,7 @@
                           @else
                           <tr id="tr-no-product-selected">
                             <td>There are no product</td>
+                          </tr>
                           @endif
                         </tbody>
                         <tfoot>

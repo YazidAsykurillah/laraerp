@@ -33,17 +33,17 @@
         <div class="box-body">
           {!! Form::open(['route'=>'purchase-order-invoice.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-order-invoice','files'=>true]) !!}
 
-          <div class="table-responsive">
+          <div class="table-responsive" style="max-height:500px">
             <table class="table table-striped table-hover" id="table-selected-products">
-                <thead style="background-color:#3c8dbc;color:white">
-                    <tr>
-                      <th style="width:20%;">Family</th>
-                      <th style="width:15%;">Code</th>
-                      <th style="width:15%;">Description</th>
+                <thead>
+                    <tr style="background-color:#3c8dbc;color:white">
+                      <th style="width:15%;">Family</th>
+                      <th style="width:20%;">Name</th>
+                      <th style="width:20%;">Description</th>
                       <th style="width:10%;">Unit</th>
-                      <th style="width:5%;">Quantity</th>
-                      <th style="width:20%;">Category</th>
-                      <th style="width:15%;">Price</th>
+                      <th style="width:10%;">Qty</th>
+                      <th style="width:15%;">Category</th>
+                      <th style="width:10%;">Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,14 +114,13 @@
               @else
               <tr id="tr-no-product-selected">
                 <td>There are no product</td>
+              </tr>
               @endif
-
                 </tbody>
             </table>
 
           </div>
-
-
+          <br>
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">

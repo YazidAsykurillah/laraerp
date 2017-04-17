@@ -24,7 +24,7 @@
   <div class="row">
     {!! Form::model($category,['route'=>['category.update', $category], 'class'=>'form-horizontal', 'method'=>'put']) !!}
       <div class="col-md-9">
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
             <h3 class="box-title">Edit Kategori Produk</h3>
           </div><!-- /.box-header -->
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
               {!! Form::label('name', 'Nama', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-10">
+              <div class="col-sm-5">
                 {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the category', 'id'=>'name']) !!}
                 @if ($errors->has('name'))
                   <span class="help-block">
@@ -64,7 +64,7 @@
               </div>
             </div>
           </div><!-- /.box-body -->
-          
+
         </div>
       </div>
     {!! Form::close() !!}

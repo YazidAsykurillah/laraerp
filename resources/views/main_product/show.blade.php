@@ -22,7 +22,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-6">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ $main_product->name }}</h3>
                 </div>
@@ -86,75 +86,77 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
               <div class="box-header with-border">
                 <h3 class="box-title">Sub Products</h3>
               </div><!-- /.box-header -->
-              <div class="box-body table-responsive">
-                {!! Form::open(['url'=>'main-product.store_product','role'=>'form','class'=>'form-horizontal','id'=>'form-create-main-product']) !!}
-                <table class="table table-bordered" id="table-product">
-                    <thead>
-                        <tr>
-                          <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                          <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                          <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                          <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                          <th style="width:15%;background-color:#3c8dbc;color:white">Stock</th>
-                          <th style="width:15%;background-color:#3c8dbc;color:white;display:none">Stock Minumum</th>
-                          <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                        </tr>
-                    </thead>
-                  <tbody>
-                      <tr>
-                          <td>{{ $main_product->family->name }}</td>
-                          <td>
-                              <input type="hidden" name="parent_id" value="{{ $main_product->id}}">
-                              {{ $main_product->name }}
-                              @if($main_product->image != NULL)
-                              <a href="#" class="thumbnail">
-                                  {!! Html::image('img/products/thumb_'.$main_product->image.'', $main_product->image) !!}
-                              </a>
-                              @else
-                              <a href="#" class="thumbnail">
-                                  {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
-                              </a>
-                              @endif
+              <div class="box-body">
+                  <div class="table-responsive">
+                    {!! Form::open(['url'=>'main-product.store_product','role'=>'form','class'=>'form-horizontal','id'=>'form-create-main-product']) !!}
+                    <table class="table table-striped table-hover" id="table-product">
+                        <thead>
+                            <tr style="background-color:#3c8dbc;color:white">
+                              <th style="width:10%;">Family</th>
+                              <th style="width:15%;">Code</th>
+                              <th style="width:15%;">Description</th>
+                              <th style="width:10%;">Unit</th>
+                              <th style="width:15%;">Stock</th>
+                              <th style="width:15%;;display:none">Stock Minumum</th>
+                              <th style="width:20%;">Category</th>
+                            </tr>
+                        </thead>
+                      <tbody>
+                          <tr>
+                              <td>{{ $main_product->family->name }}</td>
+                              <td>
+                                  <input type="hidden" name="parent_id" value="{{ $main_product->id}}">
+                                  {{ $main_product->name }}
+                                  @if($main_product->image != NULL)
+                                  <a href="#" class="thumbnail">
+                                      {!! Html::image('img/products/thumb_'.$main_product->image.'', $main_product->image) !!}
+                                  </a>
+                                  @else
+                                  <a href="#" class="thumbnail">
+                                      {!! Html::image('files/default/noimageavailable.jpeg', 'No Image') !!}
+                                  </a>
+                                  @endif
+                                  </td>
+                              <td></td>
+                              <td>{{ $main_product->unit->name}}</td>
+                              <td>
+                                  <input type="text" name="stock_parent" value="0">
                               </td>
-                          <td></td>
-                          <td>{{ $main_product->unit->name}}</td>
-                          <td>
-                              <input type="text" name="stock_parent" value="0">
-                          </td>
-                          <td style="display:none">
-                              <input type="text" name="stock_minimum_parent" value="0">
-                          </td>
-                          <td>{{ $main_product->category->name}}</td>
-                      </tr>
-                      <?php $no = 1; $sum = 0;?>
-                      @foreach($product as $key)
-                        <tr>
-                            <td>{{ $main_product->family->name }}</td>
-                            <td>
-                                <input type="hidden" name="id[]" value="{{ $key->id}}">
-                                {{ $key->name }}
-                            </td>
-                            <td>{{ $key->description }}</td>
-                            <td>{{ $main_product->unit->name}} </td>
-                            <td>
-                                <input type="text" name="stock[]" value="{{ $key->stock }}">
-                            </td>
-                            <td style="display:none">
-                                <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
-                            </td>
-                            <td>{{ $main_product->category->name}}</td>
-                        </tr>
-                        @if($key->stock)
-                            <?php $sum += $key->stock; ?>
-                        @endif
-                      @endforeach
-                      <p id="sum_availability" style="display:none"><?php echo $sum; ?></p>
-                  </tbody>
-                </table>
+                              <td style="display:none">
+                                  <input type="text" name="stock_minimum_parent" value="0">
+                              </td>
+                              <td>{{ $main_product->category->name}}</td>
+                          </tr>
+                          <?php $no = 1; $sum = 0;?>
+                          @foreach($product as $key)
+                            <tr>
+                                <td>{{ $main_product->family->name }}</td>
+                                <td>
+                                    <input type="hidden" name="id[]" value="{{ $key->id}}">
+                                    {{ $key->name }}
+                                </td>
+                                <td>{{ $key->description }}</td>
+                                <td>{{ $main_product->unit->name}} </td>
+                                <td>
+                                    <input type="text" name="stock[]" value="{{ $key->stock }}">
+                                </td>
+                                <td style="display:none">
+                                    <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
+                                </td>
+                                <td>{{ $main_product->category->name}}</td>
+                            </tr>
+                            @if($key->stock)
+                                <?php $sum += $key->stock; ?>
+                            @endif
+                          @endforeach
+                          <p id="sum_availability" style="display:none"><?php echo $sum; ?></p>
+                      </tbody>
+                    </table>
+                </div>
               </div><!-- /.box-body -->
               <div class="box-footer clearfix">
                   <div class="form-group">
@@ -169,7 +171,7 @@
                     </div>
                   </div>
               </div>
-              {!! Form::close() !!}
+                  {!! Form::close() !!}
             </div><!-- /.box -->
         </div>
     </div>

@@ -39,6 +39,7 @@ class AclTableSeeder extends Seeder
         $permissions = [
             //Purchase Order Modules
             ['id'=>1, 'slug'=>'purchase-order-module', 'description'=>''],
+            ['id'=>12, 'slug'=>'create-purchase-order-module', 'description'=>''],
             ['id'=>2, 'slug'=>'purchase-order-invoice-module', 'description'=>''],
             ['id'=>3, 'slug'=>'purchase-return', 'description'=>''],
 
@@ -55,7 +56,7 @@ class AclTableSeeder extends Seeder
 
             //Finance Modules
             ['id'=>11, 'slug'=>'bank-module', 'description'=>''],
-        	
+
 
 
         ];
@@ -75,6 +76,7 @@ class AclTableSeeder extends Seeder
             ['permission_id'=>7, 'role_id'=>2],
             ['permission_id'=>8, 'role_id'=>2],
             ['permission_id'=>9, 'role_id'=>2],
+            ['permission_id'=>12, 'role_id'=>2],
 
             //Finance Privillages
             ['permission_id'=>1, 'role_id'=>3],
@@ -88,7 +90,7 @@ class AclTableSeeder extends Seeder
         DB::table('permission_role')->insert($permission_role);
         //ENDBlock table permission_role
 
-        
+
 
     }
 }

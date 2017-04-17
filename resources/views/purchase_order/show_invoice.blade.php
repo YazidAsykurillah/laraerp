@@ -26,7 +26,7 @@
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">{{ $purchase_order_invoice->code }}</h3>
           <div class="pull-right">
@@ -39,17 +39,17 @@
           </div>
         </div><!-- /.box-header -->
         <div class="box-body">
-          <div class="table-responsive">
+          <div class="table-responsive" style="max-height:500px">
             <table class="table table-bordered" id="table-selected-products">
                 <thead>
                     <tr style="">
-                      <th style="width:20%;">Family</th>
-                      <th style="width:15%;">Code</th>
-                      <th style="width:15%;">Description</th>
+                      <th style="width:15%;">Family</th>
+                      <th style="width:20%;">Code</th>
+                      <th style="width:20%;">Description</th>
                       <th style="width:10%;">Unit</th>
-                      <th style="width:5%;">Quantity</th>
-                      <th style="width:20%;">Category</th>
-                      <th style="width:15%;">Price</th>
+                      <th style="width:7%;">Qty</th>
+                      <th style="width:15%;">Category</th>
+                      <th style="width:13%;">Price</th>
                     </tr>
                 </thead>
               <tbody>
@@ -117,69 +117,66 @@
                 @endif
               </tbody>
             </table>
-            <br/>
-            <table class="table">
-
-
-              <tr>
-                <td style="width:30%;"><strong>Bill Price</strong></td>
-                <td id="bill_price">{{ number_format($purchase_order_invoice->bill_price) }}</td>
-              </tr>
-              <tr>
-                <td style="width:30%;"><strong>Paid Price</strong></td>
-                <td id="paid_price">{{ number_format($purchase_order_invoice->paid_price) }}</td>
-              </tr>
-              <tr style="display:none">
-                <td style="width:30%;"><strong>Accounts Payable</strong></td>
-                <td id="paid_price">
-                    <select name="inventory_account[]" id="inventory_account" class="col-md-4">
-                    @foreach(list_account_hutang('56') as $as)
-                        @if($as->name == 'HUTANG DAGANG IDR')
-                            <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
-                        @endif
-                    @endforeach
-                   </select>
-                </td>
-              </tr>
-              <tr>
-                <td style="width:30%;"><strong>Status</strong></td>
-                <td>
-                  {{ strtoupper($purchase_order_invoice->status) }}
-                  @if($purchase_order_invoice->status =='uncompleted')
-                    <p></p>
-                    <button id="btn-pay-invoice" class="btn btn-xs btn-primary" title="Click to pay this invoice" data-id="{{ $purchase_order_invoice->id}}" data-text="{{ $purchase_order_invoice->code }}">
-                      <i class="fa fa-money"></i>&nbsp;Complete
-                    </button>
-                  @endif
-                </td>
-              </tr>
-              <tr>
-                <td style="width:30%;"><strong>Notes</strong></td>
-                <td>{{ $purchase_order_invoice->notes }}</td>
-              </tr>
-              <!-- <tr>
-                <td style="width:30%"><strong>Hutang to Account</strong></td>
-                <td>
-                    <select name="select_account" id="select_account">
-                        <option value="">Select Account</option>
-                    @foreach(list_account_hutang('56') as $as)
-                        @if($as->level == 1)
-                        <optgroup label="{{ $as->name }}">
-                        @endif
-                        @foreach(list_sub_hutang('2',$as->id) as $sub)
-                        <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                        @endforeach
-                    @endforeach
-                    </select>
-                    <p></p>
-                    <button id="btn-select-account" class="btn btn-xs btn-primary" title="Click to send this piutang">
-                      <i class="fa fa-save"></i>&nbsp;Submit
-                    </button>
-                </td>
-              </tr> -->
-            </table>
-
           </div>
+          <br>
+          <table class="table">
+            <tr>
+              <td style="width:30%;"><strong>Bill Price</strong></td>
+              <td id="bill_price">{{ number_format($purchase_order_invoice->bill_price) }}</td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Paid Price</strong></td>
+              <td id="paid_price">{{ number_format($purchase_order_invoice->paid_price) }}</td>
+            </tr>
+            <tr style="display:none">
+              <td style="width:30%;"><strong>Accounts Payable</strong></td>
+              <td id="paid_price">
+                  <select name="inventory_account[]" id="inventory_account" class="col-md-4">
+                  @foreach(list_account_hutang('56') as $as)
+                      @if($as->name == 'HUTANG DAGANG IDR')
+                          <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                      @endif
+                  @endforeach
+                 </select>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Status</strong></td>
+              <td>
+                {{ strtoupper($purchase_order_invoice->status) }}
+                @if($purchase_order_invoice->status =='uncompleted')
+                  <p></p>
+                  <button id="btn-pay-invoice" class="btn btn-xs btn-primary" title="Click to pay this invoice" data-id="{{ $purchase_order_invoice->id}}" data-text="{{ $purchase_order_invoice->code }}">
+                    <i class="fa fa-money"></i>&nbsp;Complete
+                  </button>
+                @endif
+              </td>
+            </tr>
+            <tr>
+              <td style="width:30%;"><strong>Notes</strong></td>
+              <td>{{ $purchase_order_invoice->notes }}</td>
+            </tr>
+            <!-- <tr>
+              <td style="width:30%"><strong>Hutang to Account</strong></td>
+              <td>
+                  <select name="select_account" id="select_account">
+                      <option value="">Select Account</option>
+                  @foreach(list_account_hutang('56') as $as)
+                      @if($as->level == 1)
+                      <optgroup label="{{ $as->name }}">
+                      @endif
+                      @foreach(list_sub_hutang('2',$as->id) as $sub)
+                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
+                      @endforeach
+                  @endforeach
+                  </select>
+                  <p></p>
+                  <button id="btn-select-account" class="btn btn-xs btn-primary" title="Click to send this piutang">
+                    <i class="fa fa-save"></i>&nbsp;Submit
+                  </button>
+              </td>
+            </tr> -->
+          </table>
 
 
 

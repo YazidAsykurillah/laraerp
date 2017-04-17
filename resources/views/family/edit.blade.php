@@ -24,7 +24,7 @@
   <div class="row">
     {!! Form::model($family,['route'=>['family.update', $family], 'class'=>'form-horizontal', 'method'=>'put']) !!}
       <div class="col-md-9">
-        <div class="box">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
             <h3 class="box-title">Edit Family Product</h3>
           </div><!-- /.box-header -->

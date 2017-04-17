@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Product;
+use App\MainProduct;
 
 class Category extends Model
 {
@@ -12,9 +12,9 @@ class Category extends Model
     protected $fillable = ['code','name'];
 
     //relation to Product
-    public function products()
+    public function main_products()
     {
-    	return $this->hasMany('App\Product');
+    	return $this->hasMany('App\MainProduct');
     }
 
 }

@@ -23,7 +23,7 @@
     <div class="row">
         {!! Form::open(['url'=>'report/search','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca']) !!}
         <div class="col-lg-12">
-            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Search Report</h3>
                     <a data-toggle="collapse" href="#collapse-report" title="Click to search report"><i class="fa fa-arrow-down pull-right"></i></a>
@@ -86,10 +86,10 @@
                              @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="product" style="display:none">
                         {!! Form::label('product','Product',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-6">
-                             {!! Form::text('product',null,['class'=>'form-control', 'placeholder'=>'Product of report', 'id'=>'product']) !!}
+                             {!! Form::text('product',null,['class'=>'form-control', 'placeholder'=>'Product of report', 'id'=>'']) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -113,7 +113,7 @@
     @if(isset($report_type))
     <div class="row">
         <div class="col-lg-12">
-            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">
                         @if($report_type == 0)
@@ -142,7 +142,7 @@
                 <div class="box-body">
                     <div class="table responsive">
                         @if($report_type == 0)
-                        <table class="table table-bordered">
+                        <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
@@ -634,24 +634,64 @@
     <script type="text/javascript">
         $('#type_report').on('click',function(){
             var reportType = $('#type_report').val();
-            if(reportType == 2 || reportType == 3 || reportType == 8 || reportType == 9){
+            if(reportType == 8 || reportType == 9){
                 $('#supplier').hide();
                 $('#customer').show();
+                $('#product').hide();
                 $('#text-customer').attr('name','keyword');
                 $('#text-supplier').attr('name','');
-            }else if (reportType == 0 || reportType == 1) {
+            }else if (reportType == 0) {
                 $('#customer').hide();
                 $('#supplier').hide();
+                $('#product').hide();
                 $('#text-supplier').attr('name','');
                 $('#text-customer').attr('name','');
-            }else if (reportType == 4 || reportType == 5) {
+            }else if (reportType == 1) {
                 $('#customer').hide();
                 $('#supplier').hide();
+                $('#product').show();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 2) {
+                $('#customer').hide();
+                $('#supplier').hide();
+                $('#product').hide();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 3) {
+                $('#customer').hide();
+                $('#supplier').hide();
+                $('#product').show();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 4) {
+                $('#customer').hide();
+                $('#supplier').show();
+                $('#product').hide();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 5) {
+                $('#customer').hide();
+                $('#supplier').show();
+                $('#product').show();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 6) {
+                $('#customer').hide();
+                $('#supplier').show();
+                $('#product').hide();
+                $('#text-supplier').attr('name','');
+                $('#text-customer').attr('name','');
+            }else if (reportType == 7) {
+                $('#customer').hide();
+                $('#supplier').show();
+                $('#product').show();
                 $('#text-supplier').attr('name','');
                 $('#text-customer').attr('name','');
             }else{
                 $('#customer').hide();
                 $('#supplier').show();
+                $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }

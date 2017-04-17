@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Sales Order Invoice Detail
+  {{ $sales_order_invoice->code }}
 @endsection
 
 @section('page_header')
@@ -25,7 +25,7 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <div class="box">
+    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
       <div class="box-header with-border">
         <h3 class="box-title">{{ $sales_order_invoice->code }}<small></small></h3>
         <div class="pull-right">
@@ -41,18 +41,18 @@
         </div>
       </div><!-- /.box-header -->
       <div class="box-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height:500px">
           <table class="table table-bordered" id="table-selected-products">
               <thead>
                   <tr>
-                    <th style="width:20%;background-color:#3c8dbc;color:white">Family</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                    <th style="width:5%;background-color:#3c8dbc;color:white">Description</th>
-                    <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                    <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Price Per Unit</th>
-                    <th style="width:15%;background-color:#3c8dbc;color:white">Price</th>
+                      <th style="width:10%;">Family</th>
+                      <th style="width:20%;">Name</th>
+                      <th style="width:20%;">Description</th>
+                      <th style="width:8%;">Unit</th>
+                      <th style="width:7%;">Qty</th>
+                      <th style="width:15%;">Category</th>
+                      <th style="width:10%;">Price Per Unit</th>
+                      <th style="width:10%;">Price</th>
                   </tr>
               </thead>
             <tbody>
@@ -132,10 +132,12 @@
                     @endforeach
               @else
               <tr id="tr-no-product-selected">
-                <td>There are no product</td>
+                <td colspan="8">There are no product</td>
+              </tr>
               @endif
             </tbody>
         </table>
+        </div>
         <br/>
         <table class="table">
           <tr>

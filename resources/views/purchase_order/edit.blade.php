@@ -38,7 +38,7 @@
               <thead>
                   <tr style="background-color:#3c8dbc;color:white">
                     <th style="width:15%;">Family</th>
-                    <th style="width:15%;">Code</th>
+                    <th style="width:15%;">Name</th>
                     <th style="width:20%;">Description</th>
                     <th style="width:15%;">Unit</th>
                     <th style="width:15%;">Quantity</th>
