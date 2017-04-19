@@ -23,7 +23,7 @@
     {!! Form::open(['route'=>'chart-account.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-chart-account']) !!}
         <div class="row">
             <div class="col-lg-7">
-                <div class="box">
+                <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                         <h3 class="box-title">Basic Information</h3>
                     </div><!-- /.box-header -->
@@ -63,16 +63,6 @@
                         </div>
                     </div><!-- /.box-body -->
                     <div class="box-footer clearfix">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-7">
-                <div class="box">
-                    <div class="box-body">
                         <div class="form-group">
                             {!! Form::label('','',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
@@ -84,9 +74,12 @@
                                 </button>
                             </div>
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
-    {!! Form::close() !!}
+
+        
+
 @endsection

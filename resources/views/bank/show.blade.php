@@ -19,12 +19,12 @@
     <li class="active"><i></i>Detail</li>
   </ol>
 @endsection
-  
+
 @section('content')
-  
+
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Bank Detail</h3>
         </div><!-- /.box-header -->
@@ -50,11 +50,11 @@
               <td><b>Value</b></td>
               <td>{{ number_format($bank->value) }}</td>
             </tr>
-            
+
           </table>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
     </div>

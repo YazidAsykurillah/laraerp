@@ -19,6 +19,7 @@ Route::get('/home', 'HomeController@index');
 
 //report
 Route::post('report/search','ReportController@report_search');
+Route::post('report.report_print','ReportController@report_print');
 Route::resource('report','ReportController');
 
 //biaya operasi

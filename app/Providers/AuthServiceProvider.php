@@ -28,11 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
 
         // Dynamically register permissions with Laravel's Gate.
-<<<<<<< HEAD
-       foreach ($this->getPermissions() as $permission) {
-=======
         foreach ($this->getPermissions() as $permission) {
->>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
             $gate->define($permission->slug, function ($user) use ($permission) {
                 return $user->hasRole($permission->roles);
             });

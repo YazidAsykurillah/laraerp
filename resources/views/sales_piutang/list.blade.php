@@ -22,29 +22,30 @@
 @section('content')
     <ul class="nav nav-tabs">
       <li class="active">
-        <a data-toggle="tab" href="#section-riwayat-piutang"><i class="fa fa-desktop"></i>&nbsp;Riwayat Piutang</a>
+        <a data-toggle="tab" href="#section-riwayat-piutang" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Riwayat Piutang</a>
       </li>
       <li>
-        <a data-toggle="tab" href="#section-belum-lunas"><i class="fa fa-bookmark"></i>&nbsp;Faktur Belum Lunas</a>
+        <a data-toggle="tab" href="#section-belum-lunas" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-bookmark"></i>&nbsp;Faktur Belum Lunas</a>
       </li>
     </ul>
     <div class="tab-content">
         <div id="section-riwayat-piutang" class="tab-pane fade in active">
+            <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
                             <h3 class="box-title">Customer Summary</h3>
                         </div>
                         <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
+                            <div class="table-responsive" style="max-height:500px">
+                                <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Customer Code</th>
-                                            <th style="width:40%;background-color:#3c8dbc;color:white" colspan="3">Customer Name</th>
-                                            <th style="width:30%;background-color:#3c8dbc;color:white" colspan="2">Balance</th>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Detail</th>
+                                        <tr style="background-color:#3c8dbc;color:white">
+                                            <th style="width:15%;">Customer Code</th>
+                                            <th style="width:40%;" colspan="3">Customer Name</th>
+                                            <th style="width:30%;" colspan="2">Balance</th>
+                                            <th style="width:15%;">Detail</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -108,23 +109,24 @@
             </div>
         </div>
         <div id="section-belum-lunas" class="tab-pane fade">
+            <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
                             <h3 class="box-title">Customer Summary</h3>
                         </div>
                         <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
+                            <div class="table-responsive" style="max-height:500px">
+                                <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th style="width:20%;background-color:#3c8dbc;color:white">No. Faktur</th>
-                                            <th style="width:20%;background-color:#3c8dbc;color:white">Tanggal Faktur</th>
-                                            <th style="width:20%;background-color:#3c8dbc;color:white">Jatuh Tempo</th>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Nilai Faktur</th>
-                                            <th style="width:15%;background-color:#3c8dbc;color:white">Piutang</th>
-                                            <th style="width:10%;background-color:#3c8dbc;color:white">Umur</th>
+                                        <tr style="background-color:#3c8dbc;color:white">
+                                            <th style="width:20%;">No. Faktur</th>
+                                            <th style="width:20%;">Tanggal Faktur</th>
+                                            <th style="width:20%;">Jatuh Tempo</th>
+                                            <th style="width:15%;">Nilai Faktur</th>
+                                            <th style="width:15%;">Piutang</th>
+                                            <th style="width:10%;">Umur</th>
                                         </tr>
                                     </thead>
                                     <tbody>

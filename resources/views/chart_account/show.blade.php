@@ -22,7 +22,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
                 </div><!-- /.box-header -->
@@ -51,7 +51,7 @@
 
                 </div><!-- /.box-footer -->
             </div>
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">
                         Add New Parent Account
@@ -107,13 +107,9 @@
                         </div>
                     </div>
                     <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
+
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
-
-                </div><!-- /.box-footer -->
-            </div>
-            <div class="box">
-                <div class="box-body">
                     <div class="form-group">
                         {!! Form::label('','',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
@@ -126,76 +122,78 @@
                         </div>
                     </div>
                     {!! Form::close() !!}
-                </div>
+                </div><!-- /.box-footer -->
             </div>
         </div>
         <div class="col-md-6">
-            <div class="box">
-                <div class="box-header">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+                <div class="box-header with-border">
                     <h3 class="box-title">Sub Chart Account
                         <small>Sub Chart Account List</small>
                     </h3>
                 </div>
-                <div class="box-body table-responsive">
-                    <table class="table table-bordered" id="table-sub-chart-account">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">#</th>
-                                <th style="width:40%">Name</th>
-                                <th style="width:30%">Account Number</th>
-                                <th style="width:25%;text-align:center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($sub_chart_account->count() > 0)
-                            <?php $no = 1; ?>
-                              @foreach($sub_chart_account as $key)
-                              @if($key->level == 1)
-                              <tr>
-                                <td> {{ $no++ }}</td>
-                                <td> {{ $key->name }}</td>
-                                <td> {{ $key->account_number }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-created-at="{{ $key->created_at }}">
-                                        <i class="fa fa-external-link-square"></i>
-                                    </button>&nbsp;
-                                    <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}">
-                                        <i class="fa fa-edit"></i>
-                                    </button>&nbsp;
-                                    <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td>
-                              </tr>
-                              @foreach(child_chart_account($key->id) as $child)
+                <div class="box-body">
+                    <div class="table-responsive" style="max-height:500px">
+                        <table class="table table-striped table-hover" id="table-sub-chart-account">
+                            <thead>
                                 <tr>
-                                    <td></td>
-                                    <td style="padding-left:20px">{{ $child->name }}</td>
-                                    <td style="padding-left:20px">{{ $child->account_number }}</td>
+                                    <th style="width:5%">#</th>
+                                    <th style="width:40%">Name</th>
+                                    <th style="width:30%">Account Number</th>
+                                    <th style="width:25%;text-align:center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($sub_chart_account->count() > 0)
+                                <?php $no = 1; ?>
+                                  @foreach($sub_chart_account as $key)
+                                  @if($key->level == 1)
+                                  <tr>
+                                    <td> {{ $no++ }}</td>
+                                    <td> {{ $key->name }}</td>
+                                    <td> {{ $key->account_number }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-created-at="{{ $child->created_at }}">
+                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-created-at="{{ $key->created_at }}">
                                             <i class="fa fa-external-link-square"></i>
                                         </button>&nbsp;
-                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}">
+                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}">
                                             <i class="fa fa-edit"></i>
                                         </button>&nbsp;
-                                        <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
+                                        <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
+                                  </tr>
+                                  @foreach(child_chart_account($key->id) as $child)
+                                    <tr>
+                                        <td></td>
+                                        <td style="padding-left:20px">{{ $child->name }}</td>
+                                        <td style="padding-left:20px">{{ $child->account_number }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-created-at="{{ $child->created_at }}">
+                                                <i class="fa fa-external-link-square"></i>
+                                            </button>&nbsp;
+                                            <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}">
+                                                <i class="fa fa-edit"></i>
+                                            </button>&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                  @endforeach
+                                  @endif
+                                  @endforeach
+                                @else
+                                <tr>
+                                  <td colspan="4">
+                                    <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related sub chart account to this chart account</p>
+                                  </td>
                                 </tr>
-                              @endforeach
-                              @endif
-                              @endforeach
-                            @else
-                            <tr>
-                              <td colspan="4">
-                                <p class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;There is no related sub chart account to this chart account</p>
-                              </td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="box-footer">
 
