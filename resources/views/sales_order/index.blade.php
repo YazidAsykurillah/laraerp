@@ -30,17 +30,17 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
-          <table class="display" id="table-sales-order">
+          <table class="table table-striped table-hover" id="table-sales-order">
             <thead>
-              <tr>
-                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Customer</th>
-                <th style="width:15%;background-color:#3c8dbc;color:white">Creator</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Date Created</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Status</th>
-                <th style="width:10%;background-color:#3c8dbc;color:white">Invoice</th>
-                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
+              <tr style="background-color:#3c8dbc;color:white">
+                <th style="width:5%;">#</th>
+                <th style="width:10%;">Code</th>
+                <th style="width:15%;">Customer</th>
+                <th style="width:15%;">Creator</th>
+                <th style="width:20%;">Date Created</th>
+                <th style="width:10%;">Status</th>
+                <th style="width:10%;">Invoice</th>
+                <th style="width:15%;text-align:center;">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">

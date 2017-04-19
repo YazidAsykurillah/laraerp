@@ -23,16 +23,16 @@
 
   <ul class="nav nav-tabs">
     <li class="active">
-      <a data-toggle="tab" href="#section-general-information"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
+      <a data-toggle="tab" href="#section-general-information" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;General Information</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-invoice"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
+      <a data-toggle="tab" href="#section-invoice" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-bookmark"></i>&nbsp;Invoice</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-invoice-payment"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
+      <a data-toggle="tab" href="#section-invoice-payment" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-bookmark-o"></i>&nbsp;Invoice Payments</a>
     </li>
     <li>
-      <a data-toggle="tab" href="#section-return"><i class="fa fa-reply"></i>&nbsp;Return</a>
+      <a data-toggle="tab" href="#section-return" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-reply"></i>&nbsp;Return</a>
     </li>
   </ul>
   <div class="tab-content">
