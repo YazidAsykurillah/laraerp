@@ -22,7 +22,7 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Sales Order</h3>
           <a href="{{ URL::to('sales-order/create')}}" class="btn btn-primary pull-right" title="Add new sales order">
@@ -35,24 +35,32 @@
               <tr style="background-color:#3c8dbc;color:white">
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
+<<<<<<< HEAD
                 <th style="width:15%;">Customer</th>
+=======
+                <th style="width:20%;">Customer</th>
+>>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
                 <th style="width:15%;">Creator</th>
                 <th style="width:20%;">Date Created</th>
                 <th style="width:10%;">Status</th>
                 <th style="width:10%;">Invoice</th>
+<<<<<<< HEAD
                 <th style="width:15%;text-align:center;">Actions</th>
+=======
+                <th style="width:10%;text-align:center;">Actions</th>
+>>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
               </tr>
             </thead>
             <thead id="searchid">
               <tr>
                 <th style="width:5%;"></th>
                 <th style="width:10%;">Code</th>
-                <th style="width:15%;">Customer</th>
+                <th style="width:20%;">Customer</th>
                 <th style="width:15%;">Creator</th>
                 <th style="width:20%;">Date Created</th>
                 <th style="width:10%;">Status</th>
                 <th style="width:10%;">Invoice</th>
-                <th style="width:15%;"></th>
+                <th style="width:10%;"></th>
               </tr>
             </thead>
             <tbody>

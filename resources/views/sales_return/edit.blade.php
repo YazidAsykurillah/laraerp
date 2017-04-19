@@ -25,21 +25,21 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Edit Sales Order Return</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <div class="table-responsive"
+                    <div class="table-responsive">
                     {!! Form::model($sales_return,['route'=>['sales-return.update',$sales_return->id],'id'=>'form-edit-sales-return','class'=>'form-horizontal','method'=>'put','files'=>true]) !!}
-                    <table class="table table-bordered">
+                    <table class="table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">PO Code</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Salesed Quantity</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Returned Quantity</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Notes</th>
+                            <tr style="background-color:#3c8dbc;color:white">
+                                <th style="width:20%;">PO Code</th>
+                                <th style="width:20%;">Code</th>
+                                <th style="width:20%;">Salesed Quantity</th>
+                                <th style="width:20%;">Returned Quantity</th>
+                                <th style="width:20%;">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,21 +61,21 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-md-3">Status</div>
+                        <div class="col-md-3"><strong>Status</strong></div>
                         <div class="col-md-1">:</div>
                         <div class="col-md-3">
                             <p>{{ strtoupper($sales_return->status) }}</p>
                         </div>
                     </div><!-- /.row -->
                     <div class="row">
-                      <div class="col-md-3">Customer Name</div>
+                      <div class="col-md-3"><strong>Customer Name</strong></div>
                       <div class="col-md-1">:</div>
                       <div class="col-md-3">
                         <p>{{ $sales_return->sales_order->customer->name }}</p>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-3">Created At</div>
+                      <div class="col-md-3"><strong>Created At</strong></div>
                       <div class="col-md-1">:</div>
                       <div class="col-md-3">
                         <p>{{ $sales_return->created_at }}</p>

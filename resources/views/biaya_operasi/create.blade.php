@@ -22,15 +22,15 @@
 @section('content')
     {!! Form::open(['route'=>'biaya-operasi.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-biaya-operasi']) !!}
         <div class="row">
-            <div class="col-lg-12">
-                <div class="box">
+            <div class="col-lg-8">
+                <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                         <h3 class="box-title">Create New Biaya Operasi</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            {!! Form::label('expenses_account', 'Expenses Account', ['class'=>'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4">
+                            {!! Form::label('expenses_account', 'Expenses Account', ['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-9">
                                 <select name="beban_operasi_account" id="beban_operasi_account" class="form-control">
                                   <option value="">Expenses Account</option>
                                   @foreach(list_account_inventory('64') as $as)
@@ -44,10 +44,9 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            {!! Form::label('cash_bank_account', 'Cash/Bank Account', ['class'=>'col-sm-2 control-label']) !!}
-                            <div class="col-sm-4">
+                            {!! Form::label('cash_bank_account', 'Cash/Bank Account', ['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-9">
                                 <select name="cash_bank_account" id="cash_bank_account" class="form-control">
                                   <option value="">Cash/Bank Account</option>
                                   @foreach(list_account_inventory('51') as $as)
@@ -61,10 +60,9 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
-                          {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
-                          <div class="col-sm-4">
+                          {!! Form::label('amount', 'Amount', ['class'=>'col-sm-3 control-label']) !!}
+                          <div class="col-sm-9">
                             {!! Form::text('amount',null,['class'=>'form-control', 'placeholder'=>'Amount of the biaya operasi', 'id'=>'amount']) !!}
                             @if ($errors->has('amount'))
                               <span class="help-block">
@@ -74,9 +72,11 @@
                           </div>
                         </div>
 
+                    </div>
+                    <div class="box-footer clearfix">
                         <div class="form-group">
-                            {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-                          <div class="col-sm-4">
+                            {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+                          <div class="col-sm-9">
                             <a href="{{ url('biaya-operasi') }}" class="btn btn-default">
                               <i class="fa fa-repeat"></i>&nbsp;Cancel
                             </a>&nbsp;
@@ -85,11 +85,12 @@
                             </button>
                           </div>
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
-    {!! Form::close() !!}
+
 @endsection
 
 @section('additional_scripts')

@@ -24,7 +24,7 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Create Purchase Order Return</h3>
         </div><!-- /.box-header -->
@@ -110,6 +110,7 @@
               @else
               <tr id="tr-no-product-selected">
                 <td>There are no product</td>
+              </tr>
               @endif
 
             </tbody>

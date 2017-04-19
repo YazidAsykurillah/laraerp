@@ -33,16 +33,16 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::model($purchase_order_invoice, ['route'=>['purchase-order-invoice.update', $purchase_order_invoice->id], 'id'=>'form-edit-purchase-order-invoice', 'class'=>'form-horizontal','method'=>'put', 'files'=>true]) !!}
-          <div class="table-responsive">
+          <div class="table-responsive" style="max-height:500px">
             <table class="table table-striped table-hover" id="table-selected-products">
-                <thead style="background-color:#3c8dbc;color:white">
-                    <tr>
-                      <th style="width:20%;">Family</th>
-                      <th style="width:15%;">Code</th>
-                      <th style="width:15%;">Description</th>
+                <thead>
+                    <tr style="background-color:#3c8dbc;color:white">
+                      <th style="width:10%;">Family</th>
+                      <th style="width:20%;">Name</th>
+                      <th style="width:20%;">Description</th>
                       <th style="width:10%;">Unit</th>
-                      <th style="width:5%;">Quantity</th>
-                      <th style="width:20%;">Category</th>
+                      <th style="width:10%;">Qty</th>
+                      <th style="width:15%;">Category</th>
                       <th style="width:15%;">Price</th>
                     </tr>
                 </thead>
@@ -109,21 +109,20 @@
                           </tr>
                           @endforeach
                           <tr style="display:none">
-                            <td colspan="3" class="sum">{{ number_format($sum) }}</td>
+                            <td colspan="4" class="sum">{{ number_format($sum) }}</td>
                             <td colspan="3" class="sum_qty">{{ $sum_qty }}</td>
                           </tr>
                       @endforeach
                 @else
-                <tr id="tr-no-product-selected">
-                  <td>There are no product</td>
+                <!-- <tr id="tr-no-product-selected">
+                  <td colspan="7">There are no product</td>
+                </tr> -->
                 @endif
               </tbody>
             </table>
 
           </div>
-
-
-
+          <br>
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
               {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
@@ -244,6 +243,7 @@
   </script>
 
   <script type="text/javascript">
+
   //Block handle form create purchase order submission
     $('#form-edit-purchase-order-invoice').on('submit', function(event){
       $('#btn-submit-purchase-order-invoice').attr('disable','disabled');

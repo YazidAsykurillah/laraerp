@@ -123,7 +123,7 @@
                       <h3 class="box-title">Product List</h3>
                   </div>
                   <div class="box-body">
-                      <div class="table-responsive">
+                      <div class="table-responsive" style="max-height:500px">
                         <table class="table table-bordered" id="table-selected-products">
                           <thead>
                             <tr style="">
@@ -225,7 +225,8 @@
 
                   <table class="table">
                     <tr>
-                      <td style="width:30%;"><strong>Invoice Code</strong></td>
+                      <td><strong>Invoice Code</strong></td>
+                      <td>:</td>
                       <td>
                         <a href="{{url('purchase-order-invoice/'.$purchase_order->purchase_order_invoice->id.'')}}" title="Click to view the detail of the invoice">
                           {{ $purchase_order->purchase_order_invoice->code }}
@@ -236,19 +237,33 @@
 
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Bill Price</strong></td>
+                      <td><strong>Bill Price</strong></td>
+                      <td>:</td>
                       <td>{{ number_format($purchase_order->purchase_order_invoice->bill_price) }}</td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Paid Price</strong></td>
+                      <td><strong>Paid Price</strong></td>
+                      <td>:</td>
                       <td>{{ number_format($purchase_order->purchase_order_invoice->paid_price) }}</td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Status</strong></td>
+                      <td><strong>Created Date</strong></td>
+                      <td>:</td>
+                      <td>{{ $purchase_order->purchase_order_invoice->created_at }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Due Date</strong></td>
+                      <td>:</td>
+                      <td>{{ $purchase_order->purchase_order_invoice->due_date }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Status</strong></td>
+                      <td>:</td>
                       <td>{{ ucwords($purchase_order->purchase_order_invoice->status) }}</td>
                     </tr>
                     <tr>
-                      <td style="width:30%;"><strong>Notes</strong></td>
+                      <td><strong>Notes</strong></td>
+                      <td>:</td>
                       <td>{{ $purchase_order->purchase_order_invoice->notes }}</td>
                     </tr>
                   </table>

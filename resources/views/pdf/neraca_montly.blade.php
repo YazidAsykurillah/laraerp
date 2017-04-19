@@ -298,13 +298,19 @@
                                                 @endif
                                             @endif
                                         </tr>
+                                       
                                         @endforeach
                                     @endforeach
-                                        <!-- <tr>
+                                         <tr style="height:0px;">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}</td>
                                             <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_inventory = $sum; ?></td>
-                                        </tr> -->
+                                        </tr>
                                     @endif
                                 @endforeach
                                 @foreach($chart_account as $nilai_history)

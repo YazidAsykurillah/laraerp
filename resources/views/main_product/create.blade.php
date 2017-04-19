@@ -24,7 +24,7 @@
             {!! Form::open(['route'=>'main-product.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-main-product','files'=>true]) !!}
             <div class="row">
                 <div class="col-md-8">
-                    <div class="box">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
                             <h3 class="box-title">Basic Informations</h3>
                         </div>
@@ -90,7 +90,7 @@
 
                         </div>
                     </div>
-                    <div class="box">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                       <div class="box-body">
                         <div class="form-group">
                             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
@@ -108,7 +108,7 @@
                 </div>
                 <div class="col-md-4">
                   <!--BOX Image-->
-                  <div class="box">
+                  <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                       <h3 class="box-title">Main Product Image</h3>
                     </div><!-- /.box-header -->
@@ -129,7 +129,7 @@
                   </div>
                   <!--ENDBOX Image-->
                   <!--BOX Category and Family-->
-                  <div class="box">
+                  <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                       <h3 class="box-title">Category and Family</h3>
                     </div><!-- /.box-header -->

@@ -14,7 +14,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Products</h3>
                     <a href="{{ URL::to('main-product/create') }}" class="btn btn-primary pull-right" title="Create new main product">
@@ -22,17 +22,17 @@
                     </a>
                 </div>
                 <div class="box-body table-responsive">
-                    <table class="display" id="table-main-product">
+                    <table class="table table-striped table-hover" id="table-main-product">
                         <thead>
-                            <tr>
-                                <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                                <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                                <th style="width:20%;background-color:#3c8dbc;color:white">Product Name</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
-                                <th style="width:15%;background-color:#3c8dbc;color:white">Category</th>
-                                <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                                <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                                <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
+                            <tr style="background-color:#3c8dbc;color:white">
+                                <th style="width:5%;">#</th>
+                                <th style="width:15%;">Code</th>
+                                <th style="width:20%;">Name</th>
+                                <th style="width:10%;">Family</th>
+                                <th style="width:15%;">Category</th>
+                                <th style="width:10%;">Unit</th>
+                                <th style="width:15%;">Description</th>
+                                <th style="width:10%;text-align:center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

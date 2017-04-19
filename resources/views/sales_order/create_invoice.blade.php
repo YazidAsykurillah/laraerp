@@ -26,25 +26,25 @@
   <!-- Row Invoice-->
   <div class="row">
     <div class="col-lg-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Form Invoice</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::open(['route'=>'sales-order-invoice.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-invoice','files'=>true]) !!}
 
-            <div class="table-responsive">
-              <table class="table table-bordered" id="table-selected-products">
+            <div class="table-responsive" style="max-height:500px">
+              <table class="table table-striped table-hover" id="table-selected-products">
                   <thead>
-                      <tr>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                        <th style="width:15%;background-color:#3c8dbc;color:white">Description</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Unit</th>
-                        <th style="width:5%;background-color:#3c8dbc;color:white">Quantity</th>
-                        <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Price Per Unit</th>
-                        <th style="width:10%;background-color:#3c8dbc;color:white">Price</th>
+                      <tr style="background-color:#3c8dbc;color:white">
+                        <th style="width:15%;">Family</th>
+                        <th style="width:20%;">Name</th>
+                        <th style="width:20%;">Description</th>
+                        <th style="width:8%;">Unit</th>
+                        <th style="width:7%;">Qty</th>
+                        <th style="width:15%;">Category</th>
+                        <th style="width:10%;">Price Per Unit</th>
+                        <th style="width:10%;">Price</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -132,14 +132,13 @@
                           @endforeach
                       @else
                       <tr id="tr-no-product-selected">
-                      <td>There are no product</td>
+                          <td>There are no product</td>
+                      </tr>
                       @endif
                   </tbody>
               </table>
-
             </div>
-
-
+            <br>
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">

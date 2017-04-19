@@ -22,7 +22,7 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
               <h3 class="box-title">Kategori Produk</h3>
               <a href="{{ URL::to('category/create')}}" class="btn btn-primary pull-right" title="Create new category">
@@ -33,23 +33,26 @@
                 <div class="table-responsive">
                   <table class="table table-striped table-hover">
                       <thead>
-                        <tr>
-                          <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
-                          <th style="width:10%;background-color:#3c8dbc;color:white">Code</th>
-                          <th style="width:55%;background-color:#3c8dbc;color:white">Nama Kategori</th>
-                          <th style="width:20%;background-color:#3c8dbc;color:white">Created At</th>
-                          <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Aksi</th>
+                        <tr style="background-color:#3c8dbc;color:white">
+                          <th style="width:5%;">#</th>
+                          <th style="width:10%;">Code</th>
+                          <th style="width:55%;">Nama Kategori</th>
+                          <th style="width:20%;">Created At</th>
+                          <th style="width:10%;text-align:center;">Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
                         @if($categories->count() >0 )
                           @foreach($categories as $category)
                             <tr>
-                              <td>#</td>
+                              <td>{{ $category->id}}</td>
                               <td>{{ $category->code }}</td>
                               <td>{{ $category->name }}</td>
                               <td>{{ $category->created_at }}</td>
                               <td style="text-align:center;">
+                                <a href="{{ url('category/'.$category->id) }}" class="btn btn-success btn-xs" title="Click for view this category">
+                                    <i class="fa fa-external-link-square"></i>
+                                </a>&nbsp;
                                 <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
                                   <i class="fa fa-edit"></i>
                                 </a>&nbsp;

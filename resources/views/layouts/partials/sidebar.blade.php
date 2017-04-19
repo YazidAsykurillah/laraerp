@@ -30,7 +30,9 @@
           <span>Purchase</span>
         </a>
         <ul class="treeview-menu">
+          @if(\Auth::user()->can('purchase-order-module'))
           <li><a href="{{ url('purchase-order') }}"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
+          @endif
           <li><a href="{{ url('purchase-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="{{ url('purchase-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>

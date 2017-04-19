@@ -24,14 +24,14 @@
     {!! Form::model($cash,['route'=>['cash.update',$cash],'class'=>'form-horizontal','id'=>'form-edit-cash','method'=>'put']) !!}
     <div class="row">
         <div class="col-lg-8">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Edit New Cash</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                      {!! Form::label('code', 'Code', ['class'=>'col-sm-3 control-label']) !!}
-                      <div class="col-sm-9">
+                      {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
+                      <div class="col-sm-10">
                         {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the cash', 'id'=>'code']) !!}
                         @if ($errors->has('code'))
                           <span class="help-block">
@@ -41,8 +41,8 @@
                       </div>
                     </div>
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                      {!! Form::label('name', 'Name', ['class'=>'col-sm-3 control-label']) !!}
-                      <div class="col-sm-9">
+                      {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
+                      <div class="col-sm-10">
                         {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the cash', 'id'=>'name']) !!}
                         @if ($errors->has('name'))
                           <span class="help-block">
@@ -52,8 +52,8 @@
                       </div>
                     </div>
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                      {!! Form::label('value', 'Value', ['class'=>'col-sm-3 control-label']) !!}
-                      <div class="col-sm-9">
+                      {!! Form::label('value', 'Value', ['class'=>'col-sm-2 control-label']) !!}
+                      <div class="col-sm-10">
                         {!! Form::text('value',null,['class'=>'form-control', 'placeholder'=>'Value of the cash', 'id'=>'value']) !!}
                         @if ($errors->has('value'))
                           <span class="help-block">
@@ -63,8 +63,8 @@
                       </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
-                      <div class="col-sm-9">
+                        {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+                      <div class="col-sm-10">
                         <a href="{{ url('cash') }}" class="btn btn-default">
                           <i class="fa fa-repeat"></i>&nbsp;Cancel
                         </a>&nbsp;

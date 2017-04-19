@@ -46,7 +46,10 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        return view('purchase_order.index');
+        if(\Auth::user()->can('purchase-order-module')){
+            return view('purchase_order.index');
+        }
+        return "403";
     }
 
     /**
@@ -56,9 +59,12 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        $supplier_options = Supplier::lists('name', 'id');
-        return view('purchase_order.create')
-            ->with('supplier_options', $supplier_options);
+        if(\Auth::user()->can('create-purchase-order-module')){
+            $supplier_options = Supplier::lists('name', 'id');
+            return view('purchase_order.create')
+                ->with('supplier_options', $supplier_options);
+        }
+        return "403";
     }
 
     /**
