@@ -17,6 +17,8 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//asset
+Route::resource('asset','AssetController');
 //report
 Route::post('report/search','ReportController@report_search');
 Route::post('report.report_print','ReportController@report_print');
@@ -242,4 +244,5 @@ Route::controller('datatables', 'DatatablesController',[
     'getMainProducts' =>'datatables.getMainProducts',
     'getSubChartAccounts' =>'datatables.getSubChartAccounts',
     'getTransactionChartAccounts' =>'datatables.getTransactionChartAccounts',
+    'getAssets'=>'datatables.getAssets'
 ]);

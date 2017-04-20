@@ -27,7 +27,8 @@ class UpdateBankRequest extends Request
             'code'=>'required|max:7|unique:banks,code,'.$this->route('bank'),
             'name'=>'required',
             'account_name'=>'required',
-            'account_number'=>'required'
+            'account_number'=>'required|integer',
+            'value'=>'required'
         ];
     }
 }

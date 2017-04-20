@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreSalesOrderInvoiceRequest;
+use App\Http\Requests\UpdateSalesOrderInvoiceRequest;
 use App\Http\Requests\StoreSalesInvoicePaymentRequest;
 use App\Http\Requests\StoreSalesPaymentCash;
 use App\Http\Requests\StoreSalesPaymentTransfer;
@@ -92,7 +94,7 @@ class SalesOrderInvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSalesOrderInvoiceRequest $request)
     {
        if($request->ajax()){
             $sales_order_id = $request->sales_order_id;
@@ -311,7 +313,7 @@ class SalesOrderInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSalesOrderInvoiceRequest $request, $id)
     {
         $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
         $sales_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#','',$request->bill_price));

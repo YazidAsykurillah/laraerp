@@ -28,7 +28,7 @@
                         <h3 class="box-title">Create New Biaya Operasi</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('beban_operasi_account') ? ' has-error' : '' }}">
                             {!! Form::label('expenses_account', 'Expenses Account', ['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                                 <select name="beban_operasi_account" id="beban_operasi_account" class="form-control">
@@ -42,9 +42,14 @@
                                     @endforeach
                                   @endforeach
                                 </select>
+                                @if ($errors->has('beban_operasi_account'))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('beban_operasi_account') }}</strong>
+                                  </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                             {!! Form::label('cash_bank_account', 'Cash/Bank Account', ['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                                 <select name="cash_bank_account" id="cash_bank_account" class="form-control">
@@ -58,6 +63,11 @@
                                     @endforeach
                                   @endforeach
                                 </select>
+                                @if ($errors->has('cash_bank_account'))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('cash_bank_account') }}</strong>
+                                  </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">

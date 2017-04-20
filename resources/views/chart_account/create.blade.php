@@ -28,7 +28,7 @@
                         <h3 class="box-title">Basic Information</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : ''}}">
                             {!! Form::label('name','Name',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                                 {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Name of the chart account','id'=>'name']) !!}
@@ -39,18 +39,18 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('account_number') ? 'has-error' : ''}}">
+                        <div class="form-group{{ $errors->has('account_number') ? ' has-error' : ''}}">
                             {!! Form::label('account_number','Account Number',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                                 {!! Form::text('account_number',null,['class'=>'form-control','placeholder'=>'Account Number of the chart account','id'=>'number_account']) !!}
-                                @if($errors->has('number_account'))
+                                @if($errors->has('account_number'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('number_account') }}</strong>
+                                    <strong>{{ $errors->first('account_number') }}</strong>
                                 </span>
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('description') ? 'has-error' : ''}}">
+                        <div class="form-group{{ $errors->has('description') ? ' has-error' : ''}}">
                             {!! Form::label('description','Description',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                                 {!! Form::text('description',null,['class'=>'form-control','placeholder'=>'Description of the chart account','id'=>'description']) !!}
@@ -80,6 +80,6 @@
             </div>
         </div>
 
-        
+
 
 @endsection

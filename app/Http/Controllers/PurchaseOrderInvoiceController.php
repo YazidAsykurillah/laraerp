@@ -280,7 +280,7 @@ class PurchaseOrderInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePurchaseOrderInvoiceRequest $request, $id)
     {
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
         $purchase_order_invoice->code = $request->code;

@@ -75,7 +75,7 @@ class SalesOrderController extends Controller
             $syncData = [];
             foreach($request->product_id as $key=>$value){
                 //$syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
-                $syncData[$value] = ['quantity'=> $request->quantity[$key]];
+                $syncData[$value] = ['quantity'=> floatval(preg_replace('#[^0-9.]#', '', $request->quantity[$key]))];
             }
             //sync the sales order product relation
             $sales_order->products()->sync($syncData);

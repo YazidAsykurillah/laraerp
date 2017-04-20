@@ -130,10 +130,10 @@
                 <h3 class="box-title">Driver and Vehicle</h3>
             </div>
             <div class="box-body">
-                <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                <div class="form-group{{ $errors->has('driver_id') ? ' has-error' : '' }}">
                     {!! Form::label('driver_id','Driver Name',['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-6">
-                        {{ Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select Driver','id'=>'driver_id']) }}
+                        {!! Form::select('driver_id',$driver_options,null,['class'=>'form-control','placeholder'=>'Select Driver','id'=>'driver_id']) !!}
                         @if($errors->has('driver_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('driver_id') }}</strong>
@@ -141,10 +141,10 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                <div class="form-group{{ $errors->has('driver_id') ? ' has-error' : '' }}">
                     {!! Form::label('vehicle_id','Vehicle Number',['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-6">
-                        {{ Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select Vehicle','id'=>'vehicle_id']) }}
+                        {!! Form::select('vehicle_id',$vehicle_options,null,['class'=>'form-control','placeholder'=>'Select Vehicle','id'=>'vehicle_id']) !!}
                         @if($errors->has('vehicle_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('vehicle_id') }}</strong>
@@ -155,7 +155,7 @@
                 <div class="form-group{{ $errors->has('ship_date') ? ' has-error' : '' }}">
                   {!! Form::label('ship_date', 'Ship Date', ['class'=>'col-sm-3 control-label']) !!}
                   <div class="col-sm-6">
-                      {{ Form::date('ship_date',\Carbon\Carbon::now(),['class'=>'form-control','placeholder'=>'Ship Date','id'=>'ship_date','autocomplete'=>'off']) }}
+                      {!! Form::date('ship_date',\Carbon\Carbon::now(),['class'=>'form-control','placeholder'=>'Ship Date','id'=>'ship_date','autocomplete'=>'off']) !!}
                       @if($errors->has('ship_date'))
                           <span class="help-block">
                               <strong>{{ $errors->first('ship_date') }}</strong>

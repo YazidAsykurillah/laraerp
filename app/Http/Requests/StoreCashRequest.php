@@ -25,7 +25,8 @@ class StoreCashRequest extends Request
     {
         return [
             'code'=>'required|unique:cashs,code',
-            'name'=>'required'
+            'name'=>'required',
+            'value'=>'required'
         ];
     }
 }

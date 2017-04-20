@@ -40,7 +40,7 @@
                         @endif
                       </div>
                     </div>
-                    <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                       {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
                       <div class="col-sm-10">
                         {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the cash', 'id'=>'name']) !!}
@@ -51,7 +51,7 @@
                         @endif
                       </div>
                     </div>
-                    <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('value') ? ' has-error' : '' }}">
                       {!! Form::label('value', 'Value', ['class'=>'col-sm-2 control-label']) !!}
                       <div class="col-sm-10">
                         {!! Form::text('value',null,['class'=>'form-control', 'placeholder'=>'Value of the cash', 'id'=>'value']) !!}

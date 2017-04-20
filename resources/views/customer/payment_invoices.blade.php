@@ -39,7 +39,7 @@
                         </div>
                         <div class="box-body">
                             {!! Form::open(['url'=>'customer.store_invoice_payment_cash','role'=>'form','class'=>'form-horizontal','id'=>'store-invoices-payment-customer','method'=>'post']) !!}
-                            <div class="form-group{{ $errors->has('cash_id') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('cash_id') ? ' has-error' : '' }}">
                                 {!! Form::label('cash_id','Cash',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                     {{ Form::select('cash_id',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) }}
@@ -50,7 +50,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('sum_amount') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('sum_amount') ? ' has-error' : '' }}">
                                 {!! Form::label('sum_amount','Total Amount',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                 {{ Form::text('sum_amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'sum-amount-cash','autocomplete'=>'off']) }}
@@ -61,7 +61,7 @@
                                 @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('cash_account') ? ' has-error' : '' }}">
                                 {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                 <select name="cash_account" class="form-control">
@@ -75,9 +75,9 @@
                                     @endif
                                 @endforeach
                                 </select>
-                                @if($errors->has('amount'))
+                                @if($errors->has('cash_account'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('amount') }}</strong>
+                                        <strong>{{ $errors->first('cash_account') }}</strong>
                                     </span>
                                 @endif
                                 </div>
@@ -150,7 +150,7 @@
                         </div>
                         <div class="box-body">
                             {!! Form::open(['url'=>'customer.store_invoice_payment_bank','role'=>'form','class'=>'form-horizontal','id'=>'store-invoices-payment-supplier','method'=>'post']) !!}
-                            <div class="form-group{{ $errors->has('bank_id') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('bank_id') ? ' has-error' : '' }}">
                                 {!! Form::label('bank_id','Bank',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                     {{ Form::select('bank_id',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'cash_id']) }}
@@ -161,7 +161,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('sum_amount') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('sum_amount') ? ' has-error' : '' }}">
                                 {!! Form::label('sum_amount','Total Amount',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                 {{ Form::text('sum_amount',null,['class'=>'form-control','placeholder'=>'Payment amount','id'=>'sum-amount-bank','autocomplete'=>'off']) }}
@@ -172,7 +172,7 @@
                                 @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('amount') ? 'has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('transfer_account') ? ' has-error' : '' }}">
                                 {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-2 control-label']) !!}
                                 <div class="col-sm-4">
                                 <select name="transfer_account" class="form-control">
@@ -186,9 +186,9 @@
                                     @endif
                                 @endforeach
                                 </select>
-                                @if($errors->has('amount'))
+                                @if($errors->has('transfer_account'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('amount') }}</strong>
+                                        <strong>{{ $errors->first('transfer_account') }}</strong>
                                     </span>
                                 @endif
                                 </div>

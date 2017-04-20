@@ -40,10 +40,10 @@
                                 @endif
                               </div>
                             </div>
-                            <div class="form-group{{ $errors->has('sub_code') ? ' has-error' : '' }}">
+                            <div class="form-group">
                               {!! Form::label('sub_code','Sub Code', ['class'=>'col-sm-2 control-label']) !!}
                               <div class="col-sm-5">
-                                <div class="input-group">
+                                <div class="input-group{{ $errors->has('mulai_dari') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">Mulai Dari</span>
                                     {!! Form::text('mulai_dari',null,['class'=>'form-control', 'placeholder'=>'Start of sub product', 'id'=>'mulai_dari']) !!}
                                     @if ($errors->has('mulai_dari'))
@@ -54,7 +54,7 @@
                                 </div>
                               </div>
                               <div class="col-sm-5">
-                                  <div class="input-group">
+                                  <div class="input-group{{ $errors->has('sebanyak') ? ' has-error' : '' }}">
                                     <span class="input-group-addon">Sebanyak</span>
                                     {!! Form::text('sebanyak',null,['class'=>'form-control', 'placeholder'=>'Sebanyak of sub product', 'id'=>'sebanyak']) !!}
                                     @if ($errors->has('sebanyak'))

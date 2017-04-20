@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\StoreCashRequest;
+use App\Http\Requests\UpdateCashRequest;
 
 use App\Cash;
 
@@ -81,7 +82,7 @@ class CashController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCashRequest $request, $id)
     {
         $cash = Cash::findOrFail($id);
         $cash->code = $request->code;

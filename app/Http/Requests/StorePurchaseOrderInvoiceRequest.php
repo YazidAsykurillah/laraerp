@@ -28,7 +28,7 @@ class StorePurchaseOrderInvoiceRequest extends Request
             //'payment_method_id'=>'required|integer|exists:payment_methods,id',
             'bill_price'=>'required',
             'purchase_order_id'=>'required|integer|exists:purchase_orders,id',
-            'price[]'=>'required',
+            
         ];
     }
 }

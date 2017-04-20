@@ -9,7 +9,7 @@ use App\Http\Requests;
 
 //Form requests
 use App\Http\Requests\StoreStockBalance;
-
+use App\Http\Requests\UpdateStockBalanceRequest;
 // Use Modal
 use App\StockBalance;
 use App\Product;
@@ -121,7 +121,7 @@ class StockBalanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStockBalanceRequest $request, $id)
     {
         // $data = \DB::table('stock_balance')
         // ->join('product_stock_balance','product_stock_balance.stock_balance_id','=','stock_balance.id')

@@ -24,10 +24,11 @@ class StoreBankRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|unique:banks,code',
+            'code'=>'required|max:7|unique:banks,code',
             'name'=>'required',
             'account_name'=>'required',
-            'account_number'=>'required',
+            'account_number'=>'required|integer',
+            'value'=>'required'
         ];
     }
 }

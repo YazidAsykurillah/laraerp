@@ -62,56 +62,58 @@
           </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-product">
-            <thead>
-              <tr>
-                  <th style="width:5%;">#</th>
-                  <th style="width:20%;">Product Name</th>
-                  <th style="width:30%;">Description</th>
-                  <th style="width:10%;">System Stock</th>
-                  <th style="width:10%;">Real Stock</th>
-                  <th style="width:25%;">Information</th>
-              </tr>
-            </thead>
-            <!-- <thead id="searchid">
-              <tr>
-                  <th style="width:5%;"></th>
-                  <th style="width:10%;">Code</th>
-                  <th style="width:40%;">Product Name</th>
-                  <th style="width:20%;">System Stock</th>
-                  <th style="width:20%;">Real Stock</th>
-                  <th style="width:10%;text-align:center;"></th>
-              </tr>
-            </thead> -->
-            <tbody>
-                <?php $no = 1; ?>
-                @foreach($dataList as $view)
-                    <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $view->name }}</td>
-                        <td>{{ $view->description }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
-                        <td>{{ $view->stock }}<input type="hidden" value="{{ $view->stock }}" name="system_stock[]"></td>
-                        <td>
-                            <input type="text" value="{{ $view->stock }}" name="real_stock[]" class="col-lg-12">
-                            @if ($errors->has('real_stock[]'))
-                              <span class="help-block">
-                                <strong>{{ $errors->first('real_stock[]') }}</strong>
-                              </span>
-                            @endif
-                        </td>
-                        <td>
-                            <input type="text" name="information[]" class="col-lg-12" value="">
-                            @if ($errors->has('information[]'))
-                              <span class="help-block" style="color:red;font-size:8pt">
-                                <strong>{{ $errors->first('information[]') }}</strong>
-                              </span>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-          </table>
+        <div class="box-body">
+            <div class="table-responsive" style="max-height:500px">
+              <table class="table table-bordered" id="table-product">
+                <thead>
+                  <tr>
+                      <th style="width:5%;">#</th>
+                      <th style="width:20%;">Product Name</th>
+                      <th style="width:30%;">Description</th>
+                      <th style="width:10%;">System Stock</th>
+                      <th style="width:10%;">Real Stock</th>
+                      <th style="width:25%;">Information</th>
+                  </tr>
+                </thead>
+                <!-- <thead id="searchid">
+                  <tr>
+                      <th style="width:5%;"></th>
+                      <th style="width:10%;">Code</th>
+                      <th style="width:40%;">Product Name</th>
+                      <th style="width:20%;">System Stock</th>
+                      <th style="width:20%;">Real Stock</th>
+                      <th style="width:10%;text-align:center;"></th>
+                  </tr>
+                </thead> -->
+                <tbody>
+                    <?php $no = 1; ?>
+                    @foreach($dataList as $view)
+                        <tr>
+                            <td>{{ $no++ }}</td>
+                            <td>{{ $view->name }}</td>
+                            <td>{{ $view->description }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
+                            <td>{{ $view->stock }}<input type="hidden" value="{{ $view->stock }}" name="system_stock[]"></td>
+                            <td>
+                                <input type="text" value="{{ $view->stock }}" name="real_stock[]" class="col-lg-12">
+                                @if ($errors->has('real_stock[]'))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('real_stock[]') }}</strong>
+                                  </span>
+                                @endif
+                            </td>
+                            <td>
+                                <input type="text" name="information[]" class="col-lg-12" value="">
+                                @if ($errors->has('information[]'))
+                                  <span class="help-block" style="color:red;font-size:8pt">
+                                    <strong>{{ $errors->first('information[]') }}</strong>
+                                  </span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+              </table>
+          </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
 

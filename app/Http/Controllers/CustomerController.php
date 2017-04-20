@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Requests\StorePaymentInvoiceSalesKasRequest;
+use App\Http\Requests\StorePaymentInvoiceSalesTransferRequest;
 
 use App\Customer;
 use App\Cash;
@@ -154,7 +156,7 @@ class CustomerController extends Controller
             ->with('data_invoice',$data_invoice);
     }
 
-    public function store_invoice_payment_cash(Request $request)
+    public function store_invoice_payment_cash(StorePaymentInvoiceSalesKasRequest $request)
     {
         $data_invoice_payment = [];
         $invoice_payment_id = [];
@@ -222,7 +224,7 @@ class CustomerController extends Controller
             ->with('successMessage','payment supplier invoice has been created');
     }
 
-    public function store_invoice_payment_bank(Request $request)
+    public function store_invoice_payment_bank(StorePaymentInvoiceSalesTransferRequest $request)
     {
         $data_invoice_payment = [];
         $invoice_payment_id = [];

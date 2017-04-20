@@ -92,7 +92,7 @@
                     <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Primary Product Information</h3>
                 </div>
                 <div class="box-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height:500px">
                         <table class="table table-hover">
                             <thead>
                                 <tr>

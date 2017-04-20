@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Http\Requests\StoreSalesReturnRequest;
+
 // use Modal
 use App\SalesOrder;
 use App\SalesReturn;
@@ -71,7 +73,7 @@ class SalesReturnController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSalesReturnRequest $request)
     {
         if($request->ajax()){
             foreach ($request->product_id as $key => $value) {
@@ -133,7 +135,7 @@ class SalesReturnController extends Controller
             }
             \DB::table('transaction_chart_accounts')->insert($inv_account);
             \DB::table('transaction_chart_accounts')->insert($return_account);
-            \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            //\DB::table('transaction_chart_accounts')->insert($cost_goods_account);
             //now delete the temp_sales_return
             \DB::table('temp_sales_return')
                 ->where('sales_order_id', '=', $request->sales_order_id)

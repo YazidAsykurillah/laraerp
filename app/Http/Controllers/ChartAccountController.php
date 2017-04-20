@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use App\Http\Requests\StoreChartAccountRequest;
+use App\Http\Requests\UpdateChartAccountRequest;
+use App\Http\Requests\StoreSubChartAccountRequest;
+use App\Http\Requests\UpdateSubChartAccountRequest;
 use App\ChartAccount;
 use App\SubChartAccount;
 use App\Cash;
@@ -39,7 +42,7 @@ class ChartAccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreChartAccountRequest $request)
     {
         $chart_account = new ChartAccount;
         $chart_account->name = $request->name;
@@ -84,7 +87,7 @@ class ChartAccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateChartAccountRequest $request, $id)
     {
         $chart_account = ChartAccount::findOrFail($id);
         $chart_account->name = $request->name;
@@ -111,7 +114,7 @@ class ChartAccountController extends Controller
     }
 
 
-    public function store_sub(Request $request)
+    public function store_sub(StoreSubChartAccountRequest $request)
     {
         $sub_chart_account = New SubChartAccount;
         $sub_chart_account->name = $request->name;
@@ -130,7 +133,7 @@ class ChartAccountController extends Controller
 
     }
 
-    public function update_sub(Request $request)
+    public function update_sub(UpdateSubChartAccountRequest $request)
     {
         $sub_chart_account = SubChartAccount::findOrFail($request->sub_chart_account_id);
         $sub_chart_account->name = $request->name;

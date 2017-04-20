@@ -9,7 +9,8 @@ use App\Http\Requests;
 //Form requests
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
-
+use App\Http\Requests\StorePaymentInvoicePurchaseKasRequest;
+use App\Http\Requests\StorePaymentInvoicePurchaseTransferRequest;
 use App\Supplier;
 use App\Cash;
 use App\Bank;
@@ -142,7 +143,7 @@ class SupplierController extends Controller
             ->with('data_invoice',$data_invoice);
     }
 
-    public function store_invoice_payment_cash(Request $request)
+    public function store_invoice_payment_cash(StorePaymentInvoicePurchaseKasRequest $request)
     {
         $data_invoice_payment = [];
         $invoice_payment_id = [];
@@ -209,7 +210,7 @@ class SupplierController extends Controller
             ->with('successMessage','payment supplier invoice has been created');
     }
 
-    public function store_invoice_payment_bank(Request $request)
+    public function store_invoice_payment_bank(StorePaymentInvoicePurchaseTransferRequest $request)
     {
         $data_invoice_payment = [];
         $invoice_payment_id = [];

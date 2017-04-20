@@ -26,6 +26,7 @@ class UpdatePurchaseOrderRequest extends Request
         return [
             'supplier_id'=>'required|integer',
             'product_id'=>'required|exists:products,id',
+            'supplier_id'=>'required',
         ];
     }
 }

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use App\Http\Requests\StoreMainProductRequest;
+use App\Http\Requests\UpdateMainProductRequest;
 use App\Category;
 use App\Unit;
 use App\Family;
@@ -49,7 +50,7 @@ class MainProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMainProductRequest $request)
     {
         if($request->hasFile('image')){
             $this->upload_process($request);
@@ -131,7 +132,7 @@ class MainProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMainProductRequest $request, $id)
     {
         $main_product = MainProduct::findOrFail($id);
         if($request->hasFile('image')){

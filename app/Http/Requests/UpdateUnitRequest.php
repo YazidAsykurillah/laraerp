@@ -24,7 +24,7 @@ class UpdateUnitRequest extends Request
     public function rules()
     {
         return [
-            //
+            'name'=>'required|unique:units,name'
         ];
     }
 }

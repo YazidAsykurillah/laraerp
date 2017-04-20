@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\UpdateVehicleRequest;
 use App\Vehicle;
 
 class VehicleController extends Controller
@@ -37,7 +39,7 @@ class VehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreVehicleRequest $request)
     {
         $vehicle = new Vehicle;
         $vehicle->code = $request->code;
@@ -92,7 +94,7 @@ class VehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateVehicleRequest $request, $id)
     {
         $vehicle = Vehicle::findOrFail($id);
         $vehicle->code = $request->code;

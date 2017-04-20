@@ -39,7 +39,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
                             {!! Form::label('account_number','Account Number',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-md-9">
                                 {!! Form::text('account_number',null,['class'=>'form-control','placeholder'=>'Account Number of the chart account','id'=>'account_number']) !!}
@@ -50,7 +50,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             {!! Form::label('description','Description',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-md-9">
                                 {!! Form::textarea('description',null,['class'=>'form-control','placeholder'=>'Description of the chart account','id'=>'description']) !!}

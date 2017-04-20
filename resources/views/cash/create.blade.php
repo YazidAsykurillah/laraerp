@@ -28,7 +28,7 @@
                         <h3 class="box-title">Create New Cash</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <div class="form-group{{ $errors->has('code') ? 'has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                             {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-10">
                                 {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the cash','id'=>'code']) !!}
@@ -39,16 +39,26 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             {!! Form::label('name','Name',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-10">
                                 {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Name of the cash','id'=>'name']) !!}
+                                @if($errors->has('name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('value') ? ' has-error' : '' }}">
                             {!! Form::label('value','Value',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-10">
                                 {!! Form::text('value',null,['class'=>'form-control','placeholder'=>'Initial value of the cash','id'=>'value']) !!}
+                                @if($errors->has('value'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('value') }}</strong>
+                                </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">

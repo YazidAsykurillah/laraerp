@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use App\Http\Requests\StoreBiayaOperasiRequest;
+use App\Http\Requests\UpdateBiayaOperasiRequest;
 use App\TransactionChartAccount;
 
 class BiayaOperasiController extends Controller
@@ -36,7 +37,7 @@ class BiayaOperasiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBiayaOperasiRequest $request)
     {
         // now save beban operasi account
         $trans_chart_account = New TransactionChartAccount;
@@ -104,7 +105,7 @@ class BiayaOperasiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBiayaOperasiRequest $request, $id)
     {
         // now save beban operasi account
         $trans_chart_account = TransactionChartAccount::findOrFail($id);

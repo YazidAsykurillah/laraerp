@@ -59,7 +59,7 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     {!! Form::open(['url'=>'sub-chart-account.store_sub','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sub-chart-account']) !!}
-                    <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : ''}}">
                         {!! Form::label('name','Name',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
                             {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Name of the sub chart account','id'=>'name']) !!}
@@ -70,18 +70,18 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('account_number') ? 'has-error' : ''}}">
+                    <div class="form-group{{ $errors->has('account_number') ? ' has-error' : ''}}">
                         {!! Form::label('account_number','Account Number',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
                             {!! Form::text('account_number',null,['class'=>'form-control','placeholder'=>'Account Number of the sub chart account','id'=>'number_account']) !!}
-                            @if($errors->has('number_account'))
+                            @if($errors->has('account_number'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('number_account') }}</strong>
+                                <strong>{{ $errors->first('account_number') }}</strong>
                             </span>
                             @endif
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('level') ? 'has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('level') ? ' has-error' : '' }}">
                         {!! Form::label('level','Parent/Child',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
                             {!! Form::select('level',['1'=>'Parent','2'=>'Child'],null,['placeholder'=>'Parent/Child','class'=>'form-control','id'=>'level']) !!}
@@ -261,7 +261,7 @@
                   </div><!-- /.box-header -->
                   <div class="box-body">
                       {!! Form::open(['url'=>'sub-chart-account.update_sub','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sub-chart-account','method'=>'put']) !!}
-                      <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">
+                      <div class="form-group{{ $errors->has('name') ? ' has-error' : ''}}">
                           {!! Form::label('name','Name',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
                               {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Name of the sub chart account','id'=>'name_view']) !!}
@@ -272,20 +272,20 @@
                               @endif
                           </div>
                       </div>
-                      <div class="form-group{{ $errors->has('account_number') ? 'has-error' : ''}}">
+                      <div class="form-group{{ $errors->has('account_number') ? ' has-error' : ''}}">
                           {!! Form::label('account_number','Account Number',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
                               {!! Form::text('account_number',null,['class'=>'form-control','placeholder'=>'Account Number of the sub chart account','id'=>'number_account_view']) !!}
-                              @if($errors->has('number_account'))
+                              @if($errors->has('account_number'))
                               <span class="help-block">
-                                  <strong>{{ $errors->first('number_account') }}</strong>
+                                  <strong>{{ $errors->first('account_number') }}</strong>
                               </span>
                               @endif
                               {!! Form::hidden('sub_chart_account_id',null,['id'=>'sub_chart_account_id_view']) !!}
                               <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
                           </div>
                       </div>
-                      <div class="form-group{{ $errors->has('level') ? 'has-error' : '' }}">
+                      <div class="form-group{{ $errors->has('level') ? ' has-error' : '' }}">
                           {!! Form::label('level','Parent/Child',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
                               {!! Form::select('level',['1'=>'Parent','2'=>'Child'],null,['placeholder'=>'Parent/Child','class'=>'form-control','id'=>'level_update']) !!}

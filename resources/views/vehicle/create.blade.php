@@ -28,7 +28,7 @@
                         <h3 class="box-title">Basic Information</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-group{{ $errors->has('code') ? 'has-errors' : '' }}">
+                        <div class="form-group{{ $errors->has('code') ? ' has-errors' : '' }}">
                             {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-4">
                                 {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code']) !!}
@@ -39,7 +39,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('driver_id') ? 'has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('vehicle_category') ? ' has-error' : '' }}">
                             {!! Form::label('vehicle_cat','Vehicle',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-4">
                                 {{ Form::select('vehicle_category',$vehicle_cat,null,['class'=>'form-control','placeholder'=>'Select Category','id'=>'vehicle_category']) }}
@@ -50,7 +50,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('code') ? 'has-errors' : '' }}">
+                        <div class="form-group{{ $errors->has('number_of_vehicle') ? ' has-errors' : '' }}">
                             {!! Form::label('number_of_vehicle','Number of Vehicle',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-4">
                                 {!! Form::text('number_of_vehicle',null,['class'=>'form-control','placeholder'=>'Number of the vehicle','id'=>'number_of_vehicle']) !!}

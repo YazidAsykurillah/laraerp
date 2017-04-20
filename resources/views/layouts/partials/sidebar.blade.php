@@ -69,6 +69,7 @@
           <span>Finance</span>
         </a>
         <ul class="treeview-menu">
+          <li><a href="{{ url('asset') }}"><i class="fa fa-circle-o"></i> Asset</a></li>
           <li><a href="{{ url('bank') }}"><i class="fa fa-circle-o"></i> Bank</a></li>
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
           <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>

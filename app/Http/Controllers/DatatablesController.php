@@ -31,6 +31,7 @@ use App\ChartAccount;
 use App\SubChartAccount;
 use App\MainProduct;
 use App\TransactionChartAccount;
+use App\Asset;
 
 class DatatablesController extends Controller
 {
@@ -1056,5 +1057,41 @@ class DatatablesController extends Controller
         }
 
         return $datatables->make(true);
+    }
+
+    public function getAssets(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        //\DB::table('suppliers')->orderBy('code','asc')->get();
+        $assets = Asset::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'name',
+            'date_purchase',
+            'amount',
+            'periode',
+        ]);
+
+        $data_assets = Datatables::of($assets)
+            ->addColumn('actions', function($assets){
+                    $actions_html ='<a href="'.url('asset/'.$assets->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('asset/'.$assets->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$assets->id.'" data-text="'.$assets->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_assets->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_assets->make(true);
+
     }
 }

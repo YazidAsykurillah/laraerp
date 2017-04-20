@@ -26,6 +26,20 @@ class StoreSalesOrderRequest extends Request
         return [
             'customer_id'=>'required|integer',
             'product_id'=>'required|exists:products,id',
+            'driver_id'=>'required|integer',
+            'vehicle_id'=>'required|integer',
+            'ship_date'=>'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'customer_id.required'=>'Please select customer',
+            'driver_id.required'=>'Please select driver',
+            'vehicle_id.required'=>'Please select vehicle',
+            'ship_date.required'=>'Please select ship date',
+            'product_id.required'=>'Please select product',
         ];
     }
 }
