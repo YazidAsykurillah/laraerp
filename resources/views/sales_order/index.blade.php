@@ -35,20 +35,12 @@
               <tr style="background-color:#3c8dbc;color:white">
                 <th style="width:5%;">#</th>
                 <th style="width:10%;">Code</th>
-<<<<<<< HEAD
-                <th style="width:15%;">Customer</th>
-=======
                 <th style="width:20%;">Customer</th>
->>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
                 <th style="width:15%;">Creator</th>
                 <th style="width:20%;">Date Created</th>
                 <th style="width:10%;">Status</th>
                 <th style="width:10%;">Invoice</th>
-<<<<<<< HEAD
-                <th style="width:15%;text-align:center;">Actions</th>
-=======
                 <th style="width:10%;text-align:center;">Actions</th>
->>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
               </tr>
             </thead>
             <thead id="searchid">

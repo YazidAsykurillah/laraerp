@@ -25,12 +25,14 @@ class StorePurchaseReturnRequest extends Request
     {
         return [
             'product_id'=>'required|array',
+            'returned_quantity[]'=>'required',
         ];
     }
 
     public function messages(){
         return [
-            'product_id.required' =>'Please select product'
+            'product_id.required' =>'Please select product',
+            'returned_quantity[].required' =>'Please input qty',
         ];
     }
 }

@@ -32,19 +32,11 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body">
-<<<<<<< HEAD
-          <div class="table-responsive">
-            <table class="table table-striped table-hover" id="table-selected-products">
-                <tr style="background-color:#3c8dbc;color:white">
-                  <th style="width:15%;">Family</th>
-                  <th style="width:15%;">Code</th>
-=======
           <div class="table-responsive" style="max-height:500px">
             <table class="table table-striped table-hover" id="table-selected-products">
                 <tr style="background-color:#3c8dbc;color:white">
                   <th style="width:15%;">Family</th>
                   <th style="width:15%;">Name</th>
->>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
                   <th style="width:20%;">Description</th>
                   <th style="width:15%;">Unit</th>
                   <th style="width:15%;">Quantity</th>
@@ -196,11 +188,7 @@
                   <tr style="background-color:#3c8dbc;color:white">
                       <th style="width:5%;">#</th>
                       <th style="width:10%;">Family</th>
-<<<<<<< HEAD
-                      <th style="width:20%;">Code</th>
-=======
                       <th style="width:20%;">Name</th>
->>>>>>> 1b20c27caf7606496aa129b97ae01f34601315a4
                       <th style="width:15%;display:none">Stock</th>
                       <th style="width:20%;">Description</th>
                       <th style="width:15%;">Unit</th>

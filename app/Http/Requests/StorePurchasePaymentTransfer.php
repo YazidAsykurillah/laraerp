@@ -24,8 +24,10 @@ class StorePurchasePaymentTransfer extends Request
     public function rules()
     {
         return [
+            'purchase_order_invoice_id'=>'required|integer',
             'amount'=>'required',
-            'bank_id'=>'required|integer|exists:banks,id'
+            'bank_id'=>'required',
+            'transfer_account'=>'required',
         ];
     }
 }

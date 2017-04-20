@@ -25,7 +25,10 @@ class StorePurchasePaymentCash extends Request
     {
         return [
             'purchase_order_invoice_id'=>'required|integer',
-            'amount'=>'required'
+            'amount'=>'required',
+            'cash_id'=>'required',
+            'cash_account'=>'required',
+
         ];
     }
 }
