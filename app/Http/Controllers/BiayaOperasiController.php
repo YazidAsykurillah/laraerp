@@ -18,7 +18,12 @@ class BiayaOperasiController extends Controller
      */
     public function index()
     {
-        return view('biaya_operasi.index');
+        if(\Auth::user()->can('kas-kecil-module'))
+        {
+            return view('biaya_operasi.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -28,7 +33,12 @@ class BiayaOperasiController extends Controller
      */
     public function create()
     {
-        return view('biaya_operasi.create');
+        if(\Auth::user()->can('create-kas-kecil-module'))
+        {
+            return view('biaya_operasi.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -87,15 +97,20 @@ class BiayaOperasiController extends Controller
      */
     public function edit($id)
     {
-        $trans_chart_account = TransactionChartAccount::findOrFail($id);
-        $cash_bank_account = TransactionChartAccount::select('sub_chart_account_id')->where('reference',$id)->get();
-        $sub = '';
-        foreach ($cash_bank_account as $key) {
-            $sub = $key->sub_chart_account_id;
+        if(\Auth::user()->can('edit-kas-kecil-module'))
+        {
+            $trans_chart_account = TransactionChartAccount::findOrFail($id);
+            $cash_bank_account = TransactionChartAccount::select('sub_chart_account_id')->where('reference',$id)->get();
+            $sub = '';
+            foreach ($cash_bank_account as $key) {
+                $sub = $key->sub_chart_account_id;
+            }
+            return view('biaya_operasi.edit')
+                ->with('trans_chart_account',$trans_chart_account)
+                ->with('cash_bank_account',$sub);
+        }else{
+            return view('403');
         }
-        return view('biaya_operasi.edit')
-            ->with('trans_chart_account',$trans_chart_account)
-            ->with('cash_bank_account',$sub);
     }
 
     /**

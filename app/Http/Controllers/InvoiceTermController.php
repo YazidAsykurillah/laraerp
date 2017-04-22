@@ -20,10 +20,15 @@ class InvoiceTermController extends Controller
      */
     public function index()
     {
-        return view('invoice_term.index');
+        if(\Auth::user()->can('invoice-term-module'))
+        {
+            return view('invoice_term.index');
+        }else{
+            return view('403');
+        }
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,7 +36,12 @@ class InvoiceTermController extends Controller
      */
     public function create()
     {
-        return view('invoice_term.create');
+        if(\Auth::user()->can('create-invoice-term-module'))
+        {
+            return view('invoice_term.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -69,9 +79,14 @@ class InvoiceTermController extends Controller
      */
     public function edit($id)
     {
-        $invoice_term = InvoiceTerm::findOrFail($id);
-        return view('invoice_term.edit')
-            ->with('invoice_term', $invoice_term);
+        if(\Auth::user()->can('edit-invoice-term-module'))
+        {
+            $invoice_term = InvoiceTerm::findOrFail($id);
+            return view('invoice_term.edit')
+                ->with('invoice_term', $invoice_term);
+        }else{
+            return view('403');
+        }
     }
 
     /**

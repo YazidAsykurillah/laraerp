@@ -48,8 +48,9 @@ class PurchaseOrderController extends Controller
     {
         if(\Auth::user()->can('purchase-order-module')){
             return view('purchase_order.index');
+        }else{
+            return view('403');
         }
-        return "403";
     }
 
     /**
@@ -63,8 +64,9 @@ class PurchaseOrderController extends Controller
             $supplier_options = Supplier::lists('name', 'id');
             return view('purchase_order.create')
                 ->with('supplier_options', $supplier_options);
+        }else{
+            return view('403');
         }
-        return "403";
     }
 
     /**
@@ -176,47 +178,53 @@ class PurchaseOrderController extends Controller
      */
     public function edit($id)
     {
-        $purchase_order = PurchaseOrder::findOrFail($id);
-        $supplier_options = Supplier::lists('name', 'id');
-        $total_price = $this->count_total_price($purchase_order);
-        //$main_product = MainProduct::findOrFail($purchase_order->)
-        $main_product = $purchase_order->products;
+        if(\Auth::user()->can('edit-purchase-order-module'))
+        {
+            $purchase_order = PurchaseOrder::findOrFail($id);
+            $supplier_options = Supplier::lists('name', 'id');
+            $total_price = $this->count_total_price($purchase_order);
+            //$main_product = MainProduct::findOrFail($purchase_order->)
+            $main_product = $purchase_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($purchase_order->products->count()){
-            foreach($purchase_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($purchase_order->products->count()){
+                foreach($purchase_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
+
+            $main_products = array_unique($main_products_arr);
+
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
+                    'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $id)
+                ];
+            }
+            /*echo '<pre>';
+            print_r($row_display);
+            echo '</pre>';
+
+            exit();*/
+
+            return view('purchase_order.edit')
+                ->with('purchase_order', $purchase_order)
+                ->with('total_price', $total_price)
+                ->with('supplier_options', $supplier_options)
+                ->with('main_product',$main_product)
+                ->with('row_display', $row_display);
+        }else{
+            return view('403');
         }
 
-        $main_products = array_unique($main_products_arr);
-
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'image'=>MainProduct::find($mp_id)->image,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $id)
-            ];
-        }
-        /*echo '<pre>';
-        print_r($row_display);
-        echo '</pre>';
-
-        exit();*/
-
-        return view('purchase_order.edit')
-            ->with('purchase_order', $purchase_order)
-            ->with('total_price', $total_price)
-            ->with('supplier_options', $supplier_options)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
     }
 
 
@@ -388,21 +396,24 @@ class PurchaseOrderController extends Controller
 
     public function list_hutang(Request $request)
     {
-        $supplier = Supplier::get();
-        $data_hutang = [];
-        foreach ($supplier as $sup) {
-            $data_hutang [] = [
-                'id'=>$sup->id,
-                'code'=>$sup->code,
-                'name'=>$sup->name,
-                'balance'=>'',
-                'purchase'=>$this->list_purchase($sup->id)
-            ];
+        if(\Auth::user()->can('list-hutang-module'))
+        {
+            $supplier = Supplier::get();
+            $data_hutang = [];
+            foreach ($supplier as $sup) {
+                $data_hutang [] = [
+                    'id'=>$sup->id,
+                    'code'=>$sup->code,
+                    'name'=>$sup->name,
+                    'balance'=>'',
+                    'purchase'=>$this->list_purchase($sup->id)
+                ];
+            }
+            return view('purchase_hutang.index')
+                ->with('data_hutang',$data_hutang);
+        }else{
+            return view('403');
         }
-
-
-        return view('purchase_hutang.index')
-            ->with('data_hutang',$data_hutang);
     }
 
     protected function list_purchase($supplier_id)

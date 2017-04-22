@@ -72,9 +72,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('customer/'.$customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this customer">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-customer-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -171,9 +174,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Klik untuk mengedit main produk ini">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-main-product-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                     return $actions_html;
             });
             if($keyword = $request->get('search')['value']){
@@ -203,9 +209,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('unit/'.$units->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this unit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-unit" data-id="'.$units->id.'" data-text="'.$units->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-unit-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-unit" data-id="'.$units->id.'" data-text="'.$units->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -244,9 +253,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('supplier/'.$suppliers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this supplier">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-supplier" data-id="'.$suppliers->id.'" data-text="'.$suppliers->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-supplier-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-supplier" data-id="'.$suppliers->id.'" data-text="'.$suppliers->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -300,13 +312,19 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                 }
                 if(count($purchase_orders->purchase_order_invoice) > 0){
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" data-id-payment="'.$purchase_orders->purchase_order_invoice->id.'" title="Click to delete">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-purchase-order-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" data-id-payment="'.$purchase_orders->purchase_order_invoice->id.'" title="Click to delete">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }else{
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to delete">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-purchase-order-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" title="Click to delete">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }
                 return $actions_html;
             });
@@ -361,10 +379,12 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                 }
-
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
+                if(\Auth::user()->can('delete-purchase-order-invoice-module'))
+                {
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
 
                 return $actions_html;
             });
@@ -424,23 +444,32 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('purchase-return/'.$purchase_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-purchase-order-return-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }elseif ($purchase_returns->status == 'sent') {
                     $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-purchase-order-return-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }elseif ($purchase_returns->status == 'completed') {
                     $actions_html ='<a href="'.url('purchase-return/'.$purchase_returns->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-purchase-order-return-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }
 
                 return $actions_html;
@@ -505,13 +534,19 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                 }
                 if(count($sales_orders->sales_order_invoice) > 0){
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" data-id-payment="'.$sales_orders->sales_order_invoice->id.'" title="Click to delete">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-sales-order-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" data-id-payment="'.$sales_orders->sales_order_invoice->id.'" title="Click to delete">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }else{
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" title="Click to delete">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-sales-order-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" title="Click to delete">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }
                 return $actions_html;
             });
@@ -567,9 +602,12 @@ class DatatablesController extends Controller
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                 }
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
+                if(\Auth::user()->can('delete-sales-order-invoice-module'))
+                {
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
 
                 return $actions_html;
             });
@@ -627,13 +665,19 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('sales-return/'.$sales_returns->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-sales-order-return-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }elseif ($sales_returns->status == 'resent'){
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-sales-order-return-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
                 }
 
                 return $actions_html;
@@ -660,9 +704,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('invoice-term/'.$invoice_terms->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice-term">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-term" data-id="'.$invoice_terms->id.'" data-text="'.$invoice_terms->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-invoice-term-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-term" data-id="'.$invoice_terms->id.'" data-text="'.$invoice_terms->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -694,9 +741,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('driver/'.$drivers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$drivers->id.'" data-text="'.$drivers->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-driver-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$drivers->id.'" data-text="'.$drivers->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -729,9 +779,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('stock_balance/'.$stock_balance->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this stock balance">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-stock-balance" data-id="'.$stock_balance->id.'" data-text="'.$stock_balance->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-stock-balance-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-stock-balance" data-id="'.$stock_balance->id.'" data-text="'.$stock_balance->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             })
@@ -770,9 +823,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('bank/'.$banks->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this bank">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-bank" data-id="'.$banks->id.'" data-text="'.$banks->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-bank-module'))
+                    {
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-bank" data-id="'.$banks->id.'" data-text="'.$banks->name.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -806,9 +862,12 @@ class DatatablesController extends Controller
                 $actions_html .='<a href="'.url('cash/'.$cashs->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this cash">';
                 $actions_html .=    '<i class="fa fa-edit"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash" data-id="'.$cashs->id.'" data-text="'.$cashs->name.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
+                if(\Auth::user()->can('delete-cash-module'))
+                {
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash" data-id="'.$cashs->id.'" data-text="'.$cashs->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
 
                 return $actions_html;
             });
@@ -943,9 +1002,12 @@ class DatatablesController extends Controller
                 $actions_html .='<a href="'.url('vehicle/'.$vehicles->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this vehicle">';
                 $actions_html .=    '<i class="fa fa-edit"></i>';
                 $actions_html .='</a>&nbsp;';
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vehicle" data-id="'.$vehicles->id.'" data-text="'.$vehicles->name.'">';
-                $actions_html .=    '<i class="fa fa-trash"></i>';
-                $actions_html .='</button>';
+                if(\Auth::user()->can('delete-vehicle-module'))
+                {
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vehicle" data-id="'.$vehicles->id.'" data-text="'.$vehicles->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+                }
 
                 return $actions_html;
             });
@@ -977,9 +1039,13 @@ class DatatablesController extends Controller
             $actions_html .='<a href="'.url('chart-account/'.$chart_accounts->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this chart account">';
             $actions_html .=    '<i class="fa fa-edit"></i>';
             $actions_html .='</a>&nbsp;';
-            $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-chart-account" data-id="'.$chart_accounts->id.'" data-text="'.$chart_accounts->name.'">';
-            $actions_html .=    '<i class="fa fa-trash"></i>';
-            $actions_html .='</button>';
+            if(\Auth::user()->can('delete-chart-account-module'))
+            {
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-chart-account" data-id="'.$chart_accounts->id.'" data-text="'.$chart_accounts->name.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+            }
+
 
             return $actions_html;
         });
@@ -1045,9 +1111,12 @@ class DatatablesController extends Controller
             $actions_html .='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this beban operasi">';
             $actions_html .=    '<i class="fa fa-edit"></i>';
             $actions_html .='</a>&nbsp;';
-            $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-text="'.$trans_chart_account->sub_chart_account->name.'">';
-            $actions_html .=    '<i class="fa fa-trash"></i>';
-            $actions_html .='</button>';
+            if(\Auth::user()->can('delete-kas-kecil-module'))
+            {
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-text="'.$trans_chart_account->sub_chart_account->name.'">';
+                $actions_html .=    '<i class="fa fa-trash"></i>';
+                $actions_html .='</button>';
+            }
 
             return $actions_html;
         });
@@ -1073,6 +1142,12 @@ class DatatablesController extends Controller
         ]);
 
         $data_assets = Datatables::of($assets)
+            ->editColumn('amount', function($assets){
+                    return number_format($assets->amount);
+            })
+            ->editColumn('periode', function($assets){
+                    return $assets->periode.' Tahun';
+            })
             ->addColumn('actions', function($assets){
                     $actions_html ='<a href="'.url('asset/'.$assets->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';

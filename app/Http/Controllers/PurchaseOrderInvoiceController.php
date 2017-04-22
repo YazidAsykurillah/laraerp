@@ -34,7 +34,12 @@ class PurchaseOrderInvoiceController extends Controller
      */
     public function index()
     {
-        return view('purchase_order.list_invoice');
+        if(\Auth::user()->can('purchase-order-invoice-module'))
+        {
+            return view('purchase_order.list_invoice');
+        }else{
+            return view('403');
+        }
     }
 
     protected function count_total_price($purchase_order)
@@ -47,43 +52,47 @@ class PurchaseOrderInvoiceController extends Controller
 
     public function create(Request $request,$id)
     {
+        if(\Auth::user()->can('create-purchase-order-invoice-module'))
+        {
+            $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+            $payment_methods = PaymentMethod::lists('name', 'id');
+            $main_product = $purchase_order->products;
 
-        $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
-        $payment_methods = PaymentMethod::lists('name', 'id');
-        $main_product = $purchase_order->products;
-
-        $row_display = [];
-        $main_products_arr = [];
-        if($purchase_order->products->count()){
-            foreach($purchase_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($purchase_order->products->count()){
+                foreach($purchase_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
-        }
 
-        $main_products = array_unique($main_products_arr);
+            $main_products = array_unique($main_products_arr);
 
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'image'=>MainProduct::find($mp_id)->image,
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $id)
-            ];
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $id)
+                ];
+            }
+            // echo '<pre>';
+            // echo print_r($row_display);
+            // echo '</pre>';
+            // exit();
+            return view('purchase_order.create_invoice')
+                ->with('total_price', $this->count_total_price($purchase_order))
+                ->with('purchase_order', $purchase_order)
+                ->with('payment_methods', $payment_methods)
+                ->with('main_product',$main_product)
+                ->with('row_display', $row_display);
+        }else{
+            return view('403');
         }
-        // echo '<pre>';
-        // echo print_r($row_display);
-        // echo '</pre>';
-        // exit();
-        return view('purchase_order.create_invoice')
-            ->with('total_price', $this->count_total_price($purchase_order))
-            ->with('purchase_order', $purchase_order)
-            ->with('payment_methods', $payment_methods)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
     }
 
     public function store(StorePurchaseOrderInvoiceRequest $request)
@@ -239,38 +248,44 @@ class PurchaseOrderInvoiceController extends Controller
      */
     public function edit($id)
     {
-        $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
-        $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
-        $main_product = $purchase_order->products;
+        if(\Auth::user()->can('edit-purchase-order-invoice-module'))
+        {
+            $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($id);
+            $purchase_order = PurchaseOrder::findOrFail($purchase_order_invoice->purchase_order->id);
+            $main_product = $purchase_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($purchase_order->products->count()){
-            foreach($purchase_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($purchase_order->products->count()){
+                foreach($purchase_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
+
+            $main_products = array_unique($main_products_arr);
+
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
+                    'quantity'=>'',
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $purchase_order->id)
+                ];
+            }
+            return view('purchase_order.edit_invoice')
+                ->with('purchase_order_invoice', $purchase_order_invoice)
+                ->with('purchase_order', $purchase_order)
+                ->with('main_product',$main_product)
+                ->with('row_display', $row_display);
+        }else{
+            return view('403');
         }
 
-        $main_products = array_unique($main_products_arr);
-
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'quantity'=>'',
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $purchase_order->id)
-            ];
-        }
-        return view('purchase_order.edit_invoice')
-            ->with('purchase_order_invoice', $purchase_order_invoice)
-            ->with('purchase_order', $purchase_order)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
     }
 
     /**

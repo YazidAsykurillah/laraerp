@@ -23,7 +23,12 @@ class PurchaseReturnController extends Controller
      */
     public function index()
     {
-        return view('purchase_return.index');
+        if(\Auth::user()->can('purchase-order-return-module'))
+        {
+            return view('purchase_return.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -33,38 +38,43 @@ class PurchaseReturnController extends Controller
      */
     public function create(Request $request)
     {
-        $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
-        $po_id = $purchase_order->purchase_order_invoice;
-        $main_product = $purchase_order->products;
+        if(\Auth::user()->can('create-purchase-order-return-module'))
+        {
+            $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+            $po_id = $purchase_order->purchase_order_invoice;
+            $main_product = $purchase_order->products;
 
-          $row_display = [];
-          $main_products_arr = [];
-          if($purchase_order->products->count()){
-              foreach($purchase_order->products as $prod){
-                  array_push($main_products_arr, $prod->main_product->id);
+              $row_display = [];
+              $main_products_arr = [];
+              if($purchase_order->products->count()){
+                  foreach($purchase_order->products as $prod){
+                      array_push($main_products_arr, $prod->main_product->id);
+                  }
               }
-          }
 
-          $main_products = array_unique($main_products_arr);
+              $main_products = array_unique($main_products_arr);
 
-          foreach($main_products as $mp_id){
-              $row_display[] = [
-                  'main_product_id'=>MainProduct::find($mp_id)->id,
-                  'main_product'=>MainProduct::find($mp_id)->name,
-                  'description'=>MainProduct::find($mp_id)->product->first()->description,
-                  'image'=>MainProduct::find($mp_id)->image,
-                  'family'=>MainProduct::find($mp_id)->family->name,
-                  'unit'=>MainProduct::find($mp_id)->unit->name,
-                  'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-                  'category'=>MainProduct::find($mp_id)->category->name,
-                  'ordered_products'=>$this->get_product_lists($mp_id, $request->purchase_order_id),
-              ];
-          }
-          return view('purchase_return.create')
-              ->with('purchase_order', $purchase_order)
-              ->with('po_id',$po_id)
-              ->with('main_product',$main_product)
-              ->with('row_display', $row_display);
+              foreach($main_products as $mp_id){
+                  $row_display[] = [
+                      'main_product_id'=>MainProduct::find($mp_id)->id,
+                      'main_product'=>MainProduct::find($mp_id)->name,
+                      'description'=>MainProduct::find($mp_id)->product->first()->description,
+                      'image'=>MainProduct::find($mp_id)->image,
+                      'family'=>MainProduct::find($mp_id)->family->name,
+                      'unit'=>MainProduct::find($mp_id)->unit->name,
+                      'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                      'category'=>MainProduct::find($mp_id)->category->name,
+                      'ordered_products'=>$this->get_product_lists($mp_id, $request->purchase_order_id),
+                  ];
+              }
+              return view('purchase_return.create')
+                  ->with('purchase_order', $purchase_order)
+                  ->with('po_id',$po_id)
+                  ->with('main_product',$main_product)
+                  ->with('row_display', $row_display);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -190,11 +200,16 @@ class PurchaseReturnController extends Controller
      */
     public function edit($id)
     {
-        $purchase_return = PurchaseReturn::findOrFail($id);
-        $purchase_order = PurchaseOrder::findOrFail($purchase_return->purchase_order_id);
-        return view('purchase_return.edit')
-            ->with('purchase_return', $purchase_return)
-            ->with('purchase_order', $purchase_order);
+        if(\Auth::user()->can('edit-purchase-order-return-module'))
+        {
+            $purchase_return = PurchaseReturn::findOrFail($id);
+            $purchase_order = PurchaseOrder::findOrFail($purchase_return->purchase_order_id);
+            return view('purchase_return.edit')
+                ->with('purchase_return', $purchase_return)
+                ->with('purchase_order', $purchase_order);
+        }else{
+            return view('403');
+        }
     }
 
     /**

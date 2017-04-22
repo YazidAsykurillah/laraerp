@@ -25,7 +25,12 @@ class MainProductController extends Controller
 
     public function index()
     {
-        return view('main_product.index');
+        if(\Auth::user()->can('main-product-module'))
+        {
+            return view('main_product.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -35,13 +40,18 @@ class MainProductController extends Controller
      */
     public function create()
     {
-        $category_options = Category::lists('name', 'id');
-        $unit_options = Unit::lists('name', 'id');
-        $family_options = Family::lists('name', 'id');
-        return view('main_product.create')
-            ->with('category_options', $category_options)
-            ->with('unit_options', $unit_options)
-            ->with('family_options', $family_options);
+        if(\Auth::user()->can('create-main-product-module'))
+        {
+            $category_options = Category::lists('name', 'id');
+            $unit_options = Unit::lists('name', 'id');
+            $family_options = Family::lists('name', 'id');
+            return view('main_product.create')
+                ->with('category_options', $category_options)
+                ->with('unit_options', $unit_options)
+                ->with('family_options', $family_options);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -112,17 +122,22 @@ class MainProductController extends Controller
      */
     public function edit($id)
     {
-        $category_options = Category::lists('name', 'id');
-        $unit_options = Unit::lists('name', 'id');
-        $family_options = Family::lists('name', 'id');
-        $main_product = MainProduct::findOrFail($id);
-        $product = \DB::table('products')->where('main_product_id',$id)->get();
-        return view('main_product.edit')
-            ->with('category_options', $category_options)
-            ->with('unit_options', $unit_options)
-            ->with('family_options', $family_options)
-            ->with('main_product',$main_product)
-            ->with('product',$product);
+        if(\Auth::user()->can('edit-main-product-module'))
+        {
+            $category_options = Category::lists('name', 'id');
+            $unit_options = Unit::lists('name', 'id');
+            $family_options = Family::lists('name', 'id');
+            $main_product = MainProduct::findOrFail($id);
+            $product = \DB::table('products')->where('main_product_id',$id)->get();
+            return view('main_product.edit')
+                ->with('category_options', $category_options)
+                ->with('unit_options', $unit_options)
+                ->with('family_options', $family_options)
+                ->with('main_product',$main_product)
+                ->with('product',$product);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -260,46 +275,56 @@ class MainProductController extends Controller
 
     public function product_available(Request $request)
     {
-        $main_products = MainProduct::get();
-        $data_main_products = [];
-        foreach ($main_products as $mp) {
-            $data_main_products [] = [
-                'id'=>$mp->id,
-                'code'=>$mp->code,
-                'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
-                'name'=>$mp->name,
-                'image'=>$mp->image,
-                'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
-                'family'=>MainProduct::findOrFail($mp->id)->family->name,
-                'category'=>MainProduct::findOrFail($mp->id)->category->name,
-                'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
-                'sub_products'=>MainProduct::findOrFail($mp->id)->product,
-            ];
+        if(\Auth::user()->can('product-available'))
+        {
+            $main_products = MainProduct::get();
+            $data_main_products = [];
+            foreach ($main_products as $mp) {
+                $data_main_products [] = [
+                    'id'=>$mp->id,
+                    'code'=>$mp->code,
+                    'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
+                    'name'=>$mp->name,
+                    'image'=>$mp->image,
+                    'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
+                    'family'=>MainProduct::findOrFail($mp->id)->family->name,
+                    'category'=>MainProduct::findOrFail($mp->id)->category->name,
+                    'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
+                    'sub_products'=>MainProduct::findOrFail($mp->id)->product,
+                ];
+            }
+            return view('product.index_product_available')
+                ->with('data_main_products',$data_main_products);
+        }else{
+            return view('403');
         }
-        return view('product.index_product_available')
-            ->with('data_main_products',$data_main_products);
     }
 
     public function product_all(Request $request)
     {
-        $main_products = MainProduct::get();
-        $data_main_products = [];
-        foreach ($main_products as $mp) {
-            $data_main_products [] = [
-                'id'=>$mp->id,
-                'code'=>$mp->code,
-                'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
-                'name'=>$mp->name,
-                'image'=>$mp->image,
-                'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
-                'family'=>MainProduct::findOrFail($mp->id)->family->name,
-                'category'=>MainProduct::findOrFail($mp->id)->category->name,
-                'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
-                'sub_products'=>MainProduct::findOrFail($mp->id)->product,
-            ];
+        if(\Auth::user()->can('product-all'))
+        {
+            $main_products = MainProduct::get();
+            $data_main_products = [];
+            foreach ($main_products as $mp) {
+                $data_main_products [] = [
+                    'id'=>$mp->id,
+                    'code'=>$mp->code,
+                    'description'=>MainProduct::findOrFail($mp->id)->product->first()->description,
+                    'name'=>$mp->name,
+                    'image'=>$mp->image,
+                    'sum'=>MainProduct::findOrFail($mp->id)->product->sum('stock'),
+                    'family'=>MainProduct::findOrFail($mp->id)->family->name,
+                    'category'=>MainProduct::findOrFail($mp->id)->category->name,
+                    'unit'=>MainProduct::findOrFail($mp->id)->unit->name,
+                    'sub_products'=>MainProduct::findOrFail($mp->id)->product,
+                ];
+            }
+            return view('product.index_product_all')
+                ->with('data_main_products',$data_main_products);
+        }else{
+            return view('403');
         }
-        return view('product.index_product_all')
-            ->with('data_main_products',$data_main_products);
     }
 
 }

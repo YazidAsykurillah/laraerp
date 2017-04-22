@@ -19,10 +19,15 @@ class LostProfitController extends Controller
      */
     public function index()
     {
-    $chart_account = \DB::table('chart_accounts')->get();
-    $sub_chart_account = \DB::table('sub_chart_accounts')->get();
-    return view('lost_profit.index')
-            ->with('chart_account',$chart_account);
+        if(\Auth::user()->can('lost-profit-module'))
+        {
+            $chart_account = \DB::table('chart_accounts')->get();
+            $sub_chart_account = \DB::table('sub_chart_accounts')->get();
+            return view('lost_profit.index')
+                    ->with('chart_account',$chart_account);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -221,32 +226,37 @@ class LostProfitController extends Controller
 
     public function lost_profit_print(Request $request)
     {
-        $sort_target = $request->sort_target;
-        if($sort_target == 'y'){
-            true;
-            $data['sort_target_year'] = $request->sort_target_year;
-            $data['sort_target_y'] = 'y';
-            if(true){
-                $data['chart_account'] = ChartAccount::all();
+        if(\Auth::user()->can('print-lost-profit-module'))
+        {
+            $sort_target = $request->sort_target;
+            if($sort_target == 'y'){
+                true;
+                $data['sort_target_year'] = $request->sort_target_year;
+                $data['sort_target_y'] = 'y';
+                if(true){
+                    $data['chart_account'] = ChartAccount::all();
 
-                $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
-                return $pdf->stream('lost_profit_montly.pdf');
-            }
-        }elseif ($sort_target == 'm') {
-            true;
-            $data['month_start'] = $request->sort_target_months_start;
-            $data['year_start'] = $request->sort_target_years_start;
-            $data['month_end'] = $request->sort_target_months_end;
-            $data['year_end'] = $request->sort_target_years_end;
-            $data['sort_target_m'] = 'm';
-            $conv_month_start ='';
-            $conv_month_end ='';
-            if(true){
-                $data['chart_account'] = ChartAccount::all();
+                    $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
+                    return $pdf->stream('lost_profit_montly.pdf');
+                }
+            }elseif ($sort_target == 'm') {
+                true;
+                $data['month_start'] = $request->sort_target_months_start;
+                $data['year_start'] = $request->sort_target_years_start;
+                $data['month_end'] = $request->sort_target_months_end;
+                $data['year_end'] = $request->sort_target_years_end;
+                $data['sort_target_m'] = 'm';
+                $conv_month_start ='';
+                $conv_month_end ='';
+                if(true){
+                    $data['chart_account'] = ChartAccount::all();
 
-                $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
-                return $pdf->stream('lost_profit_montly.pdf');
+                    $pdf = \PDF::loadView('pdf.lost_profit_montly',$data);
+                    return $pdf->stream('lost_profit_montly.pdf');
+                }
             }
+        }else{
+            return view('403');
         }
     }
 }

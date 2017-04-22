@@ -19,9 +19,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
-        return view('category.index')
-         ->with('categories', $categories);
+        if(\Auth::user()->can('category-module'))
+        {
+            $categories = Category::paginate(10);
+            return view('category.index')
+             ->with('categories', $categories);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -31,7 +36,12 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        if(\Auth::user()->can('create-category-module'))
+        {
+            return view('category.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -71,9 +81,14 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('category.edit')
-         ->with('category', $category);
+        if(\Auth::user()->can('edit-category-module'))
+        {
+            $category = Category::findOrFail($id);
+            return view('category.edit')
+             ->with('category', $category);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -100,11 +115,11 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
-    {   
+    {
         $category = Category::findOrFail($request->category_id);
         $category->delete();
         return redirect('category')
             ->with('successMessage', 'Category has been deleted');
     }
-    
+
 }

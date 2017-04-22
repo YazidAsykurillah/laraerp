@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\StoreAssetRequest;
 
 use App\Asset;
+use App\TransactionChartAccount;
 class AssetController extends Controller
 {
     /**
@@ -42,13 +43,46 @@ class AssetController extends Controller
         $asset->code = $request->code;
         $asset->name = $request->name;
         $asset->date_purchase = $request->date_purchase;
-        $asset->amount = $request->amount;
+        $asset->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
         $asset->periode = $request->periode;
         $asset->notes = $request->notes;
         $asset->save();
 
+        $asset_account = New TransactionChartAccount;
+        $asset_account->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
+        $asset_account->sub_chart_account_id = $request->asset_account;
+        $asset_account->created_at = date('Y-m-d h:i:s');
+        $asset_account->updated_at = date('Y-m-d h:i:s');
+        $asset_account->reference = $request->asset_account;
+        $asset_account->source = 'asset';
+        $asset_account->type = 'masuk';
+        $asset_account->save();
+
+        $biaya_count = floatval(preg_replace('#[^0-9.]#','',$request->amount))/($request->periode*12);
+
+        $biaya_penyusutan_account = New TransactionChartAccount;
+        $biaya_penyusutan_account->amount = $biaya_count;
+        $biaya_penyusutan_account->sub_chart_account_id = $request->biaya_penyusutan_account;
+        $biaya_penyusutan_account->created_at = date('Y-m-d h:i:s');
+        $biaya_penyusutan_account->updated_at = date('Y-m-d h:i:s');
+        $biaya_penyusutan_account->reference = $request->biaya_penyusutan_account;
+        $biaya_penyusutan_account->source = 'asset';
+        $biaya_penyusutan_account->type = 'masuk';
+        $biaya_penyusutan_account->save();
+
+        $akumulasi_penyusutan_account = New TransactionChartAccount;
+        $akumulasi_penyusutan_account->amount = $biaya_count;
+        $akumulasi_penyusutan_account->sub_chart_account_id =  $request->akumulasi_penyusutan_account;
+        $akumulasi_penyusutan_account->created_at = date('Y-m-d h:i:s');
+        $akumulasi_penyusutan_account->updated_at = date('Y-m-d h:i:s');
+        $akumulasi_penyusutan_account->reference = $request->akumulasi_penyusutan_account;
+        $akumulasi_penyusutan_account->source = 'asset';
+        $akumulasi_penyusutan_account->type = 'masuk';
+        $akumulasi_penyusutan_account->save();
+
+
         return redirect('asset')
-            ->with('successMessage','Asset has been added');
+            ->with('successMessage','Asset has been added'.$request->asset_account);
     }
 
     /**

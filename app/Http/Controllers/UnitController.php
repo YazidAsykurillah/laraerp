@@ -14,12 +14,22 @@ class UnitController extends Controller
 {
     public function index()
     {
-    	return view('unit.index');
+        if(\Auth::user()->can('unit-module'))
+        {
+            return view('unit.index');
+        }else{
+            return view('403');
+        }
     }
 
     public function create()
     {
-    	return view('unit.create');
+        if(\Auth::user()->can('create-unit-module'))
+        {
+            return view('unit.create');
+        }else{
+            return view('403');
+        }
     }
 
     public function store(StoreUnitRequest $request)
@@ -48,9 +58,14 @@ class UnitController extends Controller
 
     public function edit($id)
     {
-    	$unit = Unit::findOrFail($id);
-    	return view('unit.edit')
-    		->with('unit', $unit);
+        if(\Auth::user()->can('edit-unit-module'))
+        {
+            $unit = Unit::findOrFail($id);
+        	return view('unit.edit')
+        		->with('unit', $unit);
+        }else{
+            return view('403');
+        }
     }
 
     public function update(UpdateUnitRequest $request, $id)

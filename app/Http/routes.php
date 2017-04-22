@@ -17,6 +17,9 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//ledger
+Route::post('ledger/search','LedgerController@ledger_search');
+Route::resource('ledger','LedgerController');
 //asset
 Route::resource('asset','AssetController');
 //report

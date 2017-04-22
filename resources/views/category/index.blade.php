@@ -56,9 +56,11 @@
                                 <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
                                   <i class="fa fa-edit"></i>
                                 </a>&nbsp;
+                                @if(\Auth::user()->can('delete-category-module'))
                                 <button type="button" class="btn btn-danger btn-xs btn-delete-category" data-id="{{ $category->id }}" data-text="{{$category->name}}">
                                   <i class="fa fa-trash"></i>
                                 </button>
+                                @endif
                               </td>
                             </tr>
                           @endforeach

@@ -29,7 +29,9 @@ class StoreAssetRequest extends Request
             'date_purchase'=>'required',
             'amount'=>'required',
             'periode'=>'required|integer',
-
+            'asset_account'=>'required',
+            'biaya_penyusutan_account'=>'required',
+            'akumulasi_penyusutan_account'=>'required'
         ];
     }
 }

@@ -24,7 +24,7 @@ use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
 use App\TransactionChartAccount;
 use DB;
-
+use App\Customer;
 use App\MainProduct;
 use App\Product;
 
@@ -37,7 +37,12 @@ class SalesOrderInvoiceController extends Controller
      */
     public function index()
     {
-        return view('sales_order.list_invoice');
+        if(\Auth::user()->can('sales-order-invoice-module'))
+        {
+            return view('sales_order.list_invoice');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -47,38 +52,43 @@ class SalesOrderInvoiceController extends Controller
      */
     public function create(Request $request,$id)
     {
-        $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        //if(\Auth::user()->can('create-sales-order-invoice-module'))
+        //{
+            $sales_order = SalesOrder::findOrFail($request->sales_order_id);
 
-        $main_product = $sales_order->products;
+            $main_product = $sales_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($sales_order->products->count()){
-            foreach($sales_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($sales_order->products->count()){
+                foreach($sales_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
-        }
 
-        $main_products = array_unique($main_products_arr);
+            $main_products = array_unique($main_products_arr);
 
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
 
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $id)
-            ];
-        }
-        return view('sales_order.create_invoice')
-            ->with('total_price', $this->count_total_price($sales_order))
-            ->with('sales_order', $sales_order)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $id)
+                ];
+            }
+            return view('sales_order.create_invoice')
+                ->with('total_price', $this->count_total_price($sales_order))
+                ->with('sales_order', $sales_order)
+                ->with('main_product',$main_product)
+                ->with('row_display', $row_display);
+        //}else{
+            //return view('403');
+        //}
     }
 
     protected function count_total_price($sales_order)
@@ -120,10 +130,13 @@ class SalesOrderInvoiceController extends Controller
             $save = SalesOrderInvoice::create($data);
             //get last inserted id of sales_order_invoice
             $sales_order_invoice_id = $save->id;
+            $sales_order_invoice_code = $save->code;
+
             if($save){
 
                 //find sales_order model
                 $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+                $customer = Customer::findOrFail($sales_order->customer_id);
                 //Build sync data to update SalesOrder relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
@@ -166,8 +179,10 @@ class SalesOrderInvoiceController extends Controller
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
                         'reference'=>$sales_order_invoice_id,
-                        'source'=>'sales_order_invoices',
+                        'source'=>$sales_order_invoice_code,
                         'type'=>'keluar',
+                        'description'=>'INVOICE TO : '.$customer->name,
+                        'memo'=>''
                     ]);
                     array_push($sales_account,[
                         'amount'=>$total_amount,
@@ -175,8 +190,10 @@ class SalesOrderInvoiceController extends Controller
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
                         'reference'=>$sales_order_invoice_id,
-                        'source'=>'sales_order_invoices',
+                        'source'=>$sales_order_invoice_code,
                         'type'=>'masuk',
+                        'description'=>'INVOICE TO : '.$customer->name,
+                        'memo'=>''
                     ]);
                     array_push($cost_goods_account,[
                         'amount'=>$total_amount,
@@ -184,8 +201,10 @@ class SalesOrderInvoiceController extends Controller
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
                         'reference'=>$sales_order_invoice_id,
-                        'source'=>'sales_order_invoices',
+                        'source'=>$sales_order_invoice_code,
                         'type'=>'masuk',
+                        'description'=>'INVOICE TO : '.$customer->name,
+                        'memo'=>''
                     ]);
                 }
 
@@ -204,8 +223,10 @@ class SalesOrderInvoiceController extends Controller
                 $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
                 $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
                 $transaction_sub_chart_account->reference = $sales_order_invoice_id;
-                $transaction_sub_chart_account->source = 'sales_order_invoices';
+                $transaction_sub_chart_account->source = $sales_order_invoice_code;
                 $transaction_sub_chart_account->type = 'masuk';
+                $transaction_sub_chart_account->description = 'INVOICE TO : '.$customer->name;
+                $transaction_sub_chart_account->memo = '';
                 $transaction_sub_chart_account->save();
             }
 
@@ -271,39 +292,44 @@ class SalesOrderInvoiceController extends Controller
      */
     public function edit($id)
     {
-        $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
-        $sales_order = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
+        if(\Auth::user()->can('edit-sales-order-invoice-module'))
+        {
+            $sales_order_invoice = SalesOrderInvoice::findOrFail($id);
+            $sales_order = SalesOrder::findOrFail($sales_order_invoice->sales_order->id);
 
-        $main_product = $sales_order->products;
+            $main_product = $sales_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($sales_order->products->count()){
-            foreach($sales_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($sales_order->products->count()){
+                foreach($sales_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
+
+            $main_products = array_unique($main_products_arr);
+
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
+
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $sales_order->id)
+                ];
+            }
+            return view('sales_order.edit_invoice')
+                    ->with('sales_order_invoice',$sales_order_invoice)
+                    ->with('sales_order',$sales_order)
+                    ->with('main_product',$main_product)
+                    ->with('row_display', $row_display);
+        }else{
+            return view('403');
         }
-
-        $main_products = array_unique($main_products_arr);
-
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $sales_order->id)
-            ];
-        }
-        return view('sales_order.edit_invoice')
-                ->with('sales_order_invoice',$sales_order_invoice)
-                ->with('sales_order',$sales_order)
-                ->with('main_product',$main_product)
-                ->with('row_display', $row_display);
     }
 
     /**
@@ -325,6 +351,7 @@ class SalesOrderInvoiceController extends Controller
 
         //find sales order model
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+        $customer = Customer::findOrFail($sales_order->customer_id);
         //build sync data to update PO relative w/products
         $syncData = [];
         foreach ($request->product_id as $key => $value) {
@@ -365,8 +392,10 @@ class SalesOrderInvoiceController extends Controller
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
                 'reference'=>$request->sales_order_invoice_id,
-                'source'=>'sales_order_invoices',
+                'source'=>$request->sales_order_invoice_code,
                 'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$customer->name,
+                'memo'=>''
             ]);
             array_push($sales_account,[
                 'amount'=>$total_amount,
@@ -374,8 +403,10 @@ class SalesOrderInvoiceController extends Controller
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
                 'reference'=>$request->sales_order_invoice_id,
-                'source'=>'sales_order_invoices',
+                'source'=>$request->sales_order_invoice_code,
                 'type'=>'masuk',
+                'description'=>'INVOICE TO : '.$customer->name,
+                'memo'=>''
             ]);
             array_push($cost_goods_account,[
                 'amount'=>$total_amount,
@@ -383,8 +414,10 @@ class SalesOrderInvoiceController extends Controller
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
                 'reference'=>$request->sales_order_invoice_id,
-                'source'=>'sales_order_invoices',
+                'source'=>$request->sales_order_invoice_code,
                 'type'=>'masuk',
+                'description'=>'INVOICE TO : '.$customer->name,
+                'memo'=>''
             ]);
         }
 
@@ -401,8 +434,10 @@ class SalesOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
         $transaction_sub_chart_account->reference = $request->sales_order_invoice_id;
-        $transaction_sub_chart_account->source = 'sales_order_invoices';
+        $transaction_sub_chart_account->source = $request->sales_order_invoice_code;
         $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->description = 'INVOICE TO : '.$customer->name;
+        $transaction_sub_chart_account->memo = '';
         $transaction_sub_chart_account->save();
         return redirect('sales-order-invoice')
             ->with('successMessage','has been update');
@@ -493,15 +528,15 @@ class SalesOrderInvoiceController extends Controller
         }
     }
 
-    public function completeSalesAccount(Request $request)
-    {
-        $transaction_sub_chart_account = New TransactionChartAccount;
-        $transaction_sub_chart_account->amount = $request->amount_piutang;
-        $transaction_sub_chart_account->sub_chart_account_id = $request->select_account_id;
-        $transaction_sub_chart_account->save();
-        return redirect()->back()
-            ->with('successMessage',"Send Piutang Account has been completed");
-    }
+    // public function completeSalesAccount(Request $request)
+    // {
+    //     $transaction_sub_chart_account = New TransactionChartAccount;
+    //     $transaction_sub_chart_account->amount = $request->amount_piutang;
+    //     $transaction_sub_chart_account->sub_chart_account_id = $request->select_account_id;
+    //     $transaction_sub_chart_account->save();
+    //     return redirect()->back()
+    //         ->with('successMessage',"Send Piutang Account has been completed");
+    // }
 
     public function createPayment(Request $request)
     {
@@ -520,6 +555,7 @@ class SalesOrderInvoiceController extends Controller
     public function storePaymentCash(StoreSalesPaymentCash $request)
     {
         $invoice_id = $request->sales_order_invoice_id;
+        $invoice_code = $request->sales_order_invoice_code;
         $cash_id = $request->cash_id;
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
 
@@ -530,6 +566,8 @@ class SalesOrderInvoiceController extends Controller
         $new_paid_price = $current_paid_price+$amount;
 
         $sales_order_id = $sales_order_invoice->sales_order->id;
+        $sales_order_customer_id = $sales_order_invoice->sales_order->customer_id;
+        $customer = Customer::findOrFail($sales_order_customer_id);
 
         $sales_invoice_payment = new SalesInvoicePayment;
         $sales_invoice_payment->sales_order_invoice_id = $invoice_id;
@@ -551,16 +589,20 @@ class SalesOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
         $transaction_sub_chart_account->reference = $invoice_id;
-        $transaction_sub_chart_account->source = 'sales_order_invoices';
+        $transaction_sub_chart_account->source = $invoice_code;
         $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->description = $customer->name.' PAYMENT INVOICE : '.$invoice_code;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
         $transaction_sub_chart_account->save();
 
         $trans_payment_k = New TransactionChartAccount;
         $trans_payment_k->amount = $amount;
         $trans_payment_k->sub_chart_account_id = 34;
         $trans_payment_k->reference = $invoice_id;
-        $trans_payment_k->source = 'sales_order_invoices';
+        $trans_payment_k->source = $invoice_code;
         $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE TO : '.$customer->name;
+        $trans_payment_k->memo = '';
         $trans_payment_k->save();
         if($save){
             //update invoice's paid_price
@@ -581,12 +623,17 @@ class SalesOrderInvoiceController extends Controller
     public function storePaymentTransfer(StoreSalesPaymentTransfer $request)
     {
         $invoice_id = $request->sales_order_invoice_id;
+        $invoice_code = $request->sales_order_invoice_code;
         $bank_id = $request->bank_id;
         $amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
+
         $sales_order_invoice = SalesOrderInvoice::findOrFail($invoice_id);
         $current_paid_price = $sales_order_invoice->paid_price;
         $new_paid_price = $current_paid_price+$amount;
+
         $sales_order_id = $sales_order_invoice->sales_order->id;
+        $sales_order_customer_id = $sales_order_invoice->sales_order->customer_id;
+        $customer = Customer::findOrFail($sales_order_customer_id);
 
         $sales_invoice_payment = new SalesInvoicePayment;
         $sales_invoice_payment->sales_order_invoice_id = $invoice_id;
@@ -607,7 +654,22 @@ class SalesOrderInvoiceController extends Controller
         $transaction_sub_chart_account = New TransactionChartAccount;
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
+        $transaction_sub_chart_account->reference = $invoice_id;
+        $transaction_sub_chart_account->source = $invoice_code;
+        $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->description = $customer->name.' PAYMENT INVOICE : '.$invoice_code;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
         $transaction_sub_chart_account->save();
+
+        $trans_payment_k = New TransactionChartAccount;
+        $trans_payment_k->amount = $amount;
+        $trans_payment_k->sub_chart_account_id = 34;
+        $trans_payment_k->reference = $invoice_id;
+        $trans_payment_k->source = $invoice_code;
+        $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE TO : '.$customer->name;
+        $trans_payment_k->memo = '';
+        $trans_payment_k->save();
         if($save){
             //update invoice's paid price
             $sales_order_invoice->paid_price = $new_paid_price;

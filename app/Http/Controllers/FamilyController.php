@@ -18,9 +18,14 @@ class FamilyController extends Controller
      */
     public function index()
     {
-        $family = Family::paginate(10);
-        return view('family.index')
-            ->with('family',$family);
+        if(\Auth::user()->can('family-module'))
+        {
+            $family = Family::paginate(10);
+            return view('family.index')
+                ->with('family',$family);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -30,7 +35,12 @@ class FamilyController extends Controller
      */
     public function create()
     {
-        return view('family.create');
+        if(\Auth::user()->can('create-family-module'))
+        {
+            return view('family.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -70,9 +80,14 @@ class FamilyController extends Controller
      */
     public function edit($id)
     {
-        $family = Family::findOrFail($id);
-        return view('family.edit')
-            ->with('family',$family);
+        if(\Auth::user()->can('edit-family-module'))
+        {
+            $family = Family::findOrFail($id);
+            return view('family.edit')
+                ->with('family',$family);
+        }else{
+            return view('403');
+        }
     }
 
     /**

@@ -187,6 +187,7 @@
                           </div>
                         </div>
                         {!! Form::hidden('sales_order_invoice_id', $sales_order_invoice->id) !!}
+                        {!! Form::hidden('sales_order_invoice_code', $sales_order_invoice->code) !!}
                         {!! Form::hidden('sales_order_id', $sales_order_invoice->sales_order->id) !!}
                     {!! Form::close() !!}
                 </div>

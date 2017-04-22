@@ -19,7 +19,12 @@ class CashController extends Controller
      */
     public function index()
     {
-        return view('cash.index');
+        if(\Auth::user()->can('cash-module'))
+        {
+            return view('cash.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -29,7 +34,12 @@ class CashController extends Controller
      */
     public function create()
     {
-        return view('cash.create');
+        if(\Auth::user()->can('create-cash-module'))
+        {
+            return view('cash.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -70,9 +80,14 @@ class CashController extends Controller
      */
     public function edit($id)
     {
-        $cash = Cash::findOrFail($id);
-        return view('cash.edit')
-            ->with('cash',$cash);
+        if(\Auth::user()->can('edit-cash-module'))
+        {
+            $cash = Cash::findOrFail($id);
+            return view('cash.edit')
+                ->with('cash',$cash);
+        }else{
+            return view('403');
+        }
     }
 
     /**

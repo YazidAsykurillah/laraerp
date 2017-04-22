@@ -22,8 +22,12 @@ class DriverController extends Controller
      */
     public function index()
     {
-        //
-        return view('driver.index');
+        if(\Auth::user()->can('driver-module'))
+        {
+            return view('driver.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -33,8 +37,12 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
-        return view('driver.create');
+        if(\Auth::user()->can('create-driver-module'))
+        {
+            return view('driver.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -79,10 +87,14 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        //
-        $driver = Driver::findOrFail($id);
-        return view('driver.edit')
-            ->with('driver', $driver);
+        if(\Auth::user()->can('edit-driver-module'))
+        {
+            $driver = Driver::findOrFail($id);
+            return view('driver.edit')
+                ->with('driver', $driver);
+        }else{
+            return view('403');
+        }
     }
 
     /**

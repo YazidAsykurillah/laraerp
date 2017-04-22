@@ -18,7 +18,12 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return view('vehicle.index');
+        if(\Auth::user()->can('vehicle-module'))
+        {
+            return view('vehicle.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -28,9 +33,14 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        $vehicle_category = ['Truck','Pick Up','Motorcycle'];
-        return view('vehicle.create')
-            ->with('vehicle_cat',$vehicle_category);
+        if(\Auth::user()->can('create-vehicle-module'))
+        {
+            $vehicle_category = ['Truck','Pick Up','Motorcycle'];
+            return view('vehicle.create')
+                ->with('vehicle_cat',$vehicle_category);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -80,11 +90,16 @@ class VehicleController extends Controller
      */
     public function edit($id)
     {
-        $vehicle = Vehicle::findOrFail($id);
-        $vehicle_category = ['truck'=>'Truck','pick_up'=>'Pick Up','motorcycle'=>'Motorcycle'];
-        return view('vehicle.edit')
-            ->with('vehicle',$vehicle)
-            ->with('vehicle_cat',$vehicle_category);
+        if(\Auth::user()->can('edit-vehicle-module'))
+        {
+            $vehicle = Vehicle::findOrFail($id);
+            $vehicle_category = ['truck'=>'Truck','pick_up'=>'Pick Up','motorcycle'=>'Motorcycle'];
+            return view('vehicle.edit')
+                ->with('vehicle',$vehicle)
+                ->with('vehicle_cat',$vehicle_category);
+        }else{
+            return view('403');
+        }
     }
 
     /**

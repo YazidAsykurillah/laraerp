@@ -23,7 +23,12 @@ class ChartAccountController extends Controller
      */
     public function index()
     {
-        return view('chart_account.index');
+        if(\Auth::user()->can('chart-account-module'))
+        {
+            return view('chart_account.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -33,7 +38,12 @@ class ChartAccountController extends Controller
      */
     public function create()
     {
-        return view('chart_account.create');
+        if(\Auth::user()->can('create-chart-account-module'))
+        {
+            return view('chart_account.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -75,9 +85,14 @@ class ChartAccountController extends Controller
      */
     public function edit($id)
     {
-        $chart_account = ChartAccount::findOrFail($id);
-        return view('chart_account.edit')
-            ->with('chart_account',$chart_account);
+        if(\Auth::user()->can('edit-chart-account-module'))
+        {
+            $chart_account = ChartAccount::findOrFail($id);
+            return view('chart_account.edit')
+                ->with('chart_account',$chart_account);
+        }else{
+            return view('403');
+        }
     }
 
     /**

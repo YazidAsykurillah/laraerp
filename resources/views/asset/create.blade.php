@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Banks
-    <small>List of The Assets </small>
+    Asset
+    <small>Create of The Asset </small>
   </h1>
 @endsection
 
@@ -22,7 +22,7 @@
 @section('content')
   {!! Form::open(['route'=>'asset.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-asset','files'=>true]) !!}
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-7">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Create New Asset</h3>
@@ -115,6 +115,81 @@
         </div>
       </div><!-- /.box -->
 
+    </div>
+    <div class="col-lg-5">
+        <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+            <div class="box-header with-border">
+                <h3 class="box-title">Select Account</h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group{{ $errors->has('asset_account') ? ' has-error' : '' }}">
+                    {!! Form::label('asset_account', 'Asset', ['class'=>'col-sm-3 control-label']) !!}
+                    <div class="col-sm-9">
+                        <select name="asset_account" id="asset_account" class="form-control">
+                          <option value="">Asset Account</option>
+                          @foreach(list_parent('68') as $as)
+                            @if($as->level ==1)
+                            <optgroup label="{{ $as->name}}">
+                            @endif
+                            @foreach(list_child('2',$as->id) as $sub)
+                              <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                            @endforeach
+                          @endforeach
+                        </select>
+                        @if ($errors->has('beban_operasi_account'))
+                          <span class="help-block">
+                            <strong>{{ $errors->first('beban_operasi_account') }}</strong>
+                          </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('biaya_penyusutan_account') ? ' has-error' : '' }}">
+                    {!! Form::label('biaya_penyusutan_account', 'Biaya Penyusutan', ['class'=>'col-sm-3 control-label']) !!}
+                    <div class="col-sm-9">
+                        <select name="biaya_penyusutan_account" id="biaya_penyusutan_account" class="form-control">
+                          <option value="">Asset Account</option>
+                          @foreach(list_parent('64') as $as)
+                            @if($as->level ==1)
+                            <optgroup label="{{ $as->name}}">
+                            @endif
+                            @foreach(list_child('2',$as->id) as $sub)
+                              <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                            @endforeach
+                          @endforeach
+                        </select>
+                        @if ($errors->has('beban_operasi_account'))
+                          <span class="help-block">
+                            <strong>{{ $errors->first('beban_operasi_account') }}</strong>
+                          </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('akumulasi_penyusutan_account') ? ' has-error' : '' }}">
+                    {!! Form::label('akumulasi_penyusutan_account', 'Akumulasi Penyusutan', ['class'=>'col-sm-3 control-label']) !!}
+                    <div class="col-sm-9">
+                        <select name="akumulasi_penyusutan_account" id="akumulasi_penyusutan_account" class="form-control">
+                          <option value="">Asset Account</option>
+                          @foreach(list_parent('55') as $as)
+                            @if($as->level ==1)
+                            <optgroup label="{{ $as->name}}">
+                            @endif
+                            @foreach(list_child('2',$as->id) as $sub)
+                              <option value="{{ $sub->id}}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name}}</option>
+                            @endforeach
+                          @endforeach
+                        </select>
+                        @if ($errors->has('beban_operasi_account'))
+                          <span class="help-block">
+                            <strong>{{ $errors->first('beban_operasi_account') }}</strong>
+                          </span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer clearfix">
+
+            </div>
+        </div>
     </div>
   </div>
   {!! Form::close() !!}

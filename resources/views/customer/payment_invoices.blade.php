@@ -95,24 +95,23 @@
                                 <tbody>
                                     <?php $no = 1; ?>
                                     @foreach($data_invoice as $d_i)
-                                        <tr>
-                                            <td>
-                                                {{ $no++ }}
-                                                <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
-                                                <input type="hidden" name="sales_order_id[]" value="{{ $d_i['sales_order_id']}}">
-                                                <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
-                                            </td>
-                                            <td>{{ $d_i['code']}}</td>
-                                            <td>{{ number_format($d_i['bill_price']) }}</td>
-                                            <td>{{ number_format($d_i['paid_price']) }}</td>
-                                            <td>
-                                                @if($d_i['bill_price'] != $d_i['paid_price'])
+                                        @if($d_i['status'] != 'completed')
+                                            <tr>
+                                                <td>
+                                                    {{ $no++ }}
+                                                    <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
+                                                    <input type="hidden" name="invoice_code[]" value="{{ $d_i['code']}}">
+                                                    <input type="hidden" name="sales_order_id[]" value="{{ $d_i['sales_order_id']}}">
+                                                    <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
+                                                </td>
+                                                <td>{{ $d_i['code']}}</td>
+                                                <td>{{ number_format($d_i['bill_price']) }}</td>
+                                                <td>{{ number_format($d_i['paid_price']) }}</td>
+                                                <td>
                                                     <input type="text" name="amount[]" class="amount-invoice">
-                                                @else
-                                                    <input type="text" name="amount[]" class="amount-invoice" disabled>
-                                                @endif
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -132,6 +131,7 @@
                               </div>
                             </div>
                               <input type="hidden" name="payment_method_id" value="2">
+                              <input type="hidden" name="customer_name" value="{{ $customer->name }}">
                               {!! Form::close() !!}
                         </div>
                         <div class="box-footer clearfix">
@@ -206,20 +206,23 @@
                                 <tbody>
                                     <?php $no = 1; ?>
                                     @foreach($data_invoice as $d_i)
-                                        <tr>
-                                            <td>
-                                                {{ $no++ }}
-                                                <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
-                                                <input type="hidden" name="sales_order_id[]" value="{{ $d_i['sales_order_id']}}">
-                                                <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
-                                            </td>
-                                            <td>{{ $d_i['code']}}</td>
-                                            <td>{{ number_format($d_i['bill_price']) }}</td>
-                                            <td>{{ number_format($d_i['paid_price']) }}</td>
-                                            <td>
-                                                <input type="text" name="amount[]" class="amount-invoice-bank">
-                                            </td>
-                                        </tr>
+                                        @if($d_i['status'] == 'completed')
+                                            <tr>
+                                                <td>
+                                                    {{ $no++ }}
+                                                    <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
+                                                    <input type="hidden" name="invoice_code[]" value="{{ $d_i['code']}}">
+                                                    <input type="hidden" name="sales_order_id[]" value="{{ $d_i['sales_order_id']}}">
+                                                    <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
+                                                </td>
+                                                <td>{{ $d_i['code']}}</td>
+                                                <td>{{ number_format($d_i['bill_price']) }}</td>
+                                                <td>{{ number_format($d_i['paid_price']) }}</td>
+                                                <td>
+                                                    <input type="text" name="amount[]" class="amount-invoice-bank">
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -239,6 +242,7 @@
                               </div>
                             </div>
                               <input type="hidden" name="payment_method_id" value="1">
+                              <input type="hidden" name="customer_name" value="{{ $customer->name }}">
                               {!! Form::close() !!}
                         </div>
                         <div class="box-footer clearfix">

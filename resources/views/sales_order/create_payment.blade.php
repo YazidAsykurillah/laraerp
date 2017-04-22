@@ -90,6 +90,7 @@
                                             <i class="fa fa-repeat"></i>&nbsp;Cancel
                                         </a>&nbsp;
                                         <input type="hidden" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+                                        <input type="hidden" name="sales_order_invoice_code" value="{{ $invoice->code }}">
                                         <input type="hidden" name="payment_method_id" value="2">
                                         <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                             <i class="fa fa-save"></i>&nbsp;Submit
@@ -196,6 +197,7 @@
                                       <i class="fa fa-repeat"></i>&nbsp;Cancel
                                     </a>&nbsp;
                                     <input type="hidden" name="sales_order_invoice_id" value="{{ $invoice->id }}">
+                                    <input type="hidden" name="sales_order_invoice_code" value="{{ $invoice->code }}">
                                     <input type="hidden" name="payment_method_id" value="1">
                                     <button type="submit" class="btn btn-info" id="btn-submit-payment">
                                       <i class="fa fa-save"></i>&nbsp;Submit

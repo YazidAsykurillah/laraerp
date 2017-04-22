@@ -24,7 +24,12 @@ class StockBalanceController extends Controller
      */
     public function index()
     {
-        return view('stock_balance.index');
+        if(\Auth::user()->can('stock-balance-module'))
+        {
+            return view('stock_balance.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -34,8 +39,13 @@ class StockBalanceController extends Controller
      */
     public function create()
     {
-        $data = Product::get();
-        return view('stock_balance.create')->with('dataList',$data);
+        if(\Auth::user()->can('create-stock-balance-module'))
+        {
+            $data = Product::get();
+            return view('stock_balance.create')->with('dataList',$data);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -103,15 +113,20 @@ class StockBalanceController extends Controller
      */
     public function edit($id)
     {
-        $data = \DB::table('product_stock_balance')
-        ->join('products','product_stock_balance.product_id','=','products.id')
-        ->select('product_stock_balance.*','products.name','products.description')
-        ->where('product_stock_balance.stock_balance_id','=',$id)
-        ->get();
-        $stock_balance = StockBalance::findOrFail($id);
-        return view('stock_balance.edit')
-            ->with('dataList',$data)
-            ->with('stock_balance',$stock_balance);
+        if(\Auth::user()->can('edit-stock-balance-module'))
+        {
+            $data = \DB::table('product_stock_balance')
+            ->join('products','product_stock_balance.product_id','=','products.id')
+            ->select('product_stock_balance.*','products.name','products.description')
+            ->where('product_stock_balance.stock_balance_id','=',$id)
+            ->get();
+            $stock_balance = StockBalance::findOrFail($id);
+            return view('stock_balance.edit')
+                ->with('dataList',$data)
+                ->with('stock_balance',$stock_balance);
+        }else{
+            return view('403');
+        }
     }
 
     /**

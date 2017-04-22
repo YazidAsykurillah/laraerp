@@ -30,9 +30,7 @@
           <span>Purchase</span>
         </a>
         <ul class="treeview-menu">
-          @if(\Auth::user()->can('purchase-order-module'))
           <li><a href="{{ url('purchase-order') }}"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
-          @endif
           <li><a href="{{ url('purchase-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="{{ url('purchase-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
         </ul>
@@ -74,7 +72,7 @@
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
           <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
           <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Ledger</a></li>
+          <li><a href="{{ url('ledger') }}"><i class="fa fa-circle-o"></i> Ledger</a></li>
           <li><a href="{{ url('lost-profit') }}"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
           <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Hutang</a></li>
           <li><a href="{{ url('sales-piutang') }}"><i class="fa fa-circle-o"></i> List Piutang</a></li>

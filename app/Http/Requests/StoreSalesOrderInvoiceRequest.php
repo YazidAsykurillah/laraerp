@@ -34,7 +34,6 @@ class StoreSalesOrderInvoiceRequest extends Request
     {
         return [
             'bill_price.required'=>'Please input bill price',
-
         ];
     }
 }

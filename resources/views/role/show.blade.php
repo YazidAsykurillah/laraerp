@@ -38,9 +38,9 @@
                 <th style="">Description</th>
               </tr>
             </thead>
-            
+
             <tbody>
-              
+
               @foreach($permissions as $permission)
               <tr>
                 <td style="text-align:center">
@@ -52,14 +52,17 @@
                 </td>
                 <td>{{ $permission->slug }}</td>
                 <td>{{ $permission->description }}</td>
-                
+
               </tr>
 
               @endforeach
             </tbody>
+            <tfoot>
+
+            </tfoot>
           </table>
           <input type="hidden" name="role_id" value="{{ $role->id }}" />
-          <button type="submit">Save</button>
+          <button type="submit" class="btn btn-info pull-right">Save</button>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix"></div>
       </div><!-- /.box -->
@@ -83,6 +86,10 @@
         $('#btn-check-uncheck-all').attr('data-state', '1');
         $('#btn-check-uncheck-actor').html("Check All");
       }
+    });
+
+    $('#table-role-permission').DataTable({
+
     });
  </script>
 @endsection

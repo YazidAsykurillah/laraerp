@@ -23,7 +23,12 @@ class SalesReturnController extends Controller
      */
     public function index()
     {
-        return view('sales_return.index');
+        if(\Auth::user()->can('sales-order-return-module'))
+        {
+            return view('sales_return.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -33,38 +38,43 @@ class SalesReturnController extends Controller
      */
     public function create(Request $request)
     {
-        $sales_order = SalesOrder::findOrFail($request->sales_order_id);
-        $so_id = $sales_order->sales_order_invoice;
-        $main_product = $sales_order->products;
+        if(\Auth::user()->can('create-sales-order-return-module'))
+        {
+            $sales_order = SalesOrder::findOrFail($request->sales_order_id);
+            $so_id = $sales_order->sales_order_invoice;
+            $main_product = $sales_order->products;
 
-        $row_display = [];
-        $main_products_arr = [];
-        if($sales_order->products->count()){
-            foreach($sales_order->products as $prod){
-                array_push($main_products_arr, $prod->main_product->id);
+            $row_display = [];
+            $main_products_arr = [];
+            if($sales_order->products->count()){
+                foreach($sales_order->products as $prod){
+                    array_push($main_products_arr, $prod->main_product->id);
+                }
             }
-        }
 
-        $main_products = array_unique($main_products_arr);
+            $main_products = array_unique($main_products_arr);
 
-        foreach($main_products as $mp_id){
-            $row_display[] = [
-                'main_product_id'=>MainProduct::find($mp_id)->id,
-                'main_product'=>MainProduct::find($mp_id)->name,
-                'description'=>MainProduct::find($mp_id)->product->first()->description,
-                'image'=>MainProduct::find($mp_id)->image,
-                'family'=>MainProduct::find($mp_id)->family->name,
-                'unit'=>MainProduct::find($mp_id)->unit->name,
-                'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-                'category'=>MainProduct::find($mp_id)->category->name,
-                'ordered_products'=>$this->get_product_lists($mp_id, $request->sales_order_id),
-            ];
+            foreach($main_products as $mp_id){
+                $row_display[] = [
+                    'main_product_id'=>MainProduct::find($mp_id)->id,
+                    'main_product'=>MainProduct::find($mp_id)->name,
+                    'description'=>MainProduct::find($mp_id)->product->first()->description,
+                    'image'=>MainProduct::find($mp_id)->image,
+                    'family'=>MainProduct::find($mp_id)->family->name,
+                    'unit'=>MainProduct::find($mp_id)->unit->name,
+                    'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                    'category'=>MainProduct::find($mp_id)->category->name,
+                    'ordered_products'=>$this->get_product_lists($mp_id, $request->sales_order_id),
+                ];
+            }
+            return view('sales_return.create')
+                ->with('sales_order', $sales_order)
+                ->with('so_id',$so_id)
+                ->with('main_product',$main_product)
+                ->with('row_display', $row_display);
+        }else{
+            return view('403');
         }
-        return view('sales_return.create')
-            ->with('sales_order', $sales_order)
-            ->with('so_id',$so_id)
-            ->with('main_product',$main_product)
-            ->with('row_display', $row_display);
     }
 
     /**
@@ -168,11 +178,16 @@ class SalesReturnController extends Controller
      */
     public function edit($id)
     {
-        $sales_return = SalesReturn::findOrFail($id);
-        $sales_order = SalesOrder::findOrFail($sales_return->sales_order->id);
-        return view('sales_return.edit')
-            ->with('sales_return',$sales_return)
-            ->with('sales_order',$sales_order);
+        if(\Auth::user()->can('edit-sales-order-return-module'))
+        {
+            $sales_return = SalesReturn::findOrFail($id);
+            $sales_order = SalesOrder::findOrFail($sales_return->sales_order->id);
+            return view('sales_return.edit')
+                ->with('sales_return',$sales_return)
+                ->with('sales_order',$sales_order);
+        }else{
+            return view('403');
+        }
     }
 
     /**

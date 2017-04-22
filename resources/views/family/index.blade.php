@@ -56,9 +56,11 @@
                                             <a href="{{ url('family/'.$fam->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit family ini">
                                               <i class="fa fa-edit"></i>
                                             </a>&nbsp;
+                                            @if(\Auth::user()->can('delete-family-module'))
                                             <button type="button" class="btn btn-danger btn-xs btn-delete-family" data-id="{{ $fam->id }}" data-text="{{$fam->name}}">
                                               <i class="fa fa-trash"></i>
                                             </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

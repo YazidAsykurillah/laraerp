@@ -27,13 +27,23 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('supplier.index');
+        if(\Auth::user()->can('supplier-module'))
+        {
+            return view('supplier.index');
+        }else{
+            return view('403');
+        }
     }
 
 
     public function create()
     {
-        return view('supplier.create');
+        if(\Auth::user()->can('create-supplier-module'))
+        {
+            return view('supplier.create');
+        }else{
+            return view('403');
+        }
     }
 
 
@@ -71,9 +81,14 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $supplier = Supplier::findOrFail($id);
-        return view('supplier.edit')
-            ->with('supplier', $supplier);
+        if(\Auth::user()->can('edit-supplier-module'))
+        {
+            $supplier = Supplier::findOrFail($id);
+            return view('supplier.edit')
+                ->with('supplier', $supplier);
+        }else{
+            return view('403');
+        }
     }
 
     /**

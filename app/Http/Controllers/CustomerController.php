@@ -27,7 +27,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer.index');
+        if(\Auth::user()->can('customer-module'))
+        {
+            return view('customer.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -37,9 +42,14 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $invoice_terms = InvoiceTerm::lists('name', 'id');
-        return view('customer.create')
-        ->with('invoice_terms', $invoice_terms);
+        if(\Auth::user()->can('create-customer-module'))
+        {
+            $invoice_terms = InvoiceTerm::lists('name', 'id');
+            return view('customer.create')
+            ->with('invoice_terms', $invoice_terms);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -84,11 +94,16 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $invoice_terms = InvoiceTerm::lists('name', 'id');
-        $customer = Customer::findOrFail($id);
-        return view('customer.edit')
-        ->with('invoice_terms', $invoice_terms)
-        ->with('customer', $customer);
+        if(\Auth::user()->can('edit-customer-module'))
+        {
+            $invoice_terms = InvoiceTerm::lists('name', 'id');
+            $customer = Customer::findOrFail($id);
+            return view('customer.edit')
+            ->with('invoice_terms', $invoice_terms)
+            ->with('customer', $customer);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -180,8 +195,10 @@ class CustomerController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'sales_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'masuk',
+                'description'=>$request->customer_name.' PAYMENT INVOICE : '.$request->invoice_code[$key],
+                'memo'=>'PAYMENT FOR : '.$request->invoice_code[$key]
             ]);
             array_push($data_transaction_invoice_payment_piutang,[
                 'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
@@ -189,8 +206,10 @@ class CustomerController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'sales_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$request->customer_name,
+                'memo'=>''
             ]);
         }
 
@@ -248,8 +267,10 @@ class CustomerController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'sales_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'masuk',
+                'description'=>$request->customer_name.' PAYMENT INVOICE : '.$request->invoice_code[$key],
+                'memo'=>'PAYMENT FOR : '.$request->invoice_code[$key]
             ]);
             array_push($data_transaction_invoice_payment_piutang,[
                 'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
@@ -257,8 +278,10 @@ class CustomerController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'sales_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$request->customer_name,
+                'memo'=>''
             ]);
         }
 

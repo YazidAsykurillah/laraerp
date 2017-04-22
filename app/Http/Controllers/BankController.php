@@ -19,7 +19,12 @@ class BankController extends Controller
      */
     public function index()
     {
-        return view('bank.index');
+        if(\Auth::user()->can('bank-module'))
+        {
+            return view('bank.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -29,7 +34,12 @@ class BankController extends Controller
      */
     public function create()
     {
-        return view('bank.create');
+        if(\Auth::user()->can('create-bank-module'))
+        {
+            return view('bank.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -73,9 +83,14 @@ class BankController extends Controller
      */
     public function edit($id)
     {
-        $bank = Bank::findOrFail($id);
-        return view('bank.edit')
-            ->with('bank', $bank);
+        if(\Auth::user()->can('edit-bank-module'))
+        {
+            $bank = Bank::findOrFail($id);
+            return view('bank.edit')
+                ->with('bank', $bank);
+        }else{
+            return view('403');
+        }
     }
 
     /**

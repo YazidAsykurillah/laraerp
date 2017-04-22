@@ -25,7 +25,12 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        return view('sales_order.index');
+        if(\Auth::user()->can('sales-order-module'))
+        {
+            return view('sales_order.index');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -35,15 +40,20 @@ class SalesOrderController extends Controller
      */
     public function create()
     {
-        $customer_options = Customer::lists('name', 'id');
-        $driver_options = Driver::lists('name','id');
-        $vehicle_options = Vehicle::lists('number_of_vehicle','id');
-        $sales_order = \DB::table('sales_orders')->latest()->first();
-        return view('sales_order.create')
-            ->with('customer_options', $customer_options)
-            ->with('driver_options',$driver_options)
-            ->with('vehicle_options',$vehicle_options)
-            ->with('sales_order',$sales_order);
+        if(\Auth::user()->can('create-sales-order-module'))
+        {
+            $customer_options = Customer::lists('name', 'id');
+            $driver_options = Driver::lists('name','id');
+            $vehicle_options = Vehicle::lists('number_of_vehicle','id');
+            $sales_order = \DB::table('sales_orders')->latest()->first();
+            return view('sales_order.create')
+                ->with('customer_options', $customer_options)
+                ->with('driver_options',$driver_options)
+                ->with('vehicle_options',$vehicle_options)
+                ->with('sales_order',$sales_order);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -150,54 +160,58 @@ class SalesOrderController extends Controller
 
     public function edit($id)
     {
-        $sales_order = SalesOrder::findOrFail($id);
-        if($sales_order->status == 'posted'){
-            $customer_options = Customer::lists('name', 'id');
-            $driver_options = Driver::lists('name','id');
-            $vehicle_options = Vehicle::lists('number_of_vehicle','id');
-            $total_price = $this->count_total_price($sales_order);
-            //$main_product = MainProduct::findOrFail($purchase_order->)
-            // $main_product = $sales_order->products;
-            //
-            // $row_display = [];
-            // $main_products_arr = [];
-            // if($sales_order->products->count()){
-            //     foreach($sales_order->products as $prod){
-            //         array_push($main_products_arr, $prod->main_product->id);
-            //     }
-            // }
-            //
-            // $main_products = array_unique($main_products_arr);
-            //
-            // foreach($main_products as $mp_id){
-            //     $row_display[] = [
-            //         'main_product_id'=>MainProduct::find($mp_id)->id,
-            //         'main_product'=>MainProduct::find($mp_id)->name,
-            //         'image'=>MainProduct::find($mp_id)->image,
-            //         'description'=>MainProduct::find($mp_id)->product->first()->description,
-            //         'family'=>MainProduct::find($mp_id)->family->name,
-            //         'unit'=>MainProduct::find($mp_id)->unit->name,
-            //         'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
-            //         'category'=>MainProduct::find($mp_id)->category->name,
-            //         'ordered_products'=>$this->get_product_lists($mp_id, $id)
-            //     ];
-            // }
-            // print_r($sales_order->id);
-            // exit();
-            return view('sales_order.edit')
-                ->with('sales_order', $sales_order)
-                ->with('total_price', $total_price)
-                ->with('customer_options', $customer_options)
-                ->with('driver_options',$driver_options)
-                ->with('vehicle_options',$vehicle_options);
-                // ->with('main_product',$main_product)
-                // ->with('row_display', $row_display);
-        }
-        else{
+        if(\Auth::user()->can('edit-sales-order-module'))
+        {
+            $sales_order = SalesOrder::findOrFail($id);
+            if($sales_order->status == 'posted'){
+                $customer_options = Customer::lists('name', 'id');
+                $driver_options = Driver::lists('name','id');
+                $vehicle_options = Vehicle::lists('number_of_vehicle','id');
+                $total_price = $this->count_total_price($sales_order);
+                //$main_product = MainProduct::findOrFail($purchase_order->)
+                // $main_product = $sales_order->products;
+                //
+                // $row_display = [];
+                // $main_products_arr = [];
+                // if($sales_order->products->count()){
+                //     foreach($sales_order->products as $prod){
+                //         array_push($main_products_arr, $prod->main_product->id);
+                //     }
+                // }
+                //
+                // $main_products = array_unique($main_products_arr);
+                //
+                // foreach($main_products as $mp_id){
+                //     $row_display[] = [
+                //         'main_product_id'=>MainProduct::find($mp_id)->id,
+                //         'main_product'=>MainProduct::find($mp_id)->name,
+                //         'image'=>MainProduct::find($mp_id)->image,
+                //         'description'=>MainProduct::find($mp_id)->product->first()->description,
+                //         'family'=>MainProduct::find($mp_id)->family->name,
+                //         'unit'=>MainProduct::find($mp_id)->unit->name,
+                //         'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                //         'category'=>MainProduct::find($mp_id)->category->name,
+                //         'ordered_products'=>$this->get_product_lists($mp_id, $id)
+                //     ];
+                // }
+                // print_r($sales_order->id);
+                // exit();
+                return view('sales_order.edit')
+                    ->with('sales_order', $sales_order)
+                    ->with('total_price', $total_price)
+                    ->with('customer_options', $customer_options)
+                    ->with('driver_options',$driver_options)
+                    ->with('vehicle_options',$vehicle_options);
+                    // ->with('main_product',$main_product)
+                    // ->with('row_display', $row_display);
+            }
+            else{
 
-            return response('404');
+                return response('404');
+            }
+        }else{
+            return view('403');
         }
-
     }
 
     protected function get_product_lists($mp_id, $po_id)
@@ -398,19 +412,23 @@ class SalesOrderController extends Controller
 
     public function list_piutang(Request $request)
     {
-        $customer = Customer::get();
-        $data_piutang = [];
-        foreach ($customer as $cus) {
-            $data_piutang [] = [
-                'id'=>$cus->id,
-                'code'=>$cus->code,
-                'name'=>$cus->name,
-                'sales'=>$this->list_sales($cus->id)
-            ];
+        if(\Auth::user()->can('list-piutang-module'))
+        {
+            $customer = Customer::get();
+            $data_piutang = [];
+            foreach ($customer as $cus) {
+                $data_piutang [] = [
+                    'id'=>$cus->id,
+                    'code'=>$cus->code,
+                    'name'=>$cus->name,
+                    'sales'=>$this->list_sales($cus->id)
+                ];
+            }
+            return view('sales_piutang.list')
+                ->with('data_piutang',$data_piutang);
+        }else{
+            return view('403');
         }
-
-        return view('sales_piutang.list')
-            ->with('data_piutang',$data_piutang);
     }
 
     protected function list_sales($customer_id)
