@@ -139,8 +139,10 @@ class PurchaseReturnController extends Controller
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
                         'reference'=>$request->purchase_order_invoice_id,
-                        'source'=>'purchase_order_invoices',
+                        'source'=>$request->purchase_order_invoice_code,
                         'type'=>'keluar',
+                        'description'=>'',
+                        'memo'=>''
                     ]);
                     // array_push($return_account,[
                     //     'amount'=>$total_amount,
@@ -225,6 +227,16 @@ class PurchaseReturnController extends Controller
         $purchase_return->quantity = preg_replace('#[^0-9]#', '', $request->quantity);
         $purchase_return->notes = $request->notes;
         $purchase_return->save();
+
+        $price_per_unit = floatval(preg_replace('#[^0-9.]#', '', $request->purchase_return_price_per_unit))*preg_replace('#[^0-9.]#','',$request->quantity_first);
+        $price_return = floatval(preg_replace('#[^0-9.]#', '', $request->purchase_return_price_per_unit))*preg_replace('#[^0-9.]#','',$request->quantity);
+
+
+        $amount_inventory = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->purchase_order_invoice_id],['sub_chart_account_id',$request->inventory_account],['type','keluar']])->value('amount');
+        $set_amount = $amount_inventory-$price_per_unit;
+        $new_amount = $set_amount+$price_return;
+        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->inventory_account)->where('reference',$request->purchase_order_invoice_id)->where('type','keluar')->update(['amount'=>$new_amount]);
+
         return redirect('purchase-return');
     }
 

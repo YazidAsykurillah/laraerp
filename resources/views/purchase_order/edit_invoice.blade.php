@@ -183,6 +183,7 @@
               </div>
             </div>
             {!! Form::hidden('purchase_order_invoice_id', $purchase_order_invoice->id) !!}
+            {!! Form::hidden('purchase_order_invoice_code', $purchase_order_invoice->code) !!}
             {!! Form::hidden('purchase_order_id', $purchase_order_invoice->purchase_order->id) !!}
           {!! Form::close() !!}
         </div><!-- /.box-body -->

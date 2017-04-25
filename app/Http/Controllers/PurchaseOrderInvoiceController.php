@@ -23,6 +23,7 @@ use App\CashPurchaseInvoicePayment;
 use App\TransactionChartAccount;
 use App\MainProduct;
 use App\Product;
+use App\Supplier;
 use DB;
 
 class PurchaseOrderInvoiceController extends Controller
@@ -111,9 +112,11 @@ class PurchaseOrderInvoiceController extends Controller
 
             $save = PurchaseOrderInvoice::create($data);
             $po_id = $save->id;
+            $po_code = $save->code;
             if($save){
                 //find purchase_order model
                 $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+                $supplier = Supplier::findOrFail($purchase_order->supplier_id);
                 //Build sync data to update PO relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
@@ -163,8 +166,10 @@ class PurchaseOrderInvoiceController extends Controller
                             'created_at'=>date('Y-m-d H:i:s'),
                             'updated_at'=>date('Y-m-d H:i:s'),
                             'reference'=>$po_id,
-                            'source'=>'purchase_order_invoices',
+                            'source'=>$po_code,
                             'type'=>'masuk',
+                            'description'=>'INVOICE FROM : '.$supplier->name,
+                            'memo'=>'',
                         ]);
                 }
 
@@ -179,8 +184,10 @@ class PurchaseOrderInvoiceController extends Controller
                 $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
                 $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
                 $transaction_sub_chart_account->reference = $po_id;
-                $transaction_sub_chart_account->source = 'purchase_order_invoices';
+                $transaction_sub_chart_account->source = $po_code;
                 $transaction_sub_chart_account->type = 'masuk';
+                $transaction_sub_chart_account->description = 'INVOICE FROM : '.$supplier->name;
+                $transaction_sub_chart_account->memo = '';
                 $transaction_sub_chart_account->save();
             }
 
@@ -305,6 +312,7 @@ class PurchaseOrderInvoiceController extends Controller
 
         // //find purchase_order model
         $purchase_order = PurchaseOrder::findOrFail($request->purchase_order_id);
+        $supplier = Supplier::findOrFail($purchase_order->supplier_id);
         //Build sync data to update PO relation w/ products
         $syncData = [];
         foreach($request->product_id as $key=>$value){
@@ -346,8 +354,10 @@ class PurchaseOrderInvoiceController extends Controller
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
                 'reference'=>$request->purchase_order_invoice_id,
-                'source'=>'purchase_order_invoices',
+                'source'=>$request->purchase_order_invoice_code,
                 'type'=>'masuk',
+                'description'=>'INVOICE FROM : '.$supplier->name,
+                'memo'=>''
             ]);
         }
 
@@ -361,8 +371,10 @@ class PurchaseOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $transaction_sub_chart_account->sub_chart_account_id = $request->select_account;
         $transaction_sub_chart_account->reference = $request->purchase_order_invoice_id;
-        $transaction_sub_chart_account->source = 'purchase_order_invoices';
+        $transaction_sub_chart_account->source = $request->purchase_order_invoice_code;
         $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->description = 'INVOICE FROM : '.$supplier->name;
+        $transaction_sub_chart_account->memo = '';
         $transaction_sub_chart_account->save();
 
         return redirect('purchase-order-invoice')
@@ -485,6 +497,7 @@ class PurchaseOrderInvoiceController extends Controller
     public function storePaymentCash(StorePurchasePaymentCash $request)
     {
         $invoice_id = $request->purchase_order_invoice_id;
+        $invoice_code = $request->purchase_order_invoice_code;
         $cash_id = $request->cash_id;
         // $payment_method_id = $request->payment_method_id;
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
@@ -496,6 +509,8 @@ class PurchaseOrderInvoiceController extends Controller
         $new_paid_price = $current_paid_price+$amount;
 
         $purchase_order_id = $purchase_order_invoice->purchase_order->id;
+        $purchase_order_supplier_id = $purchase_order_invoice->purchase_order->supplier_id;
+        $supplier = Supplier::findOrFail($purchase_order_supplier_id);
 
         $purchase_invoice_payment = new PurchaseInvoicePayment;
         $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
@@ -517,16 +532,20 @@ class PurchaseOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->cash_account;
         $transaction_sub_chart_account->reference = $invoice_id;
-        $transaction_sub_chart_account->source = 'purchase_order_payment';
+        $transaction_sub_chart_account->source = $invoice_code;
         $transaction_sub_chart_account->type = 'keluar';
+        $transaction_sub_chart_account->description = 'PAYMENT INVOICE : '.$invoice_code.' '.$supplier->name;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
         $transaction_sub_chart_account->save();
 
         $trans_payment_k = New TransactionChartAccount;
         $trans_payment_k->amount = $amount;
         $trans_payment_k->sub_chart_account_id = 79;
         $trans_payment_k->reference = $invoice_id;
-        $trans_payment_k->source = 'purchase_order_payment';
+        $trans_payment_k->source = $invoice_code;
         $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE TO : '.$supplier->name;
+        $trans_payment_k->memo = '';
         $trans_payment_k->save();
         if($save){
             //update invoice's paid_price
@@ -547,12 +566,17 @@ class PurchaseOrderInvoiceController extends Controller
     public function storePaymentTransfer(StorePurchasePaymentTransfer $request)
     {
         $invoice_id = $request->purchase_order_invoice_id;
+        $invoice_code = $request->purchase_order_invoice_code;
         $bank_id = $request->bank_id;
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+
         $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $current_paid_price = $purchase_order_invoice->paid_price;
         $new_paid_price = $current_paid_price+$amount;
+
         $purchase_order_id = $purchase_order_invoice->purchase_order->id;
+        $purchase_order_supplier_id = $purchase_order_invoice->purchase_order->supplier_id;
+        $supplier = Supplier::findOrFail($purchase_order_supplier_id);
 
         $purchase_invoice_payment = new PurchaseInvoicePayment;
         $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
@@ -574,16 +598,20 @@ class PurchaseOrderInvoiceController extends Controller
         $transaction_sub_chart_account->amount = $amount;
         $transaction_sub_chart_account->sub_chart_account_id = $request->transfer_account;
         $transaction_sub_chart_account->reference = $invoice_id;
-        $transaction_sub_chart_account->source = 'purchase_order_payment';
+        $transaction_sub_chart_account->source = $invoice_code;
         $transaction_sub_chart_account->type = 'keluar';
+        $transaction_sub_chart_account->description = 'PAYMENT INVOICE : '.$invoice_code.' '.$supplier->name;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
         $transaction_sub_chart_account->save();
 
         $trans_payment_k = New TransactionChartAccount;
         $trans_payment_k->amount = $amount;
         $trans_payment_k->sub_chart_account_id = 79;
         $trans_payment_k->reference = $invoice_id;
-        $trans_payment_k->source = 'purchase_order_payment';
+        $trans_payment_k->source = $invoice_code;
         $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE TO : '.$supplier->name;
+        $trans_payment_k->memo = '';
         $trans_payment_k->save();
         if($save){
             //update invoice's paid_price

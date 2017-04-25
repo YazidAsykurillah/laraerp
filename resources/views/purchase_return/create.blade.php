@@ -48,13 +48,13 @@
             <tbody>
                 @if(count($row_display))
                     @foreach($row_display as $row)
-                        <tr>
+                        <tr style="display:none">
                           <td colspan="2">
                               <strong>
                                   {{ $row['family'] }}
                               </strong>
                               <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
-                              <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
+                              <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="">
                                 @foreach(list_account_inventory('52') as $as)
                                     @if($as->name == 'PERSEDIAAN'.' '.$row['family'])
                                     <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
@@ -134,6 +134,7 @@
           </div>
           {!! Form::hidden('purchase_order_id', $purchase_order->id) !!}
           {!! Form::hidden('purchase_order_invoice_id',$po_id->id) !!}
+          {!! Form::hidden('purchase_order_invoice_code',$po_id->code) !!}
           {!! Form::close() !!}
         </div>
 

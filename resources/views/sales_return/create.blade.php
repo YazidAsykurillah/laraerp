@@ -49,7 +49,7 @@
                         <tbody>
                             @if(count($row_display))
                                 @foreach($row_display as $row)
-                                    <tr style="">
+                                    <tr style="display:none">
                                       <td colspan="2">
                                           <strong>
                                               {{ $row['family'] }}
@@ -149,6 +149,7 @@
                     </div>
                     {!! Form::hidden('sales_order_id', $sales_order->id) !!}
                     {!! Form::hidden('sales_order_invoice_id',$so_id->id) !!}
+                    {!! Form::hidden('sales_order_invoice_code',$so_id->code) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box footer -->
             </div>

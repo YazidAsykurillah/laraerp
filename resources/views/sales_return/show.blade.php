@@ -34,19 +34,33 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                  <th style="width:20%;">PO Code</th>
-                                  <th style="width:20%;">Code</th>
-                                  <th style="width:20%;">Salesed Quantity</th>
-                                  <th style="width:20%;">Returned Quantity</th>
-                                  <th style="width:20%;">Notes</th>
+                                  <th style="width:10%;">Family</th>
+                                  <th style="width:15%;">Code</th>
+                                  <th style="width:15%;">Description</th>
+                                  <th style="width:5%;">Unit</th>
+                                  <th style="width:5%;">Qty</th>
+                                  <th style="width:10%;">Category</th>
+                                  <th style="width:10%;">Price/item</th>
+                                  <th style="width:10%;">Price</th>
+                                  <th style="width:10%;">Returned Qty</th>
+                                  <th style="width:10%;">Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ $sales_return->sales_order->code }}</td>
+                                    <td>{{ $sales_return->product->main_product->family->name }}</td>
                                     <td>{{ $sales_return->product->name }}</td>
+                                    <td>{{ $sales_return->product->description }}</td>
+                                    <td>{{ $sales_return->product->main_product->unit->name }}</td>
                                     <td class="salesed_qty">
                                         {{ \DB::table('product_sales_order')->select('quantity')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('quantity') }}
+                                    </td>
+                                    <td>{{ $sales_return->product->main_product->category->name }}</td>
+                                    <td>
+                                      {{ number_format(\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price_per_unit')) }}
+                                    </td>
+                                    <td>
+                                      {{ number_format(\DB::table('product_sales_order')->select('price')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price')) }}
                                     </td>
                                     <td>{{ $sales_return->quantity }}</td>
                                     <td>{{ $sales_return->notes }}</td>
@@ -55,6 +69,13 @@
                         </table>
                     </div><!-- /.table-responsive -->
                     <br/>
+                    <div class="row">
+                      <div class="col-md-3"><strong>SO Reference</strong></div>
+                      <div class="col-md-1">:</div>
+                      <div class="col-md-3">
+                        <p>{{ $sales_return->sales_order->code }}</p>
+                      </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-3"><strong>Status</strong></div>
                         <div class="col-md-1">:</div>

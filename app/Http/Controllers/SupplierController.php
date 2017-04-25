@@ -11,6 +11,7 @@ use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use App\Http\Requests\StorePaymentInvoicePurchaseKasRequest;
 use App\Http\Requests\StorePaymentInvoicePurchaseTransferRequest;
+
 use App\Supplier;
 use App\Cash;
 use App\Bank;
@@ -182,8 +183,10 @@ class SupplierController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'purchase_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'keluar',
+                'description'=>'PAYMENT INVOICE : '.$request->invoice_code[$key].' '.$request->supplier_name,
+                'memo'=>'PAYMENT FOR : '.$request->invoice_code[$key]
             ]);
             array_push($data_transaction_invoice_payment_hutang,[
                 'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
@@ -191,8 +194,10 @@ class SupplierController extends Controller
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
-                'source'=>'purchase_order_payment',
+                'source'=>$request->invoice_code[$key],
                 'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$request->supplier_name,
+                'memo'=>''
             ]);
         }
 
@@ -251,6 +256,8 @@ class SupplierController extends Controller
                 'reference'=>$request->invoice_id[$key],
                 'source'=>'purchase_order_payment',
                 'type'=>'keluar',
+                'description'=>'PAYMENT INVOICE : '.$request->invoice_code[$key].' '.$request->supplier_name,
+                'memo'=>'PAYMENT FOR : '.$request->invoice_code[$key]
             ]);
             array_push($data_transaction_invoice_payment_hutang,[
                 'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
@@ -260,6 +267,8 @@ class SupplierController extends Controller
                 'reference'=>$request->invoice_id[$key],
                 'source'=>'purchase_order_payment',
                 'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$request->supplier_name,
+                'memo'=>''
             ]);
         }
 

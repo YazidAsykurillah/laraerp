@@ -35,19 +35,46 @@
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr style="background-color:#3c8dbc;color:white">
-                        <th style="width:20%;">PO Code</th>
-                        <th style="width:20%;">Code</th>
-                        <th style="width:20%;">Purchased Quantity</th>
-                        <th style="width:20%;">Returned Quantity</th>
-                        <th style="width:20%;">Notes</th>
+                        <th style="display:none"></th>
+                        <th style="width:10%;">Family</th>
+                        <th style="width:15%;">Code</th>
+                        <th style="width:15%;">Description</th>
+                        <th style="width:5%;">Unit</th>
+                        <th style="width:5%;">Qty</th>
+                        <th style="width:10%;">Category</th>
+                        <th style="width:10%;display:none">Price/item</th>
+                        <th style="width:10%;">Price</th>
+                        <th style="width:10%;">Returned Qty</th>
+                        <th style="width:10%;">Notes</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ $purchase_return->purchase_order->code }}</td>
+                      <td style="display:none">
+                        <select name="inventory_account" id="inventory_account" class="col-md-12" style="">
+                          @foreach(list_account_inventory('52') as $as)
+                              @if($as->name == 'PERSEDIAAN'.' '.$purchase_return->product->main_product->family->name)
+                              <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
+                              @endif
+                          @endforeach
+                        </select>
+                      </td>
+                      <td>{{ $purchase_return->product->main_product->family->name }}</td>
                       <td>{{ $purchase_return->product->name }}</td>
+                      <td>{{ $purchase_return->product->description }}</td>
+                      <td>{{ $purchase_return->product->main_product->unit->name }}</td>
                       <td class="purchased_qty">
                         {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                      </td>
+                      <td>{{ $purchase_return->product->main_product->category->name }}</td>
+                      <td style="display:none">
+                          {{ \DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')/\DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                          <?php
+                            $purchase_return_price_per_unit = \DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')/\DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity');
+                          ?>
+                      </td>
+                      <td>
+                        {{ number_format(\DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')) }}
                       </td>
                       <td>
                         {{ Form::text('quantity',null, ['class'=>'returned_quantity form-control']) }}
@@ -60,6 +87,13 @@
                 </table>
             </div>
             <br/>
+            <div class="row">
+                <div class="col-md-3"><strong>PO Reference</strong></div>
+                <div class="col-md-1">:</div>
+                <div class="col-md-3">
+                    <p>{{ $purchase_return->purchase_order->code }}</p>
+                </div>
+            </div><!-- /.row -->
             <div class="row">
               <div class="col-md-3"><strong>Status</strong></div>
               <div class="col-md-1">:</div>
@@ -95,6 +129,9 @@
             </div>
           </div>
           {!! Form::hidden('purchase_return_id', $purchase_return->id) !!}
+          {!! Form::hidden('purchase_order_invoice_id',$purchase_return->purchase_order->purchase_order_invoice->id) !!}
+          {!! Form::hidden('purchase_return_price_per_unit',$purchase_return_price_per_unit) !!}
+          {!! Form::hidden('quantity_first',$purchase_return->quantity) !!}
           {!! Form::close() !!}
         </div>
 

@@ -100,6 +100,7 @@
                                                 <td>
                                                     {{ $no++ }}
                                                     <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
+                                                    <input type="hidden" name="invoice_code[]" value="{{ $d_i['code']}}">
                                                     <input type="hidden" name="purchase_order_id[]" value="{{ $d_i['purchase_order_id']}}">
                                                     <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
                                                 </td>
@@ -128,6 +129,7 @@
                               </div>
                             </div>
                               <input type="hidden" name="payment_method_id" value="2">
+                              <input type="hidden" name="supplier_name" value="{{ $supplier->name }}">
                               {!! Form::close() !!}
                         </div>
                         <div class="box-footer clearfix">
@@ -206,6 +208,7 @@
                                             <td>
                                                 {{ $no++ }}
                                                 <input type="hidden" name="invoice_id[]" value="{{ $d_i['id']}}">
+                                                <input type="hidden" name="invoice_code[]" value="{{ $d_i['code']}}">
                                                 <input type="hidden" name="purchase_order_id[]" value="{{ $d_i['purchase_order_id']}}">
                                                 <input type="hidden" name="paid_price[]" value="{{ $d_i['paid_price']}}">
                                             </td>
@@ -235,6 +238,7 @@
                               </div>
                             </div>
                               <input type="hidden" name="payment_method_id" value="1">
+                              <input type="hidden" name="supplier_name" value="{{ $supplier->name }}">
                               {!! Form::close() !!}
                         </div>
                         <div class="box-footer clearfix">

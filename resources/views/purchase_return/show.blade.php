@@ -34,19 +34,36 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th style="width:20%;">PO Code</th>
-                    <th style="width:20%;">Code</th>
-                    <th style="width:20%;">Purchased Quantity</th>
-                    <th style="width:20%;">Returned Quantity</th>
-                    <th style="width:20%;">Notes</th>
+                    <th style="width:10%;">Family</th>
+                    <th style="width:15%;">Code</th>
+                    <th style="width:15%;">Description</th>
+                    <th style="width:5%;">Unit</th>
+                    <th style="width:5%;">Qty</th>
+                    <th style="width:10%;">Category</th>
+                    <th style="width:10%;display:none">Price/item</th>
+                    <th style="width:10%;">Price</th>
+                    <th style="width:10%;">Returned Qty</th>
+                    <th style="width:10%;">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{ $purchase_return->purchase_order->code }}</td>
+                    <td>{{ $purchase_return->product->main_product->family->name }}</td>
                     <td>{{ $purchase_return->product->name }}</td>
+                    <td>{{ $purchase_return->product->description }}</td>
+                    <td>{{ $purchase_return->product->main_product->unit->name }}</td>
                     <td class="purchased_qty">
                       {{ \DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                    </td>
+                    <td>{{ $purchase_return->product->main_product->category->name }}</td>
+                    <td style="display:none">
+                        {{ \DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')/\DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity') }}
+                        <?php
+                          $purchase_return_price_per_unit = \DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')/\DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity');
+                        ?>
+                    </td>
+                    <td>
+                      {{ number_format(\DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')) }}
                     </td>
                     <td>
                       {{ $purchase_return->quantity }}
@@ -59,6 +76,13 @@
               </table>
             </div>
             <br/>
+            <div class="row">
+              <div class="col-md-3"><strong>PO Supplier</strong></div>
+              <div class="col-md-1">:</div>
+              <div class="col-md-3">
+                <p>{{ $purchase_return->purchase_order->code }}</p>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-3"><strong>Status</strong></div>
               <div class="col-md-1">:</div>

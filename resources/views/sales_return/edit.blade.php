@@ -35,19 +35,57 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr style="background-color:#3c8dbc;color:white">
-                                <th style="width:20%;">PO Code</th>
-                                <th style="width:20%;">Code</th>
-                                <th style="width:20%;">Salesed Quantity</th>
-                                <th style="width:20%;">Returned Quantity</th>
-                                <th style="width:20%;">Notes</th>
+                                <th style="display:none"></th>
+                                <th style="width:10%;">Family</th>
+                                <th style="width:15%;">Code</th>
+                                <th style="width:15%;">Description</th>
+                                <th style="width:5%;">Unit</th>
+                                <th style="width:5%;">Qty</th>
+                                <th style="width:10%;">Category</th>
+                                <th style="width:10%;">Price/item</th>
+                                <th style="width:10%;">Price</th>
+                                <th style="width:10%;">Returned Qty</th>
+                                <th style="width:10%;">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ $sales_return->sales_order->code }}</td>
+                                <td style="display:none">
+                                  <select name="inventory_account" id="inventory_account" class="col-md-12">
+                                    @foreach(list_account_inventory('52') as $as)
+                                      @if($as->name == 'PERSEDIAAN'.' '.$sales_return->product->main_product->family->name)
+                                      <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
+                                      @endif
+                                    @endforeach
+                                  </select><br/><br/><br/>
+                                  <select name="return_account" id="return_account" class="col-md-12">
+                                      @foreach(list_parent('61') as $return_account)
+                                        @if($return_account->name == 'RETURN PENJUALAN'.' '.$sales_return->product->main_product->family->name)
+                                        <option value="{{ $return_account->id}}">{{ $return_account->account_number }}&nbsp;&nbsp;{{ $return_account->name}}</option>
+                                        @endif
+                                      @endforeach
+                                  </select><br/><br/>
+                                  <select name="cost_goods_account" id="cost_goods_account" class="col-md-12">
+                                      @foreach(list_parent('63') as $cost_goods_account)
+                                        @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$sales_return->product->main_product->family->name)
+                                        <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name}}</option>
+                                        @endif
+                                      @endforeach
+                                  </select>
+                                </td>
+                                <td>{{ $sales_return->product->main_product->family->name }}</td>
                                 <td>{{ $sales_return->product->name }}</td>
+                                <td>{{ $sales_return->product->description }}</td>
+                                <td>{{ $sales_return->product->main_product->unit->name }}</td>
                                 <td class="salesed_qty">
                                     {{ \DB::table('product_sales_order')->select('quantity')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('quantity') }}
+                                </td>
+                                <td>{{ $sales_return->product->main_product->category->name }}</td>
+                                <td>
+                                  {{ number_format(\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price_per_unit')) }}
+                                </td>
+                                <td>
+                                  {{ number_format(\DB::table('product_sales_order')->select('price')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price')) }}
                                 </td>
                                 <td>
                                     {{ Form::text('quantity',null,['class'=>'returned_quantity form-control']) }}
@@ -60,6 +98,13 @@
                     </table>
                     </div>
                     <br/>
+                    <div class="row">
+                        <div class="col-md-3"><strong>SO Reference</strong></div>
+                        <div class="col-md-1">:</div>
+                        <div class="col-md-3">
+                            <p>{{ $sales_return->sales_order->code }}</p>
+                        </div>
+                    </div><!-- /.row -->
                     <div class="row">
                         <div class="col-md-3"><strong>Status</strong></div>
                         <div class="col-md-1">:</div>
@@ -95,6 +140,9 @@
                         </div>
                     </div>
                     {!! Form::hidden('sales_return_id',$sales_return->id) !!}
+                    {!! Form::hidden('sales_order_invoice_id',$sales_return->sales_order->sales_order_invoice->id) !!}
+                    {!! Form::hidden('sales_return_price_per_unit',\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price_per_unit')) !!}
+                    {!! Form::hidden('quantity_first',$sales_return->quantity) !!}
                     {!! Form::close() !!}
                 </div><!-- /.box-footer -->
             </div>
