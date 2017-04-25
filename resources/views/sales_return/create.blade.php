@@ -176,6 +176,9 @@
         var price_per_unit = parseInt($(this).parent().parent().find('.price_per_unit').val(the_value*price_item));
         if(the_value > salesed_qty){
             alertify.error('Returned quantity can not be greater than salesed quantity');
+            $('#btn-submit-sales-return').prop('disabled',true);
+        }else{
+            $('#btn-submit-sales-return').prop('disabled',false);
         }
         return false;
     });

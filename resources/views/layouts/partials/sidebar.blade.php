@@ -70,8 +70,9 @@
           <li><a href="{{ url('asset') }}"><i class="fa fa-circle-o"></i> Asset</a></li>
           <li><a href="{{ url('bank') }}"><i class="fa fa-circle-o"></i> Bank</a></li>
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
+          <li><a href="{{ url('cash-flow') }}"><i class="fa fa-circle-o"></i> Cash Flow</a></li>
           <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
-          <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> Kas Kecil</a></li>
+          <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> Jurnal Umum</a></li>
           <li><a href="{{ url('ledger') }}"><i class="fa fa-circle-o"></i> Ledger</a></li>
           <li><a href="{{ url('lost-profit') }}"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
           <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Hutang</a></li>

@@ -24,9 +24,12 @@ class UpdateBiayaOperasiRequest extends Request
     public function rules()
     {
         return [
+            'pay_method'=>'required',
             'beban_operasi_account'=>'required',
             'cash_bank_account'=>'required',
-            'amount'=>'required'
+            'debit'=>'required',
+            'credit'=>'required'
+            //'amount'=>'required'
         ];
     }
 }

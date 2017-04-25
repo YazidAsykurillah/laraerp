@@ -429,7 +429,7 @@ class DatatablesController extends Controller
                     $status_label = '<p>COMPLETED</p>';
                 }
 
-                return $status_label.$status_action;
+                return $status_label;
             })
             ->editColumn('supplier_name', function($purchase_returns){
                 return $purchase_returns->purchase_order->supplier->name;
@@ -651,7 +651,7 @@ class DatatablesController extends Controller
                     $status_label = '<p>RESENT</p>';
                 }
 
-                return $status_label.$status_action;
+                return $status_label;
             })
             ->editColumn('customer_name', function($sales_returns){
                 return $sales_returns->sales_order->customer->name;

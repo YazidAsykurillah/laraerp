@@ -62,10 +62,10 @@
                           $purchase_return_price_per_unit = \DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')/\DB::table('product_purchase_order')->select('quantity')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('quantity');
                         ?>
                     </td>
-                    <td>
+                    <td class="purchased_price">
                       {{ number_format(\DB::table('product_purchase_order')->select('price')->where('product_id',$purchase_return->product_id)->where('purchase_order_id', $purchase_return->purchase_order_id)->value('price')) }}
                     </td>
-                    <td>
+                    <td class="returned_qty">
                       {{ $purchase_return->quantity }}
                     </td>
                     <td>
@@ -168,6 +168,16 @@
             <i class="fa fa-info-circle"></i>&nbsp;The product will be re-added to the inventory
           </p>
           <input type="hidden" id="id_to_be_completed" name="id_to_be_completed">
+          <input type="hidden" id="id_purchase_return_price_per_unit" name="purchase_return_price_per_unit_to_complete">
+          <input type="hidden" id="id_purchase_return_quantity" name="purchase_return_quantity_to_complete">
+          <input type="hidden" name="purchase_order_invoice_id_to_complete" value="{{ $purchase_return->purchase_order->purchase_order_invoice->id}}">
+          <select name="inventory_account" id="inventory_account" class="col-md-12" style="display:none">
+            @foreach(list_account_inventory('52') as $as)
+                @if($as->name == 'PERSEDIAAN'.' '.$purchase_return->product->main_product->family->name)
+                <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
+                @endif
+            @endforeach
+          </select>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -198,6 +208,8 @@
     $('#btn-complete-purchase-return').on('click', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_completed').val(id);
+      $('#id_purchase_return_price_per_unit').val($('.purchased_price').text().replace(/,/gi,'')/$('.purchased_qty').text());
+      $('#id_purchase_return_quantity').val($('.returned_qty').text());
       $('#modal-complete-purchase-return').modal('show');
     });
 </script>

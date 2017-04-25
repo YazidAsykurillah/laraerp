@@ -56,6 +56,8 @@ class AssetController extends Controller
         $asset_account->reference = $request->asset_account;
         $asset_account->source = 'asset';
         $asset_account->type = 'masuk';
+        $asset_account->description = $request->name;
+        $asset_account->memo = $request->notes;
         $asset_account->save();
 
         $biaya_count = floatval(preg_replace('#[^0-9.]#','',$request->amount))/($request->periode*12);
@@ -68,6 +70,8 @@ class AssetController extends Controller
         $biaya_penyusutan_account->reference = $request->biaya_penyusutan_account;
         $biaya_penyusutan_account->source = 'asset';
         $biaya_penyusutan_account->type = 'masuk';
+        $biaya_penyusutan_account->description = $request->name;
+        $biaya_penyusutan_account->memo = 'BIAYA PENYUSUTAN';
         $biaya_penyusutan_account->save();
 
         $akumulasi_penyusutan_account = New TransactionChartAccount;
@@ -78,6 +82,8 @@ class AssetController extends Controller
         $akumulasi_penyusutan_account->reference = $request->akumulasi_penyusutan_account;
         $akumulasi_penyusutan_account->source = 'asset';
         $akumulasi_penyusutan_account->type = 'masuk';
+        $akumulasi_penyusutan_account->description = $request->name;
+        $akumulasi_penyusutan_account->memo = $request->notes;
         $akumulasi_penyusutan_account->save();
 
 

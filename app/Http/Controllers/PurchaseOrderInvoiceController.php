@@ -544,7 +544,7 @@ class PurchaseOrderInvoiceController extends Controller
         $trans_payment_k->reference = $invoice_id;
         $trans_payment_k->source = $invoice_code;
         $trans_payment_k->type = 'keluar';
-        $trans_payment_k->description = 'INVOICE TO : '.$supplier->name;
+        $trans_payment_k->description = 'INVOICE FROM : '.$supplier->name;
         $trans_payment_k->memo = '';
         $trans_payment_k->save();
         if($save){
@@ -610,7 +610,7 @@ class PurchaseOrderInvoiceController extends Controller
         $trans_payment_k->reference = $invoice_id;
         $trans_payment_k->source = $invoice_code;
         $trans_payment_k->type = 'keluar';
-        $trans_payment_k->description = 'INVOICE TO : '.$supplier->name;
+        $trans_payment_k->description = 'INVOICE FROM : '.$supplier->name;
         $trans_payment_k->memo = '';
         $trans_payment_k->save();
         if($save){

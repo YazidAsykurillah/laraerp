@@ -17,6 +17,9 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//cash flow
+Route::post('cash-flow/search','CashFlowController@cash_flow_search');
+Route::resource('cash-flow','CashFlowController');
 //ledger
 Route::post('ledger/search','LedgerController@ledger_search');
 Route::resource('ledger','LedgerController');

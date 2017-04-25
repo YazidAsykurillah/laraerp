@@ -182,7 +182,7 @@ class SalesOrderInvoiceController extends Controller
                         'source'=>$sales_order_invoice_code,
                         'type'=>'keluar',
                         'description'=>'INVOICE TO : '.$customer->name,
-                        'memo'=>''
+                        'memo'=>'PERSEDIAAN'
                     ]);
                     array_push($sales_account,[
                         'amount'=>$total_amount,
@@ -193,7 +193,7 @@ class SalesOrderInvoiceController extends Controller
                         'source'=>$sales_order_invoice_code,
                         'type'=>'masuk',
                         'description'=>'INVOICE TO : '.$customer->name,
-                        'memo'=>''
+                        'memo'=>'PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
                         'amount'=>$total_amount,
@@ -204,7 +204,7 @@ class SalesOrderInvoiceController extends Controller
                         'source'=>$sales_order_invoice_code,
                         'type'=>'masuk',
                         'description'=>'INVOICE TO : '.$customer->name,
-                        'memo'=>''
+                        'memo'=>'HARGA POKOK PENJUALAN'
                     ]);
                 }
 
@@ -395,7 +395,7 @@ class SalesOrderInvoiceController extends Controller
                 'source'=>$request->sales_order_invoice_code,
                 'type'=>'keluar',
                 'description'=>'INVOICE TO : '.$customer->name,
-                'memo'=>''
+                'memo'=>'PERSEDIAAN'
             ]);
             array_push($sales_account,[
                 'amount'=>$total_amount,
@@ -406,7 +406,7 @@ class SalesOrderInvoiceController extends Controller
                 'source'=>$request->sales_order_invoice_code,
                 'type'=>'masuk',
                 'description'=>'INVOICE TO : '.$customer->name,
-                'memo'=>''
+                'memo'=>'PENJUALAN'
             ]);
             array_push($cost_goods_account,[
                 'amount'=>$total_amount,
@@ -417,7 +417,7 @@ class SalesOrderInvoiceController extends Controller
                 'source'=>$request->sales_order_invoice_code,
                 'type'=>'masuk',
                 'description'=>'INVOICE TO : '.$customer->name,
-                'memo'=>''
+                'memo'=>'HARGA POKOK PENJUALAN'
             ]);
         }
 

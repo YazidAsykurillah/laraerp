@@ -56,13 +56,13 @@
                                         {{ \DB::table('product_sales_order')->select('quantity')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('quantity') }}
                                     </td>
                                     <td>{{ $sales_return->product->main_product->category->name }}</td>
-                                    <td>
+                                    <td class="salesed_price_per_item">
                                       {{ number_format(\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price_per_unit')) }}
                                     </td>
                                     <td>
                                       {{ number_format(\DB::table('product_sales_order')->select('price')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price')) }}
                                     </td>
-                                    <td>{{ $sales_return->quantity }}</td>
+                                    <td class="returned_qty">{{ $sales_return->quantity }}</td>
                                     <td>{{ $sales_return->notes }}</td>
                                 </tr>
                             </tbody>
@@ -159,6 +159,23 @@
                 <i class="fa fa-info-circle"></i>&nbsp;The product will be re-added to the inventory
               </p>
               <input type="hidden" id="id_to_be_resent" name="id_to_be_resent">
+              <input type="hidden" id="id_sales_return_price_per_unit" name="sales_return_price_per_unit_to_complete">
+              <input type="hidden" id="id_sales_return_quantity" name="sales_return_quantity_to_complete">
+              <input type="hidden" name="sales_order_invoice_id_to_complete" value="{{ $sales_return->sales_order->sales_order_invoice->id}}">
+              <select name="inventory_account" id="inventory_account" class="col-md-12" style="display:none">
+                @foreach(list_account_inventory('52') as $as)
+                    @if($as->name == 'PERSEDIAAN'.' '.$sales_return->product->main_product->family->name)
+                    <option value="{{ $as->id}}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name}}</option>
+                    @endif
+                @endforeach
+              </select>
+              <select name="cost_goods_account" id="cost_goods_account" class="col-md-12" style="display:none">
+                  @foreach(list_parent('63') as $cost_goods_account)
+                    @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$sales_return->product->main_product->family->name)
+                    <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name}}</option>
+                    @endif
+                  @endforeach
+              </select>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -187,6 +204,8 @@
     $('#btn-resent-sales-return').on('click', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_resent').val(id);
+      $('#id_sales_return_price_per_unit').val($('.salesed_price_per_item').text().replace(/,/gi,''));
+      $('#id_sales_return_quantity').val($('.returned_qty').text());
       $('#modal-resent-sales-return').modal('show');
     });
 </script>

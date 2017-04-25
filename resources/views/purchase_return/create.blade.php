@@ -96,7 +96,7 @@
                           <td>{{ $or['code'] }} </td>
                           <td>{{ $or['description'] }} </td>
                           <td>{{ $or['unit'] }} </td>
-                          <td class="salesed_qty">{{ $or['quantity'] }}</td>
+                          <td class="purchased_qty">{{ $or['quantity'] }}</td>
                           <td>{{ $or['category'] }}</td>
                           <td class="price">{{ number_format($or['price']) }}</td>
                           <td>
@@ -161,11 +161,15 @@
 <script type="text/javascript">
   $('.returned_quantity').on('keyup', function(){
     var purchased_qty = parseInt($(this).parent().parent().find('.purchased_qty').html());
+    //var pur_qty = $(this).parent().parent().find('.purchased_qty').text();
     var the_value = parseInt($(this).val());
     var price_item = $(this).parent().parent().find('.price').html().replace(/,/gi,'');
-    var price_per_unit = parseInt($(this).parent().parent().find('.price_per_unit').val(the_value*price_item));
+    var price_per_unit = parseInt($(this).parent().parent().find('.price_per_unit').val(the_value*price_item/purchased_qty));
     if(the_value > purchased_qty){
       alertify.error('Returned quantity can not be greater than purchased quantity');
+      $('#btn-submit-purchase-return').prop('disabled', true);
+    }else{
+      $('#btn-submit-purchase-return').prop('disabled', false);
     }
     return false;
   });

@@ -298,7 +298,7 @@
                                                 @endif
                                             @endif
                                         </tr>
-                                       
+
                                         @endforeach
                                     @endforeach
                                          <tr style="height:0px;">
@@ -620,7 +620,7 @@
                                 <tr>
                                     <td></td>
                                     <td style="border-top:1px solid black">Total Kewajiban dan Equitas</td>
-                                    <td style="border-top:1px solid black">{{ number_format($sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang+$sum_equitas) }}</td>
+                                    <td style="border-top:1px solid black">{{ number_format($sum_equitas-$sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang) }}</td>
                                 </tr>
                             </tbody>
                         </table>

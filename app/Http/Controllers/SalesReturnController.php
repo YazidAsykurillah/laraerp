@@ -124,7 +124,7 @@ class SalesReturnController extends Controller
                         'source'=>$request->sales_order_invoice_code,
                         'type'=>'masuk',
                         'description'=>'',
-                        'memo'=>''
+                        'memo'=>'PERSEDIAAN'
                     ]);
                     array_push($return_account,[
                         'amount'=>$total_amount,
@@ -135,7 +135,7 @@ class SalesReturnController extends Controller
                         'source'=>$request->sales_order_invoice_code,
                         'type'=>'masuk',
                         'description'=>'',
-                        'memo'=>''
+                        'memo'=>'RETURN PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
                         'amount'=>$total_amount,
@@ -146,7 +146,7 @@ class SalesReturnController extends Controller
                         'source'=>$request->sales_order_invoice_code,
                         'type'=>'keluar',
                         'description'=>'',
-                        'memo'=>''
+                        'memo'=>'HARGA POKOK PENJUALAN'
                     ]);
             }
             \DB::table('transaction_chart_accounts')->insert($inv_account);
@@ -327,6 +327,17 @@ class SalesReturnController extends Controller
         $new_stock = $current_stock-$quantity;
         $product->stock = $new_stock;
         $product->save();
+
+        $price_return = floatval(preg_replace('#[^0-9.]#', '', $request->sales_return_price_per_unit_to_complete))*preg_replace('#[^0-9.]#','',$request->sales_return_quantity_to_complete);
+
+        $amount_inventory = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->sales_order_invoice_id_to_complete],['sub_chart_account_id',$request->inventory_account],['type','masuk']])->value('amount');
+        $new_amount = $amount_inventory-$price_return;
+        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->inventory_account)->where('reference',$request->sales_order_invoice_id_to_complete)->where('type','masuk')->update(['amount'=>$new_amount]);
+
+        $amount_cost_goods = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->sales_order_invoice_id_to_complete],['sub_chart_account_id',$request->cost_goods_account],['type','keluar']])->value('amount');
+        $new_amount2 = $amount_cost_goods-$price_return;
+        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->cost_goods_account)->where('reference',$request->sales_order_invoice_id_to_complete)->where('type','keluar')->update(['amount'=>$new_amount2]);
+
         return redirect('sales-return')
                 ->with('successMessage',"$product_name has been added back to inventory from $sales_order_ref");
     }

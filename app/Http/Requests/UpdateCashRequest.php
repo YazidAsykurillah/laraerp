@@ -24,7 +24,7 @@ class UpdateCashRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|unique:cashs,code',
+            'code'=>'required|max:7|unique:cashs,code,'.$this->route('cash'),
             'name'=>'required',
             'value'=>'required'
         ];

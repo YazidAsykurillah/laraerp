@@ -283,6 +283,7 @@ class PurchaseReturnController extends Controller
             //change purchase return to sent
             $purchase_return->status = 'sent';
             $purchase_return->save();
+
             return redirect('purchase-return')
                 ->with('successMessage', "$product_name on $purchase_order_ref has been returned to the supplier");
         }
@@ -306,6 +307,15 @@ class PurchaseReturnController extends Controller
         $new_stock = $current_stock+$quantity;
         $product->stock = $new_stock;
         $product->save();
+
+        $price_return = floatval(preg_replace('#[^0-9.]#', '', $request->purchase_return_price_per_unit_to_complete))*preg_replace('#[^0-9.]#','',$request->purchase_return_quantity_to_complete);
+
+        $amount_inventory = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->purchase_order_invoice_id_to_complete],['sub_chart_account_id',$request->inventory_account],['type','keluar']])->value('amount');
+        $new_amount = $amount_inventory-$price_return;
+
+        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->inventory_account)->where('reference',$request->purchase_order_invoice_id_to_complete)->where('type','keluar')->update(['amount'=>$new_amount]);
+
+        //delete transaction chart account
         return redirect('purchase-return')
             ->with('successMessage', "$product_name has been added back to inventory from $purchase_order_ref");
     }
