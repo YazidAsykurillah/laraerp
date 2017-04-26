@@ -27,40 +27,42 @@
         <div class="box-header with-border">
           <h3 class="box-title">{{ $role->name }}</h3>
         </div><!-- /.box-header -->
-        <div class="box-body table-responsive">
-          <table class="table table-bordered" id="table-role-permission">
-            <thead>
-              <tr>
-                <th style="width:15%;text-align:center;">
-                  <button id="btn-check-uncheck-all" type="button" data-state="1"><text id="btn-check-uncheck-actor">Check ALL</text></button>
-                </th>
-                <th style="width:25%;">Permission Slug</th>
-                <th style="">Description</th>
-              </tr>
-            </thead>
+        <div class="box-body">
+          <div class="table-responsive" style="max-height:500px">
+            <table class="table table-bordered" id="table-role-permission">
+              <thead>
+                <tr>
+                  <th style="width:15%;text-align:center;">
+                    <button id="btn-check-uncheck-all" type="button" data-state="1"><text id="btn-check-uncheck-actor">Check ALL</text></button>
+                  </th>
+                  <th style="width:25%;">Permission Slug</th>
+                  <th style="">Description</th>
+                </tr>
+              </thead>
 
-            <tbody>
+              <tbody>
 
-              @foreach($permissions as $permission)
-              <tr>
-                <td style="text-align:center">
-                  @if($role->permissions->contains('slug', $permission->slug))
-                    <input type="checkbox" name="permission_id[]" class="permission_id" value="{{ $permission->id }}" checked>
-                  @else
-                    <input type="checkbox" name="permission_id[]" class="permission_id" value="{{ $permission->id }}">
-                  @endif
-                </td>
-                <td>{{ $permission->slug }}</td>
-                <td>{{ $permission->description }}</td>
+                @foreach($permissions as $permission)
+                <tr>
+                  <td style="text-align:center">
+                    @if($role->permissions->contains('slug', $permission->slug))
+                      <input type="checkbox" name="permission_id[]" class="permission_id" value="{{ $permission->id }}" checked>
+                    @else
+                      <input type="checkbox" name="permission_id[]" class="permission_id" value="{{ $permission->id }}">
+                    @endif
+                  </td>
+                  <td>{{ $permission->slug }}</td>
+                  <td>{{ $permission->description }}</td>
 
-              </tr>
+                </tr>
 
-              @endforeach
-            </tbody>
-            <tfoot>
+                @endforeach
+              </tbody>
+              <tfoot>
 
-            </tfoot>
-          </table>
+              </tfoot>
+            </table>
+          </div>
           <input type="hidden" name="role_id" value="{{ $role->id }}" />
           <button type="submit" class="btn btn-info pull-right">Save</button>
         </div><!-- /.box-body -->
@@ -88,8 +90,6 @@
       }
     });
 
-    $('#table-role-permission').DataTable({
 
-    });
  </script>
 @endsection

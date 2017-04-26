@@ -18,7 +18,7 @@ class AclTableSeeder extends Seeder
         	['id'=>2, 'code'=>'ADM', 'name'=>'Administrator', 'label'=>'User with this role will have semi-full access to apllication'],
         	['id'=>3, 'code'=>'FIN', 'name'=>'Finance', 'label'=>'User with this role will have full access to finance'],
         	['id'=>4, 'code'=>'WRH', 'name'=>'Warehouse', 'label'=>'User with this role will have full access to warehouse'],
-            ['id'=>5, 'code'=>'MKT', 'name'=>'Marketing', 'label'=>'User with this role will have full access to marketing'],
+          ['id'=>5, 'code'=>'MKT', 'name'=>'Marketing', 'label'=>'User with this role will have full access to marketing'],
         ];
         DB::table('roles')->insert($roles);
 	    //ENDBlock table roles
@@ -28,8 +28,9 @@ class AclTableSeeder extends Seeder
         $role_user = [
         	['role_id'=>1, 'user_id'=>1],
         	['role_id'=>2, 'user_id'=>2],
-            ['role_id'=>3, 'user_id'=>3],
+          ['role_id'=>3, 'user_id'=>3],
         	['role_id'=>4, 'user_id'=>4],
+          ['role_id'=>2, 'user_id'=>5],
         ];
         DB::table('role_user')->insert($role_user);
         //ENDBlock table role_user
@@ -37,14 +38,6 @@ class AclTableSeeder extends Seeder
         //Block table permissions
         DB::table('permissions')->delete();
         $permissions = [
-<<<<<<< HEAD
-            //Purchase Order Modules
-            ['id'=>1, 'slug'=>'purchase-order-module', 'description'=>''],
-            ['id'=>12, 'slug'=>'create-purchase-order-module', 'description'=>''],
-            ['id'=>2, 'slug'=>'purchase-order-invoice-module', 'description'=>''],
-            ['id'=>3, 'slug'=>'purchase-return', 'description'=>''],
-=======
-            //Purchases
                 # Purchase Order
                 ['id'=>1, 'slug'=>'purchase-order-module', 'description'=>''],
                 ['id'=>2, 'slug'=>'create-purchase-order-module', 'description'=>''],
@@ -60,9 +53,6 @@ class AclTableSeeder extends Seeder
                 ['id'=>10, 'slug'=>'create-purchase-order-return-module', 'description'=>''],
                 ['id'=>11, 'slug'=>'edit-purchase-order-return-module', 'description'=>''],
                 ['id'=>12, 'slug'=>'delete-purchase-order-return-module', 'description'=>''],
->>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
-
-            //Sales
                 # Sales Order
                 ['id'=>13, 'slug'=>'sales-order-module', 'description'=>''],
                 ['id'=>14, 'slug'=>'create-sales-order-module', 'description'=>''],
@@ -84,19 +74,11 @@ class AclTableSeeder extends Seeder
                 ['id'=>25, 'slug'=>'product-available', 'description'=>''],
                 #List Product (All)
                 ['id'=>26, 'slug'=>'product-all', 'description'=>''],
-
-<<<<<<< HEAD
-            //Finance Modules
-            ['id'=>11, 'slug'=>'bank-module', 'description'=>''],
-
-=======
                 #Main Product
                 ['id'=>27, 'slug'=>'main-product-module', 'description'=>''],
                 ['id'=>28, 'slug'=>'create-main-product-module', 'description'=>''],
                 ['id'=>29, 'slug'=>'edit-main-product-module', 'description'=>''],
                 ['id'=>30, 'slug'=>'delete-main-product-module', 'description'=>''],
->>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
-
                 #Product Family
                 ['id'=>31, 'slug'=>'family-module', 'description'=>''],
                 ['id'=>32, 'slug'=>'create-family-module', 'description'=>''],
@@ -117,7 +99,7 @@ class AclTableSeeder extends Seeder
                 ['id'=>44, 'slug'=>'create-stock-balance-module', 'description'=>''],
                 ['id'=>45, 'slug'=>'edit-stock-balance-module', 'description'=>''],
                 ['id'=>46, 'slug'=>'delete-stock-balance-module', 'description'=>''],
-            
+
             //Finance
                 #Bank
                 ['id'=>47, 'slug'=>'bank-module', 'description'=>''],
@@ -195,7 +177,6 @@ class AclTableSeeder extends Seeder
             ['permission_id'=>6, 'role_id'=>2],
             ['permission_id'=>7, 'role_id'=>2],
             ['permission_id'=>8, 'role_id'=>2],
-<<<<<<< HEAD
             ['permission_id'=>9, 'role_id'=>2],
             ['permission_id'=>12, 'role_id'=>2],
 
@@ -206,10 +187,6 @@ class AclTableSeeder extends Seeder
             ['permission_id'=>4, 'role_id'=>3],
             ['permission_id'=>5, 'role_id'=>3],
             ['permission_id'=>6, 'role_id'=>3],
-=======
-            
->>>>>>> 74cc9444a2f789c504dd41f4a84bf61f4d07da9e
-
         ];
         DB::table('permission_role')->insert($permission_role);
         //ENDBlock table permission_role
