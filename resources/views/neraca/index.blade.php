@@ -154,6 +154,17 @@
                         </button>
                     </div>
                 </div>
+                @else
+                <div class="form-group pull-right">
+                    {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
+                    <div class="col-sm-3">
+                        <input type="hidden" name="sort_target_year" id="sort_target_year" value="<?php echo date('Y');?>">
+                        <input type="hidden" name="sort_target" id="sort_target" value="y">
+                        <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
+                            <i class="fa fa-print"></i>&nbsp;
+                        </button>
+                    </div>
+                </div>
                 @endif
                 {!! Form::close() !!}
             </div>
@@ -497,7 +508,7 @@
                                             @else
                                             <td>
                                                 {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year,'y','')*12) }}
-                                                <?php $sum+= list_transaction_akumulasi_penyusutan($sub->id,$year,'y',''); ?>
+                                                <?php $sum+= list_transaction_akumulasi_penyusutan($sub->id,$year,'y','')*12; ?>
                                             </td>
                                             @endif
                                         @elseif(isset($month_in))
@@ -507,11 +518,11 @@
                                             <td>
                                                 <?php
                                                 $date1 = date_create($year_start.'-'.$month_start.'-01');
-                                                $date2 = date_create($year_end.'-'.$month_end.'-31');
+                                                $date2 = date_create($year_end.'-'.$month_end.'-01');
                                                 $diff = date_diff($date1,$date2);
                                                 ?>
                                                 {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*(round($diff->format("%a")/30))) }}
-                                                <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*(round($diff->format("%a")/30)); ?>
                                             </td>
                                             @endif
                                         @else
@@ -520,7 +531,7 @@
                                             @else
                                             <td>
                                                 {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','')*12) }}
-                                                <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y',''); ?>
+                                                <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','')*12; ?>
                                             </td>
                                             @endif
                                         @endif
@@ -537,7 +548,7 @@
                             <tr>
                                 <td></td>
                                 <td style="border-top:1px solid black">Total Aktiva-Aktiva</td>
-                                <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+$sum_nilai_history+$sum_akumulasi_penyusutan) }}</td>
+                                <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+($sum_nilai_history-$sum_akumulasi_penyusutan)) }}</td>
                             </tr>
                             <tr>
                                 <td></td>

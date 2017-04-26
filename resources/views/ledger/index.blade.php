@@ -34,9 +34,7 @@
                             <div class="col-sm-6">
                                 <select name="account" class="form-control" id="account">
                                     @foreach($account as $acc)
-                                        @if($acc->level==2)
                                         <option value="{{ $acc->id }}">{{ $acc->name}}</option>
-                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -76,7 +74,7 @@
         {!! Form::close() !!}
     </div>
 
-    @if(isset($query_select))
+    @if(isset($query_select) AND isset($date_start) AND isset($date_end))
     <div class="row">
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
@@ -84,9 +82,23 @@
                     <h3 class="box-title">
                         {{ $query_select->name }}
                     </h3>
+                    {!! Form::open(['url'=>'ledger.ledger_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-ledger','files'=>true]) !!}
+                    <div class="form-group pull-right">
+                        {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
+                        <div class="col-sm-3">
+                            <input type="hidden" name="sort_target_account" id="sort_target_year" value="{{ $query_select->id }}">
+                            <input type="hidden" name="sort_target_date_start" id="sort_target_data_start" value="{{ $date_start }}">
+                            <input type="hidden" name="sort_target_date_end" id="sort_target_data_end" value="{{ $date_end }}">
+                            <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
+                                <i class="fa fa-print"></i>&nbsp;
+                            </button>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
+                      @if(count($query_trans) > 0)
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -96,20 +108,41 @@
                                     <th>Memo</th>
                                     <th>Debit</th>
                                     <th>Credit</th>
-                                    <th>Balance</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $sum_debit_piutang = 0; $sum = 0; ?>
+                                <?php $sum_debit = 0; $sum_credit = 0; ?>
                                 @foreach($query_trans as $qt)
                                     <tr>
                                             <td>{{ $qt->source }}</td>
                                             <td>{{ $qt->created_at }}</td>
                                             <td>{{ $qt->description }}</td>
                                             <td>{{ $qt->memo }}</td>
-                                            <td>0.00</td>
-                                            <td>{{ number_format($qt->amount) }}</td>
-                                            <td>{{ number_format($qt->amount) }}</td>
+                                            @if($qt->type == 'masuk' AND $qt->memo != 'AKUMULASI PENYUSUTAN')
+                                              <td>
+                                                {{ number_format($qt->amount) }}
+                                                <?php $sum_debit += $qt->amount; ?>
+                                              </td>
+                                              <td>0.00</td>
+                                            @elseif($qt->type == 'keluar')
+                                              <td>0.00</td>
+                                              <td>
+                                                {{ number_format($qt->amount) }}
+                                                <?php $sum_credit += $qt->amount; ?>
+                                              </td>
+                                            @elseif($qt->memo = 'AKUMULASI PENYUSUTAN')
+                                              <td>
+                                                <?php
+                                                  $date1 = date_create($date_start);
+                                                  $date2 = date_create($date_end);
+                                                  $diff = date_diff($date1,$date2);
+                                                  $range = $diff->format('%a');
+                                                 ?>
+                                                {{ number_format($qt->amount*(round($range/30))) }}
+                                                <?php $sum_debit += $qt->amount; ?>
+                                              </td>
+                                              <td>0.00</td>
+                                            @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -117,7 +150,12 @@
 
                             </tfoot>
                         </table>
-                        <p>Balance : {{ number_format($sum_debit_piutang) }}</p>
+                        <p>Balance : {{ number_format($sum_debit-$sum_credit) }}</p>
+                        @else
+                        <center>
+                          <p>Data not available</p>
+                        </center>
+                        @endif
                     </div>
                 </div>
                 <div class="box-footer clearfix">

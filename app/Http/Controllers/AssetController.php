@@ -83,7 +83,7 @@ class AssetController extends Controller
         $akumulasi_penyusutan_account->source = 'asset';
         $akumulasi_penyusutan_account->type = 'masuk';
         $akumulasi_penyusutan_account->description = $request->name;
-        $akumulasi_penyusutan_account->memo = $request->notes;
+        $akumulasi_penyusutan_account->memo = 'AKUMULASI PENYUSUTAN';
         $akumulasi_penyusutan_account->save();
 
 

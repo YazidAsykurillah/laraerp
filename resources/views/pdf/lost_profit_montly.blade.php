@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Neraca</title>
+    <title>Lost &amp; Profit</title>
     <!-- Bootstrap Core CSS -->
     {!! Html::style('css/bootstrap/bootstrap.css') !!}
     <style>
@@ -42,7 +42,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                        <h4>NERACA</h4>
+                        <h4>LABA RUGI</h4>
                         <h4 style="line-height:1.7">
                             @if(isset($sort_target_y))
                                 Tahun&nbsp;{{ $sort_target_year }}
@@ -58,7 +58,7 @@
                                 <tr>
                                     <th>No.Akun</th>
                                     <th>Deskripsi</th>
-                                    <th>BULAN</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>

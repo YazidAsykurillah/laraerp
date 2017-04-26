@@ -91,11 +91,28 @@ class LedgerController extends Controller
     {
         $account = SubChartAccount::all();
         $query = SubChartAccount::findOrfail($request->account);
-        $query_trans = $query->transaction_chart_account;
-
+        $date_start = $request->date_start;
+        $date_end = $request->date_end;
+        $query_trans = \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$query->id)->whereBetween('created_at',[$date_start.' 00:00:01',$date_end.' 23:59:59'])->get();
         return view('ledger.index')
             ->with('account',$account)
             ->with('query_trans',$query_trans)
-            ->with('query_select',$query);
+            ->with('query_select',$query)
+            ->with('date_start',$date_start)
+            ->with('date_end',$date_end);
     }
+
+    public function ledger_print(Request $request)
+    {
+      $id_account = $request->sort_target_account;
+      $date_start = $request->sort_target_date_start;
+      $date_end = $request->sort_target_date_end;
+      $data['query_trans'] = \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$id_account)->whereBetween('created_at',[$date_start.' 00:00:01',$date_end.' 23:59:59'])->get();
+      $data['date_start'] = $date_start;
+      $data['date_end'] = $date_end;
+      $data['sub_account_name'] = SubChartAccount::findOrfail($id_account);
+      $pdf = \PDF::loadView('pdf.ledger',$data);
+      return $pdf->stream('ledger.pdf');
+    }
+
 }

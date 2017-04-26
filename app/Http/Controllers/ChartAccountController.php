@@ -175,8 +175,24 @@ class ChartAccountController extends Controller
         $sub_chart_account->saldo_awal = $request->saldo_awal_edit;
         $sub_chart_account->save();
 
-        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->update(['amount'=>$request->saldo_awal_edit]);
-
+        $cek_saldo_awal = \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->value('amount');
+        if(count($cek_saldo_awal) > 0)
+        {
+          \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->update(['amount'=>$request->saldo_awal_edit]);
+        }else
+        {
+          $trans_chart_account = New TransactionChartAccount;
+          $trans_chart_account->amount = $request->saldo_awal_edit;
+          $trans_chart_account->sub_chart_account_id = $request->sub_chart_account_id;
+          $trans_chart_account->created_at = date('Y-m-d H:i:s');
+          $trans_chart_account->updated_at = date('Y-m-d H:i:s');
+          $trans_chart_account->reference = $request->sub_chart_account_id;
+          $trans_chart_account->source = 'create_sub_chart_account';
+          $trans_chart_account->type = 'masuk';
+          $trans_chart_account->description = 'SALDO AWAL';
+          $trans_chart_account->memo = 'SALDO AWAL';
+          $trans_chart_account->save();
+        }
         return redirect('chart-account/'.$request->chart_account_id)
             ->with('successMessage',"Sub chart account has been updated");
     }

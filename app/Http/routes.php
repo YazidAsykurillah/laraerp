@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index');
 Route::post('cash-flow/search','CashFlowController@cash_flow_search');
 Route::resource('cash-flow','CashFlowController');
 //ledger
+Route::post('ledger.ledger_print','LedgerController@ledger_print');
 Route::post('ledger/search','LedgerController@ledger_search');
 Route::resource('ledger','LedgerController');
 //asset
