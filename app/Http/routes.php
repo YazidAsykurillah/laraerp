@@ -60,6 +60,7 @@ Route::post('neraca.neraca_print','NeracaController@neraca_print');
 Route::resource('neraca','NeracaController');
 
 //sub chart account
+Route::post('sub-chart-account.store_saldo_awal','ChartAccountController@store_saldo_awal');
 Route::post('deleteSubChartAccount','ChartAccountController@delete_sub');
 Route::put('sub-chart-account.update_sub','ChartAccountController@update_sub');
 Route::post('sub-chart-account.store_sub','ChartAccountController@store_sub');

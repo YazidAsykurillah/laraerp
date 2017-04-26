@@ -106,6 +106,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group{{ $errors->has('saldo_awal') ? ' has-error' : ''}}">
+                        {!! Form::label('saldo_awal','Saldo Awal',['class'=>'col-sm-3 control-label']) !!}
+                        <div class="col-sm-9">
+                            {!! Form::text('saldo_awal',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal']) !!}
+                            @if($errors->has('saldo_awal'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('saldo_awal') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
                     <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
 
                 </div><!-- /.box-body -->
@@ -153,10 +164,10 @@
                                     <td> {{ $key->name }}</td>
                                     <td> {{ $key->account_number }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-created-at="{{ $key->created_at }}">
+                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}" data-created-at="{{ $key->created_at }}">
                                             <i class="fa fa-external-link-square"></i>
                                         </button>&nbsp;
-                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}">
+                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}">
                                             <i class="fa fa-edit"></i>
                                         </button>&nbsp;
                                         <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
@@ -170,10 +181,10 @@
                                         <td style="padding-left:20px">{{ $child->name }}</td>
                                         <td style="padding-left:20px">{{ $child->account_number }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-created-at="{{ $child->created_at }}">
+                                            <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}" data-created-at="{{ $child->created_at }}">
                                                 <i class="fa fa-external-link-square"></i>
                                             </button>&nbsp;
-                                            <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}">
+                                            <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}">
                                                 <i class="fa fa-edit"></i>
                                             </button>&nbsp;
                                             <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
@@ -232,6 +243,11 @@
                           <td style="width:30%;">Created At</td>
                           <td>:</td>
                           <td id="view_sub_chart_account_created_at"></td>
+                        </tr>
+                        <tr>
+                          <td style="width:30%;">Saldo Awal</td>
+                          <td>:</td>
+                          <td id="view_sub_chart_account_saldo_awal"></td>
                         </tr>
                       </table>
                     </div>
@@ -310,6 +326,17 @@
                               </select>
                           </div>
                       </div>
+                      <div class="form-group{{ $errors->has('saldo_awal_edit') ? ' has-error' : ''}}">
+                          {!! Form::label('saldo_awal_edit-','Saldo Awal',['class'=>'col-sm-3 control-label']) !!}
+                          <div class="col-sm-9">
+                              {!! Form::text('saldo_awal_edit',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal_view']) !!}
+                              @if($errors->has('saldo_awal_edit'))
+                              <span class="help-block">
+                                  <strong>{{ $errors->first('saldo_awal_edit') }}</strong>
+                              </span>
+                              @endif
+                          </div>
+                      </div>
                       <input type="hidden" name="chart_account_id" value="{{ $chart_account->id }}">
                       <div class="form-group">
                           {!! Form::label('','',['class'=>'col-sm-3 control-label']) !!}
@@ -384,9 +411,13 @@
             var name = $(this).attr('data-text');
             var account_number = $(this).attr('data-account-number');
             var created_at = $(this).attr('data-created-at');
+            var id = $(this).attr('data-id');
+            var saldoAwal = $(this).attr('data-saldo');
             $('#view_sub_chart_account_name').text(name);
             $('#view_sub_chart_account_account_number').text(account_number);
             $('#view_sub_chart_account_created_at').text(created_at);
+            $('#view_sub_chart_account_saldo_awal').text(saldoAwal);
+            $('#sub_chart_account_id_view').val(id);
             $('#modal-view-sub-chart-account').modal('show');
         });
 
@@ -395,8 +426,10 @@
             var name = $(this).attr('data-text');
             var account_number = $(this).attr('data-account-number');
             var id = $(this).attr('data-id');
+            var saldoAwal = $(this).attr('data-saldo');
             $('#name_view').val(name);
             $('#number_account_view').val(account_number);
+            $('#saldo_awal_view').val(saldoAwal);
             $('#sub_chart_account_id_view').val(id);
             $('#modal-edit-sub-chart-account').modal('show');
         });
