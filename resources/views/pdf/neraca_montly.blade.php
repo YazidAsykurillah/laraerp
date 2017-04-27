@@ -172,6 +172,8 @@
                                                 </td>
                                                 @endif
                                             @else
+
+
                                                 @if(list_transaction_piutang($sub->id,date('Y'),'y','') == '')
                                                 <td>0,00</td>
                                                 @else
