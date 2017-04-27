@@ -30,8 +30,8 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-            {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('code', 'Code', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the asset', 'id'=>'code']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
@@ -41,8 +41,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('name', 'Name', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the asset', 'id'=>'name']) !!}
               @if ($errors->has('name'))
                 <span class="help-block">
@@ -52,8 +52,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('date_purchase') ? ' has-error' : '' }}">
-            {!! Form::label('date_purchase', 'Date Purchase', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('date_purchase', 'Date Purchase', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::date('date_purchase',null,['class'=>'form-control', 'placeholder'=>'Date purchase of asset', 'id'=>'date_purchase']) !!}
               @if ($errors->has('date_purchase'))
                 <span class="help-block">
@@ -63,8 +63,8 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
-            {!! Form::label('amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('amount', 'Amount', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('amount',null,['class'=>'form-control', 'placeholder'=>'Amount of asset', 'id'=>'amount']) !!}
               @if ($errors->has('amount'))
                 <span class="help-block">
@@ -73,9 +73,20 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('residual_value') ? ' has-error' : '' }}">
+            {!! Form::label('residual_value', 'Residual Value', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+              {!! Form::text('residual_value',null,['class'=>'form-control', 'placeholder'=>'Residual value of asset', 'id'=>'residual_value']) !!}
+              @if ($errors->has('residual_value'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('residual_value') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('periode') ? ' has-error' : '' }}">
-            {!! Form::label('periode', 'Periode', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('periode', 'Periode', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               <div class="input-group{{ $errors->has('periode') ? ' has-error' : '' }}">
                   {!! Form::text('periode',null,['class'=>'form-control', 'placeholder'=>'Periode of asset', 'id'=>'periode']) !!}
                   @if ($errors->has('periode'))
@@ -83,13 +94,13 @@
                       <strong>{{ $errors->first('periode') }}</strong>
                     </span>
                   @endif
-                  <span class="input-group-addon">Tahun</span>
+                  <span class="input-group-addon">Bulan</span>
               </div>
             </div>
           </div>
           <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
-            {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('notes', 'Notes', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::textarea('notes',null,['class'=>'form-control', 'placeholder'=>'Initial notes of the asset', 'id'=>'notes']) !!}
               @if ($errors->has('notes'))
                 <span class="help-block">
@@ -199,6 +210,10 @@
 {!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
     $('#amount').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+    $('#residual_value').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

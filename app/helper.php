@@ -302,6 +302,33 @@
         }
     }
 
+    function list_transaction_akumulasi_penyusutan_diff($key,$year)
+    {
+        $trans = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->get();
+        $data = [];
+        foreach ($trans as $key) {
+                $th = date_create($key->source);
+            array_push($data,[
+                'amount'=>$key->amount,
+                'source'=>$key->source,
+                'tahun'=>date_format($th,'Y'),
+                'bulan'=>date_format($th,'m'),
+                'date'=>$year,
+            ]);
+        }
+        return $data;
+        // }elseif ($sort == 'm')
+        // {
+        //     $list_transaction_m = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->whereBetween('created_at',[$date,$end])->sum('amount');
+        //     $list_transaction_k = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','keluar']])->whereBetween('created_at',[$date,$end])->sum('amount');
+        //     if(count($list_transaction_k) == 0){
+        //          return $list_transaction_m;
+        //      }
+        //         return $list_transaction_m-$list_transaction_k;
+        // }
+    }
+
+
     function list_transaction_pendapatan($key,$date,$sort,$end)
     {
         if($sort == 'y')

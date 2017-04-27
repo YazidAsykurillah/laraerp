@@ -87,10 +87,31 @@ class CashFlowController extends Controller
 
     public function cash_flow_search(Request $request)
     {
+        $chart_account = \DB::table('chart_accounts')->get();
         $date_start = $request->date_start;
         $date_end = $request->date_end;
         return view('cash_flow.index')
             ->with('date_start',$date_start)
-            ->with('date_end',$date_end);
+            ->with('date_end',$date_end)
+            ->with('chart_account',$chart_account);
+    }
+
+    public function cash_flow_print(Request $request)
+    {
+        $data = [
+                'date_start'=>$request->sort_date_start,
+                'date_end'=>$request->sort_date_end,
+                'lost_profit'=>$request->sort_lost_profit,
+                'akumulasi_penyusutan'=>$request->sort_akumulasi_penyusutan,
+                'akun_hutang'=>$request->akun_hutang,
+                'kewajiban_lancar_lainnya'=>$request->kewajiban_lancar_lainnya,
+                'akun_piutang'=>$request->sort_akun_piutang,
+                'aset_lancar_lainnya'=>$request->sort_aset_lancar_lainnya,
+                'nilai_histori'=>$request->sort_nilai_histori,
+                'kewajiban_jangka_panjang'=>$request->kewajiban_jangka_panjang,
+                'ekuitas'=>$request->sort_ekuitas,
+        ];
+        $pdf = \PDF::loadView('pdf.cash_flow',$data);
+        return $pdf->stream('cash_flow.pdf');
     }
 }

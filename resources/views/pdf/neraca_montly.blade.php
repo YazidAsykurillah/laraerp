@@ -95,16 +95,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_cash_bank($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_cash_bank($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_cash_bank($sub->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_cash_bank($sub->id,$year,'y','');?>
+                                                    {{ number_format(list_transaction_cash_bank($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_cash_bank($sub->id,$sort_target_year,'y','');?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -153,16 +153,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_piutang($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_piutang($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_piutang($sub->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_piutang($sub->id,$year,'y','');?>
+                                                    {{ number_format(list_transaction_piutang($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_piutang($sub->id,$sort_target_year,'y','');?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -213,16 +213,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_inventory($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_inventory($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_inventory($sub->id,$year,'y','')) }}
-                                                    <?php $sum+= list_transaction_inventory($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_inventory($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum+= list_transaction_inventory($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -271,16 +271,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_aktiva_lancar_lainnya($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$year,'y','')) }}
-                                                    <?php $sum+= list_transaction_aktiva_lancar_lainnya($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum+= list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -302,11 +302,11 @@
                                         </tr>
                                         @endforeach
                                     @endforeach
-                                    <tr style="height:0px;">
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
-                                   </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}<?php $sum_aktiva_lancar_lainnya = $sum; ?></td>
@@ -334,16 +334,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_nilai_history($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_nilai_history($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_nilai_history($sub->id,$year,'y','')) }}
-                                                    <?php $sum+= list_transaction_nilai_history($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_nilai_history($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum+= list_transaction_nilai_history($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -392,27 +392,27 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_akumulasi_penyusutan($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_akumulasi_penyusutan($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
-                                                <td>
-                                                    {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year,'y','')*12) }}
-                                                    <?php $sum+= list_transaction_akumulasi_penyusutan($sub->id,$year,'y',''); ?>
+                                                <td id="{{$sub->id}}">
+                                                    @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
+                                                        {{ $sum_kendaraan}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
+                                                        {{ $sum_gedung}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN INVENTARIS')
+                                                        {{ $sum_inventaris}}
+                                                    @endif
+                                                    <?php $sum = str_replace(',','',$sum_kendaraan)+str_replace(',','',$sum_gedung)+str_replace(',','',$sum_inventaris); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
-                                                <td>
-                                                    <?php
-                                                    $date1 = date_create($year_start.'-'.$month_start.'-01');
-                                                    $date2 = date_create($year_end.'-'.$month_end.'-31');
-                                                    $diff = date_diff($date1,$date2);
-                                                    ?>
-                                                    {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*(round($diff->format("%a")/30))) }}
-                                                    <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                <td id="{{$sub->id}}">
+
                                                 </td>
                                                 @endif
                                             @else
@@ -421,7 +421,7 @@
                                                 @else
                                                 <td>
                                                     {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','')*12) }}
-                                                    <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y',''); ?>
+
                                                 </td>
                                                 @endif
                                             @endif
@@ -438,7 +438,7 @@
                                 <tr>
                                     <td></td>
                                     <td style="border-top:1px solid black">Total Aktiva-Aktiva</td>
-                                    <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+$sum_nilai_history+$sum_akumulasi_penyusutan) }}</td>
+                                    <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+($sum_nilai_history-$sum_akumulasi_penyusutan)) }}</td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -471,16 +471,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_hutang($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_hutang($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_hutang($sub->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_hutang($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_hutang($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_hutang($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -529,16 +529,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -580,16 +580,16 @@
                                         <tr>
                                             <td style="padding-left:20px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:20px;">{{ $as->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_kewajiban_jangka_panjang($as->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -614,7 +614,7 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
+                                            @if(isset($sort_target_y))
                                                 @if(list_transaction_kewajiban_jangka_panjang($sub->id,$year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -665,16 +665,16 @@
                                         <tr>
                                             <td style="padding-left:20px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:20px;">{{ $as->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_equitas($as->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_equitas($as->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_equitas($as->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_equitas($as->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_equitas($as->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_equitas($as->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_equitas($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -699,16 +699,16 @@
                                         <tr>
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
-                                            @if(isset($year_in))
-                                                @if(list_transaction_equitas($sub->id,$year,'y','') == '')
+                                            @if(isset($sort_target_y))
+                                                @if(list_transaction_equitas($sub->id,$sort_target_year,'y','') == '')
                                                 <td>0,00</td>
                                                 @else
                                                 <td>
-                                                    {{ number_format(list_transaction_equitas($sub->id,$year,'y','')) }}
-                                                    <?php $sum += list_transaction_equitas($sub->id,$year,'y',''); ?>
+                                                    {{ number_format(list_transaction_equitas($sub->id,$sort_target_year,'y','')) }}
+                                                    <?php $sum += list_transaction_equitas($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
-                                            @elseif(isset($month_in))
+                                            @elseif(isset($sort_target_m))
                                                 @if(list_transaction_equitas($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                 <td>0,00</td>
                                                 @else
@@ -748,7 +748,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </body>
 </html>
