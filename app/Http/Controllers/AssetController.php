@@ -44,6 +44,7 @@ class AssetController extends Controller
         $asset->name = $request->name;
         $asset->date_purchase = $request->date_purchase;
         $asset->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
+        $asset->residual_value = floatval(preg_replace('#[^0-9.]#','',$request->residual_value));
         $asset->periode = $request->periode;
         $asset->notes = $request->notes;
         $asset->save();
@@ -60,7 +61,7 @@ class AssetController extends Controller
         $asset_account->memo = $request->notes;
         $asset_account->save();
 
-        $biaya_count = floatval(preg_replace('#[^0-9.]#','',$request->amount))/($request->periode*12);
+        $biaya_count = (floatval(preg_replace('#[^0-9.]#','',$request->amount))-floatval(preg_replace('#[^0-9.]#','',$request->residual_value)))/($request->periode/12);
 
         $biaya_penyusutan_account = New TransactionChartAccount;
         $biaya_penyusutan_account->amount = $biaya_count;
@@ -68,7 +69,7 @@ class AssetController extends Controller
         $biaya_penyusutan_account->created_at = date('Y-m-d h:i:s');
         $biaya_penyusutan_account->updated_at = date('Y-m-d h:i:s');
         $biaya_penyusutan_account->reference = $request->biaya_penyusutan_account;
-        $biaya_penyusutan_account->source = 'asset';
+        $biaya_penyusutan_account->source = $request->date_purchase;
         $biaya_penyusutan_account->type = 'masuk';
         $biaya_penyusutan_account->description = $request->name;
         $biaya_penyusutan_account->memo = 'BIAYA PENYUSUTAN';
@@ -80,7 +81,7 @@ class AssetController extends Controller
         $akumulasi_penyusutan_account->created_at = date('Y-m-d h:i:s');
         $akumulasi_penyusutan_account->updated_at = date('Y-m-d h:i:s');
         $akumulasi_penyusutan_account->reference = $request->akumulasi_penyusutan_account;
-        $akumulasi_penyusutan_account->source = 'asset';
+        $akumulasi_penyusutan_account->source = $request->date_purchase;
         $akumulasi_penyusutan_account->type = 'masuk';
         $akumulasi_penyusutan_account->description = $request->name;
         $akumulasi_penyusutan_account->memo = 'AKUMULASI PENYUSUTAN';

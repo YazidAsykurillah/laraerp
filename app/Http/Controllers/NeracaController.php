@@ -235,6 +235,9 @@ class NeracaController extends Controller
                 true;
                 $data['sort_target_year'] = $request->sort_target_year;
                 $data['sort_target_y'] = 'y';
+                $data['sum_kendaraan'] = $request->sort_target_akum_kendaraan;
+                $data['sum_gedung'] = $request->sort_target_akum_gedung;
+                $data['sum_inventaris'] = $request->sort_target_akum_inventaris;
                 if(true){
                     $data['chart_account'] = ChartAccount::all();
 

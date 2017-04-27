@@ -135,6 +135,9 @@
                     <div class="col-sm-3">
                         <input type="hidden" name="sort_target_year" id="sort_target_year" value="{{ $year }}">
                         <input type="hidden" name="sort_target" id="sort_target" value="y">
+                        <input type="hidden" name="sort_target_akum_kendaraan" id="sort_target_akum_kendaraan">
+                        <input type="hidden" name="sort_target_akum_gedung" id="sort_target_akum_gedung">
+                        <input type="hidden" name="sort_target_akum_inventaris" id="sort_target_akum_inventaris">
                         <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
                             <i class="fa fa-print"></i>&nbsp;
                         </button>
@@ -149,6 +152,9 @@
                         <input type="hidden" name="sort_target_years_start" id="sort_by_month_end" value="{{ $year_start }}">
                         <input type="hidden" name="sort_target_months_end" id="sort_by_month_year_end" value="{{ $month_end }}">
                         <input type="hidden" name="sort_target_years_end" id="sort_by_month_year_end" value="{{ $year_end }}">
+                        <input type="hidden" name="sort_target_akum_kendaraan" id="sort_target_akum_kendaraan">
+                        <input type="hidden" name="sort_target_akum_gedung" id="sort_target_akum_gedung">
+                        <input type="hidden" name="sort_target_akum_inventaris" id="sort_target_akum_inventaris">
                         <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
                             <i class="fa fa-print"></i>&nbsp;
                         </button>
@@ -506,23 +512,70 @@
                                             @if(list_transaction_akumulasi_penyusutan($sub->id,$year,'y','') == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>
-                                                {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year,'y','')*12) }}
-                                                <?php $sum+= list_transaction_akumulasi_penyusutan($sub->id,$year,'y','')*12; ?>
+                                            <td id="{{$sub->id}}">
+                                                <?php $sum_akum = 0; ?>
+                                                @foreach(list_transaction_akumulasi_penyusutan_diff($sub->id,$year) as $x)
+                                                    <tr style="display:none">
+                                                        <td>{{ $x['amount'] }}</td>
+                                                        <td>{{ $x['source'] }}</td>
+                                                        <td>{{ $x['tahun'] }}</td>
+                                                        <td>{{ $x['bulan'] }}</td>
+                                                        <td>{{ $x['date'] }}</td>
+                                                        <td>
+                                                            <?php
+                                                                $c1 = date_create($x['source']);
+                                                                $c2 = date_create($x['date'].'-12-31');
+                                                                $cdiff = date_diff($c1,$c2);
+                                                                echo round($cdiff->format('%a')/30);
+                                                            ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo round($cdiff->format('%a')/30)*$x['amount']; ?>
+                                                            <?php $sum_akum += round($cdiff->format('%a')/30)*$x['amount']; ?>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                    <tr style="display:none">
+                                                        <td colspan="7" align="right" id="sum_akum{{$sub->id}}">
+                                                            {{ number_format($sum_akum)}}
+                                                            <?php $sum += $sum_akum; ?>
+                                                        </td>
+                                                    </tr>
                                             </td>
                                             @endif
                                         @elseif(isset($month_in))
                                             @if(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                             <td>0,00</td>
                                             @else
-                                            <td>
-                                                <?php
-                                                $date1 = date_create($year_start.'-'.$month_start.'-01');
-                                                $date2 = date_create($year_end.'-'.$month_end.'-01');
-                                                $diff = date_diff($date1,$date2);
-                                                ?>
-                                                {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*(round($diff->format("%a")/30))) }}
-                                                <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*(round($diff->format("%a")/30)); ?>
+                                            <td id="{{$sub->id}}">
+                                                <?php $sum_akum = 0; ?>
+                                                @foreach(list_transaction_akumulasi_penyusutan_diff($sub->id,$year_end.'-'.$month_end) as $x)
+                                                    <tr style="display:none">
+                                                        <td>{{ $x['amount'] }}</td>
+                                                        <td>{{ $x['source'] }}</td>
+                                                        <td>{{ $x['tahun'] }}</td>
+                                                        <td>{{ $x['bulan'] }}</td>
+                                                        <td>{{ $x['date'] }}</td>
+                                                        <td>
+                                                            <?php
+                                                                $c1 = date_create($x['source']);
+                                                                $c2 = date_create($x['date'].'-31');
+                                                                $cdiff = date_diff($c1,$c2);
+                                                                echo round($cdiff->format('%a')/30);
+                                                            ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo round($cdiff->format('%a')/30)*$x['amount']; ?>
+                                                            <?php $sum_akum += round($cdiff->format('%a')/30)*$x['amount']; ?>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                    <tr style="display:none">
+                                                        <td colspan="7" align="right" id="sum_akum{{$sub->id}}">
+                                                            {{ number_format($sum_akum)}}
+                                                            <?php $sum += $sum_akum; ?>
+                                                        </td>
+                                                    </tr>
                                             </td>
                                             @endif
                                         @else
@@ -880,5 +933,13 @@
         //
         //   });
         // });
+        $(document).ready(function(){
+            $('#73').text($('#sum_akum73').text());
+            $('#74').text($('#sum_akum74').text());
+            $('#75').text($('#sum_akum75').text());
+            $('#sort_target_akum_kendaraan').val($('#sum_akum73').text());
+            $('#sort_target_akum_gedung').val($('#sum_akum74').text());
+            $('#sort_target_akum_inventaris').val($('#sum_akum75').text());
+        });
     </script>
 @endsection

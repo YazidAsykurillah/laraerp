@@ -1146,7 +1146,7 @@ class DatatablesController extends Controller
                     return number_format($assets->amount);
             })
             ->editColumn('periode', function($assets){
-                    return $assets->periode.' Tahun';
+                    return $assets->periode.' Bulan';
             })
             ->addColumn('actions', function($assets){
                     $actions_html ='<a href="'.url('asset/'.$assets->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
