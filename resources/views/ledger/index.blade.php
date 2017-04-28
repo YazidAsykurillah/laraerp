@@ -114,35 +114,40 @@
                                 <?php $sum_debit = 0; $sum_credit = 0; ?>
                                 @foreach($query_trans as $qt)
                                     <tr>
-                                            <td>{{ $qt->source }}</td>
+                                            <td>TS{{ $qt->id}}</td>
                                             <td>{{ $qt->created_at }}</td>
+                                            @if(is_numeric($qt->description))
+                                            <td></td>
+                                            @else
                                             <td>{{ $qt->description }}</td>
-                                            <td>{{ $qt->memo }}</td>
-                                            @if($qt->type == 'masuk' AND $qt->memo != 'AKUMULASI PENYUSUTAN')
-                                              <td>
-                                                {{ number_format($qt->amount) }}
-                                                <?php $sum_debit += $qt->amount; ?>
-                                              </td>
-                                              <td>0.00</td>
-                                            @elseif($qt->type == 'keluar')
-                                              <td>0.00</td>
-                                              <td>
-                                                {{ number_format($qt->amount) }}
-                                                <?php $sum_credit += $qt->amount; ?>
-                                              </td>
-                                            @elseif($qt->memo = 'AKUMULASI PENYUSUTAN')
-                                              <td>
-                                                <?php
-                                                  $date1 = date_create($date_start);
-                                                  $date2 = date_create($date_end);
-                                                  $diff = date_diff($date1,$date2);
-                                                  $range = $diff->format('%a');
-                                                 ?>
-                                                {{ number_format($qt->amount*(round($range/30))) }}
-                                                <?php $sum_debit += $qt->amount; ?>
-                                              </td>
-                                              <td>0.00</td>
                                             @endif
+                                            <td>{{ $qt->memo }}</td>
+                                                @if($qt->type == 'masuk' AND $qt->memo != 'AKUMULASI PENYUSUTAN')
+                                                  <td>
+                                                    {{ number_format($qt->amount) }}
+                                                    <?php $sum_debit += $qt->amount; ?>
+                                                  </td>
+                                                  <td>0.00</td>
+                                                @elseif($qt->type == 'keluar')
+                                                  <td>0.00</td>
+                                                  <td>
+                                                    {{ number_format($qt->amount) }}
+                                                    <?php $sum_credit += $qt->amount; ?>
+                                                  </td>
+                                                @elseif($qt->memo = 'AKUMULASI PENYUSUTAN')
+                                                  <td>
+                                                    <?php
+                                                      $date1 = date_create($qt->source);
+                                                      $date_1_1 = date_format($date1,'Y');
+                                                      $date2 = date_create($date_end);
+                                                      $date_2_2 = date_format($date2,'Y');
+                                                      $diff = ($date_2_2-$date_1_1)+1;
+                                                     ?>
+                                                    {{ number_format($qt->amount*$diff) }}
+                                                    <?php $sum_debit += $qt->amount*$diff; ?>
+                                                  </td>
+                                                  <td>0.00</td>
+                                                @endif
                                     </tr>
                                 @endforeach
                             </tbody>

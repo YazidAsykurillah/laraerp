@@ -154,17 +154,6 @@
                         </button>
                     </div>
                 </div>
-                @else
-                <div class="form-group pull-right">
-                    {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
-                    <div class="col-sm-3">
-                        <input type="hidden" name="sort_target_year" id="sort_target_year" value="<?php echo date('Y'); ?>">
-                        <input type="hidden" name="sort_target" id="sort_target" value="y">
-                        <button type="submit" class="btn btn-default" id="btn-submit-neraca-print" title="click to print">
-                            <i class="fa fa-print"></i>&nbsp;
-                        </button>
-                    </div>
-                </div>
                 @endif
                 {!! Form::close() !!}
             </div>

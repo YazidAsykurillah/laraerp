@@ -410,16 +410,29 @@
                                                 <td>0,00</td>
                                                 @else
                                                 <td id="{{$sub->id}}">
-
+                                                    @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
+                                                        {{ $sum_kendaraan}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
+                                                        {{ $sum_gedung}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN INVENTARIS')
+                                                        {{ $sum_inventaris}}
+                                                    @endif
+                                                    <?php $sum = str_replace(',','',$sum_kendaraan)+str_replace(',','',$sum_gedung)+str_replace(',','',$sum_inventaris); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','') == '')
                                                 <td>0,00</td>
                                                 @else
-                                                <td>
-                                                    {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','')*12) }}
-
+                                                <td id="{{$sub->id}}">
+                                                    @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
+                                                        {{ $sum_kendaraan}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
+                                                        {{ $sum_gedung}}
+                                                    @elseif($sub->name == 'AKUMULASI PENYUSUTAN INVENTARIS')
+                                                        {{ $sum_inventaris}}
+                                                    @endif
+                                                    <?php $sum = str_replace(',','',$sum_kendaraan)+str_replace(',','',$sum_gedung)+str_replace(',','',$sum_inventaris); ?>
                                                 </td>
                                                 @endif
                                             @endif

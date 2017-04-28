@@ -251,6 +251,9 @@ class NeracaController extends Controller
                 $data['month_end'] = $request->sort_target_months_end;
                 $data['year_end'] = $request->sort_target_years_end;
                 $data['sort_target_m'] = 'm';
+                $data['sum_kendaraan'] = $request->sort_target_akum_kendaraan;
+                $data['sum_gedung'] = $request->sort_target_akum_gedung;
+                $data['sum_inventaris'] = $request->sort_target_akum_inventaris;
                 $conv_month_start ='';
                 $conv_month_end ='';
                 if(true){

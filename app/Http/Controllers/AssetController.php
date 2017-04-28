@@ -61,6 +61,7 @@ class AssetController extends Controller
         $asset_account->memo = $request->notes;
         $asset_account->save();
 
+        // penyusutan garis lurus
         $biaya_count = (floatval(preg_replace('#[^0-9.]#','',$request->amount))-floatval(preg_replace('#[^0-9.]#','',$request->residual_value)))/($request->periode/12);
 
         $biaya_penyusutan_account = New TransactionChartAccount;
