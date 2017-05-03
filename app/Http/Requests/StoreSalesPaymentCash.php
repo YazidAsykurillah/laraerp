@@ -24,8 +24,9 @@ class StoreSalesPaymentCash extends Request
     public function rules()
     {
         return [
-            'sales_order_invoice_id'=>'required|integer',
-            'amount'=>'required'
+            'cash_id'=>'required',
+            'amount'=>'required',
+            'select_account'=>'required',
         ];
     }
 }

@@ -22,7 +22,7 @@ class BiayaOperasiController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('kas-kecil-module'))
+        if(\Auth::user()->can('jurnal-umum-module'))
         {
             return view('biaya_operasi.index');
         }else{
@@ -37,7 +37,7 @@ class BiayaOperasiController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('create-kas-kecil-module'))
+        if(\Auth::user()->can('create-jurnal-umum-module'))
         {
             $sub_account = SubChartAccount::all();
             $banks = Bank::lists('name', 'id');
@@ -59,17 +59,33 @@ class BiayaOperasiController extends Controller
      */
     public function store(StoreBiayaOperasiRequest $request)
     {
+        $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('name',$request->beban_operasi_account)->value('chart_account_id');
+
         //save to cash or bank master
         if($request->pay_method == 2)
         {
+          if($sub_account_id == 62)
+          {
             $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
-            $new_value = $value_first-$request->debit;
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#', '', $request->debit));
             \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first-floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
         }elseif ($request->pay_method == 1)
         {
+          if($sub_account_id == 62)
+          {
             $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
-            $new_value = $value_first-$request->debit;
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#', '', $request->debit));
             \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first-floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
         }else
         {
 
@@ -78,7 +94,7 @@ class BiayaOperasiController extends Controller
         $id_sub_account = \DB::table('sub_chart_accounts')->select('id')->where('name',$request->beban_operasi_account)->value('id');
         // now save beban operasi account
         $trans_chart_account = New TransactionChartAccount;
-        $trans_chart_account->amount = $request->debit;
+        $trans_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->debit));
         $trans_chart_account->sub_chart_account_id = $id_sub_account;
         $trans_chart_account->created_at = date('Y-m-d h:i:s');
         $trans_chart_account->updated_at = date('Y-m-d h:i:s');
@@ -91,20 +107,35 @@ class BiayaOperasiController extends Controller
 
         $id_first_row = $trans_chart_account->id;
         // now save cash/bank account
-        $trans_chart_account_cb = New TransactionChartAccount;
-        $trans_chart_account_cb->amount = $request->debit;
-        $trans_chart_account_cb->sub_chart_account_id = $request->cash_bank_account;
-        $trans_chart_account_cb->created_at = date('Y-m-d h:i:s');
-        $trans_chart_account_cb->updated_at = date('Y-m-d h:i:s');
-        $trans_chart_account_cb->reference = $id_first_row;
-        $trans_chart_account_cb->source = $request->cash_or_bank;
-        $trans_chart_account_cb->type = 'keluar';
-        $trans_chart_account_cb->description = $request->pay_method;
-        $trans_chart_account_cb->memo = $request->memo;
-        $trans_chart_account_cb->save();
+        if($sub_account_id == 62)
+        {
+          $trans_chart_account_cb = New TransactionChartAccount;
+          $trans_chart_account_cb->amount = floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+          $trans_chart_account_cb->sub_chart_account_id = $request->cash_bank_account;
+          $trans_chart_account_cb->created_at = date('Y-m-d h:i:s');
+          $trans_chart_account_cb->updated_at = date('Y-m-d h:i:s');
+          $trans_chart_account_cb->reference = $id_first_row;
+          $trans_chart_account_cb->source = $request->cash_or_bank;
+          $trans_chart_account_cb->type = 'masuk';
+          $trans_chart_account_cb->description = $request->pay_method;
+          $trans_chart_account_cb->memo = $request->memo;
+          $trans_chart_account_cb->save();
+        }else{
+          $trans_chart_account_cb = New TransactionChartAccount;
+          $trans_chart_account_cb->amount = floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+          $trans_chart_account_cb->sub_chart_account_id = $request->cash_bank_account;
+          $trans_chart_account_cb->created_at = date('Y-m-d h:i:s');
+          $trans_chart_account_cb->updated_at = date('Y-m-d h:i:s');
+          $trans_chart_account_cb->reference = $id_first_row;
+          $trans_chart_account_cb->source = $request->cash_or_bank;
+          $trans_chart_account_cb->type = 'keluar';
+          $trans_chart_account_cb->description = $request->pay_method;
+          $trans_chart_account_cb->memo = $request->memo;
+          $trans_chart_account_cb->save();
+        }
 
         return redirect('biaya-operasi')
-            ->with('successMessage','Biaya operasi has been added');
+            ->with('successMessage','Jurnal Umum has been added');
     }
 
     /**
@@ -128,7 +159,7 @@ class BiayaOperasiController extends Controller
      */
     public function edit($id)
     {
-        if(\Auth::user()->can('edit-kas-kecil-module'))
+        if(\Auth::user()->can('edit-jurnal-umum-module'))
         {
             $trans_chart_account = TransactionChartAccount::findOrFail($id);
             $cash_bank_account = TransactionChartAccount::select('sub_chart_account_id')->where('reference',$id)->get();
@@ -164,31 +195,62 @@ class BiayaOperasiController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->id_sub_account_first)->value('chart_account_id');
         if($request->cash_bank == 2)
         {
+          if ($sub_account_id == 62)
+          {
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('cashs')->where('id',$request->source)->update(['value'=>$back_value]);
+          }else{
             $value_first = \DB::table('cashs')->select('value')->where('id',$request->source)->value('value');
             $back_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
             \DB::table('cashs')->where('id',$request->source)->update(['value'=>$back_value]);
+          }
         }elseif ($request->cash_bank == 1)
         {
+          if($sub_account_id == 62)
+          {
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('banks')->where('id',$request->source)->update(['value'=>$back_value]);
+          }else{
             $value_first = \DB::table('banks')->select('value')->where('id',$request->source)->value('value');
             $back_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
             \DB::table('banks')->where('id',$request->source)->update(['value'=>$back_value]);
+          }
         }else
         {
 
         }
 
+        $sub_account_id_pay = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->beban_operasi_account)->value('chart_account_id');
+
         if($request->pay_method == 2)
         {
+          if($sub_account_id_pay == 62)
+          {
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
             $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
             $new_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount));
             \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
         }elseif ($request->pay_method == 1)
         {
+          if($sub_account_id_pay == 62)
+          {
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $back_value+floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
             $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
             $new_value = $back_value-floatval(preg_replace('#[^0-9.]#','',$request->amount));
             \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
         }else
         {
 
@@ -206,21 +268,38 @@ class BiayaOperasiController extends Controller
         $trans_chart_account->description = $request->memo;
         $trans_chart_account->memo = 'BIAYA OPERASIONAL';
         $trans_chart_account->save();
-        // now save cash/bank account
-        \DB::table('transaction_chart_accounts')->where('reference',$id)->update([
-                'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->amount)),
-                'sub_chart_account_id'=>$request->cash_bank_account,
-                'created_at'=>date('Y-m-d h:i:s'),
-                'updated_at'=>date('Y-m-d h:i:s'),
-                'reference'=>$id,
-                'source'=>$request->cash_or_bank,
-                'type'=>'keluar',
-                'description'=>$request->pay_method,
-                'memo'=>$request->memo
-        ]);
+
+        if($sub_account_id_pay == 62)
+        {
+          // now save cash/bank account
+          \DB::table('transaction_chart_accounts')->where('reference',$id)->update([
+                  'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->amount)),
+                  'sub_chart_account_id'=>$request->cash_bank_account,
+                  'created_at'=>date('Y-m-d h:i:s'),
+                  'updated_at'=>date('Y-m-d h:i:s'),
+                  'reference'=>$id,
+                  'source'=>$request->cash_or_bank,
+                  'type'=>'masuk',
+                  'description'=>$request->pay_method,
+                  'memo'=>$request->memo
+          ]);
+        }else{
+          // now save cash/bank account
+          \DB::table('transaction_chart_accounts')->where('reference',$id)->update([
+                  'amount'=>floatval(preg_replace('#[^0-9.]#','',$request->amount)),
+                  'sub_chart_account_id'=>$request->cash_bank_account,
+                  'created_at'=>date('Y-m-d h:i:s'),
+                  'updated_at'=>date('Y-m-d h:i:s'),
+                  'reference'=>$id,
+                  'source'=>$request->cash_or_bank,
+                  'type'=>'keluar',
+                  'description'=>$request->pay_method,
+                  'memo'=>$request->memo
+          ]);
+        }
 
         return redirect('biaya-operasi')
-            ->with('successMessage','biaya operasi has been updated'.$id);
+            ->with('successMessage','Jurnal Umum has been updated');
     }
 
     /**
@@ -235,6 +314,6 @@ class BiayaOperasiController extends Controller
         $trans_chart_account->delete();
 
         return redirect('biaya-operasi')
-            ->with('successMessage','biaya operasi has been deleted');
+            ->with('successMessage','Jurnal Umum has been deleted');
     }
 }

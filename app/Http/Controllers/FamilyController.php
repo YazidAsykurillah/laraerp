@@ -104,7 +104,7 @@ class FamilyController extends Controller
         $family->name = $request->name;
         $family->save();
         return redirect('family/'.$id.'/edit')
-            ->with('successMessage','Family has been updateds');
+            ->with('successMessage','Family has been updated');
     }
 
     /**

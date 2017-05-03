@@ -24,19 +24,23 @@
 @section('content')
     <ul class="nav nav-tabs">
         <li class="active">
-            <a data-toggle="tab" href="#section-payment-method-cash"><i class="fa fa-desktop"></i>&nbsp;Cash</a>
+            <a data-toggle="tab" href="#section-payment-method-cash" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Cash</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#section-payment-method-bank"><i class="fa fa-desktop"></i>&nbsp;Bank Transfer</a>
+            <a data-toggle="tab" href="#section-payment-method-bank" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Bank Transfer</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#section-payment-method-giro" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Giro</a>
         </li>
     </ul>
     <div class="tab-content">
         <div id="section-payment-method-cash" class="tab-pane fade in active">
+            <br>
             <div class="row">
                 <div class="col-lg-7">
-                    <div class="box">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                       <div class="box-header with-border">
-                        <h3 class="box-title">Form Input Payment</h3>
+                        <h3 class="box-title">Payment Cash</h3>
                       </div><!-- /.box-header -->
                       <div class="box-body">
                         {!! Form::open(['url'=>'storePurchasePaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
@@ -63,7 +67,7 @@
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('cash_account') ? ' has-error' : '' }}">
-                            {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
+                            {!! Form::label('select_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
                             <div class="col-sm-9">
                             <select name="cash_account" class="form-control">
                                 <option value="">Select Account</option>
@@ -103,7 +107,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5">
-                  <div class="box">
+                  <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                       <h3 class="box-title">Invoice Information</h3>
                     </div><!-- /.box-header -->
@@ -132,11 +136,12 @@
         </div>
 
         <div id="section-payment-method-bank" class="tab-pane fade">
+            <br>
             <div class="row">
                 <div class="col-lg-7">
-                    <div class="box">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                       <div class="box-header with-border">
-                        <h3 class="box-title">Form Input Payment</h3>
+                        <h3 class="box-title">Payment Bank Transfer</h3>
                       </div><!-- /.box-header -->
                       <div class="box-body">
                         {!! Form::open(['url'=>'storePurchasePaymentTransfer','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
@@ -163,7 +168,7 @@
                             </div>
                           </div>
                           <div class="form-group{{ $errors->has('transfer_account') ? ' has-error' : '' }}">
-                              {!! Form::label('select_account','Deposit to Account',['class'=>'col-sm-3 control-label']) !!}
+                              {!! Form::label('select_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
                               <div class="col-sm-9">
                               <select name="transfer_account" class="form-control">
                                   <option value="">Select Account</option>
@@ -204,7 +209,131 @@
                     </div>
                 </div>
                 <div class="col-lg-5">
-                  <div class="box">
+                  <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Invoice Information</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-6"><strong>Invoice Code</strong></div>
+                        <div class="col-md-3">{{ $invoice->code }} </div>
+                      </div>
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-6"><strong>Bill Price</strong></div>
+                        <div class="col-md-3">{{ number_format($invoice->bill_price) }} </div>
+                      </div>
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-6"><strong>Paid Price</strong></div>
+                        <div class="col-md-3">{{ number_format($invoice->paid_price) }} </div>
+                      </div>
+
+
+                    </div><!-- /.box-body -->
+
+                  </div><!-- /.box -->
+                </div>
+            </div>
+        </div>
+
+        <div id="section-payment-method-giro" class="tab-pane fade">
+            <br>
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">Payment Giro</h3>
+                      </div><!-- /.box-header -->
+                      <div class="box-body">
+                        {!! Form::open(['url'=>'storePurchasePaymentGiro','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
+                          <div class="form-group{{ $errors->has('no_giro') ? ' has-error' : '' }}">
+                              {!! Form::label('no_giro', 'No.Giro', ['class'=>'col-sm-3 control-label']) !!}
+                              <div class="col-sm-9">
+                                {!! Form::text('no_giro', null, ['class'=>'form-control', 'placeholder'=>'Input No.Giro', 'id'=>'no_giro']) !!}
+                                @if ($errors->has('no_giro'))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('no_giro') }}</strong>
+                                  </span>
+                                @endif
+                              </div>
+                          </div>
+                          <div class="form-group{{ $errors->has('nama_bank') ? ' has-error' : '' }}">
+                            {!! Form::label('nama_bank', 'Bank', ['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-9">
+                              {!! Form::text('nama_bank', null,['class'=>'form-control', 'placeholder'=>'Bank of name', 'id'=>'nama_bank']) !!}
+                              @if ($errors->has('nama_bank'))
+                                <span class="help-block">
+                                  <strong>{{ $errors->first('nama_bank') }}</strong>
+                                </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="form-group{{ $errors->has('tanggal_cair') ? ' has-error' : '' }}">
+                            {!! Form::label('tanggal_cair', 'Tanggal Cair', ['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-9">
+                              {!! Form::date('tanggal_cair', null,['class'=>'form-control', 'placeholder'=>'Tanggal Cair of giro', 'id'=>'tanggal_cair']) !!}
+                              @if ($errors->has('tanggal_cair'))
+                                <span class="help-block">
+                                  <strong>{{ $errors->first('tanggal_cair') }}</strong>
+                                </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="form-group{{ $errors->has('amount_giro') ? ' has-error' : '' }}">
+                            {!! Form::label('amount_giro', 'Amount Giro', ['class'=>'col-sm-3 control-label']) !!}
+                            <div class="col-sm-9">
+                              {!! Form::text('amount_giro', null,['class'=>'form-control', 'placeholder'=>'Amount of giro', 'id'=>'amount-giro']) !!}
+                              @if ($errors->has('amount_giro'))
+                                <span class="help-block">
+                                  <strong>{{ $errors->first('amount_giro') }}</strong>
+                                </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="form-group{{ $errors->has('gir_account') ? ' has-error' : '' }}">
+                              {!! Form::label('gir_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
+                              <div class="col-sm-9">
+                              <select name="gir_account" class="form-control">
+                                  <option value="">Select Account</option>
+                              @foreach(list_account_cash_bank('51') as $as)
+                                  @if($as->level == 1)
+                                  <optgroup label="{{ $as->name }}">
+                                  @endif
+                                  @if($as->level == 2)
+                                  <option value="{{ $as->id }}">{{ $as->account_number }}&nbsp;&nbsp;{{ $as->name }}</option>
+                                  @endif
+                              @endforeach
+                              </select>
+                              @if($errors->has('gir_account'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('gir_account') }}</strong>
+                                  </span>
+                              @endif
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+                            <div class="col-sm-10">
+                              <a href="{{ url('purchase-order-invoice/'.$invoice->id.'') }}" class="btn btn-default">
+                                <i class="fa fa-repeat"></i>&nbsp;Cancel
+                              </a>&nbsp;
+                              <input type="hidden" name="purchase_order_invoice_id" value="{{ $invoice->id }}">
+                              <input type="hidden" name="purchase_order_invoice_code" value="{{ $invoice->code }}">
+                              <input type="hidden" name="payment_method_id" value="3">
+                              <button type="submit" class="btn btn-info" id="btn-submit-payment">
+                                <i class="fa fa-save"></i>&nbsp;Submit
+                              </button>
+
+                            </div>
+                          </div>
+                        {!! Form::close() !!}
+                      </div><!-- /.box-body -->
+
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                  <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
                       <h3 class="box-title">Invoice Information</h3>
                     </div><!-- /.box-header -->
@@ -251,6 +380,10 @@
         aDec:'.'
     });
     $('#amount-cash').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+    $('#amount-giro').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

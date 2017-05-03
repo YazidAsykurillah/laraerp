@@ -57,19 +57,22 @@
           <div class="pull-right">
             <!--Show button create payment only when invoice status is NOT completed yet-->
             <a href="{{ url('stock_balance/print') }}" class="btn btn-default btn-xs">
-                <i class="fa fa-print"></i>&nbsp;Print
+              <i class="fa fa-print"></i>&nbsp;Print
             </a>
           </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
             <div class="table-responsive" style="max-height:500px">
-              <table class="table table-bordered" id="table-product">
+              <table class="table table-striped table-hover" id="table-product">
                 <thead>
-                  <tr>
+                  <tr style="background-color:#3c8dbc;color:white">
                       <th style="width:5%;">#</th>
-                      <th style="width:20%;">Product Name</th>
-                      <th style="width:30%;">Description</th>
+                      <th style="width:10%;">Family</th>
+                      <th style="width:15%;">Name</th>
+                      <th style="width:15%;">Description</th>
+                      <th style="width:5%;">Unit</th>
+                      <th style="width:10%;">Category</th>
                       <th style="width:10%;">System Stock</th>
                       <th style="width:10%;">Real Stock</th>
                       <th style="width:25%;">Information</th>
@@ -90,8 +93,11 @@
                     @foreach($dataList as $view)
                         <tr>
                             <td>{{ $no++ }}</td>
+                            <td>{{ $view->main_product->family->name}}</td>
                             <td>{{ $view->name }}</td>
                             <td>{{ $view->description }}<input type="hidden" value="{{ $view->id }}"name="product_id[]"></td>
+                            <td>{{ $view->main_product->unit->name}}</td>
+                            <td>{{ $view->main_product->category->name}}</td>
                             <td>{{ $view->stock }}<input type="hidden" value="{{ $view->stock }}" name="system_stock[]"></td>
                             <td>
                                 <input type="text" value="{{ $view->stock }}" name="real_stock[]" class="col-lg-12">

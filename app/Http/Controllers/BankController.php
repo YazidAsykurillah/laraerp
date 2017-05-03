@@ -59,7 +59,7 @@ class BankController extends Controller
         ];
         $save = Bank::create($data);
         return redirect('bank')
-            ->with('successMessage', "Bank has been created");
+            ->with('successMessage', "Bank has been added");
 
     }
 
@@ -109,7 +109,7 @@ class BankController extends Controller
         $bank->account_number = $request->account_number;
         $bank->value = floatval(preg_replace('#[^0-9.]#', '', $request->value));
         $bank->save();
-        return redirect('bank/'.$id.'/edit')->with('successMessage', 'Bank has been edited');
+        return redirect('bank/'.$id.'/edit')->with('successMessage', 'Bank has been updated');
     }
 
     /**

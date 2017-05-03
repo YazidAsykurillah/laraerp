@@ -57,7 +57,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->save();
         return redirect('category')
-        ->with('successMessage', 'Berhasil menambahkan kategori');
+        ->with('successMessage', 'Category has been added');
     }
 
     /**

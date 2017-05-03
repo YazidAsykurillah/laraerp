@@ -10,7 +10,7 @@ use App\Http\Requests\StorePurchaseOrderInvoiceRequest;
 use App\Http\Requests\UpdatePurchaseOrderInvoiceRequest;
 use App\Http\Requests\StorePurchasePaymentCash;
 use App\Http\Requests\StorePurchasePaymentTransfer;
-
+use App\Http\Requests\StorePurchasePaymentGiro;
 
 use App\PurchaseOrderInvoice;
 use App\PurchaseOrder;
@@ -18,6 +18,7 @@ use App\PaymentMethod;
 use App\PurchaseInvoicePayment;
 use App\Bank;
 use App\Cash;
+use App\GiroPurchaseInvoicePayment;
 use App\BankPurchaseInvoicePayment;
 use App\CashPurchaseInvoicePayment;
 use App\TransactionChartAccount;
@@ -107,7 +108,8 @@ class PurchaseOrderInvoiceController extends Controller
                 //'payment_method_id'=>$request->payment_method_id,
                 // 'paid_price'=>floatval(preg_replace('#[^0-9.]#', '', $request->paid_price)),
                 'notes'=>$request->notes,
-                'created_by'=>\Auth::user()->id
+                'created_by'=>\Auth::user()->id,
+                'term'=>$request->term,
             ];
 
             $save = PurchaseOrderInvoice::create($data);
@@ -308,6 +310,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order_invoice->code = $request->code;
         $purchase_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price));
         $purchase_order_invoice->notes = $request->notes;
+        $purchase_order_invoice->term = $request->term;
         $purchase_order_invoice->save();
 
         // //find purchase_order model
@@ -481,6 +484,8 @@ class PurchaseOrderInvoiceController extends Controller
 
     public function createPayment(Request $request)
     {
+      if(\Auth::user()->can('create-purchase-order-invoice-payment-module'))
+      {
         $invoice_id = $request->invoice_id;
         $invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name','id');
@@ -491,6 +496,9 @@ class PurchaseOrderInvoiceController extends Controller
                     ->with('payment_method',$payment_methods)
                     ->with('banks',$banks)
                     ->with('cashs',$cashs);
+      }else{
+        return view('403');
+      }
 
     }
 
@@ -619,6 +627,73 @@ class PurchaseOrderInvoiceController extends Controller
             $bank_value->value = $new_bank_value;
             $update_paid_price = $purchase_order_invoice->save();
             $update_bank_value = $bank_value->save();
+
+            return redirect('purchase-order/'.$purchase_order_id)
+                ->with('successMessage','Payment has been added');
+        }else{
+            return "Failed to save invoice payment, contact the developer";
+        }
+    }
+
+    public function storePaymentGiro(StorePurchasePaymentGiro $request)
+    {
+        $invoice_id = $request->purchase_order_invoice_id;
+        $invoice_code = $request->purchase_order_invoice_code;
+        //$bank_id = $request->bank_id;
+        $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount_giro));
+
+        $purchase_order_invoice = PurchaseOrderInvoice::findOrFail($invoice_id);
+        $current_paid_price = $purchase_order_invoice->paid_price;
+        $new_paid_price = $current_paid_price+$amount;
+
+        $purchase_order_id = $purchase_order_invoice->purchase_order->id;
+        $purchase_order_supplier_id = $purchase_order_invoice->purchase_order->supplier_id;
+        $supplier = Supplier::findOrFail($purchase_order_supplier_id);
+
+        $purchase_invoice_payment = new PurchaseInvoicePayment;
+        $purchase_invoice_payment->purchase_order_invoice_id = $invoice_id;
+        $purchase_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#','',$amount));
+        $purchase_invoice_payment->payment_method_id = $request->payment_method_id;
+        $purchase_invoice_payment->receiver = \Auth::user()->id;
+        $save = $purchase_invoice_payment->save();
+
+        $giro_sales_invoice_payment = new GiroPurchaseInvoicePayment;
+        $giro_sales_invoice_payment->no_giro = $request->no_giro;
+        $giro_sales_invoice_payment->bank = $request->nama_bank;
+        $giro_sales_invoice_payment->tanggal_cair = $request->tanggal_cair;
+        $giro_sales_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#','',$amount));
+        $giro_sales_invoice_payment->purchase_invoice_payment_id = $purchase_invoice_payment->id;
+        $giro_sales_invoice_payment->save();
+
+        // $bank_value = Bank::findOrFail($bank_id);
+        // $current_bank_value = $bank_value->value;
+        // $new_bank_value = $current_bank_value-$amount;
+
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $amount;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->gir_account;
+        $transaction_sub_chart_account->reference = $invoice_id;
+        $transaction_sub_chart_account->source = $invoice_code;
+        $transaction_sub_chart_account->type = 'keluar';
+        $transaction_sub_chart_account->description = 'PAYMENT INVOICE : '.$invoice_code.' '.$supplier->name;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
+        $transaction_sub_chart_account->save();
+
+        $trans_payment_k = New TransactionChartAccount;
+        $trans_payment_k->amount = $amount;
+        $trans_payment_k->sub_chart_account_id = 79;
+        $trans_payment_k->reference = $invoice_id;
+        $trans_payment_k->source = $invoice_code;
+        $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE FROM : '.$supplier->name;
+        $trans_payment_k->memo = '';
+        $trans_payment_k->save();
+        if($save){
+            //update invoice's paid_price
+            $purchase_order_invoice->paid_price = $new_paid_price;
+            //$bank_value->value = $new_bank_value;
+            $update_paid_price = $purchase_order_invoice->save();
+            //$update_bank_value = $bank_value->save();
 
             return redirect('purchase-order/'.$purchase_order_id)
                 ->with('successMessage','Payment has been added');

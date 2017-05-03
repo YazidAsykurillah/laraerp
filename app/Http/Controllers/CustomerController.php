@@ -9,7 +9,7 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Requests\StorePaymentInvoiceSalesKasRequest;
 use App\Http\Requests\StorePaymentInvoiceSalesTransferRequest;
-
+use App\Http\Requests\StorePaymentInvoiceSalesGiroRequest;
 use App\Customer;
 use App\Cash;
 use App\Bank;
@@ -83,7 +83,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        return view('customer.show')
+          ->with('customer',$customer);
     }
 
     /**
@@ -136,11 +138,13 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($request->customer_id);
         $customer->delete();
         return redirect('customer')
-            ->with('successMessage', 'Customer has been succesfuly deleted');
+            ->with('successMessage', 'Customer has been deleted');
     }
 
     protected function payment_invoices($id)
     {
+      if(\Auth::user()->can('create-sales-order-invoice-payment-module'))
+      {
         $customer = Customer::findOrFail($id);
         $banks = Bank::lists('name', 'id');
         $cashs = Cash::lists('name','id');
@@ -169,6 +173,10 @@ class CustomerController extends Controller
             ->with('banks',$banks)
             ->with('cashs',$cashs)
             ->with('data_invoice',$data_invoice);
+      }else{
+        return view('403');
+      }
+
     }
 
     public function store_invoice_payment_cash(StorePaymentInvoiceSalesKasRequest $request)
@@ -239,8 +247,8 @@ class CustomerController extends Controller
         $cash_value->value = $cash_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
         $cash_value->save();
 
-        return redirect('supplier')
-            ->with('successMessage','payment supplier invoice has been created');
+        return redirect('customer')
+            ->with('successMessage','payment customer invoice has been added');
     }
 
     public function store_invoice_payment_bank(StorePaymentInvoiceSalesTransferRequest $request)
@@ -311,7 +319,85 @@ class CustomerController extends Controller
         $bank_value->value = $bank_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
         $bank_value->save();
 
-        return redirect('supplier')
-            ->with('successMessage','payment supplier invoice has been created');
+        return redirect('customer')
+            ->with('successMessage','payment customer invoice has been added');
     }
+
+    public function store_invoice_payment_giro(StorePaymentInvoiceSalesGiroRequest $request)
+    {
+        $data_invoice_payment = [];
+        $invoice_payment_id = [];
+        $data_giro_invoice_payment = [];
+        $data_transaction_invoice_payment = [];
+        $data_transaction_invoice_payment_piutang = [];
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            \DB::table('sales_order_invoices')->where('sales_order_id',$request->sales_order_id[$key])->update(['paid_price'=>$request->paid_price[$key]+floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key]))]);
+            array_push($data_invoice_payment,[
+                'sales_order_invoice_id'=>$request->invoice_id[$key],
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'payment_method_id'=>$request->payment_method_id,
+                'receiver'=>\Auth::user()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+            array_push($data_transaction_invoice_payment,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>$request->gir_account,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>$request->invoice_code[$key],
+                'type'=>'masuk',
+                'description'=>$request->customer_name.' PAYMENT INVOICE : '.$request->invoice_code[$key],
+                'memo'=>'PAYMENT FOR : '.$request->invoice_code[$key]
+            ]);
+            array_push($data_transaction_invoice_payment_piutang,[
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sub_chart_account_id'=>34,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$request->invoice_id[$key],
+                'source'=>$request->invoice_code[$key],
+                'type'=>'keluar',
+                'description'=>'INVOICE TO : '.$request->customer_name,
+                'memo'=>''
+            ]);
+        }
+
+        //insert to table purchase invoice payments
+        \DB::table('sales_invoice_payments')->insert($data_invoice_payment);
+        //insert to table transaction chart account
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment);
+        //insert to table transaction chart account "hutang"
+        \DB::table('transaction_chart_accounts')->insert($data_transaction_invoice_payment_piutang);
+
+        foreach ($request->invoice_id as $key => $value) {
+            //update to table purchase order invoices
+            array_push($data_giro_invoice_payment,[
+                'no_giro'=>$request->no_giro[$key],
+                'bank'=>$request->bank[$key],
+                'tanggal_cair'=>$request->tanggal_cair[$key],
+                'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
+                'sales_invoice_payment_id'=>\DB::table('sales_invoice_payments')->select('id')->where('sales_order_invoice_id',$request->invoice_id[$key])->latest()->first()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+        }
+        //insert to table cash purchase invoice payments
+        \DB::table('giro_sales_invoice_payment')->insert($data_giro_invoice_payment);
+
+        // foreach ($data_cash_invoice_payment as $key) {
+        //         print_r($key['purchase_invoice_payment_id']->id);
+        // }
+        // print_r($data_cash_invoice_payment);
+        // exit();
+        // $bank_value = Bank::findOrFail($request->bank_id);
+        // $bank_value->value = $bank_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
+        // $bank_value->save();
+
+        return redirect('customer')
+            ->with('successMessage','payment customer invoice has been added');
+    }
+
 }

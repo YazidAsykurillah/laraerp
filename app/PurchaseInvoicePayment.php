@@ -22,4 +22,9 @@ class PurchaseInvoicePayment extends Model
         return $this->hasMany('App\BankPurchaseInvoicePayment');
     }
 
+    public function payment_method()
+    {
+    	return $this->belongsTo('App\PaymentMethod');
+    }
+
 }

@@ -75,7 +75,7 @@
                             <a href="{{ url('biaya-operasi') }}" class="btn btn-default">
                               <i class="fa fa-repeat"></i>&nbsp;Cancel
                             </a>&nbsp;
-                            <button type="submit" class="btn btn-info" id="btn-submit-bank">
+                            <button type="submit" class="btn btn-info" id="btn-submit-biaya-operasi">
                               <i class="fa fa-save"></i>&nbsp;Submit
                             </button>
                           </div>
@@ -180,7 +180,16 @@
             aSep:',',
             aDec:'.'
         });
+        $('#debit').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+        $('#credit').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
     </script>
+
     <script type="text/javascript">
         $('#pay_method').on('click',function(){
             var payMethod = $('#pay_method').val();
@@ -202,4 +211,19 @@
             }
         });
     </script>
+
+    <script type="text/javascript">
+        $('#credit').on('keyup', function(){
+            var credit = parseInt($('#credit').val());
+            var debit = parseInt($('#debit').val());
+            if(credit != debit){
+                $('#btn-submit-biaya-operasi').prop('disabled',true);
+            }else{
+                $('#btn-submit-biaya-operasi').prop('disabled',false);
+            }
+            return false;
+        });
+
+    </script>
+    <!--ENDBlock Compare control returned quantity to sales quantity-->
 @endsection

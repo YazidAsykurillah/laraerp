@@ -37,7 +37,15 @@ class UnitController extends Controller
     	$unit = new Unit;
     	$unit->name = $request->name;
     	$unit->save();
-    	return redirect('unit');
+    	return redirect('unit')
+        ->with('successMessage','Unit has been deleted');
+    }
+
+    public function show($id)
+    {
+      $unit = Unit::findOrFail($id);
+      return view('unit.show')
+        ->with('unit',$unit);
     }
 
     public function destroy(Request $request)
@@ -74,6 +82,6 @@ class UnitController extends Controller
     	$unit->name = $request->name;
     	$unit->save();
     	return redirect('unit')
-    		->with('successMessage', "Product unit has been successfully updated");
+    		->with('successMessage', "Unit has been updated");
     }
 }

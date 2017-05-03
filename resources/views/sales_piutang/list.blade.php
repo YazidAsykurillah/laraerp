@@ -81,7 +81,14 @@
                                                         {{ number_format($pur['paid_price']) }}
                                                         <?php $sum_paid_price += $pur['paid_price']; ?>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                      <?php
+                                                          $date1 = date_create(date('Y-m-d'));
+                                                          $date2 = date_create($pur['due_date']);
+                                                          $diff = date_diff($date1,$date2);
+                                                          echo $diff->format("%R%a days");
+                                                      ?>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             <tr style="display:none">

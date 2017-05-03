@@ -24,7 +24,7 @@
     {!! Form::model($vehicle,['route'=>['vehicle.update',$vehicle->id],'class'=>'form-horizontal','method'=>'put','files'=>true]) !!}
     <div class="row">
         <div class="col-md-12">
-            <div class="box">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Basic Information</h3>
                 </div>
@@ -62,31 +62,20 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+                      <div class="col-sm-4">
+                        <a href="{{ url('vehicle') }}" class="btn btn-default">
+                          <i class="fa fa-repeat"></i>&nbsp;Cancel
+                        </a>&nbsp;
+                        <button type="submit" class="btn btn-info" id="btn-submit-vehicle">
+                          <i class="fa fa-save"></i>&nbsp;Submit
+                        </button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--ROW Submission-->
-    <div class="row">
-      <div class="col-md-12">
-        <!--BOX submission buttons-->
-        <div class="box">
-          <div class="box-body">
-            <div class="form-group">
-                {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-              <div class="col-sm-4">
-                <a href="{{ url('vehicle') }}" class="btn btn-default">
-                  <i class="fa fa-repeat"></i>&nbsp;Cancel
-                </a>&nbsp;
-                <button type="submit" class="btn btn-info" id="btn-submit-vehicle">
-                  <i class="fa fa-save"></i>&nbsp;Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--ENDBOX submission buttons-->
-      </div>
-    </div>
-    <!--ENDROW Submission-->
+    {!! Form::close() !!}
 @endsection

@@ -161,6 +161,10 @@
             </td>
           </tr>
           <tr>
+            <td style="width:30%;"><strong>PPN</strong></td>
+            <td>({{ $sales_order_invoice->persen_ppn }}&nbsp;%)&nbsp;{{ number_format($sales_order_invoice->price_ppn)}}</td>
+          </tr>
+          <tr>
             <td style="width:30%;"><strong>Notes</strong></td>
             <td>{{ $sales_order_invoice->notes }}</td>
           </tr>

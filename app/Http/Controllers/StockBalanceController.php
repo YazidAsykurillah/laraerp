@@ -79,7 +79,7 @@ class StockBalanceController extends Controller
         //sync the purchase order product relation
         $stock_balance->products()->sync($syncData);
         return redirect('stock_balance')
-            ->with('successMessage','Stock balance has been created');
+            ->with('successMessage','Stock balance has been added');
         // print_r($request->real_stock);
         // print_r($request->product_id);~
         // print_r($request->system_stock);
@@ -95,7 +95,8 @@ class StockBalanceController extends Controller
     {
         $data = \DB::table('product_stock_balance')
         ->join('products','product_stock_balance.product_id','=','products.id')
-        ->select('product_stock_balance.*','products.name','products.description')
+        ->join('main_products','products.main_product_id','=','main_products.id')
+        ->select('product_stock_balance.*','products.name','products.description','main_products.*')
         ->where('product_stock_balance.stock_balance_id','=',$id)
         ->get();
         //$data->product_stock_balance()->get();
@@ -117,7 +118,8 @@ class StockBalanceController extends Controller
         {
             $data = \DB::table('product_stock_balance')
             ->join('products','product_stock_balance.product_id','=','products.id')
-            ->select('product_stock_balance.*','products.name','products.description')
+            ->join('main_products','products.main_product_id','=','main_products.id')
+            ->select('product_stock_balance.*','products.name','products.description','main_products.*')
             ->where('product_stock_balance.stock_balance_id','=',$id)
             ->get();
             $stock_balance = StockBalance::findOrFail($id);
@@ -182,8 +184,22 @@ class StockBalanceController extends Controller
     public function printStockBalance(Request $request)
     {
         $data['products'] = Product::get();
+        $data['tgl'] = date('Y-m-d h:i:s');
         $pdf = \PDF::loadView('pdf.stock_balance',$data);
         return $pdf->stream('stock_balance.pdf');
+    }
+
+    public function printPdf(Request $request)
+    {
+      $data['products'] = \DB::table('product_stock_balance')
+      ->join('products','product_stock_balance.product_id','=','products.id')
+      ->join('main_products','products.main_product_id','=','main_products.id')
+      ->select('product_stock_balance.*','products.name','products.description','main_products.*')
+      ->where('product_stock_balance.stock_balance_id','=',$request->id)
+      ->get();
+      $data['stock_balance'] = StockBalance::findOrFail($request->id);
+      $pdf = \PDF::loadView('pdf.show_stock_balance',$data);
+      return $pdf->stream('show_stock_balance.pdf');
     }
 
 }

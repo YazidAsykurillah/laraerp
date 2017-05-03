@@ -18,7 +18,12 @@ class AssetController extends Controller
      */
     public function index()
     {
+      if(\Auth::user()->can('asset-module'))
+      {
         return view('asset.index');
+      }else{
+        return view('403');
+      }
     }
 
     /**
@@ -28,7 +33,12 @@ class AssetController extends Controller
      */
     public function create()
     {
+      if(\Auth::user()->can('create-asset-module'))
+      {
         return view('asset.create');
+      }else{
+        return view('403');
+      }
     }
 
     /**
@@ -49,12 +59,14 @@ class AssetController extends Controller
         $asset->notes = $request->notes;
         $asset->save();
 
+        $asset_id = $asset->id;
+
         $asset_account = New TransactionChartAccount;
         $asset_account->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
         $asset_account->sub_chart_account_id = $request->asset_account;
         $asset_account->created_at = date('Y-m-d h:i:s');
         $asset_account->updated_at = date('Y-m-d h:i:s');
-        $asset_account->reference = $request->asset_account;
+        $asset_account->reference = $asset_id;
         $asset_account->source = 'asset';
         $asset_account->type = 'masuk';
         $asset_account->description = $request->name;
@@ -69,7 +81,7 @@ class AssetController extends Controller
         $biaya_penyusutan_account->sub_chart_account_id = $request->biaya_penyusutan_account;
         $biaya_penyusutan_account->created_at = date('Y-m-d h:i:s');
         $biaya_penyusutan_account->updated_at = date('Y-m-d h:i:s');
-        $biaya_penyusutan_account->reference = $request->biaya_penyusutan_account;
+        $biaya_penyusutan_account->reference = $asset_id;
         $biaya_penyusutan_account->source = $request->date_purchase;
         $biaya_penyusutan_account->type = 'masuk';
         $biaya_penyusutan_account->description = $request->name;
@@ -81,7 +93,7 @@ class AssetController extends Controller
         $akumulasi_penyusutan_account->sub_chart_account_id =  $request->akumulasi_penyusutan_account;
         $akumulasi_penyusutan_account->created_at = date('Y-m-d h:i:s');
         $akumulasi_penyusutan_account->updated_at = date('Y-m-d h:i:s');
-        $akumulasi_penyusutan_account->reference = $request->akumulasi_penyusutan_account;
+        $akumulasi_penyusutan_account->reference = $asset_id;
         $akumulasi_penyusutan_account->source = $request->date_purchase;
         $akumulasi_penyusutan_account->type = 'masuk';
         $akumulasi_penyusutan_account->description = $request->name;
@@ -90,7 +102,7 @@ class AssetController extends Controller
 
 
         return redirect('asset')
-            ->with('successMessage','Asset has been added'.$request->asset_account);
+            ->with('successMessage','Asset has been added');
     }
 
     /**
@@ -101,7 +113,9 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        //
+        $asset = Asset::findOrFail($id);
+        return view('asset.show')
+          ->with('asset',$asset);
     }
 
     /**
@@ -112,7 +126,14 @@ class AssetController extends Controller
      */
     public function edit($id)
     {
-        //
+      if(\Auth::user()->can('edit-asset-module'))
+      {
+          $asset = Asset::findOrFail($id);
+          return view('asset.edit')
+              ->with('asset', $asset);
+      }else{
+          return view('403');
+      }
     }
 
     /**
@@ -124,7 +145,61 @@ class AssetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $asset = Asset::findOrFail($id);
+      $asset->code = $request->code;
+      $asset->name = $request->name;
+      $asset->date_purchase = $request->date_purchase;
+      $asset->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
+      $asset->residual_value = floatval(preg_replace('#[^0-9.]#','',$request->residual_value));
+      $asset->periode = $request->periode;
+      $asset->notes = $request->notes;
+      $asset->save();
+      $asset_id = $asset->id;
+
+      \DB::table('transaction_chart_accounts')->where('reference',$asset->id)->where('description',$request->notes_old)->where('created_at',$request->created_at_old)->delete();
+
+      $asset_account = New TransactionChartAccount;
+      $asset_account->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
+      $asset_account->sub_chart_account_id = $request->asset_account;
+      $asset_account->created_at = date('Y-m-d h:i:s');
+      $asset_account->updated_at = date('Y-m-d h:i:s');
+      $asset_account->reference = $asset_id;
+      $asset_account->source = 'asset';
+      $asset_account->type = 'masuk';
+      $asset_account->description = $request->name;
+      $asset_account->memo = $request->notes;
+      $asset_account->save();
+
+      // penyusutan garis lurus
+      $biaya_count = (floatval(preg_replace('#[^0-9.]#','',$request->amount))-floatval(preg_replace('#[^0-9.]#','',$request->residual_value)))/($request->periode/12);
+
+      $biaya_penyusutan_account = New TransactionChartAccount;
+      $biaya_penyusutan_account->amount = $biaya_count;
+      $biaya_penyusutan_account->sub_chart_account_id = $request->biaya_penyusutan_account;
+      $biaya_penyusutan_account->created_at = date('Y-m-d h:i:s');
+      $biaya_penyusutan_account->updated_at = date('Y-m-d h:i:s');
+      $biaya_penyusutan_account->reference = $asset_id;
+      $biaya_penyusutan_account->source = $request->date_purchase;
+      $biaya_penyusutan_account->type = 'masuk';
+      $biaya_penyusutan_account->description = $request->name;
+      $biaya_penyusutan_account->memo = 'BIAYA PENYUSUTAN';
+      $biaya_penyusutan_account->save();
+
+      $akumulasi_penyusutan_account = New TransactionChartAccount;
+      $akumulasi_penyusutan_account->amount = $biaya_count;
+      $akumulasi_penyusutan_account->sub_chart_account_id =  $request->akumulasi_penyusutan_account;
+      $akumulasi_penyusutan_account->created_at = date('Y-m-d h:i:s');
+      $akumulasi_penyusutan_account->updated_at = date('Y-m-d h:i:s');
+      $akumulasi_penyusutan_account->reference = $asset_id;
+      $akumulasi_penyusutan_account->source = $request->date_purchase;
+      $akumulasi_penyusutan_account->type = 'masuk';
+      $akumulasi_penyusutan_account->description = $request->name;
+      $akumulasi_penyusutan_account->memo = 'AKUMULASI PENYUSUTAN';
+      $akumulasi_penyusutan_account->save();
+
+
+      return redirect('asset')
+          ->with('successMessage','Asset has been updated');
     }
 
     /**
@@ -133,8 +208,12 @@ class AssetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $asset = Asset::findOrFail($request->asset_id);
+        $asset->delete();
+
+        return redirect('asset')
+          ->with('successMessage',"Asset $asset->name has been deleted");
     }
 }

@@ -76,7 +76,7 @@
             <p class="text text-danger">
               <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
             </p>
-            <input type="text" id="chart_account_id" name="chart_account_id">
+            <input type="hidden" id="chart_account_id" name="chart_account_id">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

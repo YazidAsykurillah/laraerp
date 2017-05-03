@@ -26,6 +26,7 @@ Route::post('ledger.ledger_print','LedgerController@ledger_print');
 Route::post('ledger/search','LedgerController@ledger_search');
 Route::resource('ledger','LedgerController');
 //asset
+Route::post('deleteAsset','AssetController@destroy');
 Route::resource('asset','AssetController');
 //report
 Route::post('report/search','ReportController@report_search');
@@ -104,6 +105,7 @@ Route::resource('category', 'CategoryController');
 
 //Stock Balance
 //Update
+Route::get('stock_balance/{id}/printPdf','StockBalanceController@printPdf');
 Route::get('stock_balance/print','StockBalanceController@printStockBalance');
 Route::put('UpdateSalesOrder', 'SalesOrderController@update');
 Route::post('deleteStockBalance','StockBalanceController@destroy');
@@ -122,6 +124,7 @@ Route::post('deleteProduct', 'ProductController@destroy');
 Route::resource('product', 'ProductController');
 
 //Suppliers
+Route::post('supplier.store_invoice_payment_giro','SupplierController@store_invoice_payment_giro');
 Route::post('supplier.store_invoice_payment_bank','SupplierController@store_invoice_payment_bank');
 Route::post('supplier.store_invoice_payment_cash','SupplierController@store_invoice_payment_cash');
 Route::get('supplier/{id}/payment-invoices','SupplierController@payment_invoices');
@@ -134,6 +137,8 @@ Route::resource('unit', 'UnitController');
 
 
 //Customer
+Route::post('customer.store_invoice_payment_giro','CustomerController@store_invoice_payment_giro');
+Route::post('customer.store_invoice_payment_cash','CustomerController@store_invoice_payment_cash');
 Route::post('customer.store_invoice_payment_bank','CustomerController@store_invoice_payment_bank');
 Route::post('customer.store_invoice_payment_cash','CustomerController@store_invoice_payment_cash');
 Route::get('customer/{id}/payment-invoices','CustomerController@payment_invoices');
@@ -141,10 +146,10 @@ Route::post('deleteCustomer', 'CustomerController@destroy');
 Route::resource('customer', 'CustomerController');
 
 //Purchase orders
-    //purchase hutang
-    Route::get('purchase-hutang','PurchaseOrderController@list_hutang');
-    //call sub product
-    Route::post('callSubProduct','PurchaseOrderController@callSubProduct');
+  //purchase hutang
+  Route::get('purchase-hutang','PurchaseOrderController@list_hutang');
+  //call sub product
+  Route::post('callSubProduct','PurchaseOrderController@callSubProduct');
 	//complete purchase order
 	Route::post('completePurchaseOrder', 'PurchaseOrderController@complete');
 	//accept purchase order
@@ -160,10 +165,11 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('purchase-order', 'PurchaseOrderController'); //
 
 //Purchase Order Invoice
+  Route::post('storePurchasePaymentGiro', 'PurchaseOrderInvoiceController@storePaymentGiro');
 	Route::post('storePurchasePaymentTransfer', 'PurchaseOrderInvoiceController@storePaymentTransfer');
 	Route::post('storePurchasePaymentCash', 'PurchaseOrderInvoiceController@storePaymentCash');
 	Route::post('completePurchaseInvoice', 'PurchaseOrderInvoiceController@completePurchaseInvoice');
-    Route::post('completePurchaseAccount','PurchaseOrderInvoiceController@completePurchaseAccount');
+  Route::post('completePurchaseAccount','PurchaseOrderInvoiceController@completePurchaseAccount');
 	Route::get('purchase-order-invoice/{invoice_id}/payment/create', 'PurchaseOrderInvoiceController@createPayment');
 	Route::get('purchase-order-invoice/{purchase_order_id}/create', 'PurchaseOrderInvoiceController@create');
 	Route::post('storePurchaseOrderInvoice', 'PurchaseOrderInvoiceController@store');
@@ -183,10 +189,10 @@ Route::resource('customer', 'CustomerController');
 
 
 //Sales Order
-    //sales piutang
-    Route::get('sales-piutang','SalesOrderController@list_piutang');
-    //call sub product
-    Route::post('callSubProduct','SalesOrderController@callSubProduct');
+  //sales piutang
+  Route::get('sales-piutang','SalesOrderController@list_piutang');
+  //call sub product
+  Route::post('callSubProduct','SalesOrderController@callSubProduct');
 	//Save
 	Route::post('storeSalesOrder', 'SalesOrderController@store');
 	//Update sales order status
@@ -201,10 +207,11 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order', 'SalesOrderController');
 
 //Sales order invoice
-    Route::post('storeSalesPaymentCash','SalesOrderInvoiceController@storePaymentCash');
-    Route::post('storeSalesPaymentTransfer','SalesOrderInvoiceController@storePaymentTransfer');
+  Route::post('storeSalesPaymentGiro','SalesOrderInvoiceController@storePaymentGiro');
+  Route::post('storeSalesPaymentCash','SalesOrderInvoiceController@storePaymentCash');
+  Route::post('storeSalesPaymentTransfer','SalesOrderInvoiceController@storePaymentTransfer');
 	Route::post('completeSalesInvoice', 'SalesOrderInvoiceController@completeSalesInvoice');
-    Route::post('completeSalesAccount','SalesOrderInvoiceController@completeSalesAccount');
+  Route::post('completeSalesAccount','SalesOrderInvoiceController@completeSalesAccount');
 	Route::post('deleteSalesOrderInvoice', 'SalesOrderInvoiceController@destroy');
 	Route::post('storeSalesOrderInvoice', 'SalesOrderInvoiceController@store');
 	Route::get('sales-order-invoice/{sales_order_id}/create', 'SalesOrderInvoiceController@create');
@@ -215,6 +222,7 @@ Route::resource('customer', 'CustomerController');
 	Route::resource('sales-order-invoice', 'SalesOrderInvoiceController');
 
 //Invoiceterms
+  Route::post('deleteInvoiceTerm','InvoiceTermController@destroy');
 	Route::resource('invoice-term', 'InvoiceTermController');
 
 

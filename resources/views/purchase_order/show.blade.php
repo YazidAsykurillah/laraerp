@@ -254,7 +254,7 @@
                     <tr>
                       <td><strong>Due Date</strong></td>
                       <td>:</td>
-                      <td>{{ $purchase_order->purchase_order_invoice->due_date }}</td>
+                      <td>{{ $purchase_order->purchase_order_invoice->term }}</td>
                     </tr>
                     <tr>
                       <td><strong>Status</strong></td>
@@ -314,11 +314,7 @@
                           <tr>
                             <td>{{ $payment_row +=1 }}</td>
                             <td>{{ $payment->created_at }}</td>
-                            @if($payment->payment_method_id == 2)
-                            <td>{{ "Cash" }}</td>
-                            @else
-                            <td>{{ "Bank Transfer ".$purchase_order->bank_purchase_invoice_payment }}&nbsp;&nbsp;<a href="#" data-toggle="tooltip" data-placement="right" title="{{$payment->id}}"><i class="fa fa-info"></i></a></td>
-                            @endif
+                            <td>{{ $payment->payment_method->name }}</td>
                             <td>{{ number_format($payment->amount) }}</td>
                           </tr>
                           @endforeach

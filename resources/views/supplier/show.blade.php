@@ -22,10 +22,10 @@
 @section('content')
   <div class="row">
     <div class="col-md-7">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header">
           <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Informations</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
@@ -49,31 +49,31 @@
           </div>
         </div>
         <div class="box-footer clearfix">
-          
+
         </div>
       </div>
     </div>
     <div class="col-md-5">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header">
           <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Primary Contact Information</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-hover">
               <tr>
-                <td style="width:15%;">PIC</td>
+                <td style="width:25%;">PIC</td>
                 <td>:</td>
                 <td>{{ $supplier->pic_name }}</td>
               </tr>
               <tr>
-                <td style="width:15%;">Email</td>
+                <td style="width:25%;">Email</td>
                 <td>:</td>
                 <td> {{ $supplier->primary_email }}</td>
               </tr>
               <tr>
-                <td style="width:15%;">Phone Number</td>
+                <td style="width:25%;">Phone Number</td>
                 <td>:</td>
                 <td> {{ $supplier->primary_phone_number }}</td>
               </tr>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="box-footer clearfix">
-          
+
         </div>
       </div>
     </div>

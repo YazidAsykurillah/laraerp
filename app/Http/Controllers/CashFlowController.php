@@ -16,7 +16,13 @@ class CashFlowController extends Controller
      */
     public function index()
     {
+      if(\Auth::user()->can('cash-flow-module'))
+      {
         return view('cash_flow.index');
+      }else{
+        return view('403');
+      }
+
     }
 
     /**
@@ -98,20 +104,25 @@ class CashFlowController extends Controller
 
     public function cash_flow_print(Request $request)
     {
+      if(\Auth::user()->can('print-cash-flow-module'))
+      {
         $data = [
                 'date_start'=>$request->sort_date_start,
                 'date_end'=>$request->sort_date_end,
                 'lost_profit'=>$request->sort_lost_profit,
                 'akumulasi_penyusutan'=>$request->sort_akumulasi_penyusutan,
-                'akun_hutang'=>$request->akun_hutang,
-                'kewajiban_lancar_lainnya'=>$request->kewajiban_lancar_lainnya,
+                'akun_hutang'=>$request->sort_akun_hutang,
+                'kewajiban_lancar_lainnya'=>$request->sort_kewajiban_lancar_lainnya,
                 'akun_piutang'=>$request->sort_akun_piutang,
                 'aset_lancar_lainnya'=>$request->sort_aset_lancar_lainnya,
                 'nilai_histori'=>$request->sort_nilai_histori,
-                'kewajiban_jangka_panjang'=>$request->kewajiban_jangka_panjang,
+                'kewajiban_jangka_panjang'=>$request->sort_kewajiban_jangka_panjang,
                 'ekuitas'=>$request->sort_ekuitas,
         ];
         $pdf = \PDF::loadView('pdf.cash_flow',$data);
         return $pdf->stream('cash_flow.pdf');
+      }else{
+        return view('403');
+      }
     }
 }

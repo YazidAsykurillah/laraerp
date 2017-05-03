@@ -25,7 +25,7 @@ class MainProductController extends Controller
 
     public function index()
     {
-        if(\Auth::user()->can('main-product-module'))
+        if(\Auth::user()->can('product-module'))
         {
             return view('main_product.index');
         }else{
@@ -40,7 +40,7 @@ class MainProductController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('create-main-product-module'))
+        if(\Auth::user()->can('create-product-module'))
         {
             $category_options = Category::lists('name', 'id');
             $unit_options = Unit::lists('name', 'id');
@@ -122,7 +122,7 @@ class MainProductController extends Controller
      */
     public function edit($id)
     {
-        if(\Auth::user()->can('edit-main-product-module'))
+        if(\Auth::user()->can('edit-product-module'))
         {
             $category_options = Category::lists('name', 'id');
             $unit_options = Unit::lists('name', 'id');

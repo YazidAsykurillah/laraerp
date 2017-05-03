@@ -61,7 +61,7 @@ class ChartAccountController extends Controller
         $chart_account->description = $request->description;
         $chart_account->save();
         return redirect('chart-account')
-            ->with('successMessage','Chart Account has been created');
+            ->with('successMessage','Chart Account has been added');
     }
 
     /**
@@ -132,6 +132,8 @@ class ChartAccountController extends Controller
 
     public function store_sub(StoreSubChartAccountRequest $request)
     {
+      if(\Auth::user()->can('create-chart-account-module'))
+      {
         $sub_chart_account = New SubChartAccount;
         $sub_chart_account->name = $request->name;
         $sub_chart_account->account_number = $request->account_number;
@@ -140,13 +142,13 @@ class ChartAccountController extends Controller
         if($request->parent_id != ''){
             $sub_chart_account->parent_id = $request->parent_id;
         }
-        $sub_chart_account->saldo_awal = $request->saldo_awal;
+        $sub_chart_account->saldo_awal = floatval(preg_replace('#[^0-9.]#', '', $request->saldo_awal));
         $sub_chart_account->save();
 
         $id_sub_chart_account = $sub_chart_account->id;
 
         $trans_chart_account = New TransactionChartAccount;
-        $trans_chart_account->amount = $request->saldo_awal;
+        $trans_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->saldo_awal));
         $trans_chart_account->sub_chart_account_id = $id_sub_chart_account;
         $trans_chart_account->created_at = date('Y-m-d H:i:s');
         $trans_chart_account->updated_at = date('Y-m-d H:i:s');
@@ -159,12 +161,17 @@ class ChartAccountController extends Controller
         // TODO condition account number
 
         return redirect('chart-account/'.$request->chart_account_id)
-            ->with('successMessage','Sub chart account has been created'.$request->chart_account_id);
+            ->with('successMessage','Sub chart account has been added');
+      }else{
+        return view('403');
+      }
 
     }
 
     public function update_sub(Request $request)
     {
+      if(\Auth::user()->can('edit-chart-account-module'))
+      {
         $sub_chart_account = SubChartAccount::findOrFail($request->sub_chart_account_id);
         $sub_chart_account->name = $request->name;
         $sub_chart_account->account_number = $request->account_number;
@@ -172,7 +179,7 @@ class ChartAccountController extends Controller
         if($request->parent_id != ''){
             $sub_chart_account->parent_id = $request->parent_id;
         }
-        $sub_chart_account->saldo_awal = $request->saldo_awal_edit;
+        $sub_chart_account->saldo_awal = floatval(preg_replace('#[^0-9.]#', '', $request->saldo_awal_edit));
         $sub_chart_account->save();
 
         $cek_saldo_awal = \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->value('amount');
@@ -182,7 +189,7 @@ class ChartAccountController extends Controller
         }else
         {
           $trans_chart_account = New TransactionChartAccount;
-          $trans_chart_account->amount = $request->saldo_awal_edit;
+          $trans_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->saldo_awal_edit));
           $trans_chart_account->sub_chart_account_id = $request->sub_chart_account_id;
           $trans_chart_account->created_at = date('Y-m-d H:i:s');
           $trans_chart_account->updated_at = date('Y-m-d H:i:s');
@@ -195,6 +202,10 @@ class ChartAccountController extends Controller
         }
         return redirect('chart-account/'.$request->chart_account_id)
             ->with('successMessage',"Sub chart account has been updated");
+      }else{
+        return view('403');
+      }
+
     }
 
     public function delete_sub(Request $request)

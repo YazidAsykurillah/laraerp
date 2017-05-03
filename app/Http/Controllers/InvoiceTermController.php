@@ -55,9 +55,11 @@ class InvoiceTermController extends Controller
         $invoice_term = new InvoiceTerm;
         $invoice_term->name = $request->name;
         $invoice_term->day_many = $request->day_many;
+        $invoice_term->created_at = date('Y-m-d h:i:s');
+        $invoice_term->updated_at = date('Y-m-d h:i:s');
         $invoice_term->save();
         return redirect('invoice-term')
-            ->with('successMessage', "Invoice Term has been created");
+            ->with('successMessage', "Invoice Term has been added");
     }
 
     /**
@@ -68,7 +70,9 @@ class InvoiceTermController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoice_term = InvoiceTerm::findOrFail($id);
+        return view('invoice_term.show')
+          ->with('invoice_term',$invoice_term);
     }
 
     /**
@@ -112,8 +116,12 @@ class InvoiceTermController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $inv_term = InvoiceTerm::findOrFail($request->invoice_term_id);
+        $inv_term->delete();
+
+        return redirect('invoice-term')
+          ->with('successMessage',"Invoice term has been deleted");
     }
 }

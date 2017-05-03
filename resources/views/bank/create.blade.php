@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Banks
+  Bank
 @endsection
 
 @section('page_header')
   <h1>
-    Banks
-    <small>List of The Banks </small>
+    Bank
+    <small>Create of The Bank </small>
   </h1>
 @endsection
 

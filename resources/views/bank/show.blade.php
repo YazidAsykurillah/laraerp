@@ -7,7 +7,7 @@
 @section('page_header')
   <h1>
     Banks
-    <small>Edit Bank </small>
+    <small>Show Bank </small>
   </h1>
 @endsection
 

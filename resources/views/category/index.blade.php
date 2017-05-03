@@ -31,7 +31,7 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                  <table class="table table-striped table-hover">
+                  <table class="table table-striped table-hover" id='table-category'>
                       <thead>
                         <tr style="background-color:#3c8dbc;color:white">
                           <th style="width:5%;">#</th>
@@ -43,9 +43,10 @@
                       </thead>
                       <tbody>
                         @if($categories->count() >0 )
+                          <?php $no = 1; ?>
                           @foreach($categories as $category)
                             <tr>
-                              <td>{{ $category->id}}</td>
+                              <td>{{ $no++}}</td>
                               <td>{{ $category->code }}</td>
                               <td>{{ $category->name }}</td>
                               <td>{{ $category->created_at }}</td>
@@ -118,5 +119,7 @@
       $('#category-name-to-delete').text(name);
       $('#modal-delete-category').modal('show');
     });
+  </script>
+  <script type="text/javascript">
   </script>
 @endsection

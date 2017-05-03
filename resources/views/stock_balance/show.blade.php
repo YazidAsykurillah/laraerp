@@ -68,15 +68,24 @@
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header">
                     <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Primary Product Information</h3>
+                    <div class="pull-right">
+                      <!--Show button create payment only when invoice status is NOT completed yet-->
+                      <a href="{{ url('stock_balance/'.$stock_balance->id.'/printPdf') }}" class="btn btn-default btn-xs">
+                        <i class='fa fa-print'></i>&nbsp;Print
+                      </a>
+                    </div>
                 </div>
                 <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
+                    <div class="table-responsive" style="max-height:500px">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width:10%">#</th>
-                                    <th>Product Name</th>
+                                    <th style="width:5%">#</th>
+                                    <th>Family</th>
+                                    <th>Name</th>
                                     <th>Description</th>
+                                    <th>Unit</th>
+                                    <th>Category</th>
                                     <th>System Stock</th>
                                     <th>Real Stock</th>
                                     <th>Information</th>
@@ -87,8 +96,11 @@
                                 @foreach($dataList as $view)
                                     <tr>
                                         <td>{{ $x++ }}</td>
+                                        <td>{{ \DB::table('families')->select('name')->where('id',$view->family_id)->value('name') }}</td>
                                         <td>{{ $view->name }}</td>
                                         <td>{{ $view->description }}</td>
+                                        <td>{{ \DB::table('units')->select('name')->where('id',$view->unit_id)->value('name') }}</td>
+                                        <td>{{ \DB::table('categories')->select('name')->where('id',$view->category_id)->value('name') }}</td>
                                         <td>{{ $view->system_stock }}</td>
                                         <td>@if($view->real_stock<$view->system_stock)
                                                 <span style="color:red;font-weight:bold">
