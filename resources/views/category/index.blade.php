@@ -31,24 +31,37 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
+<<<<<<< HEAD
+                  <table class="table table-striped table-hover" id="table-category">
+=======
                   <table class="table table-striped table-hover" id='table-category'>
+>>>>>>> 1c5f4ed1146d10fba731998b545ba52b61973b1c
                       <thead>
                         <tr style="background-color:#3c8dbc;color:white">
-                          <th style="width:5%;">#</th>
+                          <th style="width:5%;">No</th>
                           <th style="width:10%;">Code</th>
-                          <th style="width:55%;">Nama Kategori</th>
+                          <th style="width:35%;">Nama Kategori</th>
+                          <th style="width:20%;">Family</th>
                           <th style="width:20%;">Created At</th>
                           <th style="width:10%;text-align:center;">Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
                         @if($categories->count() >0 )
+<<<<<<< HEAD
+                            <?php $no = 1; ?>
+                          @foreach($categories as $category)
+                            <tr>
+                              <td>{{ $no++ }}</td>
+=======
                           <?php $no = 1; ?>
                           @foreach($categories as $category)
                             <tr>
                               <td>{{ $no++}}</td>
+>>>>>>> 1c5f4ed1146d10fba731998b545ba52b61973b1c
                               <td>{{ $category->code }}</td>
                               <td>{{ $category->name }}</td>
+                              <td>{{ $category->family->name }}</td>
                               <td>{{ $category->created_at }}</td>
                               <td style="text-align:center;">
                                 <a href="{{ url('category/'.$category->id) }}" class="btn btn-success btn-xs" title="Click for view this category">
@@ -66,9 +79,9 @@
                             </tr>
                           @endforeach
                         @else
-                        <tr>
+                        <!-- <tr>
                           <td colspan="4">Tidak ada kategori terdaftar</td>
-                        </tr>
+                        </tr> -->
                         @endif
                     </tbody>
                   </table>
@@ -118,6 +131,10 @@
       $('#category_id').val(id);
       $('#category-name-to-delete').text(name);
       $('#modal-delete-category').modal('show');
+    });
+
+    $('#table-category').DataTable({
+
     });
   </script>
   <script type="text/javascript">

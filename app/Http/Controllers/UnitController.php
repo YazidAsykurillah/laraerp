@@ -52,16 +52,9 @@ class UnitController extends Controller
     {
         $unit = Unit::findOrFail($request->unit_id);
         //count products
-        $products = $unit->products->count();
-        if($products > 0){
-        	return redirect('unit')
-        		->with('errorMessage', "$unit->name can not be deleted since there are product related with it");
-        }
-        else{
-        	$unit->delete();
+        $unit->delete();
 	        return redirect('unit')
 	            ->with('successMessage', "$unit->name has been deleted");
-        }
     }
 
     public function edit($id)

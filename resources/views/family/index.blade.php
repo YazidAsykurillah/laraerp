@@ -109,7 +109,9 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
-    var tableFamily = $('#table-family');
+    var tableFamily = $('#table-family').DataTable({
+
+    });
 
     tableFamily.on('click','.btn-delete-family', function(){
       var id = $(this).attr('data-id');

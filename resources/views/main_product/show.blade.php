@@ -124,7 +124,7 @@
                               <td></td>
                               <td>{{ $main_product->unit->name}}</td>
                               <td>
-                                  <input type="text" name="stock_parent" value="0">
+                                  <input type="text" name="stock_parent" value="">
                               </td>
                               <td style="display:none">
                                   <input type="text" name="stock_minimum_parent" value="0">
@@ -142,7 +142,7 @@
                                 <td>{{ $key->description }}</td>
                                 <td>{{ $main_product->unit->name}} </td>
                                 <td>
-                                    <input type="text" name="stock[]" value="{{ $key->stock }}">
+                                    <input type="text" name="stock[]" value="">
                                 </td>
                                 <td style="display:none">
                                     <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">

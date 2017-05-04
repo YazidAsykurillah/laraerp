@@ -149,7 +149,9 @@
                       <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
                         {!! Form::label('category_id', 'Category', ['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                          {{ Form::select('category_id', $category_options, null, ['class'=>'form-control', 'placeholder'=>'Select category', 'id'=>'category_id']) }}
+                            <select name="category_id" id="category_id" class="form-control">
+                                <option>Select Category</option>
+                            </select>
                           @if ($errors->has('category_id'))
                             <span class="help-block">
                               <strong>{{ $errors->first('category_id') }}</strong>
@@ -160,61 +162,35 @@
                     </div><!-- /.box-body -->
                   </div>
                   <!--ENDBOX Category and Family-->
-                  <!-- <div class="box">
-                      <div class="box-header with-border">
-                          <h3 class="box-title">Account</h3>
-                      </div>
-                      <div class="box-body">
-                          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                            {!! Form::label('account_persediaan_barang_id', 'Inventory Account', ['class'=>'col-sm-5 control-label']) !!}
-                            <div class="col-sm-7">
-                              {{ Form::select('category_id', $category_options, null, ['class'=>'form-control', 'placeholder'=>'Select category', 'id'=>'category_id']) }}
-                              @if ($errors->has('category_id'))
-                                <span class="help-block">
-                                  <strong>{{ $errors->first('category_id') }}</strong>
-                                </span>
-                              @endif
-                            </div>
-                          </div>
-                      </div>
-                  </div> -->
+
                 </div>
             </div>
             {!! Form::close() !!}
 
-            <!-- <div class="row" id="child" style="">
-                <div class="col-lg-12">
-                    <div class="box">
-                        <div class="box-header with-border">
 
-                        </div>
-                        <div class="box-body table-responsive">
-                          <table class="table table-bordered" id="table-product">
-                            <thead>
-                                <tr>
-                                  <th style="width:15%;background-color:#3c8dbc;color:white">Family</th>
-                                  <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                                  <th style="width:20%;background-color:#3c8dbc;color:white">Description</th>
-                                  <th style="width:15%;background-color:#3c8dbc;color:white">Unit</th>
-                                  <th style="width:15%;background-color:#3c8dbc;color:white">Quantity</th>
-                                  <th style="width:20%;background-color:#3c8dbc;color:white">Category</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                          </table>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        <!-- </div> -->
 
     </div>
 @endsection
 
 @section('additional_scripts')
     <script type="text/javascript">
+        $(document).ready(function(){
+            $('#family_id').change(function(){
+                var family = $('#family_id').val();
+                var token = $("meta[name='csrf-token']").attr('content');
+                $.ajax({
+                    url:"{!!URL::to('callCategory')!!}",
+                    type:'POST',
+                    data:"family="+family+'&_token='+token,
+                    beforeSend: function(){
 
+                    } ,
+                    success:function(data){
+                        console.log(data);
+                        $('#category_id').html(data);
+                    }
+                });
+            })
+        });
     </script>
 @endsection

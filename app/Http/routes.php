@@ -17,6 +17,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+
+//
+Route::post('callFieldProduct','ProductAdjusmentController@callFieldProduct');
+Route::resource('product-adjustment','ProductAdjusmentController');
 //cash flow
 Route::post('cash-flow.cash_flow_print','CashFlowController@cash_flow_print');
 Route::post('cash-flow/search','CashFlowController@cash_flow_search');
@@ -47,6 +51,7 @@ Route::post('deleteFamily','FamilyController@destroy');
 Route::resource('family','FamilyController');
 
 //main product
+Route::post('callCategory','MainProductController@callCategory');
 Route::get('product-all','MainProductController@product_all');
 Route::get('product-available','MainProductController@product_available');
 Route::post('deleteMainProduct','MainProductController@destroy');

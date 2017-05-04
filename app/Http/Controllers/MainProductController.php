@@ -42,15 +42,24 @@ class MainProductController extends Controller
     {
         if(\Auth::user()->can('create-product-module'))
         {
-            $category_options = Category::lists('name', 'id');
             $unit_options = Unit::lists('name', 'id');
             $family_options = Family::lists('name', 'id');
             return view('main_product.create')
-                ->with('category_options', $category_options)
                 ->with('unit_options', $unit_options)
                 ->with('family_options', $family_options);
         }else{
             return view('403');
+        }
+    }
+
+    public function callCategory(Request $request)
+    {
+        if($request->ajax()){
+            $category = \DB::table('categories')->where('family_id',$request->family)->get();
+            foreach ($category as $key) {
+                $results[]="<option value=".$key->id.">".$key->name."</option>";
+            }
+            return response()->json($results);
         }
     }
 

@@ -51,6 +51,17 @@
                 @endif
               </div>
             </div>
+            <div class="form-group{{ $errors->has('family_id') ? ' has-error' : '' }}">
+              {!! Form::label('family_id', 'Family', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-5">
+                {!! Form::select('family_id',$family,null,['class'=>'form-control', 'placeholder'=>'Family of the category', 'id'=>'family_id']) !!}
+                @if ($errors->has('family_id'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('family_id') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
             <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-10">
