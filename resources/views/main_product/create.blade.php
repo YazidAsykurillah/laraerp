@@ -123,6 +123,7 @@
                               <strong>{{ $errors->first('image') }}</strong>
                             </span>
                           @endif
+                          <span style="color:red">*Max size 2 mb</span>
                         </div>
                       </div>
                     </div><!-- /.box-body -->
