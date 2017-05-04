@@ -153,29 +153,13 @@
               </td>
             </tr>
             <tr>
+              <td style="width:30%;"><strong>Due Date</strong></td>
+              <td>{{ $purchase_order_invoice->term }}</td>
+            </tr>
+            <tr>
               <td style="width:30%;"><strong>Notes</strong></td>
               <td>{{ $purchase_order_invoice->notes }}</td>
             </tr>
-            <!-- <tr>
-              <td style="width:30%"><strong>Hutang to Account</strong></td>
-              <td>
-                  <select name="select_account" id="select_account">
-                      <option value="">Select Account</option>
-                  @foreach(list_account_hutang('56') as $as)
-                      @if($as->level == 1)
-                      <optgroup label="{{ $as->name }}">
-                      @endif
-                      @foreach(list_sub_hutang('2',$as->id) as $sub)
-                      <option value="{{ $sub->id }}">{{ $sub->account_number }}&nbsp;&nbsp;{{ $sub->name }}</option>
-                      @endforeach
-                  @endforeach
-                  </select>
-                  <p></p>
-                  <button id="btn-select-account" class="btn btn-xs btn-primary" title="Click to send this piutang">
-                    <i class="fa fa-save"></i>&nbsp;Submit
-                  </button>
-              </td>
-            </tr> -->
           </table>
 
 

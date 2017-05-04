@@ -7,7 +7,7 @@
 @section('page_header')
     <h1>
         Ledger
-        <small>Ledger List</small>
+        <small>Ledger Search</small>
     </h1>
 @endsection
 
@@ -57,11 +57,8 @@
                     <div class="form-group">
                         {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
                       <div class="col-sm-6">
-                        <a href="{{ url('home') }}" class="btn btn-default">
-                          <i class="fa fa-repeat"></i>&nbsp;Cancel
-                        </a>&nbsp;
                         <button type="submit" class="btn btn-info" id="btn-submit-ledger">
-                          <i class="fa fa-save"></i>&nbsp;Submit
+                          <i class="fa fa-search"></i>&nbsp;Search
                         </button>
                       </div>
                     </div>
@@ -79,9 +76,18 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">
-                        {{ $query_select->name }}
-                    </h3>
+                    <center>
+                        <h4>CATRA<small>TEXTTILE</small></h4>
+                        <h4>LEDGER</h4>
+                        <h4>{{ $query_select->name }}<h4>
+                        @if(isset($date_start) and isset($date_end))
+                          <?php
+                            $date_start_f = date_create($date_start);
+                            $date_end_f = date_create($date_end);
+                          ?>
+                          <h4>Tanggal&nbsp;{{ date_format($date_start_f,'d-m-Y') }}&nbsp;Sampai Tanggal&nbsp;{{ date_format($date_end_f,'d-m-Y') }}</h4>
+                        @endif
+                      </center>
                     {!! Form::open(['url'=>'ledger.ledger_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-ledger','files'=>true]) !!}
                     <div class="form-group pull-right">
                         {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
@@ -97,11 +103,11 @@
                     {!! Form::close() !!}
                 </div>
                 <div class="box-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height:500px">
                       @if(count($query_trans) > 0)
-                        <table class="table table-bordered">
+                        <table class="table table-striped table-hover">
                             <thead>
-                                <tr>
+                                <tr style="background-color:#3c8dbc;color:white">
                                     <th>Transaction No</th>
                                     <th>Date</th>
                                     <th>Description</th>
@@ -147,6 +153,7 @@
                                                     <?php $sum_debit += $qt->amount*$diff; ?>
                                                   </td>
                                                   <td>0.00</td>
+                                                
                                                 @endif
                                     </tr>
                                 @endforeach

@@ -35,7 +35,7 @@
                                 <td>{{ $chart_account->name }}</td>
                             </tr>
                             <tr>
-                                <td style="width:25%">Accoount Number</td>
+                                <td style="width:25%">Account Number</td>
                                 <td>:</td>
                                 <td>{{ $chart_account->account_number }}</td>
                             </tr>
@@ -54,7 +54,7 @@
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Add New Parent Account
+                        Add New Parent/Child Account
                     </h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -170,9 +170,11 @@
                                         <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}">
                                             <i class="fa fa-edit"></i>
                                         </button>&nbsp;
-                                        <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                        @if(\Auth::user()->can('delete-chart-account-module'))
+                                          <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
+                                              <i class="fa fa-trash"></i>
+                                          </button>
+                                        @endif
                                     </td>
                                   </tr>
                                   @foreach(child_chart_account($key->id) as $child)
@@ -187,9 +189,11 @@
                                             <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}">
                                                 <i class="fa fa-edit"></i>
                                             </button>&nbsp;
-                                            <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            @if(\Auth::user()->can('delete-chart-account-module'))
+                                              <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
+                                                  <i class="fa fa-trash"></i>
+                                              </button>
+                                            @endif
                                         </td>
                                     </tr>
                                   @endforeach
@@ -329,7 +333,7 @@
                       <div class="form-group{{ $errors->has('saldo_awal_edit') ? ' has-error' : ''}}">
                           {!! Form::label('saldo_awal_edit-','Saldo Awal',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
-                              {!! Form::text('saldo_awal_edit',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal_view']) !!}
+                              {!! Form::text('saldo_awal_edit',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal_edit']) !!}
                               @if($errors->has('saldo_awal_edit'))
                               <span class="help-block">
                                   <strong>{{ $errors->first('saldo_awal_edit') }}</strong>
@@ -394,7 +398,18 @@
 @endsection
 
 @section('additional_scripts')
+    {!! Html::script('js/autoNumeric.js') !!}
     <script type="text/javascript">
+        $('#saldo_awal_edit').autoNumeric('init',{
+          aSep:',',
+          aDec:'.'
+        });
+
+        $('#saldo_awal').autoNumeric('init',{
+          aSep:',',
+          aDec:'.'
+        });
+
         var tableSubChartAccount = $('#table-sub-chart-account');
 
         //Delete button handler

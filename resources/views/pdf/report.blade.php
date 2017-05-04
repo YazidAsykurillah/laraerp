@@ -50,15 +50,15 @@
                             <table border="1" style="width:100%">
                                 <thead>
                                     <tr style="">
-                                        <th style="width:15%;">Invoice</th>
-                                        <th style="width:10%;">Date</th>
-                                        <th style="width:20%;">Customer</th>
-                                        <th style="width:10%;">Sub Total</th>
-                                        <th style="width:8%;">Disc(%)</th>
-                                        <th style="width:7%;">Tax(%)</th>
-                                        <th style="width:10%;">Nilai</th>
-                                        <th style="width:10%;">Retur</th>
-                                        <th style="width:10%;">Net</th>
+                                        <th style="">Invoice</th>
+                                        <th style="">Date</th>
+                                        <th style="">Customer</th>
+                                        <th style="">Sub Total</th>
+                                        <th style="">Disc(%)</th>
+                                        <th style="">Tax(%)</th>
+                                        <th style="">Nilai</th>
+                                        <th style="">Retur</th>
+                                        <th style="">Net</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,7 +73,7 @@
                                                 {{ date_format($datenya,'d-m-Y') }}
                                             </td>
                                             <td>{{ $d_i['customer'] }}</td>
-                                            <td>{{ $d_i['sub_total'] }}</td>
+                                            <td>{{ number_format($d_i['sub_total']) }}</td>
                                             <td>{{ $d_i['disc'] }}</td>
                                             <td>{{ $d_i['tax'] }}</td>
                                             <td align="right" style="padding-right:3px">
@@ -125,7 +125,7 @@
                                         <th>Customer</th>
                                         <th>Item</th>
                                         <th>Unit Price</th>
-                                        <th>Quantity</th>
+                                        <th>Qty</th>
                                         <th>Disc(%)</th>
                                         <th>Disc(AMT)</th>
                                         <th>Line Total</th>
@@ -237,7 +237,7 @@
                                         <th>Customer</th>
                                         <th>Item</th>
                                         <th>Unit Price</th>
-                                        <th>Quantity</th>
+                                        <th>Qty</th>
                                         <th>Disc(%)</th>
                                         <th>Disc(amt)</th>
                                         <th>Line Total</th>
@@ -356,7 +356,7 @@
                                         <th>Supplier</th>
                                         <th>Item</th>
                                         <th>Unit Price</th>
-                                        <th>Quantity</th>
+                                        <th>Qty</th>
                                         <th>Disc(%)</th>
                                         <th>Price</th>
                                     </tr>
@@ -466,7 +466,7 @@
                                         <th>Supplier</th>
                                         <th>Item</th>
                                         <th>Unit Price</th>
-                                        <th>Quantity</th>
+                                        <th>Qty</th>
                                         <th style="width:10%">Disc(%)</th>
                                         <th style="width:10%">Disc(amt)</th>
                                         <th>Line Total</th>

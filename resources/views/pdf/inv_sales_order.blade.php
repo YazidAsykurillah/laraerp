@@ -64,9 +64,9 @@
         <div class="row">
             <table style="width:100%" border="0">
                 <tr>
-                    <td rowspan="6" style="width:10%;vertical-align:top">Bill To</td>
-                    <td rowspan="6" style="width:2%;vertical-align:top">:</td>
-                    <td rowspan="6" style="width:46%;vertical-align:top">
+                    <td rowspan="7" style="width:10%;vertical-align:top">Bill To</td>
+                    <td rowspan="7" style="width:2%;vertical-align:top">:</td>
+                    <td rowspan="7" style="width:46%;vertical-align:top">
                         <div class="box-attention" style="height:70px;padding:2px">
                             <p>{{ $sales_order->customer->name }}</p>
                             <p>{{ $sales_order->customer->address }}</p>
@@ -107,6 +107,15 @@
                     <td>:</td>
                     <td>{{ $sales_order->code}}</td>
                 </tr>
+                @if($sales_order_invoice->ppn_hidden == 'yes')
+
+                @else
+                  <tr>
+                      <td style="width:15%;padding-left:30px">PPN</td>
+                      <td>:</td>
+                      <td>({{ $sales_order_invoice->persen_ppn}}&nbsp;%)&nbsp;{{ number_format($sales_order_invoice->price_ppn)}}</td>
+                  </tr>
+                @endif
             </table>
         </div>
         <br/>
@@ -140,10 +149,17 @@
                     @endif
                     @endforeach
                     <tr>
-                        <td colspan="6" style="text-align:right">
-                            Total Invoice
-                        </td>
-                        <td style="text-align:right"> {{ number_format($mtr) }}.00</td>
+                        @if($sales_order_invoice->ppn_hidden == 'yes')
+                          <td colspan="6" style="text-align:right">
+                              Total Invoice
+                          </td>
+                          <td style="text-align:right"> {{ number_format($mtr) }}.00</td>
+                        @else
+                          <td colspan="6" style="text-align:right">
+                              Total Invoice + PPN
+                          </td>
+                          <td style="text-align:right"> {{ number_format($mtr+$sales_order_invoice->price_ppn) }}.00</td>
+                        @endif
                     </tr>
                 </tbody>
             </table>

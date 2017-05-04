@@ -56,9 +56,9 @@
                         <table class="table-responsive table">
                             <thead>
                                 <tr>
-                                    <th>No.Akun</th>
+                                    <th>No. Akun</th>
                                     <th>Deskripsi</th>
-                                    <th>BULAN</th>
+                                    <th>Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,27 +97,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_cash_bank($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_cash_bank($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_cash_bank($sub->id,$sort_target_year,'y','');?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59');?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_cash_bank($sub->id,date('Y'),'y','');?>
                                                 </td>
@@ -129,7 +129,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $cash_bank->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_cash_bank = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_cash_bank = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -155,29 +155,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_piutang($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_piutang($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_piutang($sub->id,$sort_target_year,'y','');?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
-
-
                                                 @if(list_transaction_piutang($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_piutang($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_piutang($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -189,7 +187,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $piutang->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_piutang = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_piutang = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -215,27 +213,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_inventory($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_inventory($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum+= list_transaction_inventory($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_inventory($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_inventory($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -247,19 +245,19 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $persediaan->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_inventory = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }} <?php $sum_inventory = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
                                 @foreach($chart_account as $aktiva_lancar_lainnya)
                                     <?php $sum = 0; ?>
-                                    @if($aktiva_lancar_lainnya->id == 50)
+                                    @if($aktiva_lancar_lainnya->id == 69)
                                     <tr>
                                         <td></td>
                                         <td><b>{{ $aktiva_lancar_lainnya->name}}</b></td>
                                         <td></td>
                                     </tr>
-                                    @foreach(list_parent('50') as $as)
+                                    @foreach(list_parent('69') as $as)
                                         @if($as->level == 1)
                                         <tr>
                                             <td style="padding-left:20px;">{{ $sub->account_number}}</td>
@@ -273,27 +271,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum+= list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -310,7 +308,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}<?php $sum_aktiva_lancar_lainnya = $sum; ?></td>
-                                        <td style="border-top:1px solid black">0,00</td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">0,00</td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -336,27 +334,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_nilai_history($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_nilai_history($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum+= list_transaction_nilai_history($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_nilai_history($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_nilai_history($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_nilai_history($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -368,7 +366,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $nilai_history->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_nilai_history = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }} <?php $sum_nilai_history = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -394,9 +392,9 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_akumulasi_penyusutan($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td id="{{$sub->id}}">
+                                                <td id="{{$sub->id}}" align="right" style="padding-right:3px">
                                                     @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
                                                         {{ $sum_kendaraan}}
                                                     @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
@@ -409,9 +407,9 @@
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_akumulasi_penyusutan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td id="{{$sub->id}}">
+                                                <td id="{{$sub->id}}" align="right" style="padding-right:3px">
                                                     @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
                                                         {{ $sum_kendaraan}}
                                                     @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
@@ -424,9 +422,9 @@
                                                 @endif
                                             @else
                                                 @if(list_transaction_akumulasi_penyusutan($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td id="{{$sub->id}}">
+                                                <td id="{{$sub->id}}" align="right" style="padding-right:3px">
                                                     @if($sub->name == 'AKUMULASI PENYUSUTAN KENDARAAN')
                                                         {{ $sum_kendaraan}}
                                                     @elseif($sub->name == 'AKUMULASI PENYUSUTAN GEDUNG')
@@ -444,14 +442,14 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $akumulasi_penyusutan->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_akumulasi_penyusutan = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_akumulasi_penyusutan = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
                                 <tr>
                                     <td></td>
                                     <td style="border-top:1px solid black">Total Aktiva-Aktiva</td>
-                                    <td style="border-top:1px solid black">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+($sum_nilai_history-$sum_akumulasi_penyusutan)) }}</td>
+                                    <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_cash_bank+$sum_piutang+$sum_inventory+$sum_aktiva_lancar_lainnya+($sum_nilai_history-$sum_akumulasi_penyusutan)) }}</td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -486,27 +484,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_hutang($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_hutang($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_hutang($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_hutang($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_hutang($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_hutang($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -518,7 +516,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $kewajiban->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_kewajiban = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -544,27 +542,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -576,7 +574,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $kewajiban_lancar_lainnya->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban_lancar_lainnya = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_kewajiban_lancar_lainnya = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -595,27 +593,27 @@
                                             <td style="padding-left:20px;">{{ $as->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_kewajiban_jangka_panjang($as->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -629,27 +627,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_kewajiban_jangka_panjang($sub->id,$year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($sub->id,$year,'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($sub->id,$year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_kewajiban_jangka_panjang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_kewajiban_jangka_panjang($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_kewajiban_jangka_panjang($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_kewajiban_jangka_panjang($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -661,7 +659,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $kewajiban_jangka_panjang->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_kewajiban_jangka_panjang = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_kewajiban_jangka_panjang = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -680,27 +678,27 @@
                                             <td style="padding-left:20px;">{{ $as->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_equitas($as->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($as->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_equitas($as->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_equitas($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_equitas($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_equitas($as->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($as->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_equitas($as->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -714,27 +712,27 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 @if(list_transaction_equitas($sub->id,$sort_target_year,'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($sub->id,$sort_target_year,'y','')) }}
                                                     <?php $sum += list_transaction_equitas($sub->id,$sort_target_year,'y',''); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($sort_target_m))
                                                 @if(list_transaction_equitas($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
                                                     <?php $sum += list_transaction_equitas($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_equitas($sub->id,date('Y'),'y','') == '')
-                                                <td>0,00</td>
+                                                <td align="right" style="padding-right:3px">0,00</td>
                                                 @else
-                                                <td>
+                                                <td align="right" style="padding-right:3px">
                                                     {{ number_format(list_transaction_equitas($sub->id,date('Y'),'y','')) }}
                                                     <?php $sum += list_transaction_equitas($sub->id,date('Y'),'y',''); ?>
                                                 </td>
@@ -746,14 +744,14 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $equitas->name }}</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_equitas = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_equitas = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
                                 <tr>
                                     <td></td>
                                     <td style="border-top:1px solid black">Total Kewajiban dan Equitas</td>
-                                    <td style="border-top:1px solid black">{{ number_format($sum_equitas-$sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang) }}</td>
+                                    <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_equitas-($sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang)) }}</td>
                                 </tr>
                             </tbody>
                         </table>

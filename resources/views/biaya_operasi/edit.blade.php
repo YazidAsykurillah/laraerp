@@ -93,7 +93,7 @@
                             <a href="{{ url('biaya-operasi') }}" class="btn btn-default">
                               <i class="fa fa-repeat"></i>&nbsp;Cancel
                             </a>&nbsp;
-                            <button type="submit" class="btn btn-info" id="btn-submit-bank">
+                            <button type="submit" class="btn btn-info" id="btn-submit-biaya-operasi">
                               <i class="fa fa-save"></i>&nbsp;Submit
                             </button>
                           </div>
@@ -191,6 +191,7 @@
                         </div>
                         {!! Form::hidden('amount_first',null,['id'=>'amount_first']) !!}
                         {!! Form::hidden('cash_bank',$description,['id'=>'description']) !!}
+                        {!! Form::hidden('id_sub_account_first',$trans_chart_account->sub_chart_account_id,['id'=>'id-sub-account-first']) !!}
                         {!! Form::hidden('source',$source,['id'=>'source']) !!}
                     </div>
                     <div class="box-footer clearfix">
@@ -207,6 +208,10 @@
     {!! Html::script('js/autoNumeric.js') !!}
     <script type="text/javascript">
         $('#amount').autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+        $('#credit').autoNumeric('init',{
             aSep:',',
             aDec:'.'
         });
@@ -253,5 +258,18 @@
             $('#cash_form').hide();
             $('#cash_id').attr('name','');
         }
+    </script>
+
+    <script type="text/javascript">
+      $('#credit').on('keyup', function(){
+          var credit = parseInt($('#credit').val());
+          var debit = parseInt($('#amount').val());
+          if(credit != debit){
+              $('#btn-submit-biaya-operasi').prop('disabled',true);
+          }else{
+              $('#btn-submit-biaya-operasi').prop('disabled',false);
+          }
+          return false;
+      });
     </script>
 @endsection

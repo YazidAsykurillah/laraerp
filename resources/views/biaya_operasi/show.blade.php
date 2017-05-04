@@ -31,15 +31,51 @@
         <div class="box-body">
           <table class="table">
             <tr>
-              <td><b>Account Number</b></td>
-              <td>{{ $trans_chart_account->sub_chart_account->account_number }}</td>
+              <td><b>Payment Method</b></td>
+              <td>
+                <?php $pay_method = \DB::table('transaction_chart_accounts')->select('description')->where('reference',$trans_chart_account->id)->value('description'); ?>
+                <?php $source = \DB::table('transaction_chart_accounts')->select('source')->where('reference',$trans_chart_account->id)->value('source'); ?>
+                @if($pay_method == 2)
+                  <?php $cash = \DB::table('cashs')->select('name')->where('id',$source)->value('name'); ?>
+                  Cash
+                @else
+                  <?php $bank = \DB::table('banks')->select('name')->where('id',$source)->value('name'); ?>
+                  Transfer
+                @endif
+              </td>
+            </tr>
+            @if($pay_method == 2)
+            <tr>
+              <td><b>Cash</b></td>
+              <td>{{ $cash }}</td>
+            </tr>
+            @else
+            <tr>
+              <td><b>Bank</b></td>
+              <td>{{ $bank }}</td>
+            </tr>
+            @endif
+            <tr>
+              <td><b>Memo</b></td>
+              <td>{{ $trans_chart_account->description }}</td>
             </tr>
             <tr>
-              <td><b>Name</b></td>
-              <td>{{ $trans_chart_account->sub_chart_account->name }}</td>
+              <td><b>Expenses Account</b></td>
+              <td>{{ $trans_chart_account->sub_chart_account->name.' '.'('.$trans_chart_account->sub_chart_account->account_number.')' }}</td>
             </tr>
             <tr>
-              <td><b>Amount</b></td>
+              <td><b>Cash/Bank Account</b></td>
+              <td>
+                <?php $sub_chart_account_id = \DB::table('transaction_chart_accounts')->select('sub_chart_account_id')->where('reference',$trans_chart_account->id)->value('sub_chart_account_id'); ?>
+                {{\DB::table('sub_chart_accounts')->select('name')->where('id',$sub_chart_account_id)->value('name').' '.'('.\DB::table('sub_chart_accounts')->select('account_number')->where('id',$sub_chart_account_id)->value('account_number').')' }}
+              </td>
+            </tr>
+            <tr>
+              <td><b>Debit</b></td>
+              <td>{{ number_format($trans_chart_account->amount) }}</td>
+            </tr>
+            <tr>
+              <td><b>Credit</b></td>
               <td>{{ number_format($trans_chart_account->amount) }}</td>
             </tr>
             <tr>

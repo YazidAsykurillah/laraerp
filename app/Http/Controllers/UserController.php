@@ -20,7 +20,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+      if(\Auth::user()->can('user-list-module'))
+      {
+          return view('user.index');
+      }else{
+          return view('403');
+      }
     }
 
     /**
@@ -30,10 +35,14 @@ class UserController extends Controller
      */
     public function create()
     {
+      if(\Auth::user()->can('create-user-list-module'))
+      {
         $role_options = Role::lists('name', 'id');
         return view('user.create')
             ->with('role_options', $role_options);
-
+      }else{
+        return view('403');
+      }
     }
 
     /**
@@ -48,6 +57,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->created_at = date('Y-m-d h:i:s');
         $user->save();
 
         $user_id = $user->id;
@@ -81,11 +91,16 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+      if(\Auth::user()->can('edit-user-list-module'))
+      {
         $user = User::findOrFail($id);
         $role_options = Role::lists('name', 'id');
         return view('user.edit')
             ->with('user', $user)
             ->with('role_options', $role_options);
+      }else{
+        return view('403');
+      }
     }
 
     /**
@@ -100,6 +115,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->created_at = date('Y-m-d h:i:s');
         $user->save();
 
         //update the role
@@ -116,8 +132,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $user = User::findOrFail($request->user_id);
+        $user->delete();
+
+        return redirect('user')
+          ->with('successMessage',"User $user->name has been deleted");
     }
 }

@@ -95,10 +95,13 @@
                     <div class="table-responsive" style="max-height:500px">
                         <table class="table table-hover">
                             <thead>
-                                <tr>
-                                    <th style="width:10%;">#</th>
-                                    <th>Code</th>
-                                    <th>Product Name</th>
+                                <tr style="background-color:#3c8dbc;color:white">
+                                    <th style="width:5%;">#</th>
+                                    <th>Family</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Unit</th>
+                                    <th>Category</th>
                                     <th>System Stock</th>
                                     <th>Real Stock</th>
                                     <th>Information</th>
@@ -109,11 +112,14 @@
                                 @foreach($dataList as $view)
                                     <tr>
                                         <td>{{ $x++ }}</td>
+                                        <td>{{ \DB::table('families')->select('name')->where('id',$view->family_id)->value('name') }}</td>
                                         <td>{{ $view->name }}</td>
                                         <td>
                                             {{ $view->description }}
                                             <input type="hidden" name="product_id[]" value="{{ $view->product_id}}">
                                         </td>
+                                        <td>{{ \DB::table('units')->select('name')->where('id',$view->unit_id)->value('name') }}</td>
+                                        <td>{{ \DB::table('categories')->select('name')->where('id',$view->category_id)->value('name') }}</td>
                                         <td>
                                             {{ $view->system_stock }}
                                             <input type="hidden" name="system_stock[]" value="{{ $view->system_stock }}">

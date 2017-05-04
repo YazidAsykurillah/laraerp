@@ -22,7 +22,7 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Invoice Terms</h3>
           <a href="{{ URL::to('invoice-term/create')}}" class="btn btn-primary pull-right" title="Create new invoice-term">
@@ -75,7 +75,7 @@
           <p class="text text-danger">
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
-          <input type="hidden" id="sales_order_id" name="sales_order_id">
+          <input type="hidden" id="invoice_term_id" name="invoice_term_id">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -109,7 +109,7 @@
     tableInvoiceTerm.on('click', '.btn-delete-invoice-term', function (e) {
       var id = $(this).attr('data-id');
       var code = $(this).attr('data-text');
-      $('#sales_order_id').val(id);
+      $('#invoice_term_id').val(id);
       $('#invoice-term-name-to-delete').text(code);
       $('#modal-delete-invoice-term').modal('show');
     });
@@ -126,25 +126,5 @@
       tableInvoiceTerm.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-
-    //Handler accept sales order
-    tableInvoiceTerm.on('click', '.btn-accept-invoice-term', function (e) {
-      var id = $(this).attr('data-id');
-      var code = $(this).attr('data-text');
-      $('#id_to_be_accepted').val(id);
-      $('#invoice-term-name-to-accept').text(code);
-      $('#modal-accept-invoice-term').modal('show');
-    });
-    //ENDHandler accept sales order
-
-    //Handler complete sales order
-    tableInvoiceTerm.on('click', '.btn-complete-invoice-term', function (e) {
-      var id = $(this).attr('data-id');
-      var code = $(this).attr('data-text');
-      $('#id_to_be_completed').val(id);
-      $('#invoice-term-name-to-complete').text(code);
-      $('#modal-complete-invoice-term').modal('show');
-    });
-    //ENDHandler complete sales order
   </script>
 @endsection

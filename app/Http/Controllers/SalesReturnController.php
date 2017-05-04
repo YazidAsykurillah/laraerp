@@ -151,7 +151,7 @@ class SalesReturnController extends Controller
             }
             \DB::table('transaction_chart_accounts')->insert($inv_account);
             \DB::table('transaction_chart_accounts')->insert($return_account);
-            \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            //\DB::table('transaction_chart_accounts')->insert($cost_goods_account);
             //now delete the temp_sales_return
             \DB::table('temp_sales_return')
                 ->where('sales_order_id', '=', $request->sales_order_id)
@@ -226,10 +226,10 @@ class SalesReturnController extends Controller
         $amount_cost_goods = \DB::table('transaction_chart_accounts')->select('amount')->where('sub_chart_account_id',$request->cost_goods_account)->where('reference',$request->sales_order_invoice_id)->where('type','keluar')->value('amount');
         $set_amount3 = $amount_cost_goods-$price_per_unit;
         $new_amount3 = $set_amount3+$price_return;
-        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->cost_goods_account)->where('reference',$request->sales_order_invoice_id)->where('type','keluar')->update(['amount'=>$new_amount3]);
+        //\DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->cost_goods_account)->where('reference',$request->sales_order_invoice_id)->where('type','keluar')->update(['amount'=>$new_amount3]);
 
         return redirect('sales-return')
-            ->with('successMessage','Sales return has been added');
+            ->with('successMessage','Sales return has been updated');
     }
 
     /**

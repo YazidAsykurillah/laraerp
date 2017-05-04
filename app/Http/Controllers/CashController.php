@@ -57,7 +57,7 @@ class CashController extends Controller
         ];
         $save = Cash::create($data);
         return redirect('cash')
-            ->with('successMessage',"Cash has been created.");
+            ->with('successMessage',"Cash has been added");
     }
 
     /**
@@ -104,7 +104,7 @@ class CashController extends Controller
         $cash->name = $request->name;
         $cash->value = floatval(preg_replace('#[^0-9.]#','',$request->value));
         $cash->save();
-        return redirect('cash/'.$id.'/edit')->with('successMessage','Cash has been edited');
+        return redirect('cash/'.$id.'/edit')->with('successMessage','Cash has been updated');
     }
 
     /**
@@ -118,6 +118,6 @@ class CashController extends Controller
         $cash = Cash::findOrFail($request->cash_id);
         $cash->delete();
         return redirect('cash')
-            ->with('successMessage','cash has been deleted');
+            ->with('successMessage','Cash has been deleted');
     }
 }

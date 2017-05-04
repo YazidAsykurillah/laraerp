@@ -55,6 +55,9 @@
                               <tr style="display:none">
                                 <td>
                                   <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
+                                  <input type="hidden" name="parent_sum_stock[]" value="{{ $row['sum_stock'] }}"/>
+                                  <input type="hidden" name="parent_sum_inventory_cost[]" value="{{ $row['sum_price_purchase']/$row['sum_qty_purchase'] }}"/>
+                                  <input type="hidden" name="parent_sum_quantity[]" class="parent_sum_quantity"/>
                                   {{ $row['family'] }}<br>
                                   <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                     @foreach(list_account_inventory('52') as $as)
@@ -146,6 +149,40 @@
                 @if ($errors->has('bill_price'))
                   <span class="help-block">
                     <strong>{{ $errors->first('bill_price') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group{{ $errors->has('ppn') ? ' has-error' : '' }}">
+              {!! Form::label('ppn', 'PPN', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                <select name="ppn" class="form-control">
+                  <option value="">Select PPN</option>
+                  <option value="0">0%</option>
+                  <option value="10">10%</option>
+                  <option value="15">15%</option>
+                  <option value="20">20%</option>
+                </select>
+                @if ($errors->has('ppn'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('ppn') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group{{ $errors->has('ppn_hidden') ? ' has-error' : '' }}">
+              {!! Form::label('ppn_hidden', 'Hidden PPN', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                <select name="ppn_hidden" class="form-control">
+                  <option value="">Hidden PPN</option>
+                  <option value="yes">YES</option>
+                  <option value="no">NO</option>
+                </select>
+                @if ($errors->has('ppn_hidden'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('ppn_hidden') }}</strong>
                   </span>
                 @endif
               </div>
@@ -302,9 +339,9 @@
   //ENDBlock handle form create Sales Order submission
   </script>
   <script type="text/javascript">
-      var sum = document.getElementsByClassName('sum');
+      var sum = document.getElementsByClassName('sum_qty');
       for(var a = 0; a < sum.length; a++){
-        document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+        document.getElementsByClassName('parent_sum_quantity')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
       }
   </script>
 

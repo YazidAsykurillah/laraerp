@@ -51,7 +51,7 @@
                           <i class="fa fa-repeat"></i>&nbsp;Cancel
                         </a>&nbsp;
                         <button type="submit" class="btn btn-info" id="btn-submit-ledger">
-                          <i class="fa fa-save"></i>&nbsp;Submit
+                          <i class="fa fa-search"></i>&nbsp;Search
                         </button>
                       </div>
                     </div>
@@ -74,7 +74,11 @@
                         <h3 class="box-title">CATRA<small>TEXTILE</small></h3>
                         <h4>ARUS KAS</h4>
                         <h4>
-                            DARI TANGGAL&nbsp;{{ $date_start }}&nbsp;SAMPAI&nbsp;TANGGAL&nbsp;{{ $date_end }}
+                            <?php
+                              $date_start_f = date_create($date_start);
+                              $date_end_f = date_create($date_end);
+                            ?>
+                            DARI TANGGAL&nbsp;{{ date_format($date_start_f,'d-m-Y') }}&nbsp;SAMPAI&nbsp;TANGGAL&nbsp;{{ date_format($date_end_f,'d-m-Y') }}
                         </h4>
                     </center>
                     <div class="form-group pull-right">
@@ -236,8 +240,8 @@
                                             <td></td>
                                             <td style="border-top:1px solid black">Total Pendapatan</td>
                                             <td style="border-top:1px solid black;border-bottom:1px solid black">
-                                                {{ number_format($sum_pendapatan_operasional+$sum_harga_pokok_penjualan-$sum_beban_operasi) }}
-                                                <?php $sum_all_pendapatan = $sum_pendapatan_operasional+$sum_harga_pokok_penjualan-$sum_beban_operasi; ?>
+                                                {{ number_format(($sum_pendapatan_operasional-$sum_harga_pokok_penjualan)-$sum_beban_operasi) }}
+                                                <?php $sum_all_pendapatan = ($sum_pendapatan_operasional-$sum_harga_pokok_penjualan)-$sum_beban_operasi; ?>
                                             </td>
                                         </tr>
 
@@ -270,7 +274,7 @@
                                                     @else
                                                     <td>
                                                         {{ number_format(list_transaction_pendapatan_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
-                                                        <?php $sum_pend_lainnya += sum_penjualan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59',''); ?>
+                                                        <?php $sum_pend_lainnya += sum_penjualan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59','BIAYA OPERASIONAL'); ?>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -279,7 +283,7 @@
                                         <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $pendapatan_lainnya->name }}</td>
-                                            <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_pendapatan_lainnya = $sum_pend_lainnya; ?></td>
+                                            <td style="border-top:1px solid black">{{ number_format($sum_pend_lainnya) }}<?php $sum_pendapatan_lainnya = $sum_pend_lainnya; ?></td>
                                         </tr>
                                         @endif
                                     @endforeach
@@ -308,7 +312,7 @@
                                                     @else
                                                     <td>
                                                         {{ number_format(list_transaction_beban_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
-                                                        <?php $sum_beb_lainnya += sum_penjualan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59',''); ?>
+                                                        <?php $sum_beb_lainnya += sum_penjualan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59','BIAYA OPERASIONAL'); ?>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -317,7 +321,7 @@
                                         <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $beban_lainnya->name }}</td>
-                                            <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_beban_lainnya = $sum_beb_lainnya; ?></td>
+                                            <td style="border-top:1px solid black">{{ number_format($sum_beb_lainnya) }}<?php $sum_beban_lainnya = $sum_beb_lainnya; ?></td>
                                         </tr>
                                         @endif
                                     @endforeach
@@ -577,13 +581,38 @@
                                                     <td>0,00</td>
                                                     @else
                                                     <td>
-                                                        <?php
-                                                        $date1 = date_create($date_start);
-                                                        $date2 = date_create($date_end);
-                                                        $diff = date_diff($date1,$date2);
-                                                        ?>
-                                                        {{ number_format(list_transaction_akumulasi_penyusutan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*(round($diff->format("%a")/30))) }}
-                                                        <?php $sum += list_transaction_akumulasi_penyusutan($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*(round($diff->format("%a")/30)); ?>
+                                                      <?php $sum_akum = 0; ?>
+                                                      <?php $year_end = date_create($date_end); ?>
+                                                      @foreach(list_transaction_akumulasi_penyusutan_diff($sub->id,date_format($year_end,'Y')) as $x)
+                                                          <tr style="display:none">
+                                                              <td>{{ $x['amount'] }}</td>
+                                                              <td>{{ $x['source'] }}</td>
+                                                              <td>{{ $x['tahun'] }}</td>
+                                                              <td>{{ $x['bulan'] }}</td>
+                                                              <td>{{ $x['date'] }}</td>
+                                                              <td>
+                                                                  <?php
+                                                                      $cdiff = $x['date']-$x['tahun'];
+                                                                      if($cdiff == 0){
+                                                                          $cdiff = $cdiff+1;
+                                                                      }else{
+                                                                          $cdiff = $cdiff+1;
+                                                                      }
+                                                                      echo $cdiff;
+                                                                  ?>
+                                                              </td>
+                                                              <td>
+                                                                  <?php echo $x['amount']*$cdiff; ?>
+                                                                  <?php $sum_akum += $x['amount']*$cdiff; ?>
+                                                              </td>
+                                                          </tr>
+                                                      @endforeach
+                                                          <tr style="display:none">
+                                                              <td colspan="7" align="right" id="sum_akum{{$sub->id}}">
+                                                                  {{ number_format($sum_akum)}}
+                                                                  <?php $sum += $sum_akum; ?>
+                                                              </td>
+                                                          </tr>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -903,12 +932,12 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Financing</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($sum_equitas)}}</td>
+                                        <td style="border-top:1px solid black;">{{ number_format($sum_equitas-$sum_kewajiban_jangka_panjang)}}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Cash Periode</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($sum_net+$sum_nilai_history+$sum_equitas)}}</td>
+                                        <td style="border-top:1px solid black;">{{ number_format($sum_net+($sum_equitas+$sum_nilai_history)-$sum_kewajiban_jangka_panjang)}}</td>
                                     </tr>
                                 </tbody>
                             </table>

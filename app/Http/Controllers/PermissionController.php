@@ -17,7 +17,13 @@ class PermissionController extends Controller
      */
     public function index()
     {
+      if(\Auth::user()->can('permission-module'))
+      {
         return view('permission.index');
+      }else{
+        return view('403');
+      }
+
     }
 
     /**
@@ -60,9 +66,15 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
+      if(\Auth::user()->can('edit-permission-module'))
+      {
         $permission = Permission::findOrFail($id);
         return view('permission.edit')
             ->with('permission', $permission);
+      }else{
+        return view('403');
+      }
+
     }
 
     /**

@@ -23,10 +23,10 @@
   {!! Form::model($invoice_term,['route'=>['invoice-term.update', $invoice_term], 'class'=>'form-horizontal', 'method'=>'put']) !!}
   <div class="row">
     <div class="col-lg-7">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create new invoice-term</h3>
-          
+          <h3 class="box-title">Edit Invoice Term</h3>
+
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -65,7 +65,7 @@
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
     </div>
@@ -82,5 +82,5 @@
       $('#btn-submit-invoice-term').prop('disabled', true);
     });
   </script>
-  
+
 @endsection

@@ -17,7 +17,13 @@ class RoleController extends Controller
      */
     public function index()
     {
+      if(\Auth::user()->can('role-module'))
+      {
         return view('role.index');
+      }else{
+        return view('403');
+      }
+
     }
 
     /**
@@ -49,11 +55,16 @@ class RoleController extends Controller
      */
     public function show($id)
     {
+      if(\Auth::user()->can('edit-role-module')){
         $role = Role::findORFail($id);
         $permissions = Permission::all();
         return view('role.show')
             ->with('role', $role)
             ->with('permissions', $permissions);
+      }else{
+        return view('403');
+      }
+
     }
 
     /**

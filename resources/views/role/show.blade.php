@@ -22,18 +22,18 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         {!! Form::open(['url'=>'update-role-permission','role'=>'form','class'=>'form-horizontal','id'=>'form-update-role-permission', 'method'=>'POST']) !!}
         <div class="box-header with-border">
           <h3 class="box-title">{{ $role->name }}</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive" style="max-height:500px">
-            <table class="table table-bordered" id="table-role-permission">
+            <table class="table table-striped table-hover" id="table-role-permission">
               <thead>
-                <tr>
+                <tr style="background-color:#3c8dbc;color:white">
                   <th style="width:15%;text-align:center;">
-                    <button id="btn-check-uncheck-all" type="button" data-state="1"><text id="btn-check-uncheck-actor">Check ALL</text></button>
+                    <button id="btn-check-uncheck-all" type="button" data-state="1"><text id="btn-check-uncheck-actor" style="color:black">Check ALL</text></button>
                   </th>
                   <th style="width:25%;">Permission Slug</th>
                   <th style="">Description</th>

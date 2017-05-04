@@ -22,7 +22,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Vehicles</h3>
                     <a href="{{ URL::to('vehicle/create') }}" class="btn btn-primary pull-right" title="Create new vehicle">
@@ -76,7 +76,7 @@
             <p class="text text-danger">
               <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
             </p>
-            <input type="text" id="vehicle_id" name="vehicle_id">
+            <input type="hidden" id="vehicle_id" name="vehicle_id">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

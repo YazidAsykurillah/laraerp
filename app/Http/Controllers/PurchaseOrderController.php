@@ -428,7 +428,7 @@ class PurchaseOrderController extends Controller
                     'id'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->id,
                     'code'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->code,
                     'created_at'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->created_at,
-                    'due_date'=>'',
+                    'due_date'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->term,
                     'bill_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->bill_price,
                     'paid_price'=>PurchaseOrder::findOrFail($key->id)->purchase_order_invoice->paid_price,
                 ];

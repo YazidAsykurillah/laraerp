@@ -66,8 +66,8 @@
     </div>
   </div>
 
-  <!--Modal Delete bank-->
-  <div class="modal fade" id="modal-delete-bank" tabindex="-1" role="dialog" aria-labelledby="modal-delete-assetLabel">
+  <!--Modal Delete asset-->
+  <div class="modal fade" id="modal-delete-asset" tabindex="-1" role="dialog" aria-labelledby="modal-delete-assetLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
       {!! Form::open(['url'=>'deleteAsset', 'method'=>'post']) !!}
@@ -91,7 +91,7 @@
       </div>
     </div>
   </div>
-<!--ENDModal Delete bank-->
+<!--ENDModal Delete asset-->
 @endsection
 
 @section('additional_scripts')
@@ -115,7 +115,7 @@
     });
 
     // Delete button handler
-    tableBank.on('click', '.btn-delete-asset', function (e) {
+    tableAsset.on('click', '.btn-delete-asset', function (e) {
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#asset_id').val(id);

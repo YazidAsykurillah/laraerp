@@ -62,7 +62,7 @@ class DriverController extends Controller
         $driver->contact_number = $request->primary_phone_number;
         $driver->save();
         return redirect('driver')
-            ->with('successMessage','Driver has been created');
+            ->with('successMessage','Driver has been added');
     }
 
     /**

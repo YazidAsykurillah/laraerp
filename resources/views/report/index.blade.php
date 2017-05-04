@@ -89,17 +89,14 @@
                     <div class="form-group" id="product" style="display:none">
                         {!! Form::label('product','Product',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-6">
-                             {!! Form::text('product',null,['class'=>'form-control', 'placeholder'=>'Product of report', 'id'=>'']) !!}
+                             {!! Form::text('product',null,['class'=>'form-control', 'placeholder'=>'Product of report', 'id'=>'product']) !!}
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
                       <div class="col-sm-6">
-                        <a href="{{ url('home') }}" class="btn btn-default">
-                          <i class="fa fa-repeat"></i>&nbsp;Cancel
-                        </a>&nbsp;
                         <button type="submit" class="btn btn-info" id="btn-submit-driver">
-                          <i class="fa fa-save"></i>&nbsp;Submit
+                          <i class="fa fa-search"></i>&nbsp;Search
                         </button>
                       </div>
                     </div>
@@ -181,9 +178,9 @@
                                             {{ date_format($datenya,'d-m-Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
-                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ number_format($d_i['sub_total']) }}</td>
                                         <td>{{ $d_i['disc'] }}</td>
-                                        <td>{{ $d_i['tax'] }}</td>
+                                        <td>{{ $d_i['tax'].'%' }}</td>
                                         <td>
                                             {{ number_format($d_i['bill_price']) }}
                                             <?php $sum_bill_price += $d_i['bill_price']; ?>
@@ -886,7 +883,7 @@
             }else if (reportType == 1) {
                 $('#customer').hide();
                 $('#supplier').hide();
-                $('#product').show();
+                $('#product').hide();
                 $('#text-supplier').attr('name','');
                 $('#text-customer').attr('name','');
             }else if (reportType == 2) {
@@ -898,31 +895,31 @@
             }else if (reportType == 3) {
                 $('#customer').hide();
                 $('#supplier').hide();
-                $('#product').show();
+                $('#product').hide();
                 $('#text-supplier').attr('name','');
                 $('#text-customer').attr('name','');
             }else if (reportType == 4) {
                 $('#customer').hide();
-                $('#supplier').show();
+                $('#supplier').hide();
                 $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }else if (reportType == 5) {
                 $('#customer').hide();
-                $('#supplier').show();
-                $('#product').show();
+                $('#supplier').hide();
+                $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }else if (reportType == 6) {
                 $('#customer').hide();
-                $('#supplier').show();
+                $('#supplier').hide();
                 $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }else if (reportType == 7) {
                 $('#customer').hide();
-                $('#supplier').show();
-                $('#product').show();
+                $('#supplier').hide();
+                $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }else if (reportType == 9) {

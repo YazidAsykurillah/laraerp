@@ -160,6 +160,18 @@
               </div>
             </div>
 
+            <div class="form-group{{ $errors->has('term') ? ' has-error' : '' }}">
+              {!! Form::label('term', 'Term Invoice', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-6">
+                {!! Form::date('term',null,['class'=>'form-control', 'placeholder'=>'Bill price of the invoice', 'id'=>'term']) !!}
+                @if ($errors->has('term'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('term') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+
             <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">

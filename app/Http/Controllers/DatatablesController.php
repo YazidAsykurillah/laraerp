@@ -174,7 +174,7 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Klik untuk mengedit main produk ini">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    if(\Auth::user()->can('delete-main-product-module'))
+                    if(\Auth::user()->can('delete-product-module'))
                     {
                         $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
@@ -361,7 +361,7 @@ class DatatablesController extends Controller
                 return $purchase_order_invoices->creator->name;
             })
             ->editColumn('due_date', function($purchase_order_invoices){
-                return '';
+                return $purchase_order_invoices->term;
             })
             ->editColumn('debt', function($purchase_order_invoices){
                 return (number_format($purchase_order_invoices->bill_price-$purchase_order_invoices->paid_price));
@@ -901,9 +901,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('user/'.$users->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this user">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-user" data-id="'.$users->id.'" data-text="'.$users->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-user-list-module'))
+                    {
+                      $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-user" data-id="'.$users->id.'" data-text="'.$users->name.'">';
+                      $actions_html .=    '<i class="fa fa-trash"></i>';
+                      $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });
@@ -1111,7 +1114,7 @@ class DatatablesController extends Controller
             $actions_html .='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this beban operasi">';
             $actions_html .=    '<i class="fa fa-edit"></i>';
             $actions_html .='</a>&nbsp;';
-            if(\Auth::user()->can('delete-kas-kecil-module'))
+            if(\Auth::user()->can('delete-jurnal-umum-module'))
             {
                 $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-text="'.$trans_chart_account->sub_chart_account->name.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
@@ -1155,9 +1158,12 @@ class DatatablesController extends Controller
                     $actions_html .='<a href="'.url('asset/'.$assets->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$assets->id.'" data-text="'.$assets->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    if(\Auth::user()->can('delete-asset-module'))
+                    {
+                      $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-asset" data-id="'.$assets->id.'" data-text="'.$assets->name.'">';
+                      $actions_html .=    '<i class="fa fa-trash"></i>';
+                      $actions_html .='</button>';
+                    }
 
                     return $actions_html;
             });

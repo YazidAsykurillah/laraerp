@@ -160,9 +160,9 @@ class ReportController extends Controller
                         'no_faktur'=>$key->code,
                         'tgl_faktur'=>$key->created_at,
                         'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
-                        'sub_total'=>'',
+                        'sub_total'=>$key->bill_price+($key->bill_price/100*$key->persen_ppn),
                         'disc'=>'',
-                        'tax'=>'',
+                        'tax'=>$key->persen_ppn,
                         'bill_price'=>$key->bill_price,
                         'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
                         'net'=>$key->bill_price-0,
@@ -326,26 +326,46 @@ class ReportController extends Controller
                 break;
             // search rincian penjualan per pelanggan
             case 8:
-                $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
-                $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
-                $sales_join = \DB::table('sales_orders')
-                                ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
-                                ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
-                                ->where('sales_orders.customer_id','=',$customer_id[0]->id)
-                                ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                // print_r($sales_join);
-                // exit();
-                foreach ($sales_join as $key) {
-                    array_push($data_invoice,[
-                            'no_faktur'=>$key->code,
-                            'tgl_faktur'=>$key->created_at,
-                            'keterangan'=>$key->notes,
-                            'bill_price'=>$key->bill_price,
-                            'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
-                            'netto'=>$key->bill_price-0,
-                            'customer'=>$keyword,
-                        ]);
+                if($keyword == '')
+                {
+                  $sales_join = \DB::table('sales_orders')
+                                  ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                  ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                                  ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                  foreach ($sales_join as $key) {
+                      array_push($data_invoice,[
+                              'no_faktur'=>$key->code,
+                              'tgl_faktur'=>$key->created_at,
+                              'keterangan'=>$key->notes,
+                              'bill_price'=>$key->bill_price,
+                              'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                              'netto'=>$key->bill_price-0,
+                              'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                          ]);
+                  }
+                }else{
+                  $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
+                  $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
+                  $sales_join = \DB::table('sales_orders')
+                                  ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                  ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                                  ->where('sales_orders.customer_id','=',$customer_id[0]->id)
+                                  ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                  // print_r($sales_join);
+                  // exit();
+                  foreach ($sales_join as $key) {
+                      array_push($data_invoice,[
+                              'no_faktur'=>$key->code,
+                              'tgl_faktur'=>$key->created_at,
+                              'keterangan'=>$key->notes,
+                              'bill_price'=>$key->bill_price,
+                              'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                              'netto'=>$key->bill_price-0,
+                              'customer'=>$keyword,
+                          ]);
+                  }
                 }
+
                 // print_r($data_invoice);
                 // exit();
                 break;
@@ -454,9 +474,9 @@ class ReportController extends Controller
                             'no_faktur'=>$key->code,
                             'tgl_faktur'=>$key->created_at,
                             'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
-                            'sub_total'=>'',
+                            'sub_total'=>$key->bill_price+($key->bill_price/100*$key->persen_ppn),
                             'disc'=>'',
-                            'tax'=>'',
+                            'tax'=>$key->persen_ppn.'%',
                             'bill_price'=>$key->bill_price,
                             'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
                             'net'=>$key->bill_price-0,
@@ -679,33 +699,62 @@ class ReportController extends Controller
                     $sort_start_date = $request->sort_start_date;
                     $sort_end_date = $request->sort_end_date;
                     $sort_keyword = $request->sort_keyword;
-                    $customer_id = \DB::table('customers')->select('id')->where('name',$sort_keyword)->get();
-                    $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
-                    $sales_join = \DB::table('sales_orders')
-                                    ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
-                                    ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price','sales_order_invoices.id')
-                                    ->where('sales_orders.customer_id','=',$customer_id[0]->id)
-                                    ->whereBetween('sales_order_invoices.created_at',[$sort_start_date.' 00:00:00',$sort_end_date.' 23:59:59'])->get();
-                    // print_r($sales_join);
-                    // exit();
-                    foreach ($sales_join as $key) {
-                        array_push($data_report,[
-                                'no_faktur'=>$key->code,
-                                'tgl_faktur'=>$key->created_at,
-                                'keterangan'=>$key->notes,
-                                'bill_price'=>$key->bill_price,
-                                'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
-                                'netto'=>$key->bill_price-0,
-                                'customer'=>$sort_keyword,
-                            ]);
+                    if($sort_keyword == '')
+                    {
+                      $sales_join = \DB::table('sales_orders')
+                                      ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                      ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price','sales_order_invoices.id')
+                                      ->whereBetween('sales_order_invoices.created_at',[$sort_start_date.' 00:00:00',$sort_end_date.' 23:59:59'])->get();
+                      // print_r($sales_join);
+                      // exit();
+                      foreach ($sales_join as $key) {
+                          array_push($data_report,[
+                                  'no_faktur'=>$key->code,
+                                  'tgl_faktur'=>$key->created_at,
+                                  'keterangan'=>$key->notes,
+                                  'bill_price'=>$key->bill_price,
+                                  'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                                  'netto'=>$key->bill_price-0,
+                                  'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                              ]);
+                      }
+                      $data['data_report'] = $data_report;
+                      $data['sort_start_date'] = $sort_start_date;
+                      $data['sort_end_date'] = $sort_end_date;
+                      $data['sort_report_type'] = $sort_report_type;
+                      $data['sort_keyword'] = $sort_keyword;
+                      $pdf = \PDF::loadView('pdf.report',$data);
+                      return $pdf->stream('report.pdf');
+                    }else{
+                      $customer_id = \DB::table('customers')->select('id')->where('name',$sort_keyword)->get();
+                      $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
+                      $sales_join = \DB::table('sales_orders')
+                                      ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                      ->select('sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price','sales_order_invoices.id')
+                                      ->where('sales_orders.customer_id','=',$customer_id[0]->id)
+                                      ->whereBetween('sales_order_invoices.created_at',[$sort_start_date.' 00:00:00',$sort_end_date.' 23:59:59'])->get();
+                      // print_r($sales_join);
+                      // exit();
+                      foreach ($sales_join as $key) {
+                          array_push($data_report,[
+                                  'no_faktur'=>$key->code,
+                                  'tgl_faktur'=>$key->created_at,
+                                  'keterangan'=>$key->notes,
+                                  'bill_price'=>$key->bill_price,
+                                  'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                                  'netto'=>$key->bill_price-0,
+                                  'customer'=>$sort_keyword,
+                              ]);
+                      }
+                      $data['data_report'] = $data_report;
+                      $data['sort_start_date'] = $sort_start_date;
+                      $data['sort_end_date'] = $sort_end_date;
+                      $data['sort_report_type'] = $sort_report_type;
+                      $data['sort_keyword'] = $sort_keyword;
+                      $pdf = \PDF::loadView('pdf.report',$data);
+                      return $pdf->stream('report.pdf');
                     }
-                    $data['data_report'] = $data_report;
-                    $data['sort_start_date'] = $sort_start_date;
-                    $data['sort_end_date'] = $sort_end_date;
-                    $data['sort_report_type'] = $sort_report_type;
-                    $data['sort_keyword'] = $sort_keyword;
-                    $pdf = \PDF::loadView('pdf.report',$data);
-                    return $pdf->stream('report.pdf');
+
                 break;
                 case 9:
                     $sort_report_type = 'Penjualan per Pelanggan';

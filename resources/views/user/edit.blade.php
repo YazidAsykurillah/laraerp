@@ -24,12 +24,12 @@
   <div class="row">
     <div class="col-md-8">
       <!--BOX Basic Informations-->
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Basic Informations</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -52,19 +52,29 @@
               @endif
             </div>
           </div>
-
+          <div class="form-group">
+              {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              <a href="{{ url('user') }}" class="btn btn-default">
+                <i class="fa fa-repeat"></i>&nbsp;Cancel
+              </a>&nbsp;
+              <button type="submit" class="btn btn-info" id="btn-submit-user">
+                <i class="fa fa-save"></i>&nbsp;Save
+              </button>
+            </div>
+          </div>
         </div><!-- /.box-body -->
       </div>
       <!--ENDBOX Basic Informations-->
     </div>
     <div class="col-md-4">
       <!--BOX Role-->
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Role</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          
+
           <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
             {!! Form::label('role_id', 'Role', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -81,33 +91,10 @@
       <!--ENDBOX Role-->
     </div>
   </div>
-  <!--ROW Submission-->
-  <div class="row">
-    <div class="col-md-8">
-      <!--BOX submission buttons-->
-      <div class="box">
-        <div class="box-body">
-          <div class="form-group">
-              {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              <a href="{{ url('user') }}" class="btn btn-default">
-                <i class="fa fa-repeat"></i>&nbsp;Cancel
-              </a>&nbsp;
-              <button type="submit" class="btn btn-info" id="btn-submit-user">
-                <i class="fa fa-save"></i>&nbsp;Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--ENDBOX submission buttons-->
-    </div>
-  </div>
-  <!--ENDROW Submission-->
   {!! Form::close() !!}
 
 @endsection
 
 @section('additional_scripts')
-  
+
 @endsection

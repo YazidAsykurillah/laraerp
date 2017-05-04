@@ -48,7 +48,7 @@
                     <br/>
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table border="1" id="table-cash-flow" style="width:100%">
+                            <table class="table" id="table-cash-flow">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Deskripsi</th>

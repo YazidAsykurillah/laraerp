@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateSalesOrderInvoiceRequest;
 use App\Http\Requests\StoreSalesInvoicePaymentRequest;
 use App\Http\Requests\StoreSalesPaymentCash;
 use App\Http\Requests\StoreSalesPaymentTransfer;
+use App\Http\Requests\StoreSalesPaymentGiro;
 //Carbon package
 Use Carbon\Carbon;
 
@@ -20,6 +21,7 @@ use App\PaymentMethod;
 use App\SalesInvoicePayment;
 use App\Cash;
 use App\Bank;
+use App\GiroSalesInvoicePayment;
 use App\BankSalesInvoicePayment;
 use App\CashSalesInvoicePayment;
 use App\TransactionChartAccount;
@@ -75,8 +77,20 @@ class SalesOrderInvoiceController extends Controller
                     'description'=>MainProduct::find($mp_id)->product->first()->description,
                     'image'=>MainProduct::find($mp_id)->image,
                     'family'=>MainProduct::find($mp_id)->family->name,
+                    'sum_stock'=>MainProduct::findOrFail($mp_id)->product->sum('stock'),
+                    'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_cost_credit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','keluar')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
+                    'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
                     'unit'=>MainProduct::find($mp_id)->unit->name,
-
                     'category'=>MainProduct::find($mp_id)->category->name,
                     'ordered_products'=>$this->get_product_lists($mp_id, $id)
                 ];
@@ -117,7 +131,7 @@ class SalesOrderInvoiceController extends Controller
             $date = date_create($sales_order_created_at);
             date_add($date,date_interval_create_from_date_string($customer_invoice_term.' days'));
             $due_date = date_format($date,"Y-m-d");
-
+            $price_ppn = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price))/100*$request->ppn;
             $data = [
                 'code'=>'INV-'.$sales_order_code,
                 'sales_order_id' =>$request->sales_order_id,
@@ -125,6 +139,9 @@ class SalesOrderInvoiceController extends Controller
                 'notes'=>$request->notes,
                 'created_by'=>\Auth::user()->id,
                 'due_date'=> $due_date,
+                'persen_ppn'=>$request->ppn,
+                'price_ppn'=>$price_ppn,
+                'ppn_hidden'=>$request->ppn_hidden,
             ];
 
             $save = SalesOrderInvoice::create($data);
@@ -174,7 +191,7 @@ class SalesOrderInvoiceController extends Controller
                       ->where('sales_order_id',$request->sales_order_id)
                       ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
                     array_push($inv_account,[
-                        'amount'=>$total_amount,
+                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                         'sub_chart_account_id'=>$request->inventory_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -196,7 +213,7 @@ class SalesOrderInvoiceController extends Controller
                         'memo'=>'PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
-                        'amount'=>$total_amount,
+                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                         'sub_chart_account_id'=>$request->cost_goods_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -316,8 +333,20 @@ class SalesOrderInvoiceController extends Controller
                     'description'=>MainProduct::find($mp_id)->product->first()->description,
                     'image'=>MainProduct::find($mp_id)->image,
                     'family'=>MainProduct::find($mp_id)->family->name,
+                    'sum_stock'=>MainProduct::findOrFail($mp_id)->product->sum('stock'),
+                    'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_cost_credit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','keluar')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
+                    'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
                     'unit'=>MainProduct::find($mp_id)->unit->name,
-
                     'category'=>MainProduct::find($mp_id)->category->name,
                     'ordered_products'=>$this->get_product_lists($mp_id, $sales_order->id)
                 ];
@@ -344,7 +373,9 @@ class SalesOrderInvoiceController extends Controller
         $sales_order_invoice = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
         $sales_order_invoice->bill_price = floatval(preg_replace('#[^0-9.]#','',$request->bill_price));
         $sales_order_invoice->notes = $request->notes;
-        $sales_order_invoice->due_date =
+        $sales_order_invoice->persen_ppn = $request->persen_ppn;
+        $sales_order_invoice->price_ppn = floatval(preg_replace('#[^0-9.]#','',$request->bill_price))/100*$request->persen_ppn;
+        $sales_order_invoice->ppn_hidden = $request->ppn_hidden;
         $sales_order_invoice->save();
         //UPDATE SUCCESS
 
@@ -387,7 +418,7 @@ class SalesOrderInvoiceController extends Controller
               ->where('sales_order_id',$request->sales_order_id)
               ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
             array_push($inv_account,[
-                'amount' =>$total_amount,
+                'amount' =>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                 'sub_chart_account_id' =>$request->inventory_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -409,7 +440,7 @@ class SalesOrderInvoiceController extends Controller
                 'memo'=>'PENJUALAN'
             ]);
             array_push($cost_goods_account,[
-                'amount'=>$total_amount,
+                'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                 'sub_chart_account_id'=>$request->cost_goods_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -540,6 +571,8 @@ class SalesOrderInvoiceController extends Controller
 
     public function createPayment(Request $request)
     {
+      if(\Auth::user()->can('create-sales-order-invoice-payment-module'))
+      {
         $invoice_id = $request->invoice_id;
         $invoice = SalesOrderInvoice::findOrFail($invoice_id);
         $payment_methods = PaymentMethod::lists('name', 'id');
@@ -550,6 +583,10 @@ class SalesOrderInvoiceController extends Controller
             ->with('invoice', $invoice)
             ->with('cashs',$cashs)
             ->with('banks',$banks);
+      }else{
+        return view('403');
+      }
+
     }
 
     public function storePaymentCash(StoreSalesPaymentCash $request)
@@ -677,7 +714,73 @@ class SalesOrderInvoiceController extends Controller
             $update_paid_price = $sales_order_invoice->save();
             $update_bank_value = $bank_value->save();
             return redirect('sales-order/'.$sales_order_id)
-                            ->with('successMessage','Payment has been adde');
+                            ->with('successMessage','Payment has been added');
+        }else{
+            return "Failed to save invoice payment, contact the developer";
+        }
+    }
+
+    public function storePaymentGiro(StoreSalesPaymentGiro $request)
+    {
+        $invoice_id = $request->sales_order_invoice_id;
+        $invoice_code = $request->sales_order_invoice_code;
+        //$bank_id = $request->bank_id;
+        $amount = floatval(preg_replace('#[^0-9.]#','',$request->amount_giro));
+
+        $sales_order_invoice = SalesOrderInvoice::findOrFail($invoice_id);
+        $current_paid_price = $sales_order_invoice->paid_price;
+        $new_paid_price = $current_paid_price+$amount;
+
+        $sales_order_id = $sales_order_invoice->sales_order->id;
+        $sales_order_customer_id = $sales_order_invoice->sales_order->customer_id;
+        $customer = Customer::findOrFail($sales_order_customer_id);
+
+        $sales_invoice_payment = new SalesInvoicePayment;
+        $sales_invoice_payment->sales_order_invoice_id = $invoice_id;
+        $sales_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#','',$amount));
+        $sales_invoice_payment->payment_method_id = $request->payment_method_id;
+        $sales_invoice_payment->receiver = \Auth::user()->id;
+        $save = $sales_invoice_payment->save();
+
+        $giro_sales_invoice_payment = new GiroSalesInvoicePayment;
+        $giro_sales_invoice_payment->no_giro = $request->no_giro;
+        $giro_sales_invoice_payment->bank = $request->nama_bank;
+        $giro_sales_invoice_payment->tanggal_cair = $request->tanggal_cair;
+        $giro_sales_invoice_payment->amount = floatval(preg_replace('#[^0-9.]#','',$amount));
+        $giro_sales_invoice_payment->sales_invoice_payment_id = $sales_invoice_payment->id;
+        $giro_sales_invoice_payment->save();
+
+        // $bank_value = Bank::findOrFail($bank_id);
+        // $current_bank_value = $bank_value->value;
+        // $new_bank_value = $current_bank_value+$amount;
+
+        $transaction_sub_chart_account = New TransactionChartAccount;
+        $transaction_sub_chart_account->amount = $amount;
+        $transaction_sub_chart_account->sub_chart_account_id = $request->gir_account;
+        $transaction_sub_chart_account->reference = $invoice_id;
+        $transaction_sub_chart_account->source = $invoice_code;
+        $transaction_sub_chart_account->type = 'masuk';
+        $transaction_sub_chart_account->description = $customer->name.' PAYMENT INVOICE : '.$invoice_code;
+        $transaction_sub_chart_account->memo = 'PAYMENT FOR : '.$invoice_code;
+        $transaction_sub_chart_account->save();
+
+        $trans_payment_k = New TransactionChartAccount;
+        $trans_payment_k->amount = $amount;
+        $trans_payment_k->sub_chart_account_id = 34;
+        $trans_payment_k->reference = $invoice_id;
+        $trans_payment_k->source = $invoice_code;
+        $trans_payment_k->type = 'keluar';
+        $trans_payment_k->description = 'INVOICE TO : '.$customer->name;
+        $trans_payment_k->memo = '';
+        $trans_payment_k->save();
+        if($save){
+            //update invoice's paid price
+            $sales_order_invoice->paid_price = $new_paid_price;
+            //$bank_value->value =$new_bank_value;
+            $update_paid_price = $sales_order_invoice->save();
+            //$update_bank_value = $bank_value->save();
+            return redirect('sales-order/'.$sales_order_id)
+                            ->with('successMessage','Payment has been added');
         }else{
             return "Failed to save invoice payment, contact the developer";
         }

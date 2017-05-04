@@ -23,10 +23,10 @@
   {!! Form::open(['route'=>'customer.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-customer','files'=>true]) !!}
   <div class="row">
     <div class="col-lg-8">
-      <div class="box">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Create new customer</h3>
-          
+
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -86,10 +86,10 @@
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix">
-          
+
         </div>
       </div><!-- /.box -->
-    
+
     </div>
   </div>
   {!! Form::close() !!}
@@ -104,5 +104,5 @@
       $('#btn-submit-customer').prop('disabled', true);
     });
   </script>
-  
+
 @endsection

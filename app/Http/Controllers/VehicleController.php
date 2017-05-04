@@ -66,7 +66,7 @@ class VehicleController extends Controller
         $vehicle->number_of_vehicle = $request->number_of_vehicle;
         $vehicle->save();
         return redirect('vehicle')
-            ->with('successMessage','Vehicle has been created'.$update_category);
+            ->with('successMessage','Vehicle has been added');
     }
 
     /**
@@ -117,7 +117,7 @@ class VehicleController extends Controller
         $vehicle->number_of_vehicle = $request->number_of_vehicle;
         $vehicle->save();
         return redirect('vehicle')
-            ->with('successMessage', "$vehicle->code has been updated".$request->category);
+            ->with('successMessage', "$vehicle->code has been updated");
     }
 
     /**

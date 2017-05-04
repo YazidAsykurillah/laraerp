@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $category->family_id = $request->family_id;
         $category->save();
         return redirect('category')
-        ->with('successMessage', 'Berhasil menambahkan kategori');
+        ->with('successMessage', 'Category has been added');
     }
 
     /**

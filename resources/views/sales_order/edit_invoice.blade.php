@@ -2,7 +2,7 @@
 
 @section('page_title')
     Sales Order Invoice
-@endsection
+@hiddenection
 
 @section('page_header')
     <h1>
@@ -55,6 +55,9 @@
                                                   {{ $row['family'] }}
                                               </strong>
                                               <input type="hidden" name="parent_product_id[]" value="{{ $row['main_product_id'] }} " />
+                                              <input type="hidden" name="parent_sum_stock[]" value="{{ $row['sum_stock'] }}"/>
+                                              <input type="hidden" name="parent_sum_inventory_cost[]" value="{{ $row['sum_price_purchase']/$row['sum_qty_purchase'] }}"/>
+                                              <input type="hidden" name="parent_sum_quantity[]" class="parent_sum_quantity"/>
                                               <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
                                                   @foreach(list_account_inventory('52') as $inventory_account)
                                                       @if($inventory_account->name == 'PERSEDIAAN'.' '.$row['family'])
@@ -164,6 +167,30 @@
                           </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('ppn') ? ' has-error' : '' }}">
+                          {!! Form::label('ppn', 'PPN', ['class'=>'col-sm-2 control-label']) !!}
+                          <div class="col-sm-6">
+                              {{ Form::select('persen_ppn', ['0'=>'0%','10'=>'10%','15'=>'15%','20'=>'20%'] ,null, ['class'=>'form-control', 'placeholder'=>'Select PPN', 'id'=>'unit_id']) }}
+                            @if ($errors->has('ppn'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('ppn') }}</strong>
+                              </span>
+                            @endif
+                          </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('ppn_hidden') ? ' has-error' : '' }}">
+                          {!! Form::label('ppn_hidden', 'Hidden PPN', ['class'=>'col-sm-2 control-label']) !!}
+                          <div class="col-sm-6">
+                            {{ Form::select('ppn_hidden', ['yes'=>'YES','no'=>'NO'], null, ['class'=>'form-control', 'placeholder'=>'Select Hidden PPN', 'id'=>'unit_id']) }}
+                            @if ($errors->has('ppn_hidden'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('ppn_hidden') }}</strong>
+                              </span>
+                            @endif
+                          </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('notes') ? ' has-error' : '' }}">
                           {!! Form::label('notes', 'Notes', ['class'=>'col-sm-2 control-label']) !!}
                           <div class="col-sm-6">
@@ -250,7 +277,7 @@
         var sum = document.getElementsByClassName('sum');
         for(var a = 0; a < sum.length; a++){
           document.getElementsByClassName('price_parent')[a].value = document.getElementsByClassName('sum')[a].innerHTML;
-          document.getElementsByClassName('target_qty')[a].innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
+          document.getElementsByClassName('parent_sum_quantity')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
         }
 
     </script>
