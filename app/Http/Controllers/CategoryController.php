@@ -9,7 +9,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
 use App\Category;
-
+use App\Family;
 class CategoryController extends Controller
 {
     /**
@@ -38,7 +38,9 @@ class CategoryController extends Controller
     {
         if(\Auth::user()->can('create-category-module'))
         {
-            return view('category.create');
+            $family = Family::lists('name','id');
+            return view('category.create')
+                ->with('family',$family);
         }else{
             return view('403');
         }
@@ -55,6 +57,7 @@ class CategoryController extends Controller
         $category = new Category;
         $category->code = strtoupper(str_replace(' ', '',$request->code));
         $category->name = $request->name;
+        $category->family_id = $request->family_id;
         $category->save();
         return redirect('category')
         ->with('successMessage', 'Berhasil menambahkan kategori');
@@ -84,8 +87,10 @@ class CategoryController extends Controller
         if(\Auth::user()->can('edit-category-module'))
         {
             $category = Category::findOrFail($id);
+            $family = Family::lists('name','id');
             return view('category.edit')
-             ->with('category', $category);
+             ->with('category', $category)
+             ->with('family',$family);
         }else{
             return view('403');
         }
@@ -103,6 +108,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->code = strtoupper(str_replace(' ', '',$request->code));
         $category->name = $request->name;
+        $category->family_id = $request->family_id;
         $category->save();
         return redirect('category/'.$id.'/edit')
             ->with('successMessage', 'Category has been updated');

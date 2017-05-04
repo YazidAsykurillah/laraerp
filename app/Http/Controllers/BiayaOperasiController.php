@@ -22,7 +22,7 @@ class BiayaOperasiController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('kas-kecil-module'))
+        if(\Auth::user()->can('jurnal-umum-module'))
         {
             return view('biaya_operasi.index');
         }else{
@@ -37,7 +37,7 @@ class BiayaOperasiController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('create-kas-kecil-module'))
+        if(\Auth::user()->can('create-jurnal-umum-module'))
         {
             $sub_account = SubChartAccount::all();
             $banks = Bank::lists('name', 'id');
@@ -128,7 +128,7 @@ class BiayaOperasiController extends Controller
      */
     public function edit($id)
     {
-        if(\Auth::user()->can('edit-kas-kecil-module'))
+        if(\Auth::user()->can('edit-jurnal-umum-module'))
         {
             $trans_chart_account = TransactionChartAccount::findOrFail($id);
             $cash_bank_account = TransactionChartAccount::select('sub_chart_account_id')->where('reference',$id)->get();

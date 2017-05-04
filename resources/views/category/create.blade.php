@@ -29,7 +29,7 @@
           </div><!-- /.box-header -->
           <div class="box-body">
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-              {!! Form::label('code', 'Kode', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-10">
                 {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the category', 'id'=>'code']) !!}
                 @if ($errors->has('code'))
@@ -46,6 +46,17 @@
                 @if ($errors->has('name'))
                   <span class="help-block">
                     <strong>{{ $errors->first('name') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+            <div class="form-group{{ $errors->has('family_id') ? ' has-error' : '' }}">
+              {!! Form::label('family_id', 'Family', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-10">
+                {!! Form::select('family_id',$family,null,['class'=>'form-control', 'placeholder'=>'Family of the category', 'id'=>'family_id']) !!}
+                @if ($errors->has('family_id'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('family_id') }}</strong>
                   </span>
                 @endif
               </div>

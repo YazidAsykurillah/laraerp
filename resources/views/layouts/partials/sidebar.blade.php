@@ -52,6 +52,7 @@
           <span>Inventory</span>
         </a>
         <ul class="treeview-menu">
+          <li><a href="{{ url('product-adjustment') }}"><i class="fa fa-circle-o"></i> Adjustments Products</a></li>
           <li><a href="{{ url('product-available') }}"><i class="fa fa-circle-o"></i> List Products (Available)</a></li>
           <li><a href="{{ url('product-all') }}"><i class="fa fa-circle-o"></i> List Products (All)</a></li>
           <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Products</a></li>

@@ -20,7 +20,7 @@ class FamilyController extends Controller
     {
         if(\Auth::user()->can('family-module'))
         {
-            $family = Family::paginate(10);
+            $family = Family::all();
             return view('family.index')
                 ->with('family',$family);
         }else{
