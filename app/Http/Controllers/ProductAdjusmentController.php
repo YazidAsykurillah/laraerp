@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\SubChartAccount;
+use App\Adjustment;
+use App\ProductAdjustment;
 use App\Product;
 
 class ProductAdjusmentController extends Controller
@@ -47,6 +49,7 @@ class ProductAdjusmentController extends Controller
             foreach ($product as $key) {
                 array_push($results,[
                     'description'=>$key->description,
+                    'unit'=>\DB::table('main_products')->where('id',$key->main_product_id)->value('unit_id'),
                 ]);
             }
             return response()->json($results);
@@ -61,7 +64,203 @@ class ProductAdjusmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $adjustment = New Adjustment;
+        $adjustment->code = $request->adjust_no;
+        $adjustment->in_out = $request->in_out;
+        $adjustment->notes = $request->notes;
+        $adjustment->save();
+
+        $data_product_adj = [];
+        $product_adjs = New ProductAdjustment;
+        foreach ($request->product_id as $key => $value) {
+            array_push($data_product_adj,[
+                'product_id'=>$request->product_id[$key],
+                'unit_cost'=>$request->unit_cost[$key],
+                'qty'=>$request->quantity[$key],
+                'total'=>$request->total[$key],
+                'adjustment_id'=>$adjustment->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+        }
+        \DB::table('product_adjustment')->insert($data_product_adj);
+
+        $data_potongan_stock = [];
+        $sum_potongan = 0;
+        if($request->adjust_account == 110)
+        {
+            if($request->in_out == 'in')
+            {
+                foreach ($request->product_id as $key => $value) {
+                    $stock_first = \DB::table('products')->select('stock')->where('id',$request->product_id[$key])->value('stock');
+                    \DB::table('products')->where('id',$request->product_id[$key])->update(['stock'=>$stock_first+$request->quantity[$key]]);
+                }
+            }elseif ($request->in_out == 'out') {
+                foreach ($request->product_id as $key => $value) {
+                    $stock_first = \DB::table('products')->select('stock')->where('id',$request->product_id[$key])->value('stock');
+                    \DB::table('products')->where('id',$request->product_id[$key])->update(['stock'=>$stock_first-$request->quantity[$key]]);
+                    $sum_potongan += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                }
+                // array_push($data_potongan_stock,[
+                //     'amount'=>$sum_potongan,
+                //     'sub_chart_account_id'=>$request->adjust_account,
+                //     'created_at'=>date('Y-m-d h:i:s'),
+                //     'updated_at'=>date('Y-m-d h:i:s'),
+                //     'reference'=>$adjustment->id,
+                //     'source'=>'potongan_pembelian',
+                //     'type'=>'masuk',
+                //     'description'=>'POTONGAN PEMBELIAN',
+                //     'memo'=>'POTONGAN PEMBELIAN'
+                // ]);
+                // \DB::table('transaction_chart_accounts')->insert($data_potongan_stock);
+            }
+        }elseif ($request->adjust_account == 'initial_setup') {
+            //$sum_kain = [];
+            $data_kain = [];
+            $data_sprei = [];
+            $data_selimut = [];
+            $data_bedcover = [];
+            $data_matras = [];
+            $data_plastik = [];
+            $sum_kain = '';
+            $id_kain = '';
+            $sum_sprei = '';
+            $id_sprei = '';
+            $sum_selimut = '';
+            $id_selimut = '';
+            $sum_bedcover = '';
+            $id_bedcover = '';
+            $sum_matras = '';
+            $id_matras = '';
+            $sum_plastik = '';
+            $id_plastik = '';
+            foreach ($request->product_id as $key => $value) {
+                if($request->family_name[$key] == 'KAIN')
+                {
+                    $sum_kain += $request->total[$key];
+                    $id_kain = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'SPREI') {
+                    $sum_sprei += $request->total[$key];
+                    $id_sprei = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'SELIMUT') {
+                    $sum_selimut += $request->total[$key];
+                    $id_selimut = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'BEDCOVER') {
+                    $sum_bedcover += $request->total[$key];
+                    $id_bedcover = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'MATRAS') {
+                    $sum_matras += $request->total[$key];
+                    $id_matras = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'PLASTIK') {
+                    $sum_plastik += $request->total[$key];
+                    $id_plastik = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+
+            array_push($data_kain,[
+                'amount'=>$sum_kain,
+                'sub_chart_account_id'=>$id_kain,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_sprei,[
+                'amount'=>$sum_sprei,
+                'sub_chart_account_id'=>$id_sprei,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_selimut,[
+                'amount'=>$sum_selimut,
+                'sub_chart_account_id'=>$id_selimut,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_bedcover,[
+                'amount'=>$sum_bedcover,
+                'sub_chart_account_id'=>$id_bedcover,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_matras,[
+                'amount'=>$sum_matras,
+                'sub_chart_account_id'=>$id_matras,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_plastik,[
+                'amount'=>$sum_plastik,
+                'sub_chart_account_id'=>$id_plastik,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+                if($sum_kain > 0){
+                    \DB::table('transaction_chart_accounts')->insert($data_kain);
+                }
+                if ($sum_sprei > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_sprei);
+                }
+                if ($sum_selimut > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_selimut);
+                }
+                if ($sum_bedcover > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_bedcover);
+                }
+                if ($sum_matras > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_matras);
+                }
+                if ($sum_plastik > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_plastik);
+                }
+        }
+
+        return redirect('product-adjustment')
+            ->with('successMessage','Adjustment has been added');
     }
 
     /**
@@ -72,7 +271,9 @@ class ProductAdjusmentController extends Controller
      */
     public function show($id)
     {
-        //
+        $adjustment = Adjustment::findorFail($id);
+        return view('adjustment.show')
+            ->with('adjustment',$adjustment);
     }
 
     /**
@@ -83,7 +284,11 @@ class ProductAdjusmentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $adjust_account = SubChartAccount::all();
+        $adjustment = Adjustment::findorFail($id);
+        return view('adjustment.edit')
+            ->with('adjustment',$adjustment)
+            ->with('adjust_account',$adjust_account);
     }
 
     /**
@@ -93,9 +298,206 @@ class ProductAdjusmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $adjustment = Adjustment::findorFail($request->adjustment_id);
+        $adjustment->code = $request->code;
+        $adjustment->in_out = $request->in_out;
+        $adjustment->notes = $request->notes;
+        $adjustment->save();
+
+        \DB::table('product_adjustment')->where('adjustment_id',$request->adjustment_id)->delete();
+        $data_product_adj = [];
+        $product_adjs = New ProductAdjustment;
+        foreach ($request->product_id as $key => $value) {
+            array_push($data_product_adj,[
+                'product_id'=>$request->product_id[$key],
+                'unit_cost'=>floatval(preg_replace('#[^0-9.]#', '', $request->unit_cost[$key])),
+                'qty'=>$request->quantity[$key],
+                'total'=>floatval(preg_replace('#[^0-9.]#', '', $request->total[$key])),
+                'adjustment_id'=>$adjustment->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+            ]);
+        }
+        \DB::table('product_adjustment')->insert($data_product_adj);
+
+        $data_potongan_stock = [];
+        $sum_potongan = 0;
+        if($request->adjust_account == 110)
+        {
+            if($request->in_out == 'in')
+            {
+                foreach ($request->product_id as $key => $value) {
+                    $stock_first = \DB::table('products')->select('stock')->where('id',$request->product_id[$key])->value('stock');
+                    \DB::table('products')->where('id',$request->product_id[$key])->update(['stock'=>$stock_first+$request->quantity[$key]]);
+                }
+            }elseif ($request->in_out == 'out') {
+                foreach ($request->product_id as $key => $value) {
+                    $stock_first = \DB::table('products')->select('stock')->where('id',$request->product_id[$key])->value('stock');
+                    \DB::table('products')->where('id',$request->product_id[$key])->update(['stock'=>$stock_first-$request->quantity[$key]]);
+                    $sum_potongan += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                }
+                array_push($data_potongan_stock,[
+                    'amount'=>$sum_potongan,
+                    'sub_chart_account_id'=>$request->adjust_account,
+                    'created_at'=>date('Y-m-d h:i:s'),
+                    'updated_at'=>date('Y-m-d h:i:s'),
+                    'reference'=>$adjustment->id,
+                    'source'=>'potongan_pembelian',
+                    'type'=>'masuk',
+                    'description'=>'POTONGAN PEMBELIAN',
+                    'memo'=>'POTONGAN PEMBELIAN'
+                ]);
+                \DB::table('transaction_chart_accounts')->insert($data_potongan_stock);
+
+            }
+        }elseif ($request->adjust_account == 'initial_setup') {
+            \DB::table('transaction_chart_accounts')->where('reference',$adjustment->id)->where('source','initial_setup')->delete();
+            $data_kain = [];
+            $data_sprei = [];
+            $data_selimut = [];
+            $data_bedcover = [];
+            $data_matras = [];
+            $data_plastik = [];
+            $sum_kain = '';
+            $id_kain = '';
+            $sum_sprei = '';
+            $id_sprei = '';
+            $sum_selimut = '';
+            $id_selimut = '';
+            $sum_bedcover = '';
+            $id_bedcover = '';
+            $sum_matras = '';
+            $id_matras = '';
+            $sum_plastik = '';
+            $id_plastik = '';
+            foreach ($request->product_id as $key => $value) {
+                if($request->family_name[$key] == 'KAIN')
+                {
+                    $sum_kain += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_kain = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'SPREI') {
+                    $sum_sprei += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_sprei = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'SELIMUT') {
+                    $sum_selimut += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_selimut = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'BEDCOVER') {
+                    $sum_bedcover += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_bedcover = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'MATRAS') {
+                    $sum_matras += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_matras = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+            foreach ($request->product_id as $key => $value) {
+                if ($request->family_name[$key] == 'PLASTIK') {
+                    $sum_plastik += floatval(preg_replace('#[^0-9.]#', '', $request->total[$key]));
+                    $id_plastik = \DB::table('sub_chart_accounts')->select('id')->where('name','PERSEDIAAN '.$request->family_name[$key])->value('id');
+                }
+            }
+
+            array_push($data_kain,[
+                'amount'=>$sum_kain,
+                'sub_chart_account_id'=>$id_kain,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_sprei,[
+                'amount'=>$sum_sprei,
+                'sub_chart_account_id'=>$id_sprei,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_selimut,[
+                'amount'=>$sum_selimut,
+                'sub_chart_account_id'=>$id_selimut,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_bedcover,[
+                'amount'=>$sum_bedcover,
+                'sub_chart_account_id'=>$id_bedcover,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_matras,[
+                'amount'=>$sum_matras,
+                'sub_chart_account_id'=>$id_matras,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+            array_push($data_plastik,[
+                'amount'=>$sum_plastik,
+                'sub_chart_account_id'=>$id_plastik,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
+                'reference'=>$adjustment->id,
+                'source'=>'initial_setup',
+                'type'=>'masuk',
+                'description'=>'SALDO AWAL',
+                'memo'=>'SALDO AWAL'
+            ]);
+                if($sum_kain > 0){
+                    \DB::table('transaction_chart_accounts')->insert($data_kain);
+                }
+                if ($sum_sprei > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_sprei);
+                }
+                if ($sum_selimut > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_selimut);
+                }
+                if ($sum_bedcover > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_bedcover);
+                }
+                if ($sum_matras > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_matras);
+                }
+                if ($sum_plastik > 0) {
+                    \DB::table('transaction_chart_accounts')->insert($data_plastik);
+                }
+        }
+
+        return redirect('product-adjustment')
+            ->with('successMessage','Adjustment has been updated');
     }
 
     /**
@@ -104,8 +506,14 @@ class ProductAdjusmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $adjustment = Adjustment::findorFail($request->adjustment_id);
+        $adjustment->delete();
+
+        \DB::table('product_adjustment')->where('adjustment_id',$request->adjustment_id)->delete();
+
+        return redirect('product-adjustment')
+            ->with('successMessage','Adjustment has been deleted');
     }
 }

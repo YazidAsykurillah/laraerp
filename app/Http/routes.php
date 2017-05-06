@@ -19,6 +19,7 @@ Route::get('/home', 'HomeController@index');
 
 
 //
+Route::post('deleteAdjustment','ProductAdjusmentController@destroy');
 Route::post('callFieldProduct','ProductAdjusmentController@callFieldProduct');
 Route::resource('product-adjustment','ProductAdjusmentController');
 //cash flow
@@ -266,5 +267,6 @@ Route::controller('datatables', 'DatatablesController',[
     'getMainProducts' =>'datatables.getMainProducts',
     'getSubChartAccounts' =>'datatables.getSubChartAccounts',
     'getTransactionChartAccounts' =>'datatables.getTransactionChartAccounts',
-    'getAssets'=>'datatables.getAssets'
+    'getAssets'=>'datatables.getAssets',
+    'getAdjustments'=>'datatables.getAdjustments',
 ]);

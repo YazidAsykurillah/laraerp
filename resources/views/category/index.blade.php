@@ -31,11 +31,7 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-<<<<<<< HEAD
                   <table class="table table-striped table-hover" id="table-category">
-=======
-                  <table class="table table-striped table-hover" id='table-category'>
->>>>>>> 1c5f4ed1146d10fba731998b545ba52b61973b1c
                       <thead>
                         <tr style="background-color:#3c8dbc;color:white">
                           <th style="width:5%;">No</th>
@@ -48,17 +44,10 @@
                       </thead>
                       <tbody>
                         @if($categories->count() >0 )
-<<<<<<< HEAD
                             <?php $no = 1; ?>
                           @foreach($categories as $category)
                             <tr>
                               <td>{{ $no++ }}</td>
-=======
-                          <?php $no = 1; ?>
-                          @foreach($categories as $category)
-                            <tr>
-                              <td>{{ $no++}}</td>
->>>>>>> 1c5f4ed1146d10fba731998b545ba52b61973b1c
                               <td>{{ $category->code }}</td>
                               <td>{{ $category->name }}</td>
                               <td>{{ $category->family->name }}</td>

@@ -21,7 +21,7 @@ class CategoryController extends Controller
     {
         if(\Auth::user()->can('category-module'))
         {
-            $categories = Category::paginate(10);
+            $categories = Category::all();
             return view('category.index')
              ->with('categories', $categories);
         }else{

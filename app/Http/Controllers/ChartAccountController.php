@@ -185,7 +185,7 @@ class ChartAccountController extends Controller
         $cek_saldo_awal = \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->value('amount');
         if(count($cek_saldo_awal) > 0)
         {
-          \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->update(['amount'=>$request->saldo_awal_edit]);
+          \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sub_chart_account_id)->where('description','SALDO AWAL')->where('memo','SALDO AWAL')->update(['amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->saldo_awal_edit))]);
         }else
         {
           $trans_chart_account = New TransactionChartAccount;

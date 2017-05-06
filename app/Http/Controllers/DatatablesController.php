@@ -32,6 +32,7 @@ use App\SubChartAccount;
 use App\MainProduct;
 use App\TransactionChartAccount;
 use App\Asset;
+use App\Adjustment;
 
 class DatatablesController extends Controller
 {
@@ -1173,6 +1174,48 @@ class DatatablesController extends Controller
         }
 
         return $data_assets->make(true);
+
+    }
+
+    public function getAdjustments(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        //\DB::table('suppliers')->orderBy('code','asc')->get();
+        $adjustment = Adjustment::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'code',
+            'created_at',
+            'in_out',
+            'notes',
+            'created_at'
+        ]);
+
+        $data_adjustments = Datatables::of($adjustment)
+            ->editColumn('qty', function($adjustment){
+                    return $adjustment->product_adjustment->sum('qty');
+            })
+            ->addColumn('actions', function($adjustment){
+                    $actions_html ='<a href="'.url('product-adjustment/'.$adjustment->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link-square"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('product-adjustment/'.$adjustment->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    // if(\Auth::user()->can('delete-product-adjustment-module'))
+                    // {
+                      $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product-adjustment" data-id="'.$adjustment->id.'" data-text="'.$adjustment->name.'">';
+                      $actions_html .=    '<i class="fa fa-trash"></i>';
+                      $actions_html .='</button>';
+                    //}
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_adjustments->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_adjustments->make(true);
 
     }
 }

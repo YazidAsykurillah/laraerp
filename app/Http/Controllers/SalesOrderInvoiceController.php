@@ -78,15 +78,23 @@ class SalesOrderInvoiceController extends Controller
                     'image'=>MainProduct::find($mp_id)->image,
                     'family'=>MainProduct::find($mp_id)->family->name,
                     'sum_stock'=>MainProduct::findOrFail($mp_id)->product->sum('stock'),
+                    'sum_inventory_cost_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.amount'),
                     'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
                                                 ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
                     'sum_inventory_cost_credit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
                                                 ->where('transaction_chart_accounts.type','=','keluar')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
                     'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
                     'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
@@ -191,7 +199,7 @@ class SalesOrderInvoiceController extends Controller
                       ->where('sales_order_id',$request->sales_order_id)
                       ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
                     array_push($inv_account,[
-                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
+                        'amount'=>$request->parent_sum_inventory_cost[$key],
                         'sub_chart_account_id'=>$request->inventory_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -213,7 +221,7 @@ class SalesOrderInvoiceController extends Controller
                         'memo'=>'PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
-                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
+                        'amount'=>$request->parent_sum_inventory_cost[$key],
                         'sub_chart_account_id'=>$request->cost_goods_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -334,15 +342,23 @@ class SalesOrderInvoiceController extends Controller
                     'image'=>MainProduct::find($mp_id)->image,
                     'family'=>MainProduct::find($mp_id)->family->name,
                     'sum_stock'=>MainProduct::findOrFail($mp_id)->product->sum('stock'),
+                    'sum_inventory_cost_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.amount'),
                     'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
                                                 ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
                     'sum_inventory_cost_credit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
                                                 ->where('transaction_chart_accounts.type','=','keluar')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
                     'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
                     'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
@@ -418,7 +434,7 @@ class SalesOrderInvoiceController extends Controller
               ->where('sales_order_id',$request->sales_order_id)
               ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
             array_push($inv_account,[
-                'amount' =>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
+                'amount' =>$request->parent_sum_inventory_cost[$key],
                 'sub_chart_account_id' =>$request->inventory_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -440,7 +456,7 @@ class SalesOrderInvoiceController extends Controller
                 'memo'=>'PENJUALAN'
             ]);
             array_push($cost_goods_account,[
-                'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
+                'amount'=>$request->parent_sum_inventory_cost[$key],
                 'sub_chart_account_id'=>$request->cost_goods_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
