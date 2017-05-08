@@ -26,7 +26,10 @@ class StoreBiayaOperasiRequest extends Request
         return [
             'beban_operasi_account'=>'required',
             'cash_bank_account'=>'required',
-            //'amount'=>'required',
+            'pay_method'=>'required',
+            'cash_or_bank'=>'required',
+            'debit'=>'required',
+            'credit'=>'required'
         ];
     }
 }

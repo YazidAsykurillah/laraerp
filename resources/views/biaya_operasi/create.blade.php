@@ -34,24 +34,24 @@
                             {!! Form::select('pay_method',['2'=>'Cash','1'=>'Transfer'], null, ['placeholder'=>'Select payment method', 'class'=>'form-control', 'id'=>'pay_method']) !!}
                           </div>
                         </div>
-                        <div class="form-group{{ $errors->has('cash_id') ? ' has-error' : '' }}" style="display:none" id="cash_form">
+                        <div class="form-group{{ $errors->has('cash_or_bank') ? ' has-error' : '' }}" style="display:none" id="cash_form">
                           {!! Form::label('cash_id', 'Cash', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">
                               {!! Form::select('',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) !!}
-                              @if($errors->has('cash_id'))
+                              @if($errors->has('cash_or_bank'))
                                   <span class="help-block">
-                                      <strong>{{ $errors->first('cash_id') }}</strong>
+                                      <strong>{{ $errors->first('cash_or_bank') }}</strong>
                                   </span>
                               @endif
                           </div>
                         </div>
-                        <div class="form-group{{ $errors->has('bank_id') ? ' has-error' : '' }}" style="display:none" id="bank_form">
+                        <div class="form-group{{ $errors->has('cash_or_bank') ? ' has-error' : '' }}" style="display:none" id="bank_form">
                           {!! Form::label('bank_id', 'Bank', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">
-                              {!! Form::select('',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'bank_id']) !!}
-                              @if($errors->has('bank_id'))
+                              {!! Form::select('',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'cash_or_bank']) !!}
+                              @if($errors->has('cash_or_bank'))
                                   <span class="help-block">
-                                      <strong>{{ $errors->first('bank_id') }}</strong>
+                                      <strong>{{ $errors->first('cash_or_bank') }}</strong>
                                   </span>
                               @endif
                           </div>
@@ -93,12 +93,11 @@
                         <div class="form-group{{ $errors->has('beban_operasi_account') ? ' has-error' : '' }}">
                             {!! Form::label('expenses_account', 'Expenses Account', ['class'=>'col-sm-4 control-label']) !!}
                             <div class="col-sm-6">
-                                <input list="sub_account" name="beban_operasi_account" class="form-control">
-                                <datalist id="sub_account">
-                                    @foreach($sub_account as $sub)
-                                      <option value="{{ $sub->name}}">
-                                    @endforeach
-                                </datalist>
+                                <select name="beban_operasi_account" class="form-control">
+                                  @foreach($sub_account as $sub)
+                                    <option value="{{ $sub->id}}">{{ $sub->account_number}}&nbsp;&nbsp;{{ $sub->name}}</option>
+                                  @endforeach
+                                </select>
                                 @if ($errors->has('beban_operasi_account'))
                                   <span class="help-block">
                                     <strong>{{ $errors->first('beban_operasi_account') }}</strong>

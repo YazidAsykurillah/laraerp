@@ -59,7 +59,7 @@ class BiayaOperasiController extends Controller
      */
     public function store(StoreBiayaOperasiRequest $request)
     {
-        $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('name',$request->beban_operasi_account)->value('chart_account_id');
+        $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->beban_operasi_account)->value('chart_account_id');
 
         //save to cash or bank master
         if($request->pay_method == 2)
@@ -91,14 +91,14 @@ class BiayaOperasiController extends Controller
 
         }
 
-        $id_sub_account = \DB::table('sub_chart_accounts')->select('id')->where('name',$request->beban_operasi_account)->value('id');
+        //$id_sub_account = \DB::table('sub_chart_accounts')->select('id')->where('name',$request->beban_operasi_account)->value('id');
         // now save beban operasi account
         $trans_chart_account = New TransactionChartAccount;
         $trans_chart_account->amount = floatval(preg_replace('#[^0-9.]#', '', $request->debit));
-        $trans_chart_account->sub_chart_account_id = $id_sub_account;
+        $trans_chart_account->sub_chart_account_id = $request->beban_operasi_account;
         $trans_chart_account->created_at = date('Y-m-d h:i:s');
         $trans_chart_account->updated_at = date('Y-m-d h:i:s');
-        $trans_chart_account->reference = $id_sub_account;
+        $trans_chart_account->reference = $request->beban_operasi_account;
         $trans_chart_account->source = 'biaya_operasi';
         $trans_chart_account->type = 'masuk';
         $trans_chart_account->description = $request->memo;
