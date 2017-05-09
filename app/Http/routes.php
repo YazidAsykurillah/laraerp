@@ -17,8 +17,13 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+//restore
+Route::resource('restore','RestoreController');
 
-//
+//backup
+Route::resource('backup','BackUpController');
+
+//adjustment
 Route::post('deleteAdjustment','ProductAdjusmentController@destroy');
 Route::post('callFieldProduct','ProductAdjusmentController@callFieldProduct');
 Route::resource('product-adjustment','ProductAdjusmentController');

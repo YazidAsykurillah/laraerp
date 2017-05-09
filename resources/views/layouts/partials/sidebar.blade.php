@@ -114,6 +114,16 @@
           <li><a href="{{ url('permission') }}"><i class="fa fa-circle-o"></i> Permission</a></li>
         </ul>
       </li>
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-lock"></i>
+          <span>Backup and Restore Data</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('backup') }}"><i class="fa fa-circle-o"></i> Backup</a></li>
+          <li><a href="{{ url('restore') }}"><i class="fa fa-circle-o"></i> Restore</a></li>
+        </ul>
+      </li>
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->
