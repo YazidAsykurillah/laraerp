@@ -342,13 +342,17 @@
                     tableProduct.row(this).data().unit_id+
                 '</td>'+
                 '<td>'+
-                    '<input type="text" name="quantity[]" class="quantity form-control" style=""/>'+
+                    '<input type="text" name="quantity[]" class="quantity form-control"/>'+
                 '</td>'+
                 '<td>'+
                     tableProduct.row(this).data().category_id+
                 '</td>'+
               '</tr>'
             );
+            $('.quantity').autoNumeric('init',{
+              aSep:'',
+              aDec:'.'
+            });
 
             // var token = $("meta[name='csrf-token']").attr('content');
             // //alert(token);

@@ -81,7 +81,7 @@
               {!! Form::label('notes', 'Notes', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
                 {{ Form::textarea('notes', null,['class'=>'form-control', 'placeholder'=>'Notes of Purchase Order', 'id'=>'notes']) }}
-                @if ($errors->has('notes'))
+                @if($errors->has('notes'))
                   <span class="help-block">
                     <strong>{{ $errors->first('notes') }}</strong>
                   </span>
@@ -168,9 +168,8 @@
 
 
 @section('additional_scripts')
-  <!--Auto numeric plugin-->
-  {!! Html::script('js/autoNumeric.js') !!}
 
+  {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();
@@ -179,12 +178,6 @@
   </script>
 
   <script type="text/javascript">
-    // $('#table-selected-products').DataTable({
-    //     scrollY: '50vh',
-    //     scrollCollapse:true,
-    //     paging:false,
-    // });
-
     var selected = [];
 
     var tableProduct =  $('#table-product').DataTable({
@@ -269,15 +262,18 @@
                                 value.unit+
                             '</td>'+
                             '<td>'+
-                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                                '<input type="text" name="quantity[]" class="quantity form-control"/>'+
                             '</td>'+
                             '<td>'+
                                 value.category+
                             '</td>'+
                           '</tr>'
                         );
+                        $('.quantity').autoNumeric('init',{
+                          aSep:'',
+                          aDec:'.'
+                        });
                     });
-
                 },
             })
         } else {
@@ -287,7 +283,6 @@
 
         $(this).toggleClass('selected');
     } );
-
     $('#btn-set-product').on('click', function(){
       if(selected.length !== 0){
         $('#tr-no-product-selected').hide();
@@ -312,7 +307,6 @@
     });
 
     //ENDBlock search input and select
-
   </script>
 
   <script type="text/javascript">
@@ -350,15 +344,5 @@
       });
     });
   //ENDBlock handle form create purchase order submission
-  </script>
-
-  <script type="text/javascript">
-    //   $(document).ready(function() {
-    //   $('#table-selected-products').DataTable( {
-    //       "scrollY":        "200px",
-    //       "scrollCollapse": true,
-    //       "paging":         false
-    //   } );
-    // } );
   </script>
 @endSection

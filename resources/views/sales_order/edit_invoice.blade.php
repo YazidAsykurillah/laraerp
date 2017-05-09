@@ -2,7 +2,7 @@
 
 @section('page_title')
     Sales Order Invoice
-@hiddenection
+@endsection
 
 @section('page_header')
     <h1>
@@ -136,6 +136,7 @@
                               @else
                               <tr id="tr-no-product-selected">
                                 <td>There are no product</td>
+                              </tr>
                               @endif
 
                                 </tbody>
@@ -202,6 +203,7 @@
                             @endif
                           </div>
                         </div>
+
                         <div class="form-group">
                             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
                           <div class="col-sm-6">

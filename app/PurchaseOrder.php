@@ -32,7 +32,7 @@ class PurchaseOrder extends Model
 
     public function products()
     {
-        return $this->belongsToMany('App\Product')->withPivot('quantity','price', 'purchase_order_id');
+        return $this->belongsToMany('App\Product')->withPivot('quantity','price','price_per_unit','purchase_order_id');
     }
 
     public function main_products()

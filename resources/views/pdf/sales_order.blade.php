@@ -34,13 +34,23 @@
     .field-so{
         padding-left: 3px;
     }
+    hr{
+      margin-top:5px;
+      border:1px solid black;
+    }
 </style>
 </head>
 
 <body>
     <div class="container">
         <div class="row">
-            <table style="width:100%">
+          <center>
+            <h2>PT.CATRA TEXTILE RAYA</h2>
+            <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+            <h5>Telp. 021-22522283, 021-22522334</h5>
+          </center>
+          <hr>
+            <!-- <table style="width:100%">
                 <tr>
                     <td style="width:30%;vertical-align:top;text-align:left">
                         <h1>CATRA<small>TEXTILE</small></h1>
@@ -55,7 +65,7 @@
                         <h2>SALES ORDER</h2>
                     </td>
                 </tr>
-            </table>
+            </table> -->
         </div>
         <br/>
         <div class="row">
@@ -121,6 +131,7 @@
                     </tr>
                 </tfoot>
             </table>
+            <p>Sales Order</p>
         </div>
     </div>
 

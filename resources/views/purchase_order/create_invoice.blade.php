@@ -41,8 +41,9 @@
                       <th style="width:20%;">Name</th>
                       <th style="width:20%;">Description</th>
                       <th style="width:10%;">Unit</th>
-                      <th style="width:10%;">Qty</th>
-                      <th style="width:15%;">Category</th>
+                      <th style="width:5%;">Qty</th>
+                      <th style="width:10%;">Category</th>
+                      <th style="width:10%;">Price Per Unit</th>
                       <th style="width:10%;">Price</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@
                           <td><strong>{{ $row['unit'] }}</strong></td>
                           <td><strong class="target_qty">{{ $sum_qty }}</strong></td>
                           <td><strong>{{ $row['category'] }}</strong></td>
+                          <td></td>
                           <td>
                               <input type="hidden" name="price_parent[]" class="price_parent" id="total_price_parent_{{$row['main_product_id']}}">
                           </td>
@@ -96,11 +98,14 @@
                           <td>{{ $or['description'] }} </td>
                           <td>{{ $or['unit'] }} </td>
                           <td>
-                            <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}">
+                            <input type="hidden" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
                             {{ $or['quantity'] }}
                             <?php $sum_qty += $or['quantity']; ?>
                           </td>
                           <td>{{ $or['category'] }}</td>
+                          <td>
+                            <input type="text" name="price_per_unit[]" class="price_per_unit" data-parent-product-id="{{ $row['main_product_id']}}">
+                          </td>
                           <td>
                             <input type="text" name="price[]" class="price" data-parent-product-id="{{ $row['main_product_id']}}">
                           </td>
@@ -213,10 +218,11 @@
         aSep:',',
         aDec:'.'
     });
-    // $('#paid_price').autoNumeric('init',{
-    //     aSep:',',
-    //     aDec:'.'
-    // });
+    //set autonumeric to price_per_unit classes field
+    $('.price_per_unit').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
     //set autonumeric to price classes field
     $('.price_parent').autoNumeric('init',{
         aSep:',',
@@ -228,7 +234,20 @@
     });
 
     //block handle price value keyup event
-    $('.price').on('keyup',function(){
+    $('.price_per_unit').on('keyup',function(){
+        var quantity = $(this).parent().parent().find('.quantity').val();
+        var the_price = 0;
+        if($(this).val() == ''){
+          the_price = 0;
+        }
+        else{
+          the_price = parseFloat($(this).val().replace(/,/g, ''))*quantity;
+        }
+
+        $(this).parent().parent().find('.price').val(the_price).autoNumeric('update',{
+            aSep:',',
+            aDec:'.'
+        });
         fill_the_bill_price();
         sum_parent_price();
     });

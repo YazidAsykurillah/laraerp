@@ -82,7 +82,7 @@
                         <td>{{ $or['description'] }} </td>
                         <td>{{ $or['unit'] }} </td>
                         <td>
-                            <input type="text" name="quantity[]" value="{{ $or['quantity'] }}">
+                            <input type="text" name="quantity[]" value="{{ $or['quantity'] }}" class="quantity">
                             <?php $sum_qty += $or['quantity']; ?>
                         </td>
                         <td>{{ $or['category'] }}</td>
@@ -228,6 +228,14 @@
       event.preventDefault();
       $('#modal-display-products').modal('show');
     });
+    $('.quantity').autoNumeric('init',{
+      aSep:'',
+      aDec:'.'
+    });
+    $('.target_qty').autoNumeric('init',{
+      aSep:'',
+      aDec:'.'
+    });
   </script>
 
   <script type="text/javascript">
@@ -288,7 +296,7 @@
                     tableProduct.row(this).data().unit_id+
                 '</b></td>'+
                 '<td>'+
-                    '<input type="text" name="parent_quantity" class="quantity form-control" style="" value="" />'+
+                    '<input type="text" name="parent_quantity" class="quantity form-control">'+
                 '</td>'+
                 '<td><b>'+
                     tableProduct.row(this).data().category_id+
@@ -323,13 +331,17 @@
                                 value.unit+
                             '</td>'+
                             '<td>'+
-                                '<input type="text" name="quantity[]" class="quantity form-control" style="" value="" />'+
+                                '<input type="text" name="quantity[]" class="quantity form-control"/>'+
                             '</td>'+
                             '<td>'+
                                 value.category+
                             '</td>'+
                           '</tr>'
                         );
+                        $('.quantity').autoNumeric('init',{
+                          aSep:'',
+                          aDec:'.'
+                        });
                     });
                 },
             })

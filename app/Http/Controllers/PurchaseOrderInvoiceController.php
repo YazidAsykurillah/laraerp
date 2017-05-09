@@ -122,7 +122,7 @@ class PurchaseOrderInvoiceController extends Controller
                 //Build sync data to update PO relation w/ products
                 $syncData = [];
                 foreach($request->product_id as $key=>$value){
-                    $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+                    $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price_per_unit[$key])), 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
                 }
                 //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing
                 \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
@@ -319,7 +319,7 @@ class PurchaseOrderInvoiceController extends Controller
         //Build sync data to update PO relation w/ products
         $syncData = [];
         foreach($request->product_id as $key=>$value){
-            $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
+            $syncData[$value] = ['quantity'=> $request->quantity[$key], 'price_per_unit'=>floatval(preg_replace('#[^0-9.]#', '', $request->price_per_unit[$key])),'price'=>floatval(preg_replace('#[^0-9.]#', '', $request->price[$key]))];
         }
         //First, delete all the relation cloumn between product and purchase order on table prouduct_purchase_order before syncing
         \DB::table('product_purchase_order')->where('purchase_order_id','=',$purchase_order->id)->delete();
@@ -435,6 +435,7 @@ class PurchaseOrderInvoiceController extends Controller
                     'quantity'=>$counter->quantity,
                     'product_id'=>$counter->product_id,
                     'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                    'price_per_unit'=>$counter->price_per_unit,
                     'price'=>$counter->price,
                 ));
             }

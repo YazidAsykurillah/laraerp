@@ -12,7 +12,7 @@
     p{
         font-size:8pt;
     }
-    hr{
+    .footer-text{
         width:90%;
         border:1px solid black;
         margin-left: 0px
@@ -38,12 +38,22 @@
     td{
         font-size:8pt;
     }
+    #line-header{
+      margin-top:5px;
+      border:1px solid black;
+    }
 </style>
 
 <body>
     <div class="container">
         <div class="row">
-            <table style="width:100%">
+            <center>
+              <h2>PT.CATRA TEXTILE RAYA</h2>
+              <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+              <h5>Telp. 021-22522283, 021-22522334</h5>
+            </center>
+            <hr id="line-header">
+            <!-- <table style="width:100%">
                 <tr>
                     <td style="width:30%;vertical-align:top;text-align:left">
                         <h1>CATRA<small>TEXTILE</small></h1>
@@ -58,7 +68,7 @@
                         <h2>FAKTUR</h2>
                     </td>
                 </tr>
-            </table>
+            </table> -->
         </div>
         <br/>
         <div class="row">
@@ -175,7 +185,7 @@
                         <td rowspan="2" style="width:55%;height:40px">
                             <div class="box-attention">
                             <p>PERHATIAN!!!</p>
-                            <p>*Pembayaran dengan Cek/Giro akan dianggap lunsa,</p>
+                            <p>*Pembayaran dengan Cek/Giro akan dianggap lunas,</p>
                             <p>jika sudah cair dalam rekening kami</p>
                             <p>BCA KCP Taman Palem Lestari</p>
                             <p>A/C: 757 054 5455</p>
@@ -184,12 +194,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><hr><p>Date :</p></td>
-                        <td><hr><p>Date :</p></td>
+                        <td><hr class="footer-text"><p>Date :</p></td>
+                        <td><hr class="footer-text"><p>Date :</p></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
+            <p>Invoice Sales Order</p>
         </div>
     </div>
 </body>

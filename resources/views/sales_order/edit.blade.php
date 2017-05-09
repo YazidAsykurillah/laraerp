@@ -306,6 +306,10 @@
       event.preventDefault();
       $('#modal-display-products').modal('show');
     });
+    $('.quantity').autoNumeric('init',{
+      aSep:'',
+      aDec:'.'
+    });
   </script>
 
   <script type="text/javascript">
@@ -378,6 +382,10 @@
               '</td>'+
             '</tr>'
           );
+          $('.quantity').autoNumeric('init',{
+            aSep:'',
+            aDec:'.'
+          });
         }else{
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();

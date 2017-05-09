@@ -149,8 +149,8 @@
 {!! Html::script('js/autoNumeric.js') !!}
 <script type="text/javascript">
     $('.returned_quantity').autoNumeric('init',{
-        aSep:'.',
-        aDec:',',
+        aSep:'',
+        aDec:'.',
         aPad:false
     });
 </script>
