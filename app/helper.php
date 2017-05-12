@@ -93,7 +93,7 @@
 
     function list_child($key,$id)
     {
-        $list_child = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->get();
+        $list_child = \DB::table('sub_chart_accounts')->where([['level',$key],['parent_id',$id]])->orderBy('account_number')->get();
 
         return $list_child;
     }

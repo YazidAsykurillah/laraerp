@@ -56,7 +56,7 @@
                                 <td>
                                   <input type="text" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                   <input type="text" name="parent_sum_stock[]" value="{{ $row['sum_stock'] }}"/>
-                                  <input type="text" name="parent_sum_inventory_cost[]" value="{{ ($row['sum_inventory_cost_first']+$row['sum_inventory_cost_debit'])-($row['sum_inventory_cost_first']-$row['sum_inventory_cost_credit']) }}"/>
+                                  <input type="text" name="parent_sum_inventory_cost[]" value="{{ ($row['sum_inventory_cost_first']+$row['sum_inventory_cost_debit'])-($row['sum_inventory_cost_first']+$row['sum_inventory_cost_debit']-$row['sum_inventory_cost_credit']) }}"/>
                                   <input type="text" name="parent_sum_quantity[]" class="parent_sum_quantity"/>
                                   {{ $row['family'] }}<br>
                                   <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">

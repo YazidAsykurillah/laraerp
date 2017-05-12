@@ -28,7 +28,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Create Sales Order Return</h3>
                 </div><!-- /.box header -->
-                <div class="box-body table-responsive">
+                <div class="box-body table-responsive" style="height:500px">
                     {!! Form::open(['route'=>'sales-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-return']) !!}
                     <table class="table table-striped table-hover" id="table-selected-sales">
                         <thead>

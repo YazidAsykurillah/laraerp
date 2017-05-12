@@ -146,7 +146,7 @@
                     <th style="width:15%;">Category</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style="height:500px">
 
               </tbody>
               <tfoot>

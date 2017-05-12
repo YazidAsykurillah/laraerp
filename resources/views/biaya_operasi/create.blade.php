@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Biaya Operasi
+    Jurnal Operasi
 @endsection
 
 @section('page_header')
     <h1>
-        Biaya Operasi
-        <small>Create Biaya Operasi</small>
+        Jurnal Umum
+        <small>Create Jurnal Umum</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('biaya-operasi') }}"><i class="fa fa-dashboard"></i> Biaya Operasi</a></li>
+        <li><a href="{{ URL::to('biaya-operasi') }}"><i class="fa fa-dashboard"></i> Jurnal Umum</a></li>
         <li class="active"><i></i> Create</li>
     </ol>
 @endsection
@@ -25,7 +25,7 @@
             <div class="col-lg-7">
                 <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Create New Biaya Operasi</h3>
+                        <h3 class="box-title">Create New Jurnal Umum</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group{{ $errors->has('pay_method') ? ' has-error' : '' }}">
