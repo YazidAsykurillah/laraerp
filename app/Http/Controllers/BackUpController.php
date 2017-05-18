@@ -38,7 +38,7 @@ class BackUpController extends Controller
     {
         error_reporting(0);
         $file = date('Ymdhis').'_backup_database'.time().'.sql';
-        $this->backup_tables('localhost','root','','db_catra',$file);
+        $this->backup_tables('192.168.1.10','psiuser','psiuser14','db_catra',$file);
         // $return_val = NULL;
         // $output = NULL;
         // $command = "/usr/bin/mysqldump.exe --opt -h localhost -u root -p db_catra > C://Backup/db_catra_backup1.sql";
