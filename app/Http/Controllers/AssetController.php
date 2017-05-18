@@ -35,7 +35,11 @@ class AssetController extends Controller
     {
       if(\Auth::user()->can('create-asset-module'))
       {
-        return view('asset.create');
+        $count_asset = Asset::all();
+        $c_asset = count($count_asset)+1;
+        $asset = 'AST-0'.$c_asset;
+        return view('asset.create')
+          ->with('asset',$asset);
       }else{
         return view('403');
       }
@@ -156,8 +160,8 @@ class AssetController extends Controller
       $asset->save();
       $asset_id = $asset->id;
 
-      \DB::table('transaction_chart_accounts')->where('reference',$asset->id)->where('description',$request->notes_old)->where('created_at',$request->created_at_old)->delete();
-
+      \DB::table('transaction_chart_accounts')->where('reference',$asset_id)->where('description',$request->notes_old)->delete();
+      //exit();
       $asset_account = New TransactionChartAccount;
       $asset_account->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
       $asset_account->sub_chart_account_id = $request->asset_account;
@@ -197,9 +201,8 @@ class AssetController extends Controller
       $akumulasi_penyusutan_account->memo = 'AKUMULASI PENYUSUTAN';
       $akumulasi_penyusutan_account->save();
 
-
       return redirect('asset')
-          ->with('successMessage','Asset has been updated');
+        ->with('successMessage','Asset has been updated');
     }
 
     /**
@@ -212,6 +215,8 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($request->asset_id);
         $asset->delete();
+
+        \DB::table('transaction_chart_accounts')->where('reference',$request->asset_id)->delete();
 
         return redirect('asset')
           ->with('successMessage',"Asset $asset->name has been deleted");

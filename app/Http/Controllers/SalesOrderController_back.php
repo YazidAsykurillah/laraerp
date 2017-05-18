@@ -20,7 +20,12 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        return view('sales_order.index');
+      if(\Auth::user()->can('sales-order-module'))
+      {
+          return view('sales_order.index');
+      }else{
+          return view('403');
+      }
     }
 
     /**
@@ -30,9 +35,14 @@ class SalesOrderController extends Controller
      */
     public function create()
     {
+      if(\Auth::user()->can('create-sales-order-module'))
+      {
         $customer_options = Customer::lists('name', 'id');
         return view('sales_order.create')
             ->with('customer_options', $customer_options);
+      }else{
+        return view('403');
+      }
     }
 
     /**
@@ -135,6 +145,8 @@ class SalesOrderController extends Controller
     }
     public function edit($id)
     {
+      if(\Auth::user()->can('edit-sales-order-module'))
+      {
         $sales_order = SalesOrder::findOrFail($id);
         $customer_options = Customer::lists('name', 'id');
         $total_price = $this->count_total_price($sales_order);
@@ -142,6 +154,9 @@ class SalesOrderController extends Controller
             ->with('sales_order', $sales_order)
             ->with('total_price', $total_price)
             ->with('customer_options', $customer_options);
+      }else{
+        return view('403');
+      }
     }
 
     /**

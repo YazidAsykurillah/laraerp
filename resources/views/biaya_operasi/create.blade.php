@@ -48,7 +48,7 @@
                         <div class="form-group{{ $errors->has('cash_or_bank') ? ' has-error' : '' }}" style="display:none" id="bank_form">
                           {!! Form::label('bank_id', 'Bank', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">
-                              {!! Form::select('',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'cash_or_bank']) !!}
+                              {!! Form::select('',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'bank_id']) !!}
                               @if($errors->has('cash_or_bank'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('cash_or_bank') }}</strong>

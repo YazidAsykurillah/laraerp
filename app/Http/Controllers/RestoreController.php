@@ -15,7 +15,12 @@ class RestoreController extends Controller
      */
     public function index()
     {
-        return view('restore.index');
+      if(\Auth::user()->can('restore-module'))
+      {
+          return view('restore.index');
+      }else{
+          return view('403');
+      }
     }
 
     /**

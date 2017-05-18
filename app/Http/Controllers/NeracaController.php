@@ -24,7 +24,7 @@ class NeracaController extends Controller
         {
             $chart_account = \DB::table('chart_accounts')->get();
             $sub_chart_account = \DB::table('sub_chart_accounts')->get();
-            return view('neraca.index')
+            return view('neraca.list')
                 ->with('chart_account',$chart_account);
         }else{
             return view('403');
@@ -32,7 +32,7 @@ class NeracaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a list resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -106,7 +106,7 @@ class NeracaController extends Controller
             $year_in = 'y';
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('neraca.index')
+                return view('neraca.list')
                     ->with('chart_account',$chart_account)
                     ->with('year',$year)
                     ->with('year_in',$year_in);
@@ -208,7 +208,7 @@ class NeracaController extends Controller
             }
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('neraca.index')
+                return view('neraca.list')
                     ->with('chart_account',$chart_account)
                     ->with('month_start',$month_start)
                     ->with('year_start',$year_start)
@@ -220,7 +220,7 @@ class NeracaController extends Controller
             }
         }else{
             $chart_account = \DB::table('chart_accounts')->get();
-            return view('neraca.index')
+            return view('neraca.list')
                 ->with('chart_account',$chart_account);
         }
 

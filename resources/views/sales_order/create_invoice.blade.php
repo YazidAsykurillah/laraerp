@@ -37,14 +37,14 @@
               <table class="table table-striped table-hover" id="table-selected-products">
                   <thead>
                       <tr style="background-color:#3c8dbc;color:white">
-                        <th style="width:15%;">Family</th>
+                        <th style="width:10%;">Family</th>
                         <th style="width:20%;">Name</th>
-                        <th style="width:20%;">Description</th>
+                        <th style="width:15%;">Description</th>
                         <th style="width:8%;">Unit</th>
                         <th style="width:7%;">Qty</th>
                         <th style="width:15%;">Category</th>
                         <th style="width:10%;">Price Per Unit</th>
-                        <th style="width:10%;">Price</th>
+                        <th style="width:20%;">Price</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -56,7 +56,7 @@
                                 <td>
                                   <input type="text" name="parent_product_id[]" value="{{ $row['main_product_id'] }}"/>
                                   <input type="text" name="parent_sum_stock[]" value="{{ $row['sum_stock'] }}"/>
-                                  <input type="text" name="parent_sum_inventory_cost[]" value="{{ ($row['sum_inventory_cost_first']+$row['sum_inventory_cost_debit'])-($row['sum_inventory_cost_first']+$row['sum_inventory_cost_debit']-$row['sum_inventory_cost_credit']) }}"/>
+                                  <input type="text" name="parent_sum_inventory_cost[]" value="{{ ($row['sum_inventory_cost_first']+$row['sum_price_purchase'])/($row['sum_inventory_quantity_first']+$row['sum_qty_purchase']) }}"/>
                                   <input type="text" name="parent_sum_quantity[]" class="parent_sum_quantity"/>
                                   {{ $row['family'] }}<br>
                                   <select name="inventory_account[]" id="inventory_account" class="col-md-12" style="display:none">
@@ -121,10 +121,10 @@
                                 </td>
                                 <td>{{ $or['category'] }}</td>
                                 <td>
-                                  <input type="text" name="price_per_unit[]" class="price_per_unit">
+                                  <input type="text" name="price_per_unit[]" class="price_per_unit form-control">
                                 </td>
                                 <td>
-                                  <input type="text" name="price[]" class="price">
+                                  <input type="text" name="price[]" class="price form-control" readonly>
                                 </td>
                               </tr>
                               @endforeach
@@ -342,6 +342,7 @@
       var sum = document.getElementsByClassName('sum_qty');
       for(var a = 0; a < sum.length; a++){
         document.getElementsByClassName('parent_sum_quantity')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
+        document.getElementsByClassName('target_qty').innerHTML = document.getElementsByClassName('sum_qty')[a].innerHTML;
       }
   </script>
 

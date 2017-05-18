@@ -2,20 +2,20 @@
 
 
 @section('page_title')
-    Main Product
+    Product
 @endsection
 
 @section('page_header')
     <h1>
-        Main Product
-        <small>Add New Main Product</small>
+        Product
+        <small>Add New Product</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Main Products</a></li>
+        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
         <li class="active"><i></i> Create</li>
     </ol>
 @endsection
@@ -110,7 +110,7 @@
                   <!--BOX Image-->
                   <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Main Product Image</h3>
+                      <h3 class="box-title">Product Image</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
 
@@ -123,7 +123,7 @@
                               <strong>{{ $errors->first('image') }}</strong>
                             </span>
                           @endif
-                          <span style="color:red">*Max size 2 mb</span>
+                          <span style="color:red">*Max size 10 mb</span>
                         </div>
                       </div>
                     </div><!-- /.box-body -->

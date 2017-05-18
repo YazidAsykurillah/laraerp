@@ -54,8 +54,8 @@ class SalesOrderInvoiceController extends Controller
      */
     public function create(Request $request,$id)
     {
-        //if(\Auth::user()->can('create-sales-order-invoice-module'))
-        //{
+        if(\Auth::user()->can('create-sales-order-invoice-module'))
+        {
             $sales_order = SalesOrder::findOrFail($request->sales_order_id);
 
             $main_product = $sales_order->products;
@@ -84,6 +84,12 @@ class SalesOrderInvoiceController extends Controller
                                                 ->where('transaction_chart_accounts.type','=','masuk')
                                                 ->where('transaction_chart_accounts.description','=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_quantity_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.memo'),
                     'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
@@ -96,8 +102,16 @@ class SalesOrderInvoiceController extends Controller
                                                 ->where('transaction_chart_accounts.type','=','keluar')
                                                 ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
-                    'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
-                    'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
+                    'sum_price_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',MainProduct::find($mp_id)->family_id)
+                                          ->sum('price'),
+                    'sum_qty_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',14)
+                                          ->sum('quantity'),
                     'unit'=>MainProduct::find($mp_id)->unit->name,
                     'category'=>MainProduct::find($mp_id)->category->name,
                     'ordered_products'=>$this->get_product_lists($mp_id, $id)
@@ -108,9 +122,9 @@ class SalesOrderInvoiceController extends Controller
                 ->with('sales_order', $sales_order)
                 ->with('main_product',$main_product)
                 ->with('row_display', $row_display);
-        //}else{
-            //return view('403');
-        //}
+        }else{
+            return view('403');
+        }
     }
 
     protected function count_total_price($sales_order)
@@ -199,7 +213,7 @@ class SalesOrderInvoiceController extends Controller
                       ->where('sales_order_id',$request->sales_order_id)
                       ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
                     array_push($inv_account,[
-                        'amount'=>$request->parent_sum_inventory_cost[$key],
+                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                         'sub_chart_account_id'=>$request->inventory_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -221,7 +235,7 @@ class SalesOrderInvoiceController extends Controller
                         'memo'=>'PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
-                        'amount'=>$request->parent_sum_inventory_cost[$key],
+                        'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                         'sub_chart_account_id'=>$request->cost_goods_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -348,6 +362,12 @@ class SalesOrderInvoiceController extends Controller
                                                 ->where('transaction_chart_accounts.type','=','masuk')
                                                 ->where('transaction_chart_accounts.description','=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_quantity_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.memo'),
                     'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
                                                 ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
                                                 ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
@@ -360,8 +380,16 @@ class SalesOrderInvoiceController extends Controller
                                                 ->where('transaction_chart_accounts.type','=','keluar')
                                                 ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
                                                 ->sum('transaction_chart_accounts.amount'),
-                    'sum_price_purchase'=>\DB::table('product_purchase_order')->sum('price'),
-                    'sum_qty_purchase'=>\DB::table('product_purchase_order')->sum('quantity'),
+                    'sum_price_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',MainProduct::find($mp_id)->family_id)
+                                          ->sum('price'),
+                    'sum_qty_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',MainProduct::find($mp_id)->family_id)
+                                          ->sum('quantity'),
                     'unit'=>MainProduct::find($mp_id)->unit->name,
                     'category'=>MainProduct::find($mp_id)->category->name,
                     'ordered_products'=>$this->get_product_lists($mp_id, $sales_order->id)
@@ -410,7 +438,7 @@ class SalesOrderInvoiceController extends Controller
         $sales_order->products()->sync($syncData);
 
         //DELETE transaction chart account reference
-        \DB::table('transaction_chart_accounts')->where('reference',$request->sales_order_invoice_id)->delete();
+        \DB::table('transaction_chart_accounts')->where('reference',$request->sales_order_invoice_id)->where('source',$request->sales_order_invoice_code)->delete();
 
         // insert temp sales invoice
         $temp_sales_invoice_data = [];
@@ -434,7 +462,7 @@ class SalesOrderInvoiceController extends Controller
               ->where('sales_order_id',$request->sales_order_id)
               ->where('main_product_id',$request->parent_product_id[$key])->sum('price_per_unit');
             array_push($inv_account,[
-                'amount' =>$request->parent_sum_inventory_cost[$key],
+                'amount' =>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                 'sub_chart_account_id' =>$request->inventory_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -456,7 +484,7 @@ class SalesOrderInvoiceController extends Controller
                 'memo'=>'PENJUALAN'
             ]);
             array_push($cost_goods_account,[
-                'amount'=>$request->parent_sum_inventory_cost[$key],
+                'amount'=>$request->parent_sum_inventory_cost[$key]*$request->parent_sum_quantity[$key],
                 'sub_chart_account_id'=>$request->cost_goods_account[$key],
                 'created_at'=>date('Y-m-d H:i:s'),
                 'updated_at'=>date('Y-m-d H:i:s'),
@@ -499,6 +527,7 @@ class SalesOrderInvoiceController extends Controller
     public function destroy(Request $request)
     {
         $id = SalesOrderInvoice::findOrFail($request->sales_order_invoice_id);
+        $inv_code = $id->code;
         $id->delete();
 
         if($id->sales_invoice_payment->count()){
@@ -517,7 +546,7 @@ class SalesOrderInvoiceController extends Controller
 
         //delete sales invoice payment
         \DB::table('sales_invoice_payments')->where('sales_order_invoice_id','=',$request->sales_order_invoice_id)->delete();
-
+        \DB::table('transaction_chart_accounts')->where('source','=',$inv_code)->delete();
         return redirect('sales-order-invoice')
             ->with('successMessage','Invoice has been deleted');
     }
@@ -550,10 +579,7 @@ class SalesOrderInvoiceController extends Controller
         }
         $sum_qty = array_sum($total_quantity);
         return $product_id_arr;
-
-
     }
-
     //change status invoice to "Completed"
     public function completeSalesInvoice(Request $request)
     {

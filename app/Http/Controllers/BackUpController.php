@@ -15,7 +15,11 @@ class BackUpController extends Controller
      */
     public function index()
     {
-        return view('backup.index');
+        if(\Auth::user()->can('backup-module')){
+          return view('backup.index');
+        }else{
+          return view('403');
+        }
     }
 
     /**
@@ -37,8 +41,13 @@ class BackUpController extends Controller
     public function store(Request $request)
     {
         error_reporting(0);
+<<<<<<< HEAD
         $file = date('Ymdhis').'_backup_database'.time().'.sql';
         $this->backup_tables('192.168.1.10','psiuser','psiuser14','db_catra',$file);
+=======
+        $file = 'PT_CATRA_TEXTILE_RAYA_'.date('Ymd').'_backup'.'.sql';
+        $this->backup_tables('localhost','root','','db_catra',$file);
+>>>>>>> 815bdf62b0d9b5f277723716f4cc5f84cd4e3d1e
         // $return_val = NULL;
         // $output = NULL;
         // $command = "/usr/bin/mysqldump.exe --opt -h localhost -u root -p db_catra > C://Backup/db_catra_backup1.sql";

@@ -62,44 +62,90 @@
                                     <tr>
                                         <td>Net Income</td>
                                         <td>(From Profit&nbsp;&amp;&nbsp;Loss Statement)</td>
-                                        <td class="data">{{ $lost_profit }}</td>
+                                        <td class="data">
+                                          @if($lost_profit == 0)
+                                            0.00
+                                          @else
+                                            {{ $lost_profit }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Akumulasi Penyusutan</td>
-                                        <td class="data">{{ $akumulasi_penyusutan }}</td>
+                                        <td class="data">
+                                          @if($akumulasi_penyusutan == 0)
+                                            0.00
+                                          @else
+                                            {{ $akumulasi_penyusutan }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Income sesudah akumulasi penyusutan</td>
-                                        <td style="border-top:1px solid black;" class="data">{{ number_format(str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan))}}</td>
+                                        <td style="border-top:1px solid black;" class="data">
+                                          @if(str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan) == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format(str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan))}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Kurang</td>
                                         <td>Akun Hutang</td>
-                                        <td class="data">{{ $akun_hutang }}</td>
+                                        <td class="data">
+                                          @if($akun_hutang == 0)
+                                            0.00
+                                          @else
+                                            {{ $akun_hutang }}
+                                          @endif
+                                          </td>
                                     </tr>
                                     <tr>
                                         <td>Kurang</td>
                                         <td>Kewajiban Lancar Lainnya</td>
-                                        <td class="data">{{ $kewajiban_lancar_lainnya }}</td>
+                                        <td class="data">
+                                          @if($kewajiban_lancar_lainnya == 0)
+                                            0.00
+                                          @else
+                                            {{ $kewajiban_lancar_lainnya }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Akun Piutang</td>
-                                        <td class="data">{{ $akun_piutang }}</td>
+                                        <td class="data">
+                                          @if($akun_piutang == 0)
+                                            0.00
+                                          @else
+                                            {{ $akun_piutang }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Aset Lancar Lainnya</td>
-                                        <td class="data">{{ $aset_lancar_lainnya }}</td>
+                                        <td class="data">
+                                          @if($aset_lancar_lainnya == 0)
+                                            0.00
+                                          @else
+                                            {{ $aset_lancar_lainnya }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Income</td>
                                         <td style="border-top:1px solid black;" class="data">
-                                            {{ number_format(((str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan))+(str_replace(',','',$akun_piutang)))-(str_replace(',','',$akun_hutang)+str_replace(',','',$kewajiban_lancar_lainnya)))}}
                                             <?php $sum_net = ((str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan))+(str_replace(',','',$akun_piutang)))-(str_replace(',','',$akun_hutang)+str_replace(',','',$kewajiban_lancar_lainnya)); ?>
+                                            @if($sum_net == 0)
+                                              0.00
+                                            @else
+                                              {{ number_format(((str_replace(',','',$lost_profit)-str_replace(',','',$akumulasi_penyusutan))+(str_replace(',','',$akun_piutang)))-(str_replace(',','',$akun_hutang)+str_replace(',','',$kewajiban_lancar_lainnya)))}}.00
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -108,12 +154,24 @@
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Nilai Histori</td>
-                                        <td class="data">{{ $nilai_histori }}</td>
+                                        <td class="data">
+                                          @if($nilai_histori == 0)
+                                            0.00
+                                          @else
+                                            {{ $nilai_histori }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Investing</td>
-                                        <td style="border-top:1px solid black;" class="data">{{ number_format(str_replace(',','',$nilai_histori)-0)}}</td>
+                                        <td style="border-top:1px solid black;" class="data">
+                                          @if(str_replace(',','',$nilai_histori)-0 == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format(str_replace(',','',$nilai_histori)-0)}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">Cash Flow From : Financing</td>
@@ -121,22 +179,46 @@
                                     <tr>
                                         <td>Kurang</td>
                                         <td>Kewajiban Jangka Panjang</td>
-                                        <td class="data">{{ $kewajiban_jangka_panjang }}</td>
+                                        <td class="data">
+                                          @if($kewajiban_jangka_panjang == 0)
+                                            0.00
+                                          @else
+                                            {{ $kewajiban_jangka_panjang }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Ekuitas</td>
-                                        <td class="data">{{ $ekuitas }}</td>
+                                        <td class="data">
+                                          @if($ekuitas == 0)
+                                            0.00
+                                          @else
+                                            {{ $ekuitas }}
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Financing</td>
-                                        <td style="border-top:1px solid black;" class="data">{{ number_format(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang))}}</td>
+                                        <td style="border-top:1px solid black;" class="data">
+                                          @if(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang) == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang))}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Cash Periode</td>
-                                        <td style="border-top:1px solid black;" class="data">{{ number_format(str_replace(',','',$sum_net)+str_replace(',','',$nilai_histori)+(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang))) }}</td>
+                                        <td style="border-top:1px solid black;" class="data">
+                                          @if(str_replace(',','',$sum_net)+str_replace(',','',$nilai_histori)+(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang)) == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format(str_replace(',','',$sum_net)+str_replace(',','',$nilai_histori)+(str_replace(',','',$ekuitas)-str_replace(',','',$kewajiban_jangka_panjang))) }}.00
+                                          @endif
+                                          </td>
                                     </tr>
                                 </tbody>
                             </table>

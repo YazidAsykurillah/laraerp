@@ -32,7 +32,7 @@
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
             {!! Form::label('code', 'Code', ['class'=>'col-sm-3 control-label']) !!}
             <div class="col-sm-9">
-              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the asset', 'id'=>'code']) !!}
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the asset', 'id'=>'code', 'readonly']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
@@ -112,8 +112,8 @@
           <input type="hidden" name="notes_old" value="{{ $asset->name}}">
           <input type="hidden" name="created_at_old" value="{{ $asset->created_at }}">
           <div class="form-group">
-              {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+              {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               <a href="{{ url('asset') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;

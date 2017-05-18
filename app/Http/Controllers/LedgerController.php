@@ -16,9 +16,15 @@ class LedgerController extends Controller
      */
     public function index()
     {
+      if(\Auth::user()->can('ledger-module'))
+      {
         $account = SubChartAccount::all();
         return view('ledger.index')
             ->with('account',$account);
+      }else{
+        return view('403');
+      }
+
     }
 
     /**
