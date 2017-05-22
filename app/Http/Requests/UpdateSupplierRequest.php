@@ -26,9 +26,10 @@ class UpdateSupplierRequest extends Request
         return [
             'code'=>'required|unique:suppliers,code,'.$this->route('supplier'),
             'name'=>'required',
-            'pic_name'=>'required',
-            'primary_email'=>'email',
-            'primary_phone_number'=>'required',
+            'address'=>'required',
+            // 'pic_name'=>'required',
+            // 'primary_email'=>'email',
+            // 'primary_phone_number'=>'required',
         ];
     }
 }

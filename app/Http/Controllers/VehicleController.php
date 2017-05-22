@@ -35,9 +35,22 @@ class VehicleController extends Controller
     {
         if(\Auth::user()->can('create-vehicle-module'))
         {
+            $vehicle = Vehicle::all();
+            $code_fix = '';
+            if(count($vehicle) > 0)
+            {
+                $code_vehicle = Vehicle::all()->first()->latest()->value('code');
+                $sub_str = str_replace('VHC0','',$code_vehicle)+1;
+                $code_fix = 'VHC0'.$sub_str;
+            }else
+            {
+                $code_vehicle = count($vehicle)+1;
+                $code_fix = 'VHC0'.$code_vehicle;
+            }
             $vehicle_category = ['Truck','Pick Up','Motorcycle'];
             return view('vehicle.create')
-                ->with('vehicle_cat',$vehicle_category);
+                ->with('vehicle_cat',$vehicle_category)
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

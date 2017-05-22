@@ -33,7 +33,7 @@
           </a>
         </div><!-- /.box-header -->
         <div class="box-body">
-          <div class="table-responsive">
+          <div class="table-responsive" style="max-height:500px">
             <table class="table table-striped table-hover" id="table-selected-products">
               <thead>
                   <tr style="background-color:#3c8dbc;color:white">

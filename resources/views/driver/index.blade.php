@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Drivers
+  Driver
 @endsection
 
 @section('page_header')
   <h1>
     Driver
-    <small>Drivers List</small>
+    <small>Driver List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('driver') }}"><i class="fa fa-dashboard"></i> Drivers</a></li>
+    <li><a href="{{ URL::to('driver') }}"><i class="fa fa-dashboard"></i> Driver</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -24,7 +24,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Drivers</h3>
+          <h3 class="box-title">Driver</h3>
           <a href="{{ URL::to('driver/create')}}" class="btn btn-primary pull-right" title="Create new driver">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
@@ -36,7 +36,7 @@
                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                 <th style="width:20%;background-color:#3c8dbc;color:white">Code</th>
                 <th style="width:30%;background-color:#3c8dbc;color:white">Name</th>
-                <th style="width:30%;background-color:#3c8dbc;color:white">Phone Number</th>
+                <th style="width:30%;background-color:#3c8dbc;color:white">Phone</th>
                 <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
@@ -101,7 +101,7 @@
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'contact_number', name: 'contact_number' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, 'className':'dt-center' },
       ],
       "order" : [[1, "asc"]]
 

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Suppliers
+  Supplier
 @endsection
 
 @section('page_header')
   <h1>
     Supplier
-    <small>Suppliers List</small>
+    <small>Supplier List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> Suppliers</a></li>
+    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> Supplier</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -24,7 +24,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Suppliers</h3>
+          <h3 class="box-title">Supplier</h3>
           <a href="{{ URL::to('supplier/create')}}" class="btn btn-primary pull-right" title="Create new supplier">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
@@ -35,20 +35,22 @@
               <tr>
                 <th style="width:5%;background-color:#3c8dbc;color:white">#</th>
                 <th style="width:15%;background-color:#3c8dbc;color:white">Code</th>
-                <th style="width:25%;background-color:#3c8dbc;color:white">Name</th>
+                <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
                 <th style="width:20%;background-color:#3c8dbc;color:white">PIC</th>
-                <th style="width:20%;background-color:#3c8dbc;color:white">Phone Number</th>
-                <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Email</th>
+                <th style="width:15%;background-color:#3c8dbc;color:white">Phone</th>
+                <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
               </tr>
             </thead>
             <thead id="searchid">
               <tr>
                 <th style="width:5%;"></th>
                 <th style="width:15%;">Code</th>
-                <th style="width:25%;">Name</th>
+                <th style="width:20%;">Name</th>
                 <th style="width:20%;">PIC</th>
-                <th style="width:20%;">Phone Number</th>
-                <th style="width:15%;text-align:center;"></th>
+                <th style="width:15%;">Email</th>
+                <th style="width:15%;">Phone</th>
+                <th style="width:10%;text-align:center;"></th>
               </tr>
             </thead>
             <tbody>
@@ -103,8 +105,9 @@
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'pic_name', name: 'pic_name' },
+        { data: 'primary_email', name: 'primary_email'},
         { data: 'primary_phone_number', name: 'primary_phone_number'},
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
       "order" : [[1, "asc"]]
 

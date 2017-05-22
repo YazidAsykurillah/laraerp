@@ -6,15 +6,15 @@
 
 @section('page_header')
   <h1>
-    Edit Driver
-    <small>Edit Driver Page</small>
+    Driver
+    <small>Edit Driver</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('driver') }}"><i class="fa fa-dashboard"></i> drivers</a></li>
+    <li><a href="{{ URL::to('driver') }}"><i class="fa fa-dashboard"></i> Driver</a></li>
     <li> {{ $driver->code }}</li>
     <li class="active"><i></i> Edit</li>
   </ol>
@@ -27,13 +27,13 @@
       <!--BOX Basic Informations-->
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Basic Informations</h3>
+          <h3 class="box-title">Basic Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
             {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the driver', 'id'=>'code']) !!}
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the driver', 'id'=>'code', 'readonly']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
@@ -71,12 +71,12 @@
       <!--BOX Basic Informations-->
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Primary Contact Information</h3>
+          <h3 class="box-title">Primary Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('primary_phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('contact_number', 'Phone Number', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            {!! Form::label('contact_number', 'Phone', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               {!! Form::text('contact_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the driver', 'id'=>'contact_number']) !!}
               @if ($errors->has('contact_number'))
                 <span class="help-block">

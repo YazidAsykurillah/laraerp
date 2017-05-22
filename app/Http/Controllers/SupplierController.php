@@ -42,7 +42,20 @@ class SupplierController extends Controller
     {
         if(\Auth::user()->can('create-supplier-module'))
         {
-            return view('supplier.create');
+            $supp = Supplier::all();
+            $code_fix = '';
+            if(count($supp) > 0)
+            {
+                $code_supp = Supplier::all()->first()->latest()->value('code');
+                $sub_str = str_replace('SUP0','',$code_supp)+1;
+                $code_fix = 'SUP0'.$sub_str;
+            }else
+            {
+                $code_supp = count($supp)+1;
+                $code_fix = 'SUP0'.$code_supp;
+            }
+            return view('supplier.create')
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

@@ -325,8 +325,14 @@ class PurchaseOrderController extends Controller
         \DB::table('purchase_returns')->where('purchase_order_id','=',$request->purchase_order_id)->delete();
         //purchase invoice payment related
         \DB::table('purchase_invoice_payments')->where('purchase_order_invoice_id','=',$request->payment_id)->delete();
-        //transaction chart account
-        \DB::table('transaction_chart_accounts')->where('reference','=',$request->id_invoice_delete)->where('source','=',$request->code_invoice_delete)->delete();
+        if($request->id_invoice_delete == '' && $request->code_invoice_delete == '')
+        {
+
+        }else
+        {
+            //transaction chart account
+            \DB::table('transaction_chart_accounts')->where('reference','=',$request->id_invoice_delete)->where('source','=',$request->code_invoice_delete)->delete();
+        }
         return redirect('purchase-order')
             ->with('successMessage', "Purchase Order has been deleted");
     }

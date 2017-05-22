@@ -39,7 +39,20 @@ class DriverController extends Controller
     {
         if(\Auth::user()->can('create-driver-module'))
         {
-            return view('driver.create');
+            $driver = Driver::all();
+            $code_fix = '';
+            if(count($driver) > 0)
+            {
+                $code_driver = Driver::all()->first()->latest()->value('code');
+                $sub_str = str_replace('DRV0','',$code_driver)+1;
+                $code_fix = 'DRV0'.$sub_str;
+            }else
+            {
+                $code_driver = count($driver)+1;
+                $code_fix = 'SUP0'.$code_driver;
+            }
+            return view('driver.create')
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

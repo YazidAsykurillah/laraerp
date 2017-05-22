@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Customer Detail
-    <small> {{ $customer->code }}</small>
+    Customer
+    <small>Detail Customer</small>
   </h1>
 @endsection
 
@@ -24,7 +24,7 @@
     <div class="col-md-7">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header">
-          <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Informations</h3>
+          <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -41,7 +41,7 @@
                 <td> {{ $customer->name }}</td>
               </tr>
               <tr>
-                <td style="width:20%;">Phone Number</td>
+                <td style="width:20%;">Phone</td>
                 <td>:</td>
                 <td> {{ $customer->phone_number }}</td>
               </tr>

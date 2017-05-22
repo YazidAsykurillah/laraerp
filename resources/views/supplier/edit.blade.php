@@ -6,15 +6,15 @@
 
 @section('page_header')
   <h1>
-    Edit Supplier
-    <small>Edit Supplier Page</small>
+    Supplier
+    <small>Edit Supplier</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> suppliers</a></li>
+    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> Supplier</a></li>
     <li> {{ $supplier->code }}</li>
     <li class="active"><i></i> Edit</li>
   </ol>
@@ -27,13 +27,13 @@
       <!--BOX Basic Informations-->
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Basic Informations</h3>
+          <h3 class="box-title">Basic Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
             {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the supplier', 'id'=>'code']) !!}
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the supplier', 'id'=>'code', 'readonly']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('primary_phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('primary_phone_number', 'Phone Number', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('primary_phone_number', 'Phone', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               {!! Form::text('primary_phone_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the supplier', 'id'=>'primary_phone_number']) !!}
               @if ($errors->has('primary_phone_number'))

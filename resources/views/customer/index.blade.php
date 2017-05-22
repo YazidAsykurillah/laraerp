@@ -6,15 +6,15 @@
 
 @section('page_header')
   <h1>
-    Customers
-    <small>Customers List</small>
+    Customer
+    <small>Customer List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customers</a></li>
+    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customer</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -24,7 +24,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Customers</h3>
+          <h3 class="box-title">Customer</h3>
           <a href="{{ URL::to('customer/create')}}" class="btn btn-primary pull-right" title="Create new customer">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
@@ -39,19 +39,19 @@
                   <th style="width:20%;background-color:#3c8dbc;color:white">Name</th>
                   <th style="width:15%;background-color:#3c8dbc;color:white">Phone</th>
                   <th style="width:25%;background-color:#3c8dbc;color:white">Address</th>
-                  <th style="width:10%;background-color:#3c8dbc;color:white">Term</th>
-                  <th style="width:15%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
+                  <th style="width:15%;background-color:#3c8dbc;color:white">Term</th>
+                  <th style="width:10%;text-align:center;background-color:#3c8dbc;color:white">Actions</th>
                 </tr>
               </thead>
               <thead id="searchid">
                 <tr>
-                  <th style="width:5%;">#</th>
+                  <th style="width:5%;"></th>
                   <th style="width:10%;">Code</th>
                   <th style="width:20%;">Name</th>
                   <th style="width:15%;">Phone</th>
                   <th style="width:25%;">Address</th>
-                  <th style="width:10%">Term</th>
-                  <th style="width:15%;text-align:center;">Actions</th>
+                  <th style="width:15%">Term</th>
+                  <th style="width:10%;text-align:center;"></th>
                 </tr>
               </thead>
               <tbody>
@@ -109,7 +109,7 @@
         { data: 'phone_number', name: 'phone_number' },
         { data: 'address', name: 'address'},
         { data: 'invoice_term_id', name: 'invoice_term_id'},
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, 'className':'dt-center'},
       ],
       "order" : [[1, "asc"]]
 
@@ -127,7 +127,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() !=5 && $(this).index()!=6) {
+          if ($(this).index() != 0 && $(this).index()!=6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
 
