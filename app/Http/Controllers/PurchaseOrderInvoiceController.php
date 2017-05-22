@@ -393,7 +393,7 @@ class PurchaseOrderInvoiceController extends Controller
     public function destroy(Request $request)
     {
         $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
-        $inv_code = $id->code;
+        $inv_code = $purch_order_inv->code;
         $purch_order_inv->delete();
 
         if($purch_order_inv->purchase_invoice_payment->count()){
