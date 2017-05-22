@@ -86,6 +86,8 @@
           <input type="hidden" id="purchase_order_id" name="purchase_order_id">
           <input type="hidden" name="payment_id" id="payment-id">
           <input type="hidden" name="bank_purchase_id" id="bank_purchase_id">
+          <input type="hidden" name="id_invoice_delete" id="id_invoice_delete">
+          <input type="hidden" name="code_invoice_delete" id="code_invoice_delete">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -178,10 +180,14 @@
       var code = $(this).attr('data-text');
       var idPayment = $(this).attr('data-id-payment');
       var idBankPurchase = $(this).attr('data-id-bank-purchase-payment');
+      var idInvoice = $(this).attr('data-id-invoice');
+      var codeInvoice = $(this).attr('data-code-invoice');
       $('#purchase_order_id').val(id);
       $('#payment-id').val(idPayment);
       $('#bank_purchase_id').val(idBankPurchase);
       $('#purchase-order-name-to-delete').text(code);
+      $('#id_invoice_delete').val(idInvoice);
+      $('#code_invoice_delete').val(codeInvoice);
       $('#modal-delete-purchase-order').modal('show');
     });
 

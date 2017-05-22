@@ -320,7 +320,8 @@ class SalesOrderController extends Controller
         \DB::table('sales_returns')->where('sales_order_id','=',$request->sales_order_id)->delete();
         //sales invoice payment related
         \DB::table('sales_invoice_payments')->where('sales_order_invoice_id','=',$request->payment_id)->delete();
-
+        //delete transaction chart account
+        \DB::table('trasaction_chart_accounts')->where('reference','=',$request->id_invoice_delete)->where('source','=',$request->code_invoice_delete)->delete();
         return redirect('sales-order')
             ->with('successMessage', "Sales order has been deleted");
     }

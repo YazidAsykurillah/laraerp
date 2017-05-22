@@ -333,7 +333,7 @@
                       '<input type="text" name="quantity[]" class="quantity form-control" style=""/>'+
                   '</td>'+
                   '<td>'+
-                      '<input type="text" name="total[]" class="total form-control" style=""/>'+
+                      '<input type="text" name="total[]" class="total form-control" style=""/ readonly>'+
                   '</td>'+
                 '</tr>'
               );

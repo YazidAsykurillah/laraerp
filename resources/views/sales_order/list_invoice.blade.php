@@ -113,7 +113,7 @@
         { data: 'paid_price', name: 'paid_price' },
         { data: 'created_at', name: 'created_at' },
         { data: 'created_by', name: 'created_by' },
-        { data:'due_date', name:'due_date', searchable: false},
+        { data:'due_date', name:'due_date'},
         { data:'debt', name:'debt', searchable: false},
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},

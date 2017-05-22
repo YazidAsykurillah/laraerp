@@ -315,7 +315,7 @@ class DatatablesController extends Controller
                 if(count($purchase_orders->purchase_order_invoice) > 0){
                     if(\Auth::user()->can('delete-purchase-order-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" data-id-payment="'.$purchase_orders->purchase_order_invoice->id.'" title="Click to delete">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order" title="Click to delete" data-id="'.$purchase_orders->id.'" data-text="'.$purchase_orders->code.'" data-id-payment="'.$purchase_orders->purchase_order_invoice->id.'" data-code-invoice="'.$purchase_orders->purchase_order_invoice->code.'" data-id-invoice="'.$purchase_orders->purchase_order_invoice->id.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -361,7 +361,7 @@ class DatatablesController extends Controller
 
                 return $purchase_order_invoices->creator->name;
             })
-            ->editColumn('due_date', function($purchase_order_invoices){
+            ->editColumn('term', function($purchase_order_invoices){
                 return $purchase_order_invoices->term;
             })
             ->editColumn('debt', function($purchase_order_invoices){
@@ -537,7 +537,7 @@ class DatatablesController extends Controller
                 if(count($sales_orders->sales_order_invoice) > 0){
                     if(\Auth::user()->can('delete-sales-order-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" data-id-payment="'.$sales_orders->sales_order_invoice->id.'" title="Click to delete">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order" data-id="'.$sales_orders->id.'" data-text="'.$sales_orders->code.'" data-id-payment="'.$sales_orders->sales_order_invoice->id.'" data-code-invoice="'.$sales_orders->sales_order_invoice->code.'" data-id-invoice="'.$sales_orders->sales_order_invoice->id.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -1180,14 +1180,14 @@ class DatatablesController extends Controller
     public function getAdjustments(Request $request){
         \DB::statement(\DB::raw('set @rownum=0'));
         //\DB::table('suppliers')->orderBy('code','asc')->get();
-        $adjustment = Adjustment::select([
+        $adjustment = Adjustment::with('product_adjustment')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'id',
             'code',
             'created_at',
             'in_out',
             'notes',
-            'created_at'
+            'created_at',
         ]);
 
         $data_adjustments = Datatables::of($adjustment)
