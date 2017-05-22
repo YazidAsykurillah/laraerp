@@ -61,14 +61,14 @@
     <div class="col-md-6">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Customer and Notes</h3>
+          <h3 class="box-title">Customeradad and Notes</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
 
             <div class="form-group{{ $errors->has('do_number') ? ' has-error' : '' }}">
               {!! Form::label('do_number', 'D.O Number', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                  <input type="text" class="form-control" placeholder="D.O Number" id="do_number" autocomplete="off" value="{{$code_so}}" name="do_number" readonly>
+                  <input type="hidden" class="form-control" id="do_number" value="{{$code_so}}" name="do_number">
                   @if($errors->has('do_number'))
                       <span class="help-block">
                           <strong>{{ $errors->first('do_number') }}</strong>

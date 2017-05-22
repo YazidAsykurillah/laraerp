@@ -48,7 +48,7 @@
                                 <th>Name</th>
                                 <th>Amount</th>
                                 <th>Created At</th>
-                                <th>Actions</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,6 +79,8 @@
               <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
             </p>
             <input type="hidden" id="trans_id" name="trans_id">
+            <input type="hidden" id="trans_memo" name="trans_memo">
+            <input type="hidden" id="trans_chart_account_id" name="trans_chart_account_id">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -111,14 +113,18 @@
         tableTrans.on('click', '.btn-delete-trans-chart-account', function (e) {
           var id = $(this).attr('data-id');
           var name = $(this).attr('data-text');
+          var memo = $(this).attr('data-memo');
+          var chartAccountid = $(this).attr('data-sub-account-id');
           $('#trans_id').val(id);
           $('#trans-chart-account-name-to-delete').text(name);
+          $('#trans_memo').val(memo);
+          $('#trans_chart_account_id').val(chartAccountid);
           $('#modal-delete-trans-chart-account').modal('show');
         });
 
         //setup - add
         $('#searchid th').each(function() {
-              if ($(this).index() != 0 && $(this).index() != 6) {
+              if ($(this).index() != 0 && $(this).index() != 5) {
                   $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
               }
 
