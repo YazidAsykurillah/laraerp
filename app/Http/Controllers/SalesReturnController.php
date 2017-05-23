@@ -61,13 +61,48 @@ class SalesReturnController extends Controller
                     'description'=>MainProduct::find($mp_id)->product->first()->description,
                     'image'=>MainProduct::find($mp_id)->image,
                     'family'=>MainProduct::find($mp_id)->family->name,
+                    'sum_stock'=>MainProduct::findOrFail($mp_id)->product->sum('stock'),
+                    'sum_inventory_cost_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_quantity_first'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.memo'),
+                    'sum_inventory_cost_debit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','masuk')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_inventory_cost_credit'=>\DB::table('transaction_chart_accounts')
+                                                ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                ->where('sub_chart_accounts.name','=','PERSEDIAAN '.MainProduct::find($mp_id)->family->name)
+                                                ->where('transaction_chart_accounts.type','=','keluar')
+                                                ->where('transaction_chart_accounts.description','!=','SALDO AWAL')
+                                                ->sum('transaction_chart_accounts.amount'),
+                    'sum_price_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',MainProduct::find($mp_id)->family_id)
+                                          ->sum('price'),
+                    'sum_qty_purchase'=>\DB::table('product_purchase_order')
+                                          ->join('products','product_purchase_order.product_id','=','products.id')
+                                          ->join('main_products','products.main_product_id','=','main_products.id')
+                                          ->where('main_products.family_id','=',MainProduct::find($mp_id)->family_id)
+                                          ->sum('quantity'),
                     'unit'=>MainProduct::find($mp_id)->unit->name,
                     'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
                     'category'=>MainProduct::find($mp_id)->category->name,
                     'ordered_products'=>$this->get_product_lists($mp_id, $request->sales_order_id),
                 ];
             }
-            return view('sales_return.create')
+            return view('sales_return.create_new')
                 ->with('sales_order', $sales_order)
                 ->with('so_id',$so_id)
                 ->with('main_product',$main_product)
@@ -96,6 +131,7 @@ class SalesReturnController extends Controller
                 $sales_return->save();
             }
             $temp_sales_return_data = [];
+            $temp_sales_return_hpp = [];
             foreach($request->child_product_id as $key=>$value){
                 array_push($temp_sales_return_data, array(
                     'sales_order_id'=>$request->sales_order_id,
@@ -103,10 +139,16 @@ class SalesReturnController extends Controller
                     'child_product_id'=>$request->child_product_id[$key],
                     'amount_return_per_unit'=>$request->amount_return_per_unit[$key],
                 ));
+                array_push($temp_sales_return_hpp, array(
+                    'sales_order_id'=>$request->sales_order_id,
+                    'main_product_id'=>$request->main_product_id_return[$key],
+                    'child_product_id'=>$request->child_product_id[$key],
+                    'amount_return_per_unit'=>$request->parent_sum_inventory_cost[$key],
+                ));
             }
 
             \DB::table('temp_sales_return')->insert($temp_sales_return_data);
-
+            \DB::table('temp_sales_return_hpp')->insert($temp_sales_return_hpp);
 
             $inv_account = [];
             $return_account = [];
@@ -115,8 +157,11 @@ class SalesReturnController extends Controller
                 $total_amount = \DB::table('temp_sales_return')
                     ->where('sales_order_id', $request->sales_order_id)
                     ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
+                $total_amount_hpp = \DB::table('temp_sales_return_hpp')
+                    ->where('sales_order_id', $request->sales_order_id)
+                    ->where('main_product_id','=', $request->parent_product_id[$key])->sum('amount_return_per_unit');
                     array_push($inv_account,[
-                        'amount'=>$total_amount,
+                        'amount'=>$total_amount_hpp,
                         'sub_chart_account_id'=>$request->inventory_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -138,7 +183,7 @@ class SalesReturnController extends Controller
                         'memo'=>'RETURN PENJUALAN'
                     ]);
                     array_push($cost_goods_account,[
-                        'amount'=>$total_amount,
+                        'amount'=>$total_amount_hpp,
                         'sub_chart_account_id'=>$request->cost_goods_account[$key],
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
@@ -151,9 +196,12 @@ class SalesReturnController extends Controller
             }
             \DB::table('transaction_chart_accounts')->insert($inv_account);
             \DB::table('transaction_chart_accounts')->insert($return_account);
-            //\DB::table('transaction_chart_accounts')->insert($cost_goods_account);
+            \DB::table('transaction_chart_accounts')->insert($cost_goods_account);
             //now delete the temp_sales_return
             \DB::table('temp_sales_return')
+                ->where('sales_order_id', '=', $request->sales_order_id)
+                ->delete();
+            \DB::table('temp_sales_return_hpp')
                 ->where('sales_order_id', '=', $request->sales_order_id)
                 ->delete();
 
@@ -172,7 +220,7 @@ class SalesReturnController extends Controller
     public function show($id)
     {
         $sales_return = SalesReturn::findOrFail($id);
-        return view('sales_return.show')
+        return view('sales_return.show_new')
                 ->with('sales_return', $sales_return);
     }
 
@@ -329,6 +377,7 @@ class SalesReturnController extends Controller
         $product->save();
 
         $price_return = floatval(preg_replace('#[^0-9.]#', '', $request->sales_return_price_per_unit_to_complete))*preg_replace('#[^0-9.]#','',$request->sales_return_quantity_to_complete);
+        $price_return_sales = floatval(preg_replace('#[^0-9.]#', '', $request->sales_return_price_per_unit_sales))*preg_replace('#[^0-9.]#','',$request->sales_return_quantity_to_complete);
 
         $amount_inventory = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->sales_order_invoice_id_to_complete],['sub_chart_account_id',$request->inventory_account],['type','masuk']])->value('amount');
         $new_amount = $amount_inventory-$price_return;
@@ -337,6 +386,10 @@ class SalesReturnController extends Controller
         $amount_cost_goods = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->sales_order_invoice_id_to_complete],['sub_chart_account_id',$request->cost_goods_account],['type','keluar']])->value('amount');
         $new_amount2 = $amount_cost_goods-$price_return;
         \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->cost_goods_account)->where('reference',$request->sales_order_invoice_id_to_complete)->where('type','keluar')->update(['amount'=>$new_amount2]);
+
+        $amount_sales_return = \DB::table('transaction_chart_accounts')->select('amount')->where([['reference',$request->sales_order_invoice_id_to_complete],['sub_chart_account_id',$request->sales_return_account],['type','masuk']])->value('amount');
+        $new_amount3 = $amount_sales_return-$price_return_sales;
+        \DB::table('transaction_chart_accounts')->where('sub_chart_account_id',$request->sales_return_account)->where('reference',$request->sales_order_invoice_id_to_complete)->where('type','masuk')->update(['amount'=>$new_amount3]);
 
         return redirect('sales-return')
                 ->with('successMessage',"$product_name has been added back to inventory from $sales_order_ref");

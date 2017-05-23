@@ -643,7 +643,7 @@ class DatatablesController extends Controller
                     $status_action .='</button>';
                 }
                 else if($sales_returns->status =='accept'){
-                    $status_label = '<p>SENT</p>';
+                    $status_label = '<p>ACCEPT</p>';
                     $status_action .='<button type="button" class="btn btn-success btn-xs btn-resent-sales-return" data-id="'.$sales_returns->id.'" title="Change status to Resent">';
                     $status_action .=    '<i class="fa fa-check"></i>';
                     $status_action .='</button>';
