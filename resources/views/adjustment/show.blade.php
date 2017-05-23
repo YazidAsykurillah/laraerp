@@ -1,22 +1,21 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Product Adjustment
+  Adjustment Detail
 @endsection
 
 @section('page_header')
   <h1>
-    Product Adjustment
-    <small>Show Product Adjustment </small>
+    Adjustment
+    <small>Detail Adjustment Product</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product-adjustment') }}"><i class="fa fa-dashboard"></i> Product Adjustment</a></li>
+    <li><a href="{{ URL::to('product-adjustment') }}"><i class="fa fa-dashboard"></i> Adjustment Product</a></li>
     <li><a href="{{ URL::to('product-adjustment/'.$adjustment->id) }}"><i class="fa fa-dashboard"></i> {{ $adjustment->code }}</a></li>
-    <li class="active"><i></i>Detail</li>
   </ol>
 @endsection
 
@@ -26,16 +25,16 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Product Adjustment Detail</h3>
+          <h3 class="box-title">General Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <table class="table">
             <tr>
-              <td class="col-lg-2"><b>Code</b></td>
+              <td class="col-lg-2"><b>Adjustment No</b></td>
               <td class="col-lg-4">{{ $adjustment->code }}</td>
             </tr>
             <tr>
-              <td class="col-lg-2"><b>Status</b></td>
+              <td class="col-lg-2"><b>IN/OUT</b></td>
               <td class="col-lg-4">{{ $adjustment->in_out }}</td>
             </tr>
             <tr>

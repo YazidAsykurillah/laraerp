@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Adjustment Products
+  Adjustment
 @endsection
 
 @section('page_header')
   <h1>
     Adjustment
-    <small>Adjustment of The Products </small>
+    <small>Add New Adjustment Product</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product-adjustment') }}"><i class="fa fa-dashboard"></i> Adjustment Products</a></li>
+    <li><a href="{{ URL::to('product-adjustment') }}"><i class="fa fa-dashboard"></i> Adjustment Product</a></li>
     <li class="active"><i></i>Create</li>
   </ol>
 @endsection
@@ -25,7 +25,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create New Adjustment Products</h3>
+          <h3 class="box-title">Basic Information</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
             <i class="fa fa-list"></i>&nbsp;Select Products
           </a>

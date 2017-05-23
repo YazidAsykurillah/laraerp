@@ -24,7 +24,7 @@ class UpdateFamilyRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|unique:families,code',
+            'code'=>'required|unique:families,code,'.$this->route('family'),
             'name'=>'required'
         ];
     }

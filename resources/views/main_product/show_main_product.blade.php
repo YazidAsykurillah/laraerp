@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Products
+    Product
 @endsection
 
 @section('page_header')
     <h1>
-        Products
+        Product
         <small> Product Detail</small>
     </h1>
 @endsection
@@ -14,7 +14,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
+        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Product</a></li>
         <li class="active"><i></i>{{ $main_product->name }}</li>
     </ol>
 @endsection
@@ -24,7 +24,7 @@
         <div class="col-lg-6">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ $main_product->name }}</h3>
+                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -88,7 +88,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
               <div class="box-header with-border">
-                <h3 class="box-title">Sub Products</h3>
+                <h3 class="box-title">Sub Product</h3>
               </div><!-- /.box-header -->
               <div class="box-body">
                   <div class="box-responsive" style="max-height:500px">

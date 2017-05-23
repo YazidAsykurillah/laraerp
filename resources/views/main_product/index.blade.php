@@ -6,9 +6,17 @@
 
 @section('page_header')
     <h1>
-        Products
-        <small>Producs Lists</small>
+        Product
+        <small>Product List</small>
     </h1>
+@endsection
+
+@section('breadcrumb')
+  <ol class="breadcrumb">
+    <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Product</a></li>
+    <li class="active"><i></i>Index</li>
+  </ol>
 @endsection
 
 @section('content')
@@ -16,8 +24,8 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Products</h3>
-                    <a href="{{ URL::to('main-product/create') }}" class="btn btn-primary pull-right" title="Create new main product">
+                    <h3 class="box-title">Product</h3>
+                    <a href="{{ URL::to('main-product/create') }}" class="btn btn-primary pull-right" title="Create new product">
                         <i class="fa fa-plus"></i>&nbsp;Add New
                     </a>
                 </div>
@@ -54,10 +62,10 @@
         {!! Form::open(['url'=>'deleteMainProduct', 'method'=>'post', 'id'=>'form-delete-main-product']) !!}
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="modal-delete-mainproductLabel">Konfirmasi</h4>
+            <h4 class="modal-title" id="modal-delete-mainproductLabel">Confirmation</h4>
           </div>
           <div class="modal-body">
-            You are going to remove main product&nbsp;<b id="main-product-name-to-delete"></b>
+            You are going to remove product&nbsp;<b id="main-product-name-to-delete"></b>
             <br/>
             <p class="text text-danger">
               <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted

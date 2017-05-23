@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Stock Balances
+  Stock Balance
 @endsection
 
 @section('page_header')
   <h1>
     Stock Balance
-    <small>Stocks Balance List</small>
+    <small>Stock Balance List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> Stocks Balance</a></li>
+    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> Stock Balance</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -24,8 +24,8 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Stocks Balance</h3>
-          <a href="{{ URL::to('stock_balance/create')}}" class="btn btn-primary pull-right" title="Create new stocks balance">
+          <h3 class="box-title">Stock Balance</h3>
+          <a href="{{ URL::to('stock_balance/create')}}" class="btn btn-primary pull-right" title="Create new stock balance">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -104,7 +104,7 @@
         { data: 'creator', name: 'creator.name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'updated_at', name: 'updated_at' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
 
 

@@ -5,8 +5,9 @@
 @endsection
 
 @section('page_header')
-    <h1>Edit Product
-        <small>Edit Product Page</small>
+    <h1>
+        Product
+        <small>Edit Product</small>
     </h1>
 @endsection
 
@@ -15,7 +16,7 @@
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"> Product</i></a></li>
         <li>{{ $main_product->name }}</li>
-        <li class="active"><i></i>Edit</li>
+        <li class="active"><i></i> Edit</li>
     </ol>
 @endsection
 
@@ -25,11 +26,11 @@
     <div class="col-md-8">
         <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
-                <h3 class="box-title">Basic Informations</h3>
+                <h3 class="box-title">Basic Information</h3>
             </div>
             <div class="box-body">
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                  {!! Form::label('name', 'Code', ['class'=>'col-sm-2 control-label']) !!}
+                  {!! Form::label('name', 'Name', ['class'=>'col-sm-2 control-label']) !!}
                   <div class="col-sm-10">
                     {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the product', 'id'=>'name']) !!}
                     @if ($errors->has('name'))
@@ -128,7 +129,7 @@
     <div class="col-lg-12">
         <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
-            <h3 class="box-title">Sub Products</h3>
+            <h3 class="box-title">Sub Product</h3>
           </div><!-- /.box-header -->
           <div class="box-body">
               <div class="box-responsive" style="max-height:500px">

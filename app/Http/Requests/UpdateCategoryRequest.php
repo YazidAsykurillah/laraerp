@@ -24,7 +24,7 @@ class UpdateCategoryRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|max:5|unique:categories,code,'.$this->route('category'),
+            'code'=>'required|unique:categories,code,'.$this->route('category'),
             'name'=>'required|unique:categories,name,'.$this->route('category'),
         ];
     }

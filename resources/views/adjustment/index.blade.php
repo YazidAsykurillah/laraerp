@@ -7,14 +7,14 @@
 @section('page_header')
   <h1>
     Adjustment
-    <small>Adjustment Products List</small>
+    <small>Adjustment Product List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('adjustment') }}"><i class="fa fa-dashboard"></i> Adjustment</a></li>
+    <li><a href="{{ URL::to('adjustment') }}"><i class="fa fa-dashboard"></i> Adjustment Product</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -22,10 +22,10 @@
 @section('content')
   <div class="row">
     <div class="col-lg-12">
-      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+      <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Adjustment</h3>
-          <a href="{{ URL::to('product-adjustment/create')}}" class="btn btn-primary pull-right" title="Create new driver">
+          <a href="{{ URL::to('product-adjustment/create')}}" class="btn btn-primary pull-right" title="Create new adjustment product">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -107,7 +107,7 @@
         { data: 'qty', name: 'qty'},
         { data: 'notes', name: 'notes'},
         { data: 'created_at', name: 'created_at'},
-        { data: 'actions', name: 'actions', orderable:false, searchable:false, },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
       ],
       "order" : [[1, "asc"]]
 

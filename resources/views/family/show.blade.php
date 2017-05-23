@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Family Product
+    Family Product Detail
 @endsection
 
 @section('page_header')
@@ -24,7 +24,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Informations</h3>
+          <h3 class="box-title">Basic Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <table class="table">
@@ -33,7 +33,7 @@
               <td>{{ $family->code }}</td>
             </tr>
             <tr>
-              <td><b>Name</b></td>
+              <td><b>Family Name</b></td>
               <td>{{ $family->name }}</td>
             </tr>
             <tr>

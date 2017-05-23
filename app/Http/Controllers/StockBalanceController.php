@@ -41,8 +41,22 @@ class StockBalanceController extends Controller
     {
         if(\Auth::user()->can('create-stock-balance-module'))
         {
+            $stock_balance = StockBalance::all();
+            $code_fix = '';
+            if(count($stock_balance) > 0)
+            {
+                $code_stock_balance = StockBalance::all()->first()->latest()->value('code');
+                $sub_str = str_replace('SB0','',$code_stock_balance)+1;
+                $code_fix = 'SB0'.$sub_str;
+            }else
+            {
+                $code_stock_balance = count($stock_balance)+1;
+                $code_fix = 'SB0'.$code_stock_balance;
+            }
             $data = Product::get();
-            return view('stock_balance.create')->with('dataList',$data);
+            return view('stock_balance.create')
+                ->with('dataList',$data)
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }
