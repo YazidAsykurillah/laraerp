@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Products All
+  Product All
 @endsection
 
 @section('page_header')
   <h1>
-    Products All
-    <small>Product Lists</small>
+    Product All
+    <small>Product All List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('product-all') }}"><i class="fa fa-dashboard"></i> Products All</a></li>
+    <li><a href="{{ URL::to('product-all') }}"><i class="fa fa-dashboard"></i> Product All</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection

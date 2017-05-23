@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Kategori Produk
+    Category Product
 @endsection
 
 @section('page_header')
   <h1>
-    Kategori Produk
-    <small>Edit Kategori</small>
+    Category Product
+    <small>Edit Category Product</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('category') }}"><i class="fa fa-dashboard"></i> Kategori Produk</a></li>
+    <li><a href="{{ URL::to('category') }}"><i class="fa fa-dashboard"></i> Category Product</a></li>
     <li><a href="{{ URL::to('category/'.$category->id.'') }}"><i class="fa fa-dashboard"></i> {{ $category->name }}</a></li>
-    <li class="active"><i></i>Edit</li>
+    <li class="active"><i></i> Edit</li>
   </ol>
 @endsection
 
@@ -26,13 +26,13 @@
       <div class="col-md-9">
         <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
           <div class="box-header with-border">
-            <h3 class="box-title">Edit Kategori Produk</h3>
+            <h3 class="box-title">Basic Information</h3>
           </div><!-- /.box-header -->
           <div class="box-body">
             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-              {!! Form::label('code', 'Kode', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-5">
-                {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the category', 'id'=>'code']) !!}
+                {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the category', 'id'=>'code', 'readonly']) !!}
                 @if ($errors->has('code'))
                   <span class="help-block">
                     <strong>{{ $errors->first('code') }}</strong>
@@ -41,7 +41,7 @@
               </div>
             </div>
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-              {!! Form::label('name', 'Nama', ['class'=>'col-sm-2 control-label']) !!}
+              {!! Form::label('name', 'Category Name', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-5">
                 {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Name of the category', 'id'=>'name']) !!}
                 @if ($errors->has('name'))

@@ -24,7 +24,7 @@ class StoreCategoryRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|max:5|unique:categories,code',
+            'code'=>'required|unique:categories,code',
             'name'=>'required|unique:categories,name',
         ];
     }

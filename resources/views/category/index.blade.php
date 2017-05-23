@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Kategori Produk
+    Category Product
 @endsection
 
 @section('page_header')
   <h1>
-    Kategori Produk
-    <small>Daftar kategori produk</small>
+    Category Product
+    <small>Category Product List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('category') }}"><i class="fa fa-dashboard"></i> Kategori Produk</a></li>
-    <li class="active"><i></i> Index</li>
+    <li><a href="{{ URL::to('category') }}"><i class="fa fa-dashboard"></i> Category Product</a></li>
+    <li class="active"><i></i>Index</li>
   </ol>
 @endsection
 
@@ -24,8 +24,8 @@
     <div class="col-lg-12">
         <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
             <div class="box-header with-border">
-              <h3 class="box-title">Kategori Produk</h3>
-              <a href="{{ URL::to('category/create')}}" class="btn btn-primary pull-right" title="Create new category">
+              <h3 class="box-title">Category Product</h3>
+              <a href="{{ URL::to('category/create')}}" class="btn btn-primary pull-right" title="Create new category product">
                 <i class="fa fa-plus"></i>&nbsp;Add New
               </a>
             </div><!-- /.box-header -->
@@ -36,10 +36,10 @@
                         <tr style="background-color:#3c8dbc;color:white">
                           <th style="width:5%;">No</th>
                           <th style="width:10%;">Code</th>
-                          <th style="width:35%;">Nama Kategori</th>
+                          <th style="width:35%;">Category Name</th>
                           <th style="width:20%;">Family</th>
                           <th style="width:20%;">Created At</th>
-                          <th style="width:10%;text-align:center;">Aksi</th>
+                          <th style="width:10%;text-align:center;">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -53,14 +53,14 @@
                               <td>{{ $category->family->name }}</td>
                               <td>{{ $category->created_at }}</td>
                               <td style="text-align:center;">
-                                <a href="{{ url('category/'.$category->id) }}" class="btn btn-success btn-xs" title="Click for view this category">
+                                <a href="{{ url('category/'.$category->id) }}" class="btn btn-success btn-xs" title="Click for view this category product">
                                     <i class="fa fa-external-link-square"></i>
                                 </a>&nbsp;
-                                <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Klik untuk mengedit kategori ini">
+                                <a href="{{ url('category/'.$category->id.'/edit') }}" class="btn btn-info btn-xs" title="Click to edit this category product">
                                   <i class="fa fa-edit"></i>
                                 </a>&nbsp;
                                 @if(\Auth::user()->can('delete-category-module'))
-                                <button type="button" class="btn btn-danger btn-xs btn-delete-category" data-id="{{ $category->id }}" data-text="{{$category->name}}">
+                                <button type="button" class="btn btn-danger btn-xs btn-delete-category" data-id="{{ $category->id }}" data-text="{{$category->name}}" title="Click to delete this category product">
                                   <i class="fa fa-trash"></i>
                                 </button>
                                 @endif
@@ -91,7 +91,7 @@
       {!! Form::open(['url'=>'deleteCategory', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-delete-categoryLabel">Konfirmasi</h4>
+          <h4 class="modal-title" id="modal-delete-categoryLabel">Confirmation</h4>
         </div>
         <div class="modal-body">
           Anda akan menghapus kategori <b id="category-name-to-delete"></b>

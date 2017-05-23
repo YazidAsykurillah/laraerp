@@ -6,15 +6,15 @@
 
 @section('page_header')
   <h1>
-    Add New Stock Balance
-    <small>Edit Stock Balance Page</small>
+    Stock Balance
+    <small>Edit Stock Balance</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> stock balance</a></li>
+    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> Stock Balance</a></li>
     <li> {{ $stock_balance->code }}</li>
     <li class="active"><i></i> Edit</li>
   </ol>
@@ -29,13 +29,13 @@
         <div class="col-md-6">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General information</h3>
+                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;Basic Information</h3>
                 </div><!-- /.box header -->
                 <div class="box-body">
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                       {!! Form::label('code', 'Code', ['class'=>'col-sm-3 control-label']) !!}
                       <div class="col-sm-5">
-                        {!! Form::text('code',null,['class'=>'form-control', 'id'=>'code']) !!}
+                        {!! Form::text('code',null,['class'=>'form-control', 'id'=>'code', 'readonly']) !!}
                         @if ($errors->has('code'))
                           <span class="help-block">
                             <strong>{{ $errors->first('code') }}</strong>
@@ -89,7 +89,7 @@
         <div class="col-md-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header">
-                    <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Primary Product Information</h3>
+                    <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Product Information</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive" style="max-height:500px">

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Units
+  Unit Product
 @endsection
 
 @section('page_header')
   <h1>
-    Product Unit
-    <small>List of product units</small>
+    Unit Product
+    <small>Unit Product List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('unit') }}"><i class="fa fa-dashboard"></i> Product Units</a></li>
+    <li><a href="{{ URL::to('unit') }}"><i class="fa fa-dashboard"></i> Unit Product</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -25,7 +25,7 @@
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Units</h3>
-          <a href="{{ URL::to('unit/create')}}" class="btn btn-primary pull-right" title="Create new unit">
+          <a href="{{ URL::to('unit/create')}}" class="btn btn-primary pull-right" title="Create new unit product">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
         </div><!-- /.box-header -->
@@ -34,7 +34,7 @@
               <thead>
                 <tr style="background-color:#3c8dbc;color:white">
                   <th style="width:5%;">#</th>
-                  <th style="width:20%;">Name</th>
+                  <th style="width:20%;">Unit Name</th>
                   <th style="width:30%;">Created At</th>
                   <th style="width:30%;">Updated At</th>
                   <th style="width:15%;text-align:center;">Actions</th>
@@ -101,7 +101,7 @@
         { data: 'name', name: 'name' },
         { data: 'created_at', name: 'created_at' },
         { data: 'updated_at', name: 'updated_at' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center' },
       ],
 
 

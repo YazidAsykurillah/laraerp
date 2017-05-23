@@ -38,9 +38,22 @@ class CategoryController extends Controller
     {
         if(\Auth::user()->can('create-category-module'))
         {
+            $category = Category::all();
+            $code_fix = '';
+            if(count($category) > 0)
+            {
+                $code_category = Category::all()->first()->latest()->value('code');
+                $sub_str = str_replace('CAT0','',$code_category)+1;
+                $code_fix = 'CAT0'.$sub_str;
+            }else
+            {
+                $code_category = count($category)+1;
+                $code_fix = 'CAT0'.$code_category;
+            }
             $family = Family::lists('name','id');
             return view('category.create')
-                ->with('family',$family);
+                ->with('family',$family)
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

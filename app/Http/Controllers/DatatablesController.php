@@ -169,15 +169,15 @@ class DatatablesController extends Controller
                 return $actions_html;
             })
             ->addColumn('actions', function($main_products){
-                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/show').'" class="btn btn-info btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html  ='<a href="'.url('main-product/'.$main_products->id.'/show').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Klik untuk mengedit main produk ini">';
+                    $actions_html .='<a href="'.url('main-product/'.$main_products->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this product">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-product-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-main-product" data-id="'.$main_products->id.'" data-text="'.$main_products->name.'" title="Click to delete this product">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -207,12 +207,12 @@ class DatatablesController extends Controller
                     $actions_html ='<a href="'.url('unit/'.$units->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('unit/'.$units->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this unit">';
+                    $actions_html .='<a href="'.url('unit/'.$units->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this unit product">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-unit-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-unit" data-id="'.$units->id.'" data-text="'.$units->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-unit" data-id="'.$units->id.'" data-text="'.$units->name.'" title="Click to delete this unit prosuct">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -782,7 +782,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-stock-balance-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-stock-balance" data-id="'.$stock_balance->id.'" data-text="'.$stock_balance->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-stock-balance" data-id="'.$stock_balance->id.'" data-text="'.$stock_balance->code.'" title="Click to delete this stock balance">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -1200,15 +1200,15 @@ class DatatablesController extends Controller
                     $actions_html ='<a href="'.url('product-adjustment/'.$adjustment->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('product-adjustment/'.$adjustment->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this driver">';
+                    $actions_html .='<a href="'.url('product-adjustment/'.$adjustment->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this adjustment product">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    // if(\Auth::user()->can('delete-product-adjustment-module'))
-                    // {
-                      $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product-adjustment" data-id="'.$adjustment->id.'" data-text="'.$adjustment->name.'">';
+                     if(\Auth::user()->can('delete-product-adjustment-module'))
+                     {
+                      $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product-adjustment" data-id="'.$adjustment->id.'" data-text="'.$adjustment->name.'" title="Click to delete this adjustment product">';
                       $actions_html .=    '<i class="fa fa-trash"></i>';
                       $actions_html .='</button>';
-                    //}
+                    }
 
                     return $actions_html;
             });

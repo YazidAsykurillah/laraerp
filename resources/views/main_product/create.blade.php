@@ -15,7 +15,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
+        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Product</a></li>
         <li class="active"><i></i> Create</li>
     </ol>
 @endsection
@@ -26,11 +26,11 @@
                 <div class="col-md-8">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Basic Informations</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div>
                         <div class="box-body">
                             <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
-                              {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
+                              {!! Form::label('code', 'Name', ['class'=>'col-sm-2 control-label']) !!}
                               <div class="col-sm-10">
                                 {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the product', 'id'=>'code']) !!}
                                 @if ($errors->has('code'))
@@ -87,24 +87,24 @@
                                 @endif
                               </div>
                             </div>
-
+                            <div class="form-group">
+                                {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
+                              <div class="col-sm-10">
+                                <a href="{{ url('main-product') }}" class="btn btn-default">
+                                  <i class="fa fa-repeat"></i>&nbsp;Cancel
+                                </a>&nbsp;
+                                <button type="submit" class="btn btn-info" id="btn-submit-product">
+                                  <i class="fa fa-save"></i>&nbsp;Submit
+                                </button>
+                              </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
+                    <!-- <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                       <div class="box-body">
-                        <div class="form-group">
-                            {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-                          <div class="col-sm-10">
-                            <a href="{{ url('main-product') }}" class="btn btn-default">
-                              <i class="fa fa-repeat"></i>&nbsp;Cancel
-                            </a>&nbsp;
-                            <button type="submit" class="btn btn-info" id="btn-submit-product">
-                              <i class="fa fa-save"></i>&nbsp;Submit
-                            </button>
-                          </div>
-                        </div>
+
                       </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-4">
                   <!--BOX Image-->

@@ -37,7 +37,20 @@ class FamilyController extends Controller
     {
         if(\Auth::user()->can('create-family-module'))
         {
-            return view('family.create');
+            $family = Family::all();
+            $code_fix = '';
+            if(count($family) > 0)
+            {
+                $code_family = Family::all()->first()->latest()->value('code');
+                $sub_str = str_replace('FM0','',$code_family)+1;
+                $code_fix = 'FM0'.$sub_str;
+            }else
+            {
+                $code_family = count($family)+1;
+                $code_fix = 'FM0'.$code_family;
+            }
+            return view('family.create')
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

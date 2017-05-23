@@ -6,15 +6,15 @@
 
 @section('page_header')
     <h1>
-        Stock Balance Detail
-        <small> {{ $stock_balance->code }} </small>
+        Stock Balance
+        <small>Detail Stock Balance</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> Stock Balances</a></li>
+    <li><a href="{{ URL::to('stock_balance') }}"><i class="fa fa-dashboard"></i> Stock Balance</a></li>
     <li class="active"><i></i> {{ $stock_balance->code }}</li>
   </ol>
 @endsection
@@ -27,7 +27,7 @@
         <div class="col-md-6">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header">
-                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Informations</h3>
+                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
                 </div><!-- /.box header -->
                 <div class="box-body">
                     <div class="table-responsive">
@@ -67,7 +67,7 @@
         <div class="col-md-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header">
-                    <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Primary Product Information</h3>
+                    <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Product Information</h3>
                     <div class="pull-right">
                       <!--Show button create payment only when invoice status is NOT completed yet-->
                       <a href="{{ url('stock_balance/'.$stock_balance->id.'/printPdf') }}" class="btn btn-default btn-xs">
