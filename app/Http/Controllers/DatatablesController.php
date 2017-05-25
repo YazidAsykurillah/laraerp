@@ -382,7 +382,7 @@ class DatatablesController extends Controller
                 }
                 if(\Auth::user()->can('delete-purchase-order-invoice-module'))
                 {
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'">';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-invoice" data-id="'.$purchase_order_invoices->id.'" data-text="'.$purchase_order_invoices->code.'" title="Click to delete">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }
@@ -447,7 +447,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-purchase-order-return-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -457,7 +457,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-purchase-order-return-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -467,7 +467,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-purchase-order-return-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-return" data-id="'.$purchase_returns->id.'" data-text="'.$purchase_returns->code.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -605,7 +605,7 @@ class DatatablesController extends Controller
                 }
                 if(\Auth::user()->can('delete-sales-order-invoice-module'))
                 {
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'">';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-order-invoice" data-id="'.$sales_order_invoices->id.'" data-text="'.$sales_order_invoices->code.'" title="Click to delete">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }
@@ -668,14 +668,14 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-sales-order-return-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
                 }elseif ($sales_returns->status == 'resent'){
                     if(\Auth::user()->can('delete-sales-order-return-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-sales-return" data-id="'.$sales_returns->id.'" data-text="'.$sales_returns->code.'" title="Click to delete">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -826,7 +826,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-bank-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-bank" data-id="'.$banks->id.'" data-text="'.$banks->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-bank" data-id="'.$banks->id.'" data-text="'.$banks->name.'" title="Click to delete this bank">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -865,7 +865,7 @@ class DatatablesController extends Controller
                 $actions_html .='</a>&nbsp;';
                 if(\Auth::user()->can('delete-cash-module'))
                 {
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash" data-id="'.$cashs->id.'" data-text="'.$cashs->name.'">';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash" data-id="'.$cashs->id.'" data-text="'.$cashs->name.'" title="Click to delete this cash">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }
@@ -1100,8 +1100,8 @@ class DatatablesController extends Controller
             'memo',
         ])->where([['source','biaya_operasi'],['type','!=','keluar']]);
         $datatables = Datatables::of($trans_chart_account)
-        ->editColumn('account_number', function($trans_chart_account){
-             return $trans_chart_account->sub_chart_account->account_number;
+        ->editColumn('id', function($trans_chart_account){
+             return 'TS'.$trans_chart_account->id;
 
         })
         ->editColumn('name', function($trans_chart_account){
@@ -1114,12 +1114,12 @@ class DatatablesController extends Controller
             $actions_html ='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
             $actions_html .=    '<i class="fa fa-external-link-square"></i>';
             $actions_html .='</a>&nbsp;';
-            $actions_html .='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this beban operasi">';
+            $actions_html .='<a href="'.url('biaya-operasi/'.$trans_chart_account->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this jurnal umum">';
             $actions_html .=    '<i class="fa fa-edit"></i>';
             $actions_html .='</a>&nbsp;';
             if(\Auth::user()->can('delete-jurnal-umum-module'))
             {
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-memo="'.$trans_chart_account->description.'" data-text="'.$trans_chart_account->sub_chart_account->name.'" data-sub-account-id="'.$trans_chart_account->sub_chart_account->chart_account_id.'">';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-memo="'.$trans_chart_account->description.'" data-text="'.$trans_chart_account->sub_chart_account->name.'" data-sub-account-id="'.$trans_chart_account->sub_chart_account->chart_account_id.'" title="Click to delete this jurnal umum">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
             }

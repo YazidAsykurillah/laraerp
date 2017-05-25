@@ -36,7 +36,20 @@ class BankController extends Controller
     {
         if(\Auth::user()->can('create-bank-module'))
         {
-            return view('bank.create');
+            $bank = Bank::all();
+            $code_fix = '';
+            if(count($bank) > 0)
+            {
+                $code_bank = Bank::all()->first()->latest()->value('code');
+                $sub_str = str_replace('BN0','',$code_bank)+1;
+                $code_fix = 'BN0'.$sub_str;
+            }else
+            {
+                $code_bank = count($bank)+1;
+                $code_fix = 'BN0'.$code_bank;
+            }
+            return view('bank.create')
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

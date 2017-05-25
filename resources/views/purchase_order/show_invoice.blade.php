@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  {{ $purchase_order_invoice->code }}
+  Purchase Order Invoice
 @endsection
 
 @section('page_header')
   <h1>
-    Purchase Order
-    <small>Invoice Detail</small>
+    Purchase Order Invoice
+    <small>Detail Purchase Order Invoice</small>
   </h1>
 @endsection
 
@@ -16,7 +16,7 @@
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order </a></li>
     <li><a href="{{ URL::to('purchase-order/'.$purchase_order_invoice->purchase_order->id) }}"> {{ $purchase_order_invoice->purchase_order->code }} </a></li>
-    <li><a href="{{ URL::to('purchase-order-invoice') }}">Invoices</a></li>
+    <li><a href="{{ URL::to('purchase-order-invoice') }}">Invoice</a></li>
     <li class="active">{{ $purchase_order_invoice->code }}</li>
   </ol>
 @endsection

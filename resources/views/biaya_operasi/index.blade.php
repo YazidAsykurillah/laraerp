@@ -7,7 +7,7 @@
 @section('page_header')
     <h1>
         Jurnal Umum
-        <small>List of Jurnal Umum</small>
+        <small>Jurnal Umum List</small>
     </h1>
 @endsection
 
@@ -25,7 +25,7 @@
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">Jurnal Umum</h3>
-                    <a href="{{ URL::to('biaya-operasi/create') }}" class="btn btn-primary pull-right" title="Create new beban operasi">
+                    <a href="{{ URL::to('biaya-operasi/create') }}" class="btn btn-primary pull-right" title="Create new jurnal umum">
                         <i class="fa fa-plus"></i>&nbsp;Add New
                     </a>
                 </div>
@@ -34,10 +34,10 @@
                         <thead>
                             <tr style="background-color:#3c8dbc;color:white">
                                 <th style="width:5%;">#</th>
-                                <th style="width:20%;">Account Number</th>
-                                <th style="width:20%;">Name</th>
-                                <th style="width:20%;">Amount</th>
-                                <th style="width:20%;">Created At</th>
+                                <th style="width:20%;">No.Transaction</th>
+                                <th style="width:30%;">Memo</th>
+                                <th style="width:15%;">Amount</th>
+                                <th style="width:15%;">Created At</th>
                                 <th style="width:15%;">Actions</th>
                             </tr>
                         </thead>
@@ -101,8 +101,8 @@
             ajax: '{!! route('datatables.getTransactionChartAccounts') !!}',
             columns: [
                 {data: 'rownum', name: 'rownum', searchable: false},
-                {data: 'account_number', name: 'account_number'},
-                {data: 'name', name: 'name'},
+                {data: 'id', name: 'id'},
+                {data: 'description', name: 'description'},
                 {data: 'amount', name: 'amount'},
                 {data: 'created_at', name: 'created_at'},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false, className: 'dt-center'},

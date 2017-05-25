@@ -6,8 +6,8 @@
 
 @section('page_header')
     <h1>
-        Sales Order
-        <small>Edit Invoice</small>
+        Sales Order Invoice
+        <small>Edit Sales Order Invoice</small>
     </h1>
 @endsection
 
@@ -27,7 +27,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Form Edit Invoice</h3>
+                    <h3 class="box-title">{{ $sales_order_invoice->code }}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     {!! Form::model($sales_order_invoice,['route'=>['sales-order-invoice.update',$sales_order_invoice->id],'id'=>'form-edit-sales-order-invoice','class'=>'form-horizontal','method'=>'put','files'=>true]) !!}

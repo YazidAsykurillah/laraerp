@@ -14,8 +14,8 @@
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('biaya-operasi') }}"><i class="fa fa-dashboard"></i> Biaya Operasi</a></li>
-        <li><a href="#"><i class="fa fa-dashboard"></i> {{ $trans_chart_account->id }}</a></li>
+        <li><a href="{{ URL::to('biaya-operasi') }}"><i class="fa fa-dashboard"></i> Jurnal Umum</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> TS{{ $trans_chart_account->id }}</a></li>
         <li class="active"><i></i> Edit</li>
     </ol>
 @endsection
@@ -26,7 +26,7 @@
             <div class="col-lg-7">
                 <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Edit New Biaya Operasi</h3>
+                        <h3 class="box-title">Basic Information</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group{{ $errors->has('pay_method') ? ' has-error' : '' }}">
@@ -77,7 +77,7 @@
                         <div class="form-group{{ $errors->has('memo') ? ' has-error' : '' }}">
                           {!! Form::label('memo', 'Memo', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">
-                            {!! Form::textarea('memo',null,['class'=>'form-control', 'placeholder'=>'Memo of the biaya operasi', 'id'=>'memo', 'style'=>'height:200px']) !!}
+                            {!! Form::textarea('memo',$trans_chart_account->description,['class'=>'form-control', 'placeholder'=>'Memo of the biaya operasi', 'id'=>'memo', 'style'=>'height:200px']) !!}
                             @if ($errors->has('memo'))
                               <span class="help-block">
                                 <strong>{{ $errors->first('memo') }}</strong>

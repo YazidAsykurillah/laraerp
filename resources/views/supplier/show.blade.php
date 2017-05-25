@@ -15,7 +15,7 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> Supplier</a></li>
-    <li class="active"><i></i> {{ $supplier->code }}</li>
+    <li class="active"><i></i>{{ $supplier->code }}</li>
   </ol>
 @endsection
 

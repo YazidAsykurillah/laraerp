@@ -7,7 +7,7 @@
 @section('page_header')
     <h1>
         Sales Return
-        <small>List of sales returns </small>
+        <small>Sales Return List</small>
     </h1>
 @endsection
 

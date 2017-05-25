@@ -7,7 +7,7 @@
 @section('page_header')
   <h1>
     Purchase Return
-    <small>List of purchase returns </small>
+    <small>Purchase Return List</small>
   </h1>
 @endsection
 

@@ -36,7 +36,20 @@ class CashController extends Controller
     {
         if(\Auth::user()->can('create-cash-module'))
         {
-            return view('cash.create');
+            $cash = Cash::all();
+            $code_fix = '';
+            if(count($cash) > 0)
+            {
+                $code_cash = Cash::all()->first()->latest()->value('code');
+                $sub_str = str_replace('CAS0','',$code_cash)+1;
+                $code_fix = 'CAS0'.$sub_str;
+            }else
+            {
+                $code_cash = count($cash)+1;
+                $code_fix = 'CAS0'.$code_cash;
+            }
+            return view('cash.create')
+                ->with('code_fix',$code_fix);
         }else{
             return view('403');
         }

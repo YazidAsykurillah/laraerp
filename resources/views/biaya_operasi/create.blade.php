@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Jurnal Operasi
+    Jurnal Umum
 @endsection
 
 @section('page_header')
     <h1>
         Jurnal Umum
-        <small>Create Jurnal Umum</small>
+        <small>Add New Jurnal Umum</small>
     </h1>
 @endsection
 
@@ -25,7 +25,7 @@
             <div class="col-lg-7">
                 <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Create New Jurnal Umum</h3>
+                        <h3 class="box-title">Basic Information</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group{{ $errors->has('pay_method') ? ' has-error' : '' }}">
@@ -59,7 +59,7 @@
                         <div class="form-group{{ $errors->has('memo') ? ' has-error' : '' }}">
                           {!! Form::label('memo', 'Memo', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">
-                            {!! Form::textarea('memo',null,['class'=>'form-control', 'placeholder'=>'Memo of the biaya operasi', 'id'=>'memo', 'style'=>'height:200px']) !!}
+                            {!! Form::textarea('memo',null,['class'=>'form-control', 'placeholder'=>'Memo of the jurnal umum', 'id'=>'memo', 'style'=>'height:200px']) !!}
                             @if ($errors->has('memo'))
                               <span class="help-block">
                                 <strong>{{ $errors->first('memo') }}</strong>
@@ -142,7 +142,7 @@
                         <div class="form-group{{ $errors->has('debit') ? ' has-error' : '' }}">
                           {!! Form::label('debit', 'Debit', ['class'=>'col-sm-4 control-label']) !!}
                           <div class="col-sm-6">
-                            {!! Form::text('debit',null,['class'=>'form-control', 'placeholder'=>'Debit of the biaya operasi', 'id'=>'debit']) !!}
+                            {!! Form::text('debit',null,['class'=>'form-control', 'placeholder'=>'Debit of the jurnal umum', 'id'=>'debit']) !!}
                             @if ($errors->has('debit'))
                               <span class="help-block">
                                 <strong>{{ $errors->first('debit') }}</strong>
@@ -153,7 +153,7 @@
                         <div class="form-group{{ $errors->has('credit') ? ' has-error' : '' }}">
                           {!! Form::label('credit', 'Credit', ['class'=>'col-sm-4 control-label']) !!}
                           <div class="col-sm-6">
-                            {!! Form::text('credit',null,['class'=>'form-control', 'placeholder'=>'Credit of the biaya operasi', 'id'=>'credit']) !!}
+                            {!! Form::text('credit',null,['class'=>'form-control', 'placeholder'=>'Credit of the jurnal umum', 'id'=>'credit']) !!}
                             @if ($errors->has('credit'))
                               <span class="help-block">
                                 <strong>{{ $errors->first('credit') }}</strong>

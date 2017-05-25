@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Banks
+  Bank Detail
 @endsection
 
 @section('page_header')
   <h1>
-    Banks
-    <small>Show Bank </small>
+    Bank
+    <small>Detail Bank</small>
   </h1>
 @endsection
 
@@ -15,8 +15,7 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('bank') }}"><i class="fa fa-dashboard"></i> Bank</a></li>
-    <li><a href="{{ URL::to('bank/'.$bank->id) }}"><i class="fa fa-dashboard"></i> {{ $bank->code }}</a></li>
-    <li class="active"><i></i>Detail</li>
+    <li class="active"><i></i>{{ $bank->code }}</li>
   </ol>
 @endsection
 
@@ -26,7 +25,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Bank Detail</h3>
+          <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <table class="table">

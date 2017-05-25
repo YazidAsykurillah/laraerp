@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Assets
+  Asset
 @endsection
 
 @section('page_header')
   <h1>
-    Assets
-    <small>List of The Assets </small>
+    Asset
+    <small>Asset List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('asset') }}"><i class="fa fa-dashboard"></i> Assets</a></li>
+    <li><a href="{{ URL::to('asset') }}"><i class="fa fa-dashboard"></i> Asset</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection
@@ -24,7 +24,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Assets</h3>
+          <h3 class="box-title">Asset</h3>
           <a href="{{ URL::to('asset/create')}}" class="btn btn-primary pull-right" title="Create new asset">
             <i class="fa fa-plus"></i>&nbsp;Add New
           </a>
@@ -44,13 +44,13 @@
             </thead>
             <thead id="searchid">
               <tr>
-                  <th style="width:5%;">#</th>
+                  <th style="width:5%;"></th>
                   <th style="width:15%;">Code</th>
                   <th style="width:20%;">Name</th>
                   <th style="width:20%;">Date Purchase</th>
                   <th style="width:15%;">Amount</th>
                   <th style="width:10%;">Periode</th>
-                  <th style="width:15%;text-align:center;">Actions</th>
+                  <th style="width:15%;text-align:center;"></th>
               </tr>
             </thead>
             <tbody>
@@ -125,7 +125,7 @@
 
       // Setup - add a text input to each header cell
     $('#searchid th').each(function() {
-          if ($(this).index() != 0 && $(this).index() != 5) {
+          if ($(this).index() != 0 && $(this).index() != 6) {
               $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
           }
 

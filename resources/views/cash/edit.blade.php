@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Cashs
+    Cash
 @endsection
 
 @section('page_header')
     <h1>
-        Cashs
+        Cash
         <small>Edit Cash</small>
     </h1>
 @endsection
@@ -26,13 +26,13 @@
         <div class="col-lg-8">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Edit New Cash</h3>
+                    <h3 class="box-title">Basic Information</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                       {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
                       <div class="col-sm-10">
-                        {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the cash', 'id'=>'code']) !!}
+                        {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the cash', 'id'=>'code', 'readonly']) !!}
                         @if ($errors->has('code'))
                           <span class="help-block">
                             <strong>{{ $errors->first('code') }}</strong>

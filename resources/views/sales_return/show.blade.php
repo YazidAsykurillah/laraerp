@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Sales Order return
+    Sales Order Return Detail
 @endsection
 
 @section('page_header')
     <h1>
-        Sales order
-        <small>Sales Return Detail</small>
+        Sales Order Return
+        <small>Detail Sales Order Return</small>
     </h1>
 @endsection
 
@@ -27,7 +27,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Sales Return Detail</h3>
+                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="table responsive">
@@ -42,7 +42,7 @@
                                   <th style="width:10%;">Category</th>
                                   <th style="width:10%;">Price/item</th>
                                   <th style="width:10%;">Price</th>
-                                  <th style="width:10%;">Returned Qty</th>
+                                  <th style="width:10%;">Return Qty</th>
                                   <th style="width:10%;">Notes</th>
                                 </tr>
                             </thead>

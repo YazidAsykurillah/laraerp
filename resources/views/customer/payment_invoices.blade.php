@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Sales Invoice Payment
+  Sales Invoice Payment
 @endsection
 
 @section('page_header')
   <h1>
-    Sales Order
-    <small>Create Invoice Payment</small>
+    Sales Invoice Payment
+    <small>Add New Sales Invoice Payment</small>
   </h1>
 @endsection
 
@@ -39,7 +39,7 @@
                 <div class="col-lg-12">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Cash</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div>
                         <div class="box-body">
                             {!! Form::open(['url'=>'customer.store_invoice_payment_cash','role'=>'form','class'=>'form-horizontal','id'=>'store-invoices-payment-customer','method'=>'post']) !!}
@@ -86,6 +86,7 @@
                                 @endif
                                 </div>
                             </div>
+                            <h4>Invoice List</h4>
                             <table class="table table-responsive table-striped table-hover">
                                 <thead>
                                     <tr style="background-color:#3c8dbc;color:white">
@@ -151,7 +152,7 @@
                 <div class="col-lg-12">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Bank Transfer</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div>
                         <div class="box-body">
                             {!! Form::open(['url'=>'customer.store_invoice_payment_bank','role'=>'form','class'=>'form-horizontal','id'=>'store-invoices-payment-supplier','method'=>'post']) !!}
@@ -198,6 +199,7 @@
                                 @endif
                                 </div>
                             </div>
+                            <h4>Invoice List</h4>
                             <table class="table table-responsive table-striped table-hover">
                                 <thead>
                                     <tr style="background-color:#3c8dbc;color:white">
@@ -265,7 +267,7 @@
                 <div class="col-lg-12">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Giro</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div>
                         <div class="box-body">
                             {!! Form::open(['url'=>'customer.store_invoice_payment_giro','role'=>'form','class'=>'form-horizontal','id'=>'store-invoices-payment-supplier','method'=>'post']) !!}
@@ -301,6 +303,7 @@
                                 @endif
                                 </div>
                             </div>
+                            <h4>Invoice List</h4>
                             <table class="table table-responsive table-striped table-hover">
                                 <thead>
                                     <tr style="background-color:#3c8dbc;color:white">

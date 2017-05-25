@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Assets
+  Asset
 @endsection
 
 @section('page_header')
   <h1>
     Asset
-    <small>Create of The Asset </small>
+    <small>Add New Asset</small>
   </h1>
 @endsection
 
@@ -25,7 +25,7 @@
     <div class="col-lg-7">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create New Asset</h3>
+          <h3 class="box-title">Basic Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -137,7 +137,7 @@
                     {!! Form::label('asset_account', 'Asset', ['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-9">
                         <select name="asset_account" id="asset_account" class="form-control">
-                          <option value="">Asset Account</option>
+                          <option value="">Select Asset Account</option>
                           @foreach(list_parent('68') as $as)
                             @if($as->level ==1)
                             <optgroup label="{{ $as->name}}">
@@ -158,7 +158,7 @@
                     {!! Form::label('biaya_penyusutan_account', 'Biaya Penyusutan', ['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-9">
                         <select name="biaya_penyusutan_account" id="biaya_penyusutan_account" class="form-control">
-                          <option value="">Asset Account</option>
+                          <option value="">Select Biaya Penyusutan Account</option>
                           @foreach(list_parent('64') as $as)
                             @if($as->level ==1)
                             <optgroup label="{{ $as->name}}">
@@ -179,7 +179,7 @@
                     {!! Form::label('akumulasi_penyusutan_account', 'Akumulasi Penyusutan', ['class'=>'col-sm-3 control-label']) !!}
                     <div class="col-sm-9">
                         <select name="akumulasi_penyusutan_account" id="akumulasi_penyusutan_account" class="form-control">
-                          <option value="">Asset Account</option>
+                          <option value="">Select Akumulasi Penyusutan Account</option>
                           @foreach(list_parent('55') as $as)
                             @if($as->level ==1)
                             <optgroup label="{{ $as->name}}">

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Create Sales Invoice Payment
+    Sales Invoice Payment
 @endsection
 
 @section('page_header')
     <h1>
-        Sales Order
-        <small>Create Invoice Payment</small>
+        Sales Invoice Payment
+        <small>Add New Sales Invoice Payment</small>
     </h1>
 @endsection
 
@@ -40,7 +40,7 @@
                 <div class="col-lg-7">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Cash</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
@@ -148,7 +148,7 @@
                 <div class="col-lg-7">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Bank Transfer</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentTransfer','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
@@ -248,7 +248,7 @@
                 <div class="col-lg-7">
                     <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Payment Giro</h3>
+                            <h3 class="box-title">Basic Information</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentGiro','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}

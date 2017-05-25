@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Cashs
+    Cash Detail
 @endsection
 
 @section('page_header')
     <h1>
-        Cashs
-        <small>Show Cash</small>
+        Cash
+        <small>Detail Cash</small>
     </h1>
 @endsection
 
@@ -15,8 +15,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{ URL::to('cash') }}"><i class="fa fa-dashboard"></i> Cash</a></li>
-        <li><a href="{{ URL::to('cash/'.$cash->id) }}"><i class="fa fa-dashboard"></i> {{ $cash->code }}</a></li>
-        <li class="active"><i></i>Detail</li>
+        <li class="active"><i></i>{{ $cash->code }}</li>
     </ol>
 @endsection
 
@@ -25,7 +24,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Cash Details</h3>
+                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <table class="table">

@@ -6,8 +6,8 @@
 
 @section('page_header')
     <h1>
-        Sales Order
-        <small>Create sales order return </small>
+        Sales Order Return
+        <small>Add New Sales Order Return</small>
     </h1>
 @endsection
 
@@ -26,7 +26,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Create Sales Order Return</h3>
+                    <h3 class="box-title">Basic Information</h3>
                 </div><!-- /.box header -->
                 <div class="box-body table-responsive" style="height:500px">
                     {!! Form::open(['route'=>'sales-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-return']) !!}
@@ -38,11 +38,11 @@
                                 <th style="width:15%;">Code</th>
                                 <th style="width:10%;">Description</th>
                                 <th style="width:10%;">Unit</th>
-                                <th style="width:5%;">Quantity</th>
+                                <th style="width:5%;">Qty</th>
                                 <th style="width:15%;">Category</th>
                                 <th style="width:5%;">Price/item</th>
                                 <th style="width:5%;">Price</th>
-                                <th style="width:10%;">Returned Qty</th>
+                                <th style="width:10%;">Return Qty</th>
                                 <th style="width:10%;">Notes</th>
                             </tr>
                         </thead>

@@ -147,7 +147,7 @@ class BiayaOperasiController extends Controller
     public function show($id)
     {
         $trans_chart_account = TransactionChartAccount::findOrFail($id);
-        return view('biaya_operasi.show')
+        return view('biaya_operasi.show_new')
             ->with('trans_chart_account',$trans_chart_account);
     }
 
@@ -173,7 +173,7 @@ class BiayaOperasiController extends Controller
                 $sub = $key->sub_chart_account_id;
             }
             $sub_chart_name = SubChartAccount::findOrFail($sub);
-            return view('biaya_operasi.edit')
+            return view('biaya_operasi.edit_new')
                 ->with('trans_chart_account',$trans_chart_account)
                 ->with('cash_bank_account',$sub)
                 ->with('cash',$cashs)

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Banks
+  Bank
 @endsection
 
 @section('page_header')
   <h1>
-    Banks
-    <small>List of The Banks </small>
+    Bank
+    <small>Bank List</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('bank') }}"><i class="fa fa-dashboard"></i> Banks</a></li>
+    <li><a href="{{ URL::to('bank') }}"><i class="fa fa-dashboard"></i> Bank</a></li>
     <li class="active"><i></i>Index</li>
   </ol>
 @endsection

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  {{ $sales_order_invoice->code }}
+  Sales Order Invoice
 @endsection
 
 @section('page_header')
   <h1>
-    Sales Order
-    <small> Invoice Detail </small>
+    Sales Order Invoice
+    <small>Detail Sales Order Invoice</small>
   </h1>
 @endsection
 
@@ -16,7 +16,7 @@
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('sales-order') }}"><i class="fa fa-dashboard"></i> Sales Order</a></li>
     <li><a href="{{ URL::to('sales-order/'.$sales_order_invoice->sales_order->id.'') }}"><i class="fa fa-dashboard"></i>{{ $sales_order_invoice->sales_order->code }}</a></li>
-    <li>Invoice</li>
+    <li><a href="{{ URL::to('sales-order-invoice') }}">Invoice</a></li>
     <li class="active">{{ $sales_order_invoice->code }}</li>
   </ol>
 @endsection

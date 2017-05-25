@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Purchase Order
-    <small>Create purchase order return </small>
+    Purchase Order Return
+    <small>Add New Purchase Order Return</small>
   </h1>
 @endsection
 
@@ -17,7 +17,7 @@
     <li><a href="{{ URL::to('purchase-order') }}"><i class="fa fa-cart-arrow-down"></i> Purchase Order</a></li>
     <li><a href="{{ URL::to('purchase-order/'.$purchase_order->id) }}">{{ $purchase_order->code }}</a></li>
     <li><a href="{{ URL::to('purchase-return') }}"></i>Return</a></li>
-    <li class="active"><i></i>Create</li>
+    <li class="active"><i></i> Create</li>
   </ol>
 @endsection
 
@@ -26,7 +26,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create Purchase Order Return</h3>
+          <h3 class="box-title">Basic Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           {!! Form::open(['route'=>'purchase-return.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-purchase-return']) !!}
@@ -38,10 +38,10 @@
                   <th style="width:15%;">Code</th>
                   <th style="width:10%;">Description</th>
                   <th style="width:10%;">Unit</th>
-                  <th style="width:5%;">Quantity</th>
+                  <th style="width:5%;">Qty</th>
                   <th style="width:15%;">Category</th>
                   <th style="width:10%;">Price</th>
-                  <th style="width:10%;">Returned Qty</th>
+                  <th style="width:10%;">Return Qty</th>
                   <th style="width:10%;">Notes</th>
               </tr>
             </thead>

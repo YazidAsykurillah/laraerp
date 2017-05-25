@@ -28,6 +28,7 @@ class StoreAssetRequest extends Request
             'name'=>'required',
             'date_purchase'=>'required',
             'amount'=>'required',
+            'residual_value'=>'required',
             'periode'=>'required|integer',
             'asset_account'=>'required',
             'biaya_penyusutan_account'=>'required',

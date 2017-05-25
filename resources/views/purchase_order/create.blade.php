@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Purchase Order
+  Purchase Order
 @endsection
 
 @section('page_header')
   <h1>
     Purchase Order
-    <small>Create Purchase Order</small>
+    <small>Add New Purchase Order</small>
   </h1>
 @endsection
 
@@ -26,9 +26,9 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Products Added</h3>
+          <h3 class="box-title">Product Added</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
-            <i class="fa fa-list"></i>&nbsp;Select Products
+            <i class="fa fa-list"></i>&nbsp;Select Product
           </a>
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -119,7 +119,7 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-display-productsLabel">Products list</h4>
+          <h4 class="modal-title" id="modal-display-productsLabel">Product list</h4>
         </div>
         <div class="modal-body">
           <div class="table-responsive">
