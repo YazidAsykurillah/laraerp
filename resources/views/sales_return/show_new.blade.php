@@ -1,14 +1,13 @@
-<<<<<<< HEAD
 @extends('layouts.app')
 
 @section('page_title')
-    Sales Order Return Detail
+    Sales Order return
 @endsection
 
 @section('page_header')
     <h1>
-        Sales Order Return
-        <small>Detail Sales Order Return</small>
+        Sales order
+        <small>Sales Return Detail</small>
     </h1>
 @endsection
 
@@ -28,7 +27,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
+                    <h3 class="box-title">Sales Return Detail</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="table responsive">
@@ -43,7 +42,7 @@
                                   <th style="width:10%;">Category</th>
                                   <th style="width:10%;">Price/item</th>
                                   <th style="width:10%;">Price</th>
-                                  <th style="width:10%;">Return Qty</th>
+                                  <th style="width:10%;">Returned Qty</th>
                                   <th style="width:10%;">Notes</th>
                                 </tr>
                             </thead>
@@ -59,6 +58,30 @@
                                     <td>{{ $sales_return->product->main_product->category->name }}</td>
                                     <td class="salesed_price_per_item">
                                       {{ number_format(\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price_per_unit')) }}
+                                      <?php
+                                      $sum_inventory_cost_first = \DB::table('transaction_chart_accounts')
+                                                                  ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                                  ->where('sub_chart_accounts.name','=','PERSEDIAAN '.$sales_return->product->main_product->family->name)
+                                                                  ->where('transaction_chart_accounts.type','=','masuk')
+                                                                  ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                                  ->sum('transaction_chart_accounts.amount');
+                                      $sum_price_purchase = \DB::table('product_purchase_order')
+                                                            ->join('products','product_purchase_order.product_id','=','products.id')
+                                                            ->join('main_products','products.main_product_id','=','main_products.id')
+                                                            ->where('main_products.family_id','=',$sales_return->product->main_product->family->id)
+                                                            ->sum('price');
+                                      $sum_inventory_quantity_first = \DB::table('transaction_chart_accounts')
+                                                                  ->join('sub_chart_accounts','transaction_chart_accounts.sub_chart_account_id','=','sub_chart_accounts.id')
+                                                                  ->where('sub_chart_accounts.name','=','PERSEDIAAN '.$sales_return->product->main_product->family->name)
+                                                                  ->where('transaction_chart_accounts.type','=','masuk')
+                                                                  ->where('transaction_chart_accounts.description','=','SALDO AWAL')
+                                                                  ->sum('transaction_chart_accounts.memo');
+                                      $sum_qty_purchase = \DB::table('product_purchase_order')
+                                                            ->join('products','product_purchase_order.product_id','=','products.id')
+                                                            ->join('main_products','products.main_product_id','=','main_products.id')
+                                                            ->where('main_products.family_id','=',$sales_return->product->main_product->family->id)
+                                                            ->sum('quantity');
+                                      ?>
                                     </td>
                                     <td>
                                       {{ number_format(\DB::table('product_sales_order')->select('price')->where('product_id',$sales_return->product_id)->where('sales_order_id',$sales_return->sales_order_id)->value('price')) }}
@@ -160,7 +183,8 @@
                 <i class="fa fa-info-circle"></i>&nbsp;The product will be re-added to the inventory
               </p>
               <input type="hidden" id="id_to_be_resent" name="id_to_be_resent">
-              <input type="hidden" id="id_sales_return_price_per_unit" name="sales_return_price_per_unit_to_complete">
+              <input type="hidden" id="id_sales_return_price_per_unit" name="sales_return_price_per_unit_to_complete" value="{{ ($sum_inventory_cost_first+$sum_price_purchase)/($sum_inventory_quantity_first+$sum_qty_purchase) }}">
+              <input type="hidden" id="id_sales_return_price_per_unit_sales" name="sales_return_price_per_unit_sales">
               <input type="hidden" id="id_sales_return_quantity" name="sales_return_quantity_to_complete">
               <input type="hidden" name="sales_order_invoice_id_to_complete" value="{{ $sales_return->sales_order->sales_order_invoice->id}}">
               <select name="inventory_account" id="inventory_account" class="col-md-12" style="display:none">
@@ -174,6 +198,13 @@
                   @foreach(list_parent('63') as $cost_goods_account)
                     @if($cost_goods_account->name == 'HARGA POKOK PENJUALAN'.' '.$sales_return->product->main_product->family->name)
                     <option value="{{ $cost_goods_account->id}}">{{ $cost_goods_account->account_number }}&nbsp;&nbsp;{{ $cost_goods_account->name}}</option>
+                    @endif
+                  @endforeach
+              </select>
+              <select name="sales_return_account" id="sales_return_account" class="col-md-12" style="display:none">
+                  @foreach(list_parent('61') as $sales_return)
+                    @if($sales_return->name == 'RETURN PENJUALAN'.' '.$sales_return->product->main_product->family->name)
+                    <option value="{{ $sales_return->id}}">{{ $sales_return->account_number }}&nbsp;&nbsp;{{ $sales_return->name}}</option>
                     @endif
                   @endforeach
               </select>
@@ -205,12 +236,10 @@
     $('#btn-resent-sales-return').on('click', function (e) {
       var id = $(this).attr('data-id');
       $('#id_to_be_resent').val(id);
-      $('#id_sales_return_price_per_unit').val($('.salesed_price_per_item').text().replace(/,/gi,''));
+      $('#id_sales_return_price_per_unit_sales').val($('.salesed_price_per_item').text().replace(/,/gi,''));
       $('#id_sales_return_quantity').val($('.returned_qty').text());
       $('#modal-resent-sales-return').modal('show');
     });
 </script>
 
 @endsection
-=======
->>>>>>> 53102e2539dfa918be12406f43d63d79a92a5b52

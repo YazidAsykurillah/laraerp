@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @extends('layouts.app')
 
 @section('page_title')
@@ -7,8 +6,8 @@
 
 @section('page_header')
     <h1>
-        Sales Order Return
-        <small>Add New Sales Order Return</small>
+        Sales Order
+        <small>Create sales order return </small>
     </h1>
 @endsection
 
@@ -27,7 +26,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Basic Information</h3>
+                    <h3 class="box-title">Create Sales Order Return</h3>
                 </div><!-- /.box header -->
                 <div class="box-body table-responsive" style="height:500px">
                     {!! Form::open(['route'=>'sales-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-sales-order-return']) !!}
@@ -39,11 +38,11 @@
                                 <th style="width:15%;">Code</th>
                                 <th style="width:10%;">Description</th>
                                 <th style="width:10%;">Unit</th>
-                                <th style="width:5%;">Qty</th>
+                                <th style="width:5%;">Quantity</th>
                                 <th style="width:15%;">Category</th>
                                 <th style="width:5%;">Price/item</th>
                                 <th style="width:5%;">Price</th>
-                                <th style="width:10%;">Return Qty</th>
+                                <th style="width:10%;">Returned Qty</th>
                                 <th style="width:10%;">Notes</th>
                             </tr>
                         </thead>
@@ -109,6 +108,7 @@
                                           <input type="hidden" name="child_product_id[]" value="{{ $or['product_id'] }}" class="child_product_id" disabled/>
                                           {{ Form::hidden('main_product_id_return[]',$row['main_product_id'],['class'=>'main_product_id_return form-control','disabled']) }}
                                           {{ Form::hidden('amount_return_per_unit[]',null,['class'=>'price_per_unit form-control','disabled']) }}
+                                          <input type="hidden" name="parent_sum_inventory_cost[]" value="{{ ($row['sum_inventory_cost_first']+$row['sum_price_purchase'])/($row['sum_inventory_quantity_first']+$row['sum_qty_purchase']) }}"/>
                                       </td>
                                       <td>{{ $or['code'] }} </td>
                                       <td>{{ $or['description'] }} </td>
@@ -245,6 +245,3 @@
     });
 </script>
 @endsection
-=======
-dsds
->>>>>>> 53102e2539dfa918be12406f43d63d79a92a5b52
