@@ -297,7 +297,10 @@ class DatatablesController extends Controller
             })
             ->editColumn('invoice', function($purchase_orders){
                 if(count($purchase_orders->purchase_order_invoice) == 1){
-                    return 'Available';
+                    $btn_inv  = '<a href="'.url('purchase-order-invoice/'.$purchase_orders->purchase_order_invoice->purchase_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
+                    $btn_inv .= $purchase_orders->purchase_order_invoice->code;
+                    $btn_inv .= '</a>&nbsp;';
+                    return 'Available'.' '.$btn_inv;
                 }else{
                     return 'Unavailable';
                 }
@@ -351,6 +354,12 @@ class DatatablesController extends Controller
             ]
         );
         $data_purchase_order_invoices = Datatables::of($purchase_order_invoices)
+            ->editColumn('code', function($purchase_order_invoices){
+                $btn_pur  = '<a href="'.url('purchase-order/'.$purchase_order_invoices->purchase_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the purchase order detail">';
+                $btn_pur .= $purchase_order_invoices->purchase_order->code;
+                $btn_pur .= '</a>&nbsp;';
+                return $purchase_order_invoices->code.'<br>'.$btn_pur;
+            })
             ->editColumn('bill_price', function($purchase_order_invoices){
                 return number_format($purchase_order_invoices->bill_price);
             })
@@ -406,7 +415,10 @@ class DatatablesController extends Controller
         );
         $data_purchase_returns = Datatables::of($purchase_returns)
             ->editColumn('purchase_order_id', function($purchase_returns){
-                return $purchase_returns->purchase_order->code;
+                $btn_inv  = '<a href="'.url('purchase-order/'.$purchase_returns->purchase_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the purchase order detail">';
+                $btn_inv .= $purchase_returns->purchase_order->code;
+                $btn_inv .= '</a>&nbsp;';
+                return $btn_inv;
             })
             ->editColumn('product_id', function($purchase_returns){
                 return $purchase_returns->product->name;
@@ -519,7 +531,10 @@ class DatatablesController extends Controller
             })
             ->editColumn('invoice', function($sales_orders){
                 if(count($sales_orders->sales_order_invoice) == 1){
-                    return 'Available';
+                    $btn_inv  = '<a href="'.url('sales-order-invoice/'.$sales_orders->sales_order_invoice->sales_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
+                    $btn_inv .= $sales_orders->sales_order_invoice->code;
+                    $btn_inv .= '</a>&nbsp;';
+                    return 'Available'.' '.$btn_inv;
                 }else{
                     return 'Unavailable';
                 }
@@ -572,6 +587,12 @@ class DatatablesController extends Controller
             ]
         );
         $data_sales_order_invoices = Datatables::of($sales_order_invoices)
+            ->editColumn('code', function($sales_order_invoices){
+                $btn_inv  = '<a href="'.url('sales-order/'.$sales_order_invoices->sales_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the sales order detail">';
+                $btn_inv .= $sales_order_invoices->sales_order->code;
+                $btn_inv .= '</a>&nbsp;';
+                return $sales_order_invoices->code.' '.$btn_inv;
+            })
             ->editColumn('sales_order_id', function($sales_order_invoices){
                 return $sales_order_invoices->sales_order->code;
             })
@@ -628,7 +649,10 @@ class DatatablesController extends Controller
         );
         $data_sales_returns = Datatables::of($sales_returns)
             ->editColumn('sales_order_id', function($sales_returns){
-                return $sales_returns->sales_order->code;
+                $btn_inv  = '<a href="'.url('sales-order/'.$sales_returns->sales_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the sales order detail">';
+                $btn_inv .= $sales_returns->sales_order->code;
+                $btn_inv .= '</a>&nbsp;';
+                return $btn_inv;
             })
             ->editColumn('product_id', function($sales_returns){
                 return $sales_returns->product->name;
