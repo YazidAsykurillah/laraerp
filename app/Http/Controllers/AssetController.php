@@ -216,7 +216,7 @@ class AssetController extends Controller
         $asset = Asset::findOrFail($request->asset_id);
         $asset->delete();
 
-        \DB::table('transaction_chart_accounts')->where('reference',$request->asset_id)->delete();
+        \DB::table('transaction_chart_accounts')->where('reference',$request->asset_id)->where('description',$request->asset_description)->delete();
 
         return redirect('asset')
           ->with('successMessage',"Asset $asset->name has been deleted");

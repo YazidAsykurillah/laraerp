@@ -82,6 +82,7 @@
             <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
           </p>
           <input type="hidden" id="asset_id" name="asset_id">
+          <input type="hidden" id="asset_description" name="asset_description">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -119,6 +120,7 @@
       var id = $(this).attr('data-id');
       var name = $(this).attr('data-text');
       $('#asset_id').val(id);
+      $('#asset_description').val(name);
       $('#asset-name-to-delete').text(name);
       $('#modal-delete-asset').modal('show');
     });

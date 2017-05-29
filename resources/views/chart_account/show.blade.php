@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Chart Account
+    Chart Account Detail
 @endsection
 
 @section('page_header')
     <h1>
-        Chart Account Detail
-        <small>{{ $chart_account->name}} </small>
+        Chart Account
+        <small>Detail Chart Account</small>
     </h1>
 @endsection
 
@@ -51,10 +51,11 @@
 
                 </div><!-- /.box-footer -->
             </div>
+            <H3>Add New Sub Chart Account</H3>
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Add New Parent/Child Account
+                        Basic Information
                     </h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -106,7 +107,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group{{ $errors->has('saldo_awal') ? ' has-error' : ''}}">
+                    <div class="form-group{{ $errors->has('saldo_awal') ? ' has-error' : ''}}" id="saldo_awal_create" style="display:none">
                         {!! Form::label('saldo_awal','Saldo Awal',['class'=>'col-sm-3 control-label']) !!}
                         <div class="col-sm-9">
                             {!! Form::text('saldo_awal',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal']) !!}
@@ -164,14 +165,14 @@
                                     <td> {{ $key->name }}</td>
                                     <td> {{ $key->account_number }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}" data-created-at="{{ $key->created_at }}">
+                                        <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}" data-created-at="{{ $key->created_at }}" data-level="{{ $key->level }}" title="Click to this detail">
                                             <i class="fa fa-external-link-square"></i>
                                         </button>&nbsp;
-                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}">
+                                        <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" data-account-number="{{ $key->account_number }}" data-saldo="{{ number_format($key->saldo_awal) }}" data-level="{{ $key->level }}" title="Click to edit this sub chart account">
                                             <i class="fa fa-edit"></i>
                                         </button>&nbsp;
                                         @if(\Auth::user()->can('delete-chart-account-module'))
-                                          <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}">
+                                          <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $key->id }}" data-text="{{ $key->name }}" title="Click to delete this sub chart account">
                                               <i class="fa fa-trash"></i>
                                           </button>
                                         @endif
@@ -183,14 +184,14 @@
                                         <td style="padding-left:20px">{{ $child->name }}</td>
                                         <td style="padding-left:20px">{{ $child->account_number }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}" data-created-at="{{ $child->created_at }}">
+                                            <button type="button" class="btn btn-info btn-xs btn-view-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}" data-created-at="{{ $child->created_at }}" data-level="{{ $child->level }}" data-parent="{{ \DB::table('sub_chart_accounts')->where('id',$child->parent_id)->value('name') }}" title="Click to this detail">
                                                 <i class="fa fa-external-link-square"></i>
                                             </button>&nbsp;
-                                            <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}">
+                                            <button type="button" class="btn btn-success btn-xs btn-edit-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" data-account-number="{{ $child->account_number }}" data-saldo="{{ number_format($child->saldo_awal) }}" data-level="{{ $child->level }}" data-parent="{{ $child->parent_id }}" title="Click to edit this sub chart account">
                                                 <i class="fa fa-edit"></i>
                                             </button>&nbsp;
                                             @if(\Auth::user()->can('delete-chart-account-module'))
-                                              <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}">
+                                              <button type="button" class="btn btn-danger btn-xs btn-delete-sub-chart-account" data-id="{{ $child->id }}" data-text="{{ $child->name }}" title="Click to delete this sub chart account">
                                                   <i class="fa fa-trash"></i>
                                               </button>
                                             @endif
@@ -244,11 +245,21 @@
                           <td id="view_sub_chart_account_account_number"></td>
                         </tr>
                         <tr>
+                          <td style="width:30%;">Parent/Child</td>
+                          <td>:</td>
+                          <td id="view_sub_chart_account_level"></td>
+                        </tr>
+                        <tr style="display:none" id="parent_tr">
+                          <td style="width:30%;">Parent Name</td>
+                          <td>:</td>
+                          <td id="view_sub_chart_account_parent_name"></td>
+                        </tr>
+                        <tr>
                           <td style="width:30%;">Created At</td>
                           <td>:</td>
                           <td id="view_sub_chart_account_created_at"></td>
                         </tr>
-                        <tr>
+                        <tr style="display:none" id="saldo_awal_tr">
                           <td style="width:30%;">Saldo Awal</td>
                           <td>:</td>
                           <td id="view_sub_chart_account_saldo_awal"></td>
@@ -319,18 +330,16 @@
                       <div class="form-group{{ $errors->has('select_parent') ? 'has-error' : '' }}" style="display:none" id="display_parent_update">
                           {!! Form::label('select_parent','Select Parent',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
-                              <select class="form-control" name="parent_id">
-                                  <option value="0">Select Parent</option>
+                              <select class="form-control" name="parent_id" id="parent_name_id" value="">
                                   @foreach($sub_chart_account as $sub)
                                       @if($sub->level == 1)
-                                      <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                                      <option value="{{ $sub->id }}" id="{{ $sub->id}}">{{ $sub->name }}</option>
                                       @endif
                                   @endforeach
-
                               </select>
                           </div>
                       </div>
-                      <div class="form-group{{ $errors->has('saldo_awal_edit') ? ' has-error' : ''}}">
+                      <div class="form-group{{ $errors->has('saldo_awal_edit') ? ' has-error' : ''}}" id="display_saldo_awal_edit">
                           {!! Form::label('saldo_awal_edit-','Saldo Awal',['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-9">
                               {!! Form::text('saldo_awal_edit',null,['class'=>'form-control','placeholder'=>'Saldo awal of the sub chart account','id'=>'saldo_awal_edit']) !!}
@@ -428,10 +437,25 @@
             var created_at = $(this).attr('data-created-at');
             var id = $(this).attr('data-id');
             var saldoAwal = $(this).attr('data-saldo');
+            var level = $(this).attr('data-level');
+            var parent_child = '';
+            var parentName = $(this).attr('data-parent');
+            if(level == 1)
+            {
+                parent_child = 'Parent';
+                $('#parent_tr').hide();
+                $('#saldo_awal_tr').hide();
+            }else{
+                parent_child = 'Child';
+                $('#parent_tr').show();
+                $('#saldo_awal_tr').show();
+                $('#view_sub_chart_account_parent_name').text(parentName);
+            }
             $('#view_sub_chart_account_name').text(name);
             $('#view_sub_chart_account_account_number').text(account_number);
             $('#view_sub_chart_account_created_at').text(created_at);
             $('#view_sub_chart_account_saldo_awal').text(saldoAwal);
+            $('#view_sub_chart_account_level').text(parent_child);
             $('#sub_chart_account_id_view').val(id);
             $('#modal-view-sub-chart-account').modal('show');
         });
@@ -442,10 +466,22 @@
             var account_number = $(this).attr('data-account-number');
             var id = $(this).attr('data-id');
             var saldoAwal = $(this).attr('data-saldo');
+            var level = $(this).attr('data-level');
+            var parentName = $(this).attr('data-parent');
+            if(level == 1)
+            {
+                $('#display_parent_update').hide();
+                $('#display_saldo_awal_edit').hide();
+            }else{
+                $('#display_parent_update').show();
+                document.getElementById(parentName).selected = true;
+                $('#display_saldo_awal_edit').show();
+            }
             $('#name_view').val(name);
             $('#number_account_view').val(account_number);
-            $('#saldo_awal_view').val(saldoAwal);
+            $('#saldo_awal_edit').val(saldoAwal);
             $('#sub_chart_account_id_view').val(id);
+            $('#level_update').val(level);
             $('#modal-edit-sub-chart-account').modal('show');
         });
 
@@ -454,8 +490,10 @@
             var level = $('#level').val();
             if(level == 2){
                 $('#display_parent').show();
+                $('#saldo_awal_create').show();
             }else{
                 $('#display_parent').hide();
+                $('#saldo_awal_create').hide();
             }
         });
 
@@ -464,8 +502,10 @@
             var level = $('#level_update').val();
             if(level == 2){
                 $('#display_parent_update').show();
+                $('#display_saldo_awal_edit').show();
             }else{
                 $('#display_parent_update').hide();
+                $('#display_saldo_awal_edit').hide();
             }
         });
         //TODO search handler

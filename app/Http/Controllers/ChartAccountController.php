@@ -74,9 +74,11 @@ class ChartAccountController extends Controller
     {
         $chart_account = ChartAccount::findOrFail($id);
         $sub_chart_account = $chart_account->sub_chart_account;
+        $list_parent = SubChartAccount::lists('name','id');
         return view('chart_account.show')
                 ->with('chart_account',$chart_account)
-                ->with('sub_chart_account',$sub_chart_account);
+                ->with('sub_chart_account',$sub_chart_account)
+                ->with('list_parent',$list_parent);
     }
     /**
      * Show the form for editing the specified resource.

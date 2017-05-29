@@ -14,7 +14,7 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="#"><i class="fa fa-dashboard"></i> Role </a></li>
+    <li><a href="{{ URL::to('role') }}"><i class="fa fa-dashboard"></i> Role </a></li>
     <li class="active"><i></i>{{ $role->name }}</li>
   </ol>
 @endsection

@@ -52,12 +52,12 @@
           <span>Inventory</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('product-adjustment') }}"><i class="fa fa-circle-o"></i> Adjustments Products</a></li>
-          <li><a href="{{ url('product-available') }}"><i class="fa fa-circle-o"></i> List Products (Available)</a></li>
-          <li><a href="{{ url('product-all') }}"><i class="fa fa-circle-o"></i> List Products (All)</a></li>
-          <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Products</a></li>
-          <li><a href="{{ url('family') }}"><i class="fa fa-circle-o"></i> Product Family</a></li>
+          <li><a href="{{ url('product-available') }}"><i class="fa fa-circle-o"></i> List Product (Available)</a></li>
+          <li><a href="{{ url('product-all') }}"><i class="fa fa-circle-o"></i> List Product (All)</a></li>
+          <li><a href="{{ url('main-product') }}"><i class="fa fa-circle-o"></i> Product</a></li>
+          <li><a href="{{ url('product-adjustment') }}"><i class="fa fa-circle-o"></i> Product Adjustment</a></li>
           <li><a href="{{ url('category') }}"><i class="fa fa-circle-o"></i> Product Category</a></li>
+          <li><a href="{{ url('family') }}"><i class="fa fa-circle-o"></i> Product Family</a></li>
           <li><a href="{{ url('unit') }}"><i class="fa fa-circle-o"></i> Product Unit</a></li>
           <li><a href="{{ url('stock_balance') }}"><i class="fa fa-circle-o"></i> Stock Balance</a></li>
         </ul>
@@ -73,11 +73,11 @@
           <li><a href="{{ url('cash') }}"><i class="fa fa-circle-o"></i> Cash</a></li>
           <li><a href="{{ url('cash-flow') }}"><i class="fa fa-circle-o"></i> Cash Flow</a></li>
           <li><a href="{{ url('chart-account') }}"><i class="fa fa-circle-o"></i> Chart Account</a></li>
-          <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> Jurnal Umum</a></li>
+          <li><a href="{{ url('biaya-operasi') }}"><i class="fa fa-circle-o"></i> General Ledger</a></li>
           <li><a href="{{ url('ledger') }}"><i class="fa fa-circle-o"></i> Ledger</a></li>
+          <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Debt</a></li>
+          <li><a href="{{ url('sales-piutang') }}"><i class="fa fa-circle-o"></i> List Receivable</a></li>
           <li><a href="{{ url('lost-profit') }}"><i class="fa fa-circle-o"></i> Loss &amp; Profit</a></li>
-          <li><a href="{{ url('purchase-hutang') }}"><i class="fa fa-circle-o"></i> List Hutang</a></li>
-          <li><a href="{{ url('sales-piutang') }}"><i class="fa fa-circle-o"></i> List Piutang</a></li>
           <li><a href="{{ url('neraca') }}"><i class="fa fa-circle-o"></i> Neraca</a></li>
           <li><a href="{{ url('report') }}"><i class="fa fa-circle-o"></i> Report</a></li>
         </ul>
@@ -88,10 +88,10 @@
           <span>Master Data</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Suppliers</a></li>
           <li><a href="{{ url('customer') }}"><i class="fa fa-circle-o"></i> Customer</a></li>
-          <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Terms</a></li>
           <li><a href="{{ url('driver') }}"><i class="fa fa-circle-o"></i> Drivers</a></li>
+          <li><a href="{{ url('invoice-term') }}"><i class="fa fa-circle-o"></i> Invoice Term</a></li>
+          <li><a href="{{ url('supplier') }}"><i class="fa fa-circle-o"></i> Supplier</a></li>
           <li><a href="{{ url('vehicle') }}"><i class="fa fa-circle-o"></i> Vehicle</a></li>
         </ul>
       </li>

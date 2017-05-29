@@ -4,28 +4,20 @@
     Dashboard
 @endsection
 
-@section('page_header')
-  <h1>
-    Dashboard
-    <small>Welcome to the dashboard</small>
-  </h1>
-@endsection
-
-@section('breadcrumb')
-  <ol class="breadcrumb">
-    <li class="active"><a href="{{ URL::to('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-  </ol>
-@endsection
-
 @section('content')
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-12">
             <div class="box">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Bordered Table</h3>
+                  <center><h3 class="box-title">WELCOME TO PT.CATRA TEXTILE RAYA</h3></center>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <table class="table table-bordered">
+                    <center>
+                    <h4>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h4>
+                    <h4>Telp. 021-22522283, 021-22522334</h4>
+                    </center>
+                    <!-- <h1>CATRA<small>TEXTILE</small></h1> -->
+                  <!-- <table class="table table-bordered">
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Task</th>
@@ -72,19 +64,19 @@
                       </td>
                       <td><span class="badge bg-green">90%</span></td>
                     </tr>
-                  </table>
+                  </table> -->
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
-                  <ul class="pagination pagination-sm no-margin pull-right">
+                  <!-- <ul class="pagination pagination-sm no-margin pull-right">
                     <li><a href="#">&laquo;</a></li>
                     <li><a href="#">1</a></li>
                     <li><a href="#">2</a></li>
                     <li><a href="#">3</a></li>
                     <li><a href="#">&raquo;</a></li>
-                  </ul>
+                  </ul> -->
                 </div>
             </div><!-- /.box -->
-        
+
         </div>
     </div>
 @endsection

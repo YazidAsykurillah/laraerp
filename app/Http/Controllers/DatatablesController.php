@@ -1069,7 +1069,7 @@ class DatatablesController extends Controller
             $actions_html .='</a>&nbsp;';
             if(\Auth::user()->can('delete-chart-account-module'))
             {
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-chart-account" data-id="'.$chart_accounts->id.'" data-text="'.$chart_accounts->name.'">';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-chart-account" data-id="'.$chart_accounts->id.'" data-text="'.$chart_accounts->name.'" title="Click to delete this chart account">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
             }

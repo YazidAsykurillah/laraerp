@@ -33,7 +33,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        if(\Auth::user()->can('create-role-module'))
+        {
+            return view('role.create');
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -44,7 +49,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = New Role;
+        $role->code = $request->code;
+        $role->name = $request->name;
+        $role->label = $request->description;
+        $role->save();
+        return redirect('role')
+            ->with('successMessage','Role has been added');
     }
 
     /**
@@ -75,7 +86,14 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(\Auth::user()->can('edit-role-module'))
+        {
+            $role = Role::findORFail($id);
+            return view('role.edit')
+                ->with('role',$role);
+        }else{
+            return view('403');
+        }
     }
 
     /**
@@ -87,7 +105,13 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::findORFail($id);
+        $role->code = $request->code;
+        $role->name = $request->name;
+        $role->label = $request->label;
+        $role->save();
+        return redirect('role/'.$id.'/edit')
+            ->with('successMessage','Role has been updated');
     }
 
     /**
@@ -96,9 +120,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $role = Role::findORFail($request->role_id);
+        $role->delete();
+        return redirect('role')
+            ->with('successMessage','Role has been deleted');
     }
 
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Chart Accounts
+    Chart Account
 @endsection
 
 @section('page_header')

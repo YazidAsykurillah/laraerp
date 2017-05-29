@@ -5,8 +5,8 @@
 @endsection
 
 @section('page_header')
-    <h1>Edit Chart Account
-        <small>Edit Chart Account Page</small>
+    <h1>Chart Account
+        <small>Edit Chart Account</small>
     </h1>
 @endsection
 
@@ -15,7 +15,7 @@
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{ URL::to('chart-account') }}"><i class="fa fa-dashboard"></i> Chart Account</a></li>
         <li> {{ $chart_account->name }}</li>
-        <li class="active"><i></i>edit</li>
+        <li class="active"><i></i> Edit</li>
     </ol>
 @endsection
 

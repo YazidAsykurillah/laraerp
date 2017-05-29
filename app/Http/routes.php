@@ -240,6 +240,7 @@ Route::resource('customer', 'CustomerController');
 //Users
 	Route::resource('user', 'UserController');
 //Roles
+    Route::post('deleteRole','RoleController@destroy');
 	Route::post('update-role-permission', 'RoleController@updateRolePermission');
 	Route::resource('role', 'RoleController');
 

@@ -6,8 +6,8 @@
 
 @section('page_header')
     <h1>
-        Add New Chart Account
-        <small>Add New Chart Account Page</small>
+        Chart Account
+        <small>Add New Chart Account</small>
     </h1>
 @endsection
 
@@ -15,7 +15,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{ URL::to('chart-account') }}"><i class="fa fa-dashboard"></i> Chart Account</a></li>
-        <li class="active"><i></i>Create</li>
+        <li class="active"><i></i> Create</li>
     </ol>
 @endsection
 
