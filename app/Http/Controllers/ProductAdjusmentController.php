@@ -44,12 +44,12 @@ class ProductAdjusmentController extends Controller
           if(count($adjust_product) == 0)
           {
               $count_adj = count($adjust_product)+1;
-              $code_adj = 'ADJ0'.$count_adj;
+              $code_adj = 'ADJ'.$count_adj;
           }else
           {
-              $count_adj = Adjustment::all()->first()->latest()->value('code');
-              $sub_str = str_replace('ADJ0','',$count_adj)+1;
-              $code_adj = 'ADJ0'.$sub_str;
+              $count_adj = Adjustment::all()->max('id');
+              $sub_str = $count_adj+1;
+              $code_adj = 'ADJ'.$sub_str;
           }
           return view('adjustment.create')
               ->with('adjust_account',$adjust_account)

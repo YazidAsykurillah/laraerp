@@ -45,8 +45,8 @@ class StockBalanceController extends Controller
             $code_fix = '';
             if(count($stock_balance) > 0)
             {
-                $code_stock_balance = StockBalance::all()->first()->latest()->value('code');
-                $sub_str = str_replace('SB0','',$code_stock_balance)+1;
+                $code_stock_balance = StockBalance::all()->max('id');
+                $sub_str = $code_stock_balance+1;
                 $code_fix = 'SB0'.$sub_str;
             }else
             {

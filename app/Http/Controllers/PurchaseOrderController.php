@@ -78,13 +78,24 @@ class PurchaseOrderController extends Controller
     public function store(StorePurchaseOrderRequest $request)
     {
         if($request->ajax()){
-
-            $max_po_id = \DB::table('purchase_orders')->max('id');
-            $next_po_id = $max_po_id+1;
-            $code = 'PO-'.$next_po_id;
+            $po = PurchaseOrder::all();
+            $code_fix = '';
+            if(count($po) > 0)
+            {
+                $code_po = PurchaseOrder::all()->max('id');
+                $sub_str = $code_po+1;
+                $code_fix = 'PO-'.$sub_str;
+            }else
+            {
+                $code_po = count($po)+1;
+                $code_fix = 'PO-'.$code_po;
+            }
+            // $max_po_id = \DB::table('purchase_orders')->max('id');
+            // $next_po_id = $max_po_id+1;
+            // $code = 'PO-'.$next_po_id;
 
             $data = [
-                'code'=>$code,
+                'code'=>$code_fix,
                 'supplier_id'=>$request->supplier_id,
                 'notes'=>$request->notes,
                 'creator'=>\Auth::user()->id

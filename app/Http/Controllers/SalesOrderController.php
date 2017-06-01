@@ -45,6 +45,18 @@ class SalesOrderController extends Controller
             $customer_options = Customer::lists('name', 'id');
             $driver_options = Driver::lists('name','id');
             $vehicle_options = Vehicle::lists('number_of_vehicle','id');
+            $so = SalesOrder::all();
+            $code_fix = '';
+            if(count($so) > 0)
+            {
+                $code_so = SalesOrder::all()->max('id');
+                $sub_str = $code_so+1;
+                $code_fix = 'SO-'.$sub_str;
+            }else
+            {
+                $code_so = count($so)+1;
+                $code_fix = 'SO-'.$code_so;
+            }
             $sales_order = \DB::table('sales_orders')->latest()->first();
             $so = SalesOrder::all();
             $count_so = count($so)+1;
@@ -54,7 +66,7 @@ class SalesOrderController extends Controller
                 ->with('driver_options',$driver_options)
                 ->with('vehicle_options',$vehicle_options)
                 ->with('sales_order',$sales_order)
-                ->with('code_so',$code_so);
+                ->with('code_so',$code_fix);
         }else{
             return view('403');
         }

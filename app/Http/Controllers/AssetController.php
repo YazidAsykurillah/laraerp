@@ -35,11 +35,20 @@ class AssetController extends Controller
     {
       if(\Auth::user()->can('create-asset-module'))
       {
-        $count_asset = Asset::all();
-        $c_asset = count($count_asset)+1;
-        $asset = 'AST-0'.$c_asset;
+          $asset = Asset::all();
+          $code_fix = '';
+          if(count($asset) > 0)
+          {
+              $code_asset = Asset::all()->max('id');
+              $sub_str = $code_asset+1;
+              $code_fix = 'AST-'.$sub_str;
+          }else
+          {
+              $code_asset = count($asset)+1;
+              $code_fix = 'AST-'.$code_asset;
+          }
         return view('asset.create')
-          ->with('asset',$asset);
+          ->with('asset',$code_fix);
       }else{
         return view('403');
       }

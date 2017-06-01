@@ -297,7 +297,7 @@ class DatatablesController extends Controller
             })
             ->editColumn('invoice', function($purchase_orders){
                 if(count($purchase_orders->purchase_order_invoice) == 1){
-                    $btn_inv  = '<a href="'.url('purchase-order-invoice/'.$purchase_orders->purchase_order_invoice->purchase_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
+                    $btn_inv  = '<a href="'.url('purchase-order-invoice/'.$purchase_orders->purchase_order_invoice->id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
                     $btn_inv .= $purchase_orders->purchase_order_invoice->code;
                     $btn_inv .= '</a>&nbsp;';
                     return 'Available'.' '.$btn_inv;
@@ -1176,7 +1176,8 @@ class DatatablesController extends Controller
                     return number_format($assets->amount);
             })
             ->editColumn('periode', function($assets){
-                    return $assets->periode.' Bulan';
+                    $thn = $assets->periode/12;
+                    return $assets->periode.' Bulan '."($thn Tahun)";
             })
             ->addColumn('actions', function($assets){
                     $actions_html ='<a href="'.url('asset/'.$assets->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';

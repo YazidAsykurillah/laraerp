@@ -40,8 +40,8 @@ class BankController extends Controller
             $code_fix = '';
             if(count($bank) > 0)
             {
-                $code_bank = Bank::all()->first()->latest()->value('code');
-                $sub_str = str_replace('BN0','',$code_bank)+1;
+                $code_bank = Bank::all()->max('id');
+                $sub_str = $code_bank+1;
                 $code_fix = 'BN0'.$sub_str;
             }else
             {

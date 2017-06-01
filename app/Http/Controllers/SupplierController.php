@@ -46,8 +46,8 @@ class SupplierController extends Controller
             $code_fix = '';
             if(count($supp) > 0)
             {
-                $code_supp = Supplier::all()->first()->latest()->value('code');
-                $sub_str = str_replace('SUP0','',$code_supp)+1;
+                $code_supp = Supplier::all()->max('id');
+                $sub_str = $code_supp+1;
                 $code_fix = 'SUP0'.$sub_str;
             }else
             {

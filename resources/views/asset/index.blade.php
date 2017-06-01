@@ -36,9 +36,9 @@
                 <th style="width:5%;">#</th>
                 <th style="width:15%;">Code</th>
                 <th style="width:20%;">Name</th>
-                <th style="width:20%;">Date Purchase</th>
+                <th style="width:15%;">Purchase</th>
                 <th style="width:15%;">Amount</th>
-                <th style="width:10%;">Periode</th>
+                <th style="width:15%;">Periode</th>
                 <th style="width:15%;text-align:center;">Actions</th>
               </tr>
             </thead>
@@ -47,9 +47,9 @@
                   <th style="width:5%;"></th>
                   <th style="width:15%;">Code</th>
                   <th style="width:20%;">Name</th>
-                  <th style="width:20%;">Date Purchase</th>
+                  <th style="width:15%;">Purchase</th>
                   <th style="width:15%;">Amount</th>
-                  <th style="width:10%;">Periode</th>
+                  <th style="width:15%;">Periode</th>
                   <th style="width:15%;text-align:center;"></th>
               </tr>
             </thead>

@@ -43,13 +43,13 @@ class DriverController extends Controller
             $code_fix = '';
             if(count($driver) > 0)
             {
-                $code_driver = Driver::all()->first()->latest()->value('code');
-                $sub_str = str_replace('DRV0','',$code_driver)+1;
-                $code_fix = 'DRV0'.$sub_str;
+                $code_driver = Driver::all()->max('id');
+                $sub_str = $code_driver+1;
+                $code_fix = 'DRV-'.$sub_str;
             }else
             {
                 $code_driver = count($driver)+1;
-                $code_fix = 'SUP0'.$code_driver;
+                $code_fix = 'DRV-'.$code_driver;
             }
             return view('driver.create')
                 ->with('code_fix',$code_fix);

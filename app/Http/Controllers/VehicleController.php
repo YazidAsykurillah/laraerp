@@ -39,8 +39,8 @@ class VehicleController extends Controller
             $code_fix = '';
             if(count($vehicle) > 0)
             {
-                $code_vehicle = Vehicle::all()->first()->latest()->value('code');
-                $sub_str = str_replace('VHC0','',$code_vehicle)+1;
+                $code_vehicle = Vehicle::all()->max('id');
+                $sub_str = $code_vehicle+1;
                 $code_fix = 'VHC0'.$sub_str;
             }else
             {

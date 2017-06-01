@@ -41,8 +41,8 @@ class FamilyController extends Controller
             $code_fix = '';
             if(count($family) > 0)
             {
-                $code_family = Family::all()->first()->latest()->value('code');
-                $sub_str = str_replace('FM0','',$code_family)+1;
+                $code_family = Family::all()->max('id');
+                $sub_str = $code_family+1;
                 $code_fix = 'FM0'.$sub_str;
             }else
             {

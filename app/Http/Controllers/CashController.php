@@ -40,8 +40,8 @@ class CashController extends Controller
             $code_fix = '';
             if(count($cash) > 0)
             {
-                $code_cash = Cash::all()->first()->latest()->value('code');
-                $sub_str = str_replace('CAS0','',$code_cash)+1;
+                $code_cash = Cash::all()->max('id');
+                $sub_str = $code_cash+1;
                 $code_fix = 'CAS0'.$sub_str;
             }else
             {

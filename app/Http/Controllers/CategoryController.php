@@ -42,8 +42,8 @@ class CategoryController extends Controller
             $code_fix = '';
             if(count($category) > 0)
             {
-                $code_category = Category::all()->first()->latest()->value('code');
-                $sub_str = str_replace('CAT0','',$code_category)+1;
+                $code_category = Category::all()->max('id');
+                $sub_str = $code_category+1;
                 $code_fix = 'CAT0'.$sub_str;
             }else
             {
