@@ -361,14 +361,16 @@
                                     </tr>
                                     <?php
                                     $sum_cash_bank = 0;
+                                    $sum_cash_bank_awal = 0;
                                     $sum_piutang = 0;
                                     $sum_inventory = 0;
+                                    $sum_inventory_awal = 0;
                                     $sum_aktiva_lancar_lainnya = 0;
                                     $sum_nilai_history = 0;
                                     $sum_akumulasi_penyusutan = 0;
                                     ?>
                                     @foreach($chart_account as $cash_bank)
-                                        <?php $sum=0;?>
+                                        <?php $sum=0; $sum_cash_bank_saldo_awal = 0;?>
                                         @if($cash_bank->id == 51)
                                         <tr>
                                             <td></td>
@@ -393,6 +395,7 @@
                                                     <td>
                                                         {{ number_format(list_transaction_cash_bank($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
                                                         <?php $sum += list_transaction_cash_bank($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59');?>
+                                                        <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,'','m','','SALDO AWAL');?>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -401,7 +404,7 @@
                                         <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $cash_bank->name }}</td>
-                                            <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_cash_bank = $sum; ?></td>
+                                            <td style="border-top:1px solid black">{{ number_format($sum) }}<?php $sum_cash_bank = $sum; $sum_cash_bank_awal = $sum_cash_bank_saldo_awal; ?></td>
                                         </tr>
                                         @endif
                                     @endforeach
@@ -444,7 +447,7 @@
                                         @endif
                                     @endforeach
                                     @foreach($chart_account as $persediaan)
-                                        <?php $sum = 0; ?>
+                                        <?php $sum = 0; $sum_inventory_saldo_awal = 0;?>
                                         @if($persediaan->id == 52)
                                         <tr>
                                             <td></td>
@@ -469,6 +472,7 @@
                                                     <td>
                                                         {{ number_format(list_transaction_inventory($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
                                                         <?php $sum += list_transaction_inventory($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
+                                                        <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','m','','SALDO AWAL'); ?>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -477,7 +481,7 @@
                                         <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $persediaan->name }}</td>
-                                            <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_inventory = $sum; ?></td>
+                                            <td style="border-top:1px solid black">{{ number_format($sum) }} <?php $sum_inventory = $sum; $sum_inventory_awal = $sum_inventory_saldo_awal;?></td>
                                         </tr>
                                         @endif
                                     @endforeach
@@ -530,7 +534,7 @@
                                         @foreach(list_parent('68') as $as)
                                             @if($as->level == 1)
                                             <tr>
-                                                <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                                <td style="padding-left:20px;">{{ $as->account_number}}</td>
                                                 <td style="padding-left:20px;">{{ $as->name}}</td>
                                                 <td></td>
                                             </tr>
@@ -728,14 +732,14 @@
                                         @foreach(list_parent('59') as $as)
                                             @if($as->level == 1)
                                             <tr>
-                                                <td style="padding-left:20px;">{{ $sub->account_number}}</td>
+                                                <td style="padding-left:20px;">{{ $as->account_number}}</td>
                                                 <td style="padding-left:20px;">{{ $as->name}}</td>
-                                                    @if(list_transaction_kewajiban_jangka_panjang($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
+                                                    @if(list_transaction_kewajiban_jangka_panjang($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
                                                     <td>0,00</td>
                                                     @else
                                                     <td>
-                                                        {{ number_format(list_transaction_kewajiban_jangka_panjang($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
-                                                        <?php $sum += list_transaction_kewajiban_jangka_panjang($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
+                                                        {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
+                                                        <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
                                                     </td>
                                                     @endif
                                             </tr>
@@ -776,12 +780,29 @@
                                                 <td style="padding-left:20px;">{{ $as->account_number}}</td>
                                                 <td style="padding-left:20px;">{{ $as->name}}</td>
                                                     @if(list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
-                                                    <td>0,00</td>
+                                                      @if($as->name == 'MODAL')
+                                                      <td>
+                                                          {{ number_format($sum_cash_bank_awal+$sum_inventory_awal) }}
+                                                          <?php $sum += $sum_cash_bank_awal+$sum_inventory_awal; ?>
+                                                      </td>
+                                                      @else
+                                                      <td>
+                                                          {{ number_format(list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}.00
+                                                          <?php $sum += list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
+                                                      </td>
+                                                      @endif
                                                     @else
-                                                    <td>
-                                                        {{ number_format(list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}
-                                                        <?php $sum += list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
-                                                    </td>
+                                                      @if($as->name == 'MODAL')
+                                                      <td>
+                                                          {{ number_format($sum_cash_bank_awal+$sum_inventory_awal) }}
+                                                          <?php $sum += $sum_cash_bank_awal+$sum_inventory_awal; ?>
+                                                      </td>
+                                                      @else
+                                                      <td>
+                                                          {{ number_format(list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59')) }}.00
+                                                          <?php $sum += list_transaction_equitas($as->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
+                                                      </td>
+                                                      @endif
                                                     @endif
                                             </tr>
                                             @endif
@@ -810,7 +831,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total Kewajiban dan Equitas</td>
-                                        <td style="border-top:1px solid black">{{ number_format($sum_equitas-$sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang) }}</td>
+                                        <td style="border-top:1px solid black">{{ number_format($sum_equitas+($sum_kewajiban+$sum_kewajiban_lancar_lainnya+$sum_kewajiban_jangka_panjang)) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -832,63 +853,73 @@
                                         <td>Net Income</td>
                                         <td>(From Profit&nbsp;&amp;&nbsp;Loss Statement)</td>
                                         @if($net_laba == 0)
-                                            <td id="data-lost-profit">0.00</td>
+                                            <td id="data-lost-profit" align="right">0.00</td>
                                         @else
-                                            <td id="data-lost-profit">{{ number_format($net_laba) }}</td>
+                                            <td id="data-lost-profit" align="right">{{ number_format($net_laba) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Akumulasi Penyusutan</td>
                                         @if($sum_akumulasi_penyusutan == 0)
-                                            <td id="data-akumulasi-penyusutan">0.00</td>
+                                            <td id="data-akumulasi-penyusutan" align="right">0.00</td>
                                         @else
-                                            <td id="data-akumulasi-penyusutan">{{ number_format($sum_akumulasi_penyusutan) }}</td>
+                                            <td id="data-akumulasi-penyusutan" align="right">{{ number_format($sum_akumulasi_penyusutan) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Income sesudah akumulasi penyusutan</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($net_laba-$sum_akumulasi_penyusutan)}}</td>
+                                        <td style="border-top:1px solid black;" align="right">
+                                          @if($net_laba-$sum_akumulasi_penyusutan == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format($net_laba-$sum_akumulasi_penyusutan)}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Kurang</td>
                                         <td>Akun Hutang</td>
                                         @if($sum_kewajiban == 0)
-                                            <td id="data-akun-hutang">0.00</td>
+                                            <td id="data-akun-hutang" align="right">0.00</td>
                                         @else
-                                            <td id="data-akun-hutang">{{ number_format($sum_kewajiban) }}</td>
+                                            <td id="data-akun-hutang" align="right">{{ number_format($sum_kewajiban) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td>Kurang</td>
                                         <td>Kewajiban Lancar Lainnya</td>
                                         @if($sum_kewajiban_lancar_lainnya == 0)
-                                            <td id="data-kewajiban-lancar-lainnya">0.00</td>
+                                            <td id="data-kewajiban-lancar-lainnya" align="right">0.00</td>
                                         @else
-                                            <td id="data-kewajiban-lancar-lainnya">{{ number_format($sum_kewajiban_lancar_lainnya) }}</td>
+                                            <td id="data-kewajiban-lancar-lainnya" align="right">{{ number_format($sum_kewajiban_lancar_lainnya) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Akun Piutang</td>
                                         @if($sum_piutang == 0)
-                                            <td id="data-akun-piutang">0.00</td>
+                                            <td id="data-akun-piutang" align="right">0.00</td>
                                         @else
-                                            <td id="data-akun-piutang">{{ number_format($sum_piutang) }}</td>
+                                            <td id="data-akun-piutang" align="right">{{ number_format($sum_piutang) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Aset Lancar Lainnya</td>
-                                        <td id="data-aset-lancar-lainnya">0.00</td>
+                                        <td id="data-aset-lancar-lainnya" align="right">0.00</td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Income</td>
-                                        <td style="border-top:1px solid black;">
-                                            {{ number_format((($net_laba-$sum_akumulasi_penyusutan)+($sum_piutang))-($sum_kewajiban+$sum_kewajiban_lancar_lainnya))}}
+                                        <td style="border-top:1px solid black;" align="right">
                                             <?php $sum_net = (($net_laba-$sum_akumulasi_penyusutan)+($sum_piutang))-($sum_kewajiban+$sum_kewajiban_lancar_lainnya); ?>
+                                            @if($sum_net == 0)
+                                              0.00
+                                            @else
+                                              {{ number_format((($net_laba-$sum_akumulasi_penyusutan)+($sum_piutang))-($sum_kewajiban+$sum_kewajiban_lancar_lainnya))}}.00
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -898,15 +929,21 @@
                                         <td>Tambah</td>
                                         <td>Nilai Histori</td>
                                         @if($sum_nilai_history == 0)
-                                            <td id="data-nilai-histori">0.00</td>
+                                            <td id="data-nilai-histori" align="right">0.00</td>
                                         @else
-                                            <td id="data-nilai-histori">{{ number_format($sum_nilai_history) }}</td>
+                                            <td id="data-nilai-histori" align="right">{{ number_format($sum_nilai_history) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Investing</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($sum_nilai_history)}}</td>
+                                        <td style="border-top:1px solid black;" align="right">
+                                          @if($sum_nilai_history == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format($sum_nilai_history)}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">Cash Flow From : Financing</td>
@@ -915,29 +952,41 @@
                                         <td>Kurang</td>
                                         <td>Kewajiban Jangka Panjang</td>
                                         @if($sum_kewajiban_jangka_panjang == 0)
-                                            <td id="data-kewajiban-jangka-panjang">0.00</td>
+                                            <td id="data-kewajiban-jangka-panjang" align="right">0.00</td>
                                         @else
-                                            <td id="data-kewajiban-jangka-panjang">{{ number_format($sum_kewajiban_jangka_panjang) }}</td>
+                                            <td id="data-kewajiban-jangka-panjang" align="right">{{ number_format($sum_kewajiban_jangka_panjang) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td>Tambah</td>
                                         <td>Ekuitas</td>
                                         @if($sum_equitas == 0)
-                                            <td id="data-ekuitas">0.00</td>
+                                            <td id="data-ekuitas" align="right">0.00</td>
                                         @else
-                                            <td id="data-ekuitas">{{ number_format($sum_equitas) }}</td>
+                                            <td id="data-ekuitas" align="right">{{ number_format($sum_equitas) }}.00</td>
                                         @endif
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Financing</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($sum_equitas-$sum_kewajiban_jangka_panjang)}}</td>
+                                        <td style="border-top:1px solid black;" align="right">
+                                          @if($sum_equitas-$sum_kewajiban_jangka_panjang == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format($sum_equitas-$sum_kewajiban_jangka_panjang)}}.00
+                                          @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black;">Net Cash Periode</td>
-                                        <td style="border-top:1px solid black;">{{ number_format($sum_net+($sum_equitas+$sum_nilai_history)-$sum_kewajiban_jangka_panjang)}}</td>
+                                        <td style="border-top:1px solid black;" align="right">
+                                          @if($sum_net+($sum_equitas+$sum_nilai_history)-$sum_kewajiban_jangka_panjang == 0)
+                                            0.00
+                                          @else
+                                            {{ number_format($sum_net+($sum_equitas+$sum_nilai_history)-$sum_kewajiban_jangka_panjang)}}.00
+                                          @endif
+                                          </td>
                                     </tr>
                                 </tbody>
                             </table>

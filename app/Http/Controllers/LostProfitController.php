@@ -23,7 +23,7 @@ class LostProfitController extends Controller
         {
             $chart_account = \DB::table('chart_accounts')->get();
             $sub_chart_account = \DB::table('sub_chart_accounts')->get();
-            return view('lost_profit.index')
+            return view('lost_profit.list')
                     ->with('chart_account',$chart_account);
         }else{
             return view('403');
@@ -105,13 +105,13 @@ class LostProfitController extends Controller
             $year_in = 'y';
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('lost_profit.index')
+                return view('lost_profit.list')
                     ->with('chart_account',$chart_account)
                     ->with('year',$year)
                     ->with('year_in',$year_in);
             }// }else{
             //     $chart_account = \DB::table('chart_accounts')->get();
-            //     return view('neraca.index')
+            //     return view('neraca.list')
             //         ->with('chart_account',$chart_account);
             // }
         }elseif ($sort_by_year == 'm') {
@@ -207,7 +207,7 @@ class LostProfitController extends Controller
             }
             if(true){
                 $chart_account = \DB::table('chart_accounts')->get();
-                return view('lost_profit.index')
+                return view('lost_profit.list')
                     ->with('chart_account',$chart_account)
                     ->with('month_start',$month_start)
                     ->with('year_start',$year_start)
@@ -219,7 +219,7 @@ class LostProfitController extends Controller
             }
         }else{
             $chart_account = \DB::table('chart_accounts')->get();
-            return view('lost_profit.index')
+            return view('lost_profit.list')
                 ->with('chart_account',$chart_account);
         }
     }

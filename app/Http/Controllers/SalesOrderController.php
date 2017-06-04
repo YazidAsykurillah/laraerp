@@ -46,11 +46,15 @@ class SalesOrderController extends Controller
             $driver_options = Driver::lists('name','id');
             $vehicle_options = Vehicle::lists('number_of_vehicle','id');
             $sales_order = \DB::table('sales_orders')->latest()->first();
+            $so = SalesOrder::all();
+            $count_so = count($so)+1;
+            $code_so = 'SO-0'.$count_so;
             return view('sales_order.create')
                 ->with('customer_options', $customer_options)
                 ->with('driver_options',$driver_options)
                 ->with('vehicle_options',$vehicle_options)
-                ->with('sales_order',$sales_order);
+                ->with('sales_order',$sales_order)
+                ->with('code_so',$code_so);
         }else{
             return view('403');
         }

@@ -15,7 +15,11 @@ class BackUpController extends Controller
      */
     public function index()
     {
-        return view('backup.index');
+        if(\Auth::user()->can('backup-module')){
+          return view('backup.index');
+        }else{
+          return view('403');
+        }
     }
 
     /**
@@ -37,7 +41,7 @@ class BackUpController extends Controller
     public function store(Request $request)
     {
         error_reporting(0);
-        $file = date('Ymdhis').'_backup_database'.time().'.sql';
+        $file = 'PT_CATRA_TEXTILE_RAYA_'.date('Ymd').'_backup'.'.sql';
         $this->backup_tables('localhost','root','','db_catra',$file);
         // $return_val = NULL;
         // $output = NULL;

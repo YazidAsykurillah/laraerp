@@ -218,6 +218,24 @@
         }
     }
 
+    function list_transaction_modal($key,$date,$sort,$end,$description)
+    {
+        if($sort == 'y')
+        {
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where([['description',$description]])->sum('amount');
+            if(count($list_transaction_d) == 0){
+                 return $list_transaction_d;
+            }
+            return $list_transaction_d;
+        }elseif ($sort == 'm') {
+            $list_transaction_d = \DB::table('transaction_chart_accounts')->where([['sub_chart_account_id',$key]])->where([['type','masuk']])->where([['description',$description]])->sum('amount');
+            if(count($list_transaction_d) == 0){
+                 return $list_transaction_d;
+            }
+            return $list_transaction_d;
+        }
+    }
+
     function list_transaction_piutang($key,$date,$sort,$end)
     {
         if($sort == 'y')

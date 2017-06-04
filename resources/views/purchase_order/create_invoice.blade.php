@@ -39,12 +39,12 @@
                     <tr style="background-color:#3c8dbc;color:white">
                       <th style="width:15%;">Family</th>
                       <th style="width:20%;">Name</th>
-                      <th style="width:20%;">Description</th>
+                      <th style="width:15%;">Description</th>
                       <th style="width:10%;">Unit</th>
                       <th style="width:5%;">Qty</th>
                       <th style="width:10%;">Category</th>
                       <th style="width:10%;">Price Per Unit</th>
-                      <th style="width:10%;">Price</th>
+                      <th style="width:15%;">Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,10 +104,10 @@
                           </td>
                           <td>{{ $or['category'] }}</td>
                           <td>
-                            <input type="text" name="price_per_unit[]" class="price_per_unit" data-parent-product-id="{{ $row['main_product_id']}}">
+                            <input type="text" name="price_per_unit[]" class="price_per_unit form-control" data-parent-product-id="{{ $row['main_product_id']}}">
                           </td>
                           <td>
-                            <input type="text" name="price[]" class="price" data-parent-product-id="{{ $row['main_product_id']}}">
+                            <input type="text" name="price[]" class="price form-control" data-parent-product-id="{{ $row['main_product_id']}}" readonly>
                           </td>
                         </tr>
                         @endforeach

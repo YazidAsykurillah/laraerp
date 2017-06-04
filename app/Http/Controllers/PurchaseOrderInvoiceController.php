@@ -327,7 +327,7 @@ class PurchaseOrderInvoiceController extends Controller
         $purchase_order->products()->sync($syncData);
 
         //DELETE transaction chart account reference
-        \DB::table('transaction_chart_accounts')->where('reference',$request->purchase_order_invoice_id)->delete();
+        \DB::table('transaction_chart_accounts')->where('reference',$request->purchase_order_invoice_id)->where('source',$request->purchase_order_invoice_code)->delete();
 
         // insert temp purchase invoice
         $temp_purchase_invoice_data = [];
@@ -393,6 +393,7 @@ class PurchaseOrderInvoiceController extends Controller
     public function destroy(Request $request)
     {
         $purch_order_inv = PurchaseOrderInvoice::findOrFail($request->purchase_order_invoice_id);
+        $inv_code = $id->code;
         $purch_order_inv->delete();
 
         if($purch_order_inv->purchase_invoice_payment->count()){
@@ -410,6 +411,7 @@ class PurchaseOrderInvoiceController extends Controller
 
         //delete purchase invoice payment
         \DB::table('purchase_invoice_payments')->where('purchase_order_invoice_id','=',$request->purchase_order_invoice_id)->delete();
+        \DB::table('transaction_chart_accounts')->where('source','=',$inv_code)->delete();
 
         return redirect('purchase-order-invoice')
         ->with('successMessage', 'Invoice has been deleted');

@@ -25,7 +25,7 @@
     <div class="col-lg-12">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Cr eate New Adjustment Products</h3>
+          <h3 class="box-title">Create New Adjustment Products</h3>
           <a href="#" id="btn-display-product-datatables" class="btn btn-primary pull-right" title="Select products to be added">
             <i class="fa fa-list"></i>&nbsp;Select Products
           </a>
@@ -34,7 +34,7 @@
           <div class="form-group{{ $errors->has('adjust_no') ? ' has-error' : '' }}">
             {!! Form::label('adjust_no', 'Adjust No', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('adjust_no',null,['class'=>'form-control', 'placeholder'=>'Adjust no of the products', 'id'=>'adjust_no']) !!}
+              {!! Form::text('adjust_no',$code_adj,['class'=>'form-control', 'placeholder'=>'Adjust no of the products', 'id'=>'adjust_no', 'readonly']) !!}
               @if ($errors->has('adjust_no'))
                 <span class="help-block">
                   <strong>{{ $errors->first('adjust_no') }}</strong>
@@ -337,6 +337,18 @@
                   '</td>'+
                 '</tr>'
               );
+              $('.unit_cost').autoNumeric('init',{
+                  aSep:',',
+                  aDec:'.'
+              });
+              $('.quantity').autoNumeric('init',{
+                  aSep:'',
+                  aDec:'.'
+              });
+              $('.total').autoNumeric('init',{
+                  aSep:',',
+                  aDec:'.'
+              });
           } else {
               selected.splice( index, 1 );
               $('#tr_product_'+id).remove();
@@ -404,7 +416,7 @@
     <script>
         //Block handle price value on price per unit keyup event
         tableSelectedProducts.on('keyup','.quantity',function(){
-          var unitCost = $(this).parent().parent().find('.unit_cost').val();
+          var unitCost = parseFloat($(this).parent().parent().find('.unit_cost').val().replace(/,/g,''));
           var the_price = 0;
           if($(this).val() == ''){
             the_price = 0;

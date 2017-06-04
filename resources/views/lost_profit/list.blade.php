@@ -165,7 +165,7 @@
                                 <tr>
                                     <th style="width:30%">No. Akun</th>
                                     <th style="width:40%">Deskripsi</th>
-                                    <th style="width:40%">Saldo</th>
+                                    <th>Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -196,30 +196,30 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($year_in))
                                                 @if(list_transaction_pendapatan($sub->id,$year,'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}
+                                                    {{ number_format(list_transaction_pendapatan($sub->id,$year,'y','')) }}.00
                                                     <?php $sum_penjualan += sum_penjualan($sub->id,$year,'y','','PENJUALAN'); ?>
                                                     <?php $sum_return += sum_penjualan($sub->id,$year,'y','','RETURN PENJUALAN'); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
+                                                    {{ number_format(list_transaction_pendapatan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
                                                     <?php $sum_penjualan += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','PENJUALAN'); ?>
                                                     <?php $sum_return += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','RETURN PENJUALAN'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_pendapatan($sub->id,date('Y'),'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}
+                                                    {{ number_format(list_transaction_pendapatan($sub->id,date('Y'),'y','')) }}.00
                                                     <?php $sum_penjualan += sum_penjualan($sub->id,date('Y'),'y','','PENJUALAN'); ?>
                                                     <?php $sum_return += sum_penjualan($sub->id,date('Y'),'y','','RETURN PENJUALAN'); ?>
                                                 </td>
@@ -231,7 +231,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $pendapatan->name }}</td>
-                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_penjualan-$sum_return)}}<?php $sum_pendapatan_operasional = $sum_penjualan-$sum_return; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_penjualan-$sum_return)}}.00<?php $sum_pendapatan_operasional = $sum_penjualan-$sum_return; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -257,28 +257,28 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($year_in))
                                                 @if(list_transaction_harga_pokok_penjualan($sub->id,$year,'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year,'y','')) }}
+                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year,'y','')) }}.00
                                                     <?php $sum += sum_penjualan($sub->id,$year,'y','','HARGA POKOK PENJUALAN'); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_harga_pokok_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
+                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
                                                     <?php $sum += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','HARGA POKOK PENJUALAN'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_harga_pokok_penjualan($sub->id,date('Y'),'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,date('Y'),'y','')) }}
+                                                    {{ number_format(list_transaction_harga_pokok_penjualan($sub->id,date('Y'),'y','')) }}.00
                                                     <?php $sum += sum_penjualan($sub->id,date('Y'),'y','','HARGA POKOK PENJUALAN'); ?>
                                                 </td>
                                                 @endif
@@ -289,7 +289,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $harga_pokok_penjualan->name }}</td>
-                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}<?php $sum_harga_pokok_penjualan = $sum; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum) }}.00<?php $sum_harga_pokok_penjualan = $sum; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -315,30 +315,30 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($year_in))
                                                 @if(list_transaction_beban_operasi($sub->id,$year,'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_operasi($sub->id,$year,'y','')) }}
+                                                    {{ number_format(list_transaction_beban_operasi($sub->id,$year,'y','')) }}.00
                                                     <?php $sum_biaya_operasi += sum_penjualan($sub->id,$year,'y','','BIAYA OPERASIONAL'); ?>
                                                     <?php $sum_biaya_penyusutan += sum_penjualan($sub->id,$year,'y','','BIAYA PENYUSUTAN'); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_beban_operasi($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_operasi($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
+                                                    {{ number_format(list_transaction_beban_operasi($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
                                                     <?php $sum_biaya_operasi += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','BIAYA OPERASIONAL'); ?>
                                                     <?php $sum_biaya_penyusutan += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','BIAYA PENYUSUTAN'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_beban_operasi($sub->id,date('Y'),'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_operasi($sub->id,date('Y'),'y','')) }}
+                                                    {{ number_format(list_transaction_beban_operasi($sub->id,date('Y'),'y','')) }}.00
                                                     <?php $sum_biaya_operasi += sum_penjualan($sub->id,date('Y'),'y','','BIAYA OPERASIONAL'); ?>
                                                     <?php $sum_biaya_penyusutan += sum_penjualan($sub->id,date('Y'),'y','','BIAYA PENYUSUTAN'); ?>
                                                 </td>
@@ -350,7 +350,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $beban_operasi->name }}</td>
-                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_biaya_operasi+$sum_biaya_penyusutan) }}<?php $sum_beban_operasi = $sum_biaya_operasi+$sum_biaya_penyusutan; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_biaya_operasi+$sum_biaya_penyusutan) }}.00<?php $sum_beban_operasi = $sum_biaya_operasi+$sum_biaya_penyusutan; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -358,7 +358,7 @@
                                         <td></td>
                                         <td style="border-top:1px solid black">Total Pendapatan</td>
                                         <td align="right" style="border-top:1px solid black;border-bottom:1px solid black;padding-right:3px">
-                                            {{ number_format(($sum_pendapatan_operasional-$sum_harga_pokok_penjualan)-$sum_beban_operasi) }}
+                                            {{ number_format(($sum_pendapatan_operasional-$sum_harga_pokok_penjualan)-$sum_beban_operasi) }}.00
                                             <?php $sum_all_pendapatan = ($sum_pendapatan_operasional-$sum_harga_pokok_penjualan)-$sum_beban_operasi; ?>
                                         </td>
                                     </tr>
@@ -389,28 +389,28 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($year_in))
                                                 @if(list_transaction_pendapatan_lainnya($sub->id,$year,'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,$year,'y','')) }}
+                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,$year,'y','')) }}.00
                                                     <?php $sum_pend_lainnya += sum_penjualan($sub->id,$year,'y','','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_pendapatan_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
+                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
                                                     <?php $sum_pend_lainnya += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_pendapatan_lainnya($sub->id,date('Y'),'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,date('Y'),'y','')) }}
+                                                    {{ number_format(list_transaction_pendapatan_lainnya($sub->id,date('Y'),'y','')) }}.00
                                                     <?php $sum_pend_lainnya += sum_penjualan($sub->id,date('Y'),'y','','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
@@ -421,7 +421,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $pendapatan_lainnya->name }}</td>
-                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_pend_lainnya) }}<?php $sum_pendapatan_lainnya = $sum_pend_lainnya; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_pend_lainnya) }}.00<?php $sum_pendapatan_lainnya = $sum_pend_lainnya; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -447,28 +447,28 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($year_in))
                                                 @if(list_transaction_beban_lainnya($sub->id,$year,'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,$year,'y','')) }}
+                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,$year,'y','')) }}.00
                                                     <?php $sum_beb_lainnya += sum_penjualan($sub->id,$year,'y','','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
                                             @elseif(isset($month_in))
                                                 @if(list_transaction_beban_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}
+                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
                                                     <?php $sum_beb_lainnya += sum_penjualan($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
                                             @else
                                                 @if(list_transaction_beban_lainnya($sub->id,date('Y'),'y','') == '')
-                                                <td align="right" style="padding-right:3px">0,00</td>
+                                                <td align="right" style="padding-right:3px">0.00</td>
                                                 @else
                                                 <td align="right" style="padding-right:3px">
-                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,date('Y'),'y','')) }}
+                                                    {{ number_format(list_transaction_beban_lainnya($sub->id,date('Y'),'y','')) }}.00
                                                     <?php $sum_beb_lainnya += sum_penjualan($sub->id,date('Y'),'y','','BIAYA OPERASIONAL'); ?>
                                                 </td>
                                                 @endif
@@ -479,7 +479,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $beban_lainnya->name }}</td>
-                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_beb_lainnya) }}<?php $sum_beban_lainnya = $sum_beb_lainnya; ?></td>
+                                        <td align="right" style="border-top:1px solid black;padding-right:3px">{{ number_format($sum_beb_lainnya) }}.00<?php $sum_beban_lainnya = $sum_beb_lainnya; ?></td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -487,7 +487,7 @@
                                     <td></td>
                                     <td style="border-top:1px solid black">Total Pendapatan Lainnya dan Beban Lainnya</td>
                                     <td align="right" style="border-top:1px solid black;border-bottom:1px solid black;padding-right:3px">
-                                        {{ number_format($sum_pendapatan_lainnya-$sum_beban_lainnya) }}
+                                        {{ number_format($sum_pendapatan_lainnya-$sum_beban_lainnya) }}.00
                                         <?php $sum_all_pendapatan_lainnya = $sum_pendapatan_lainnya-$sum_beban_lainnya; ?>
                                     </td>
                                 </tr>
@@ -495,7 +495,7 @@
                                     <td></td>
                                     <td style="border-top:1px solid black">Laba</td>
                                     <td align="right" style="border-top:1px solid black;border-bottom:1px solid black;padding-right:3px">
-                                        {{ number_format($sum_all_pendapatan+$sum_all_pendapatan_lainnya) }}
+                                        {{ number_format($sum_all_pendapatan+$sum_all_pendapatan_lainnya) }}.00
                                     </td>
                                 </tr>
                             </tbody>

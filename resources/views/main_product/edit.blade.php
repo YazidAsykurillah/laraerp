@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Main Product
+    Product
 @endsection
 
 @section('page_header')
-    <h1>Edit Main Product
-        <small>Edit Main Product Page</small>
+    <h1>Edit Product
+        <small>Edit Product Page</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"> Main Product</i></a></li>
+        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"> Product</i></a></li>
         <li>{{ $main_product->name }}</li>
         <li class="active"><i></i>Edit</li>
     </ol>
@@ -98,7 +98,7 @@
       <!--BOX Image-->
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Main Product Image</h3>
+          <h3 class="box-title">Product Image</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
@@ -132,7 +132,7 @@
           </div><!-- /.box-header -->
           <div class="box-body">
               <div class="box-responsive" style="max-height:500px">
-                <table class="table table-bordered" id="table-product">
+                <table class="table table-hover table-striped" id="table-product">
                     <thead>
                         <tr>
                           <th style="width:10%;background-color:#3c8dbc;color:white">Family</th>
@@ -163,7 +163,7 @@
                           <td id="parent_description"></td>
                           <td>{{ $main_product->unit->name}}</td>
                           <td>
-                              <input type="text" name="stock_parent" id="stock_parent">
+                              <input type="text" name="stock_parent" id="stock_parent" class="stock_parent form-control">
                           </td>
                           <td style="display:none">
                               <input type="text" name="stock_minimum_parent" value="0" id="minimum_stock_parent">
@@ -182,7 +182,7 @@
                             <td id="child_description">{{ $key->description }}</td>
                             <td>{{ $main_product->unit->name}} </td>
                             <td>
-                                <input type="text" name="stock[]" value="{{ $key->stock }}" class="stock">
+                                <input type="text" name="stock[]" value="{{ $key->stock }}" class="stock form-control">
                             </td>
                             <td style="display:none">
                                 <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
@@ -218,6 +218,17 @@
 @endsection
 
 @section('additional_scripts')
+    {!! Html::script('js/autoNumeric.js') !!}
+    <script type="text/javascript">
+      $('.stock').autoNumeric('init',{
+        aSep:'',
+        aDec:'.'
+      });
+      $('.stock_parent').autoNumeric('init',{
+        aSep:'',
+        aDec:'.',
+      });
+    </script>
     <script type="text/javascript">
         $('#name').on('keyup',function(){
             $('#parent_code').text($('#name').val());

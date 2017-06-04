@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Main Products
+    Products
 @endsection
 
 @section('page_header')
     <h1>
-        Main Products
-        <small> Main Product Detail</small>
+        Products
+        <small>Product Detail</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Main Products</a></li>
+        <li><a href="{{ URL::to('main-product') }}"><i class="fa fa-dashboard"></i> Products</a></li>
         <li class="active"><i></i>{{ $main_product->name }}</li>
     </ol>
 @endsection
@@ -124,7 +124,7 @@
                               <td></td>
                               <td>{{ $main_product->unit->name}}</td>
                               <td>
-                                  <input type="text" name="stock_parent" value="">
+                                  <input type="text" name="stock_parent" value="" class="stock_parent form-control">
                               </td>
                               <td style="display:none">
                                   <input type="text" name="stock_minimum_parent" value="0">
@@ -142,7 +142,7 @@
                                 <td>{{ $key->description }}</td>
                                 <td>{{ $main_product->unit->name}} </td>
                                 <td>
-                                    <input type="text" name="stock[]" value="">
+                                    <input type="text" name="stock[]" value="" class="stock form-control">
                                 </td>
                                 <td style="display:none">
                                     <input type="text" name="stock_minimum[]" value="{{ $key->minimum_stock }}">
@@ -350,6 +350,17 @@
 @endsection
 
 @section('additional_scripts')
+    {!! Html::script('js/autoNumeric.js') !!}
+    <script type="text/javascript">
+      $('.stock').autoNumeric('init',{
+        aSep:'',
+        aDec:'.'
+      });
+      $('.stock_parent').autoNumeric('init',{
+        aSep:'',
+        aDec:'.',
+      });
+    </script>
     <script type="text/javascript">
         $('#availability').text($('#sum_availability').text());
         $('#table-product').on('click','.btn-view-sub-product',function(){
