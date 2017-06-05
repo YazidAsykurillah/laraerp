@@ -86,8 +86,8 @@
           <input type="hidden" id="purchase_order_id" name="purchase_order_id">
           <input type="hidden" name="payment_id" id="payment-id">
           <input type="hidden" name="bank_purchase_id" id="bank_purchase_id">
-          <input type="text" name="id_invoice_delete" id="id_invoice_delete">
-          <input type="text" name="code_invoice_delete" id="code_invoice_delete">
+          <input type="hidden" name="id_invoice_delete" id="id_invoice_delete">
+          <input type="hidden" name="code_invoice_delete" id="code_invoice_delete">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

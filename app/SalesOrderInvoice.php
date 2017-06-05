@@ -17,7 +17,7 @@ class SalesOrderInvoice extends Model
 {
     protected $table = 'sales_order_invoices';
 
-    protected $fillable = ['code','sales_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status', 'notes' ,'due_date','persen_ppn','price'];
+    protected $fillable = ['code','sales_order_id', 'bill_price', 'paid_price', 'paid_at', 'created_by', 'status', 'notes' ,'due_date','persen_ppn','price_ppn','ppn_hidden'];
 
     public function creator()
     {

@@ -11,6 +11,7 @@ use App\SubChartAccount;
 use App\Adjustment;
 use App\ProductAdjustment;
 use App\Product;
+use App\MainProduct;
 
 class ProductAdjusmentController extends Controller
 {
@@ -60,20 +61,41 @@ class ProductAdjusmentController extends Controller
         }
     }
 
-    public function callFieldProduct(Request $request)
+    public function callSubProduct(Request $request)
     {
         if($request->ajax()){
-            $results = [];
-            $product = \DB::table('products')->where('id',$request->product)->get();
-            foreach ($product as $key) {
+            $results = array();
+            $list_sub_product = \DB::table('products')->where('main_product_id',$request->id)->get();
+            foreach($list_sub_product as $ls){
                 array_push($results,[
-                    'description'=>$key->description,
-                    'unit'=>\DB::table('main_products')->where('id',$key->main_product_id)->value('unit_id'),
+                    'id'=>$ls->id,
+                    'name'=>$ls->name,
+                    'family'=>MainProduct::find($request->id)->family->name,
+                    'description'=>$ls->description,
+                    'stock'=>$ls->stock,
+                    'unit'=>MainProduct::find($request->id)->unit->name,
+                    'category'=>MainProduct::find($request->id)->category->name,
+                    'created_at'=>$ls->created_at,
                 ]);
             }
             return response()->json($results);
         }
     }
+
+    // public function callFieldProduct(Request $request)
+    // {
+    //     if($request->ajax()){
+    //         $results = [];
+    //         $product = \DB::table('products')->where('id',$request->product)->get();
+    //         foreach ($product as $key) {
+    //             array_push($results,[
+    //                 'description'=>$key->description,
+    //                 'unit'=>\DB::table('main_products')->where('id',$key->main_product_id)->value('unit_id'),
+    //             ]);
+    //         }
+    //         return response()->json($results);
+    //     }
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -317,12 +339,67 @@ class ProductAdjusmentController extends Controller
         if(\Auth::user()->can('edit-product-adjustment-module')){
           $adjust_account = SubChartAccount::all();
           $adjustment = Adjustment::findorFail($id);
+          $main_product = $adjustment->product_adjustment;
+
+          $row_display = [];
+          $main_products_arr = [];
+          if($adjustment->product_adjustment->count()){
+              foreach($adjustment->product_adjustment as $prod){
+                  array_push($main_products_arr, \DB::table('products')->select('main_product_id')->where('id',$prod->product_id)->value('main_product_id'));
+              }
+          }
+
+          $main_products = array_unique($main_products_arr);
+
+          foreach($main_products as $mp_id){
+              $row_display[] = [
+                  'main_product_id'=>MainProduct::find($mp_id)->id,
+                  'main_product'=>MainProduct::find($mp_id)->name,
+                  'image'=>MainProduct::find($mp_id)->image,
+                  'description'=>MainProduct::find($mp_id)->product->first()->description,
+                  'family'=>MainProduct::find($mp_id)->family->name,
+                  'unit'=>MainProduct::find($mp_id)->unit->name,
+                  'quantity'=>MainProduct::find($mp_id)->product->sum('stock'),
+                  'category'=>MainProduct::find($mp_id)->category->name,
+                  'ordered_products'=>$this->get_product_lists($mp_id, $id)
+              ];
+          }
           return view('adjustment.edit')
               ->with('adjustment',$adjustment)
-              ->with('adjust_account',$adjust_account);
+              ->with('adjust_account',$adjust_account)
+              ->with('main_product',$main_product)
+              ->with('row_display', $row_display);
         }else{
           return view('403');
         }
+    }
+
+    protected function get_product_lists($mp_id, $po_id)
+    {
+
+        $product_id_arr = [];
+        $product_ids = MainProduct::find($mp_id)->product;
+        foreach($product_ids as $pid){
+            $counter = \DB::table('product_adjustment')
+                        ->where('product_id','=', $pid->id)
+                        ->where('adjustment_id', '=', $po_id)
+                        ->first();
+            if(count($counter)){
+                array_push($product_id_arr,array(
+                    'family'=>Product::findOrFail($pid->id)->main_product->family->name,
+                    'code'=>Product::findOrFail($pid->id)->name,
+                    'description'=>Product::findOrFail($pid->id)->description,
+                    'unit'=>Product::findOrFail($pid->id)->main_product->unit->name,
+                    'quantity'=>$counter->qty,
+                    'product_id'=>$counter->product_id,
+                    'category'=>Product::findOrFail($pid->id)->main_product->category->name,
+                ));
+            }
+            //$product_id_arr[] = $pid->id;
+        }
+        return $product_id_arr;
+
+
     }
 
     /**

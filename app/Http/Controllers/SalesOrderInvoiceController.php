@@ -153,7 +153,7 @@ class SalesOrderInvoiceController extends Controller
             $date = date_create($sales_order_created_at);
             date_add($date,date_interval_create_from_date_string($customer_invoice_term.' days'));
             $due_date = date_format($date,"Y-m-d");
-            $price_ppn = floatval(preg_replace('#[^0-9.]#', '', $request->bill_price))/100*$request->ppn;
+            $price_ppn = (floatval(preg_replace('#[^0-9.]#', '', $request->bill_price))/100)*$request->ppn;
             $data = [
                 'code'=>'INV-'.$sales_order_code,
                 'sales_order_id' =>$request->sales_order_id,

@@ -24,8 +24,8 @@ Route::resource('restore','RestoreController');
 Route::resource('backup','BackUpController');
 
 //adjustment
+Route::post('callFieldProduct','ProductAdjusmentController@callSubProduct');
 Route::post('deleteAdjustment','ProductAdjusmentController@destroy');
-Route::post('callFieldProduct','ProductAdjusmentController@callFieldProduct');
 Route::resource('product-adjustment','ProductAdjusmentController');
 //cash flow
 Route::post('cash-flow.cash_flow_print','CashFlowController@cash_flow_print');
