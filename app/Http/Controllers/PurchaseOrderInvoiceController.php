@@ -411,6 +411,7 @@ class PurchaseOrderInvoiceController extends Controller
 
         //delete purchase invoice payment
         \DB::table('purchase_invoice_payments')->where('purchase_order_invoice_id','=',$request->purchase_order_invoice_id)->delete();
+        //delete transaction chart account
         \DB::table('transaction_chart_accounts')->where('source','=',$inv_code)->delete();
 
         return redirect('purchase-order-invoice')

@@ -131,9 +131,9 @@
 
     });
     //Block search input and select
-    // $('#searchid input').keyup(function() {
-    //   tableAdjustment.columns($(this).data('id')).search(this.value).draw();
-    // });
+    $('#searchid input').keyup(function() {
+       tableAdjustment.columns($(this).data('id')).search(this.value).draw();
+     });
     //ENDBlock search input and select
 
   </script>

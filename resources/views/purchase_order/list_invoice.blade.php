@@ -113,7 +113,7 @@
         { data:'paid_price', name:'paid_price'},
         { data:'created_at', name:'created_at'},
         { data:'creator', name:'creator.name'},
-        { data:'due_date', name:'due_date', searchable: false},
+        { data:'term', name:'term'},
         { data:'debt', name:'debt', searchable: false},
         { data:'status', name:'status'},
         //{ data:'payment_method', name:'payment_method.code' },
