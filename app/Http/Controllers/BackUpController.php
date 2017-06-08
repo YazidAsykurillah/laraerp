@@ -43,14 +43,10 @@ class BackUpController extends Controller
         error_reporting(0);
         $file = 'PT_CATRA_TEXTILE_RAYA_'.date('Ymd').'_backup'.'.sql';
         $this->backup_tables('192.168.1.10','psiuser','psiuser14','db_catra',$file);
-<<<<<<< HEAD
         // $return_val = NULL;
         // $output = NULL;
         // $command = "/usr/bin/mysqldump.exe --opt -h localhost -u root -p db_catra > C://Backup/db_catra_backup1.sql";
         // exec($command,$output,$return_val);
-=======
->>>>>>> 11ea15b2c08c4ab2f0cc2cf6a80b756be90f8251
-
         return redirect('backup')
           ->with('successMessage','Backup has been success');
     }
