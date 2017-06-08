@@ -1096,6 +1096,8 @@ class DatatablesController extends Controller
             'sub_chart_account_id',
             'amount',
             'created_at',
+            'description',
+            'memo',
         ])->where([['source','biaya_operasi'],['type','!=','keluar']]);
         $datatables = Datatables::of($trans_chart_account)
         ->editColumn('account_number', function($trans_chart_account){
@@ -1117,7 +1119,7 @@ class DatatablesController extends Controller
             $actions_html .='</a>&nbsp;';
             if(\Auth::user()->can('delete-jurnal-umum-module'))
             {
-                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-text="'.$trans_chart_account->sub_chart_account->name.'">';
+                $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-trans-chart-account" data-id="'.$trans_chart_account->id.'" data-memo="'.$trans_chart_account->description.'" data-text="'.$trans_chart_account->sub_chart_account->name.'" data-sub-account-id="'.$trans_chart_account->sub_chart_account->chart_account_id.'">';
                 $actions_html .=    '<i class="fa fa-trash"></i>';
                 $actions_html .='</button>';
             }

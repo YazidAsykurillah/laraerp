@@ -312,6 +312,64 @@ class BiayaOperasiController extends Controller
     {
         $trans_chart_account = TransactionChartAccount::findOrFail($request->trans_id);
         $trans_chart_account->delete();
+        //get payment method
+        $pay_method = \DB::table('transaction_chart_accounts')->select('description')->where('reference',$request->trans_id)->where('memo',$request->trans_memo)->value('description');
+        if($pay_method == 2)
+        {
+            if($request->trans_chart_account_id == 62)
+            {
+                //get bank or cash id
+                $cash_bank_id = \DB::table('transaction_chart_accounts')->select('source')->where('reference',$request->trans_id)->where('type','masuk')->where('memo',$request->trans_memo)->value('source');
+                //get amount trans
+                $amount_first = \DB::table('transaction_chart_accounts')->select('amount')->where('reference',$request->trans_id)->where('type','masuk')->where('memo',$request->trans_memo)->value('amount');
+                $value_first = \DB::table('cashs')->select('value')->where('id',$cash_bank_id)->value('value');
+                $back_value = $value_first-$amount_first;
+                \DB::table('cashs')->where('id',$cash_bank_id)->update(['value'=>$back_value]);
+                // print_r($back_value);
+                // exit();
+            }else
+            {
+                //get bank or cash id
+                $cash_bank_id = \DB::table('transaction_chart_accounts')->select('source')->where('reference',$request->trans_id)->where('type','keluar')->where('memo',$request->trans_memo)->value('source');
+                //get amount trans
+                $amount_first = \DB::table('transaction_chart_accounts')->select('amount')->where('reference',$request->trans_id)->where('type','keluar')->where('memo',$request->trans_memo)->value('amount');
+                $value_first = \DB::table('cashs')->select('value')->where('id',$cash_bank_id)->value('value');
+                $back_value = $value_first+$amount_first;
+                \DB::table('cashs')->where('id',$cash_bank_id)->update(['value'=>$back_value]);
+                //print_r($back_value);
+                //exit();
+            }
+        }else
+        {
+            if($request->trans_chart_account_id == 62)
+            {
+                //get bank or cash id
+                $cash_bank_id = \DB::table('transaction_chart_accounts')->select('source')->where('reference',$request->trans_id)->where('type','masuk')->where('memo',$request->trans_memo)->value('source');
+                //get amount trans
+                $amount_first = \DB::table('transaction_chart_accounts')->select('amount')->where('reference',$request->trans_id)->where('type','masuk')->where('memo',$request->trans_memo)->value('amount');
+                $value_first = \DB::table('banks')->select('value')->where('id',$cash_bank_id)->value('value');
+                $back_value = $value_first-$amount_first;
+                \DB::table('banks')->where('id',$cash_bank_id)->update(['value'=>$back_value]);
+            }else
+            {
+                //get bank or cash id
+                $cash_bank_id = \DB::table('transaction_chart_accounts')->select('source')->where('reference',$request->trans_id)->where('type','keluar')->where('memo',$request->trans_memo)->value('source');
+                //get amount trans
+                $amount_first = \DB::table('transaction_chart_accounts')->select('amount')->where('reference',$request->trans_id)->where('type','keluar')->where('memo',$request->trans_memo)->value('amount');
+                $value_first = \DB::table('banks')->select('value')->where('id',$cash_bank_id)->value('value');
+                $back_value = $value_first+$amount_first;
+                \DB::table('banks')->where('id',$cash_bank_id)->update(['value'=>$back_value]);
+            }
+        }
+
+        if($request->trans_chart_account_id == 62)
+        {
+            \DB::table('transaction_chart_accounts')->where('reference',$request->trans_id)->where('type','masuk')->where('memo',$request->trans_memo)->delete();
+        }else
+        {
+            \DB::table('transaction_chart_accounts')->where('reference',$request->trans_id)->where('type','keluar')->where('memo',$request->trans_memo)->delete();
+        }
+
 
         return redirect('biaya-operasi')
             ->with('successMessage','Jurnal Umum has been deleted');

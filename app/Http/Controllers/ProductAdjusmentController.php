@@ -39,8 +39,18 @@ class ProductAdjusmentController extends Controller
           $adjust_account = SubChartAccount::all();
           $product = Product::all();
           $adjust_product = Adjustment::all();
-          $count_adj = count($adjust_product)+1;
-          $code_adj = 'ADJ0'.$count_adj;
+          $count_adj = '';
+          $code_adj = '';
+          if(count($adjust_product) == 0)
+          {
+              $count_adj = count($adjust_product)+1;
+              $code_adj = 'ADJ0'.$count_adj;
+          }else
+          {
+              $count_adj = Adjustment::all()->first()->latest()->value('code');
+              $sub_str = str_replace('ADJ0','',$count_adj)+1;
+              $code_adj = 'ADJ0'.$sub_str;
+          }
           return view('adjustment.create')
               ->with('adjust_account',$adjust_account)
               ->with('product',$product)
@@ -548,7 +558,7 @@ class ProductAdjusmentController extends Controller
         $adjustment->delete();
 
         \DB::table('product_adjustment')->where('adjustment_id',$request->adjustment_id)->delete();
-
+        \DB::table('transaction_chart_accounts')->where('reference',$request->adjustment_id)->where('source','initial_setup')->where('description','SALDO AWAL')->delete();
         return redirect('product-adjustment')
             ->with('successMessage','Adjustment has been deleted');
     }

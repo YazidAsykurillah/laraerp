@@ -42,7 +42,7 @@ class RestoreController extends Controller
     public function store(Request $request)
     {
         error_reporting(0);
-        $connect = mysql_connect('localhost','root','');
+        $connect = mysql_connect('192.168.1.10','psiuser','psiuser14');
         mysql_select_db('db_catra',$connect);
         $nama_file = $_FILES['restore']['name'];
         $ukuran_file = $_FILES['restore']['size'];

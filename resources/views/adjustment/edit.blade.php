@@ -115,13 +115,13 @@
                            <td>{{$pa->product->main_product->unit->name}}</td>
                            <td>{{$pa->product->main_product->category->name}}</td>
                            <td>
-                               <input type="text" name="unit_cost[]" value="{{number_format($pa->unit_cost)}}" class="unit_cost form-control">
+                               <input type="text" name="unit_cost[]" value="{{$pa->unit_cost}}" class="unit_cost form-control">
                            </td>
                            <td>
-                               <input type="text" name="quantity[]" value="{{number_format($pa->qty)}}" class="quantity form-control">
+                               <input type="text" name="quantity[]" value="{{$pa->qty}}" class="quantity form-control">
                            </td>
                            <td>
-                               <input type="text" name="total[]" value="{{number_format($pa->total)}}" class="total form-control">
+                               <input type="text" name="total[]" value="{{$pa->total}}" class="total form-control">
                            </td>
                        </tr>
                     @endforeach
@@ -247,6 +247,18 @@
         aSep:',',
         aDec:'.'
     });
+    $('.unit_cost').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+    $('.quantity').autoNumeric('init',{
+        aSep:'',
+        aDec:'.'
+    });
+    $('.total').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
   </script>
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
@@ -331,6 +343,18 @@
               '</td>'+
             '</tr>'
           );
+          $('.unit_cost').autoNumeric('init',{
+              aSep:',',
+              aDec:'.'
+          });
+          $('.quantity').autoNumeric('init',{
+              aSep:'',
+              aDec:'.'
+          });
+          $('.total').autoNumeric('init',{
+              aSep:',',
+              aDec:'.'
+          });
         }else{
             selected.splice( index, 1 );
             $('#tr_product_'+id).remove();
@@ -394,7 +418,7 @@
   <script>
       //Block handle price value on price per unit keyup event
       tableSelectedProducts.on('keyup','.quantity',function(){
-        var unitCost = $(this).parent().parent().find('.unit_cost').val();
+        var unitCost = parseFloat($(this).parent().parent().find('.unit_cost').val().replace(/,/g,''));
         var the_price = 0;
         if($(this).val() == ''){
           the_price = 0;
