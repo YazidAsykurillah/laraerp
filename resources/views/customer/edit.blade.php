@@ -1,21 +1,22 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Edit Customer
+  Customer
 @endsection
 
 @section('page_header')
   <h1>
-    Edit Customer
-    <small>Edit the customer</small>
+    Customer
+    <small>Edit Customer</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customers</a></li>
-    <li class="active"><i></i>Edit</li>
+    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customer</a></li>
+    <li> {{ $customer->code }}</li>
+    <li class="active"><i></i> Edit</li>
   </ol>
 @endsection
 
@@ -25,7 +26,7 @@
     <div class="col-lg-8">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Edit Customer</h3>
+          <h3 class="box-title">Basic Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -41,7 +42,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('phone_number', 'Phone Number', ['class'=>'col-sm-3 control-label']) !!}
+            {!! Form::label('phone_number', 'Phone', ['class'=>'col-sm-3 control-label']) !!}
             <div class="col-sm-9">
               {!! Form::text('phone_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the customer', 'id'=>'phone_number']) !!}
               @if ($errors->has('phone_number'))

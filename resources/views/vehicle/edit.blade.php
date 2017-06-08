@@ -6,15 +6,15 @@
 
 @section('page_header')
     <h1>
-        Edit Vehicle
-        <small>Edit Vehicle Page</small>
+        Vehicle
+        <small>Edit Vehicle</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicles</a></li>
+        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicle</a></li>
         <li>{{ $vehicle->code }}</li>
         <li active="active"><i></i>Edit</li>
     </ol>
@@ -32,7 +32,7 @@
                     <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                         {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-4">
-                            {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code']) !!}
+                            {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code', 'readonly']) !!}
                             @if($errors->has('code'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('code') }}</strong>

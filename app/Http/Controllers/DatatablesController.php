@@ -75,7 +75,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-customer-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'" title="Click to delete this customer">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -256,7 +256,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-supplier-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-supplier" data-id="'.$suppliers->id.'" data-text="'.$suppliers->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-supplier" data-id="'.$suppliers->id.'" data-text="'.$suppliers->name.'" title="Click to delete this supplier">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -702,12 +702,12 @@ class DatatablesController extends Controller
                     $actions_html ='<a href="'.url('invoice-term/'.$invoice_terms->id.'').'" class="btn btn-info btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link-square"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('invoice-term/'.$invoice_terms->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice-term">';
+                    $actions_html .='<a href="'.url('invoice-term/'.$invoice_terms->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice term">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-invoice-term-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-term" data-id="'.$invoice_terms->id.'" data-text="'.$invoice_terms->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-term" data-id="'.$invoice_terms->id.'" data-text="'.$invoice_terms->name.'" title="Click to delete this invoice term">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -744,7 +744,7 @@ class DatatablesController extends Controller
                     $actions_html .='</a>&nbsp;';
                     if(\Auth::user()->can('delete-driver-module'))
                     {
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$drivers->id.'" data-text="'.$drivers->name.'">';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-driver" data-id="'.$drivers->id.'" data-text="'.$drivers->name.'" title="Click to delete this driver">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';
                     }
@@ -1008,7 +1008,7 @@ class DatatablesController extends Controller
                 $actions_html .='</a>&nbsp;';
                 if(\Auth::user()->can('delete-vehicle-module'))
                 {
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vehicle" data-id="'.$vehicles->id.'" data-text="'.$vehicles->name.'">';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vehicle" data-id="'.$vehicles->id.'" data-text="'.$vehicles->name.'" title="Click to delete this vehicle">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
                 }

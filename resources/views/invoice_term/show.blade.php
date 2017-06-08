@@ -6,8 +6,8 @@
 
 @section('page_header')
   <h1>
-    Invoice Term Detail
-    <small> {{ $invoice_term->name }}</small>
+    Invoice Term
+    <small>Detail Invoice Term</small>
   </h1>
 @endsection
 
@@ -24,14 +24,14 @@
     <div class="col-md-7">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header">
-          <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Informations</h3>
+          <h3 class="box-title"><i class="fa fa-bars"></i>&nbsp;General Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-hover">
               <tr>
-                <td style="width:20%;">Name</td>
+                <td style="width:20%;">Periode</td>
                 <td>:</td>
                 <td>{{ $invoice_term->name }}</td>
               </tr>

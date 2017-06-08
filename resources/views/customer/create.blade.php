@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Customer
+  Customer
 @endsection
 
 @section('page_header')
   <h1>
-    Create Customer
-    <small>Create new customer</small>
+    Customer
+    <small>Add New Customer</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customers</a></li>
-    <li class="active"><i></i>Create</li>
+    <li><a href="{{ URL::to('customer') }}"><i class="fa fa-dashboard"></i> Customer</a></li>
+    <li class="active"><i></i> Create</li>
   </ol>
 @endsection
 
@@ -25,7 +25,7 @@
     <div class="col-lg-8">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create new customer</h3>
+          <h3 class="box-title">Basic Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -41,9 +41,9 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('phone_number', 'Phone Number', ['class'=>'col-sm-3 control-label']) !!}
+            {!! Form::label('phone_number', 'Phone', ['class'=>'col-sm-3 control-label']) !!}
             <div class="col-sm-9">
-              {!! Form::text('phone_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the customer', 'id'=>'phone_number']) !!}
+              {!! Form::text('phone_number',null,['class'=>'form-control', 'placeholder'=>'Phone of the customer', 'id'=>'phone_number']) !!}
               @if ($errors->has('phone_number'))
                 <span class="help-block">
                   <strong>{{ $errors->first('phone_number') }}</strong>
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('invoice_term_id') ? ' has-error' : '' }}">
-            {!! Form::label('invoice_term_id', 'Unit', ['class'=>'col-sm-3 control-label']) !!}
+            {!! Form::label('invoice_term_id', 'Unit Term', ['class'=>'col-sm-3 control-label']) !!}
             <div class="col-sm-9">
               {{ Form::select('invoice_term_id', $invoice_terms, null, ['class'=>'form-control', 'placeholder'=>'Select Term', 'id'=>'invoice_term_id']) }}
               @if ($errors->has('invoice_term_id'))

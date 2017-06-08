@@ -6,15 +6,15 @@
 
 @section('page_header')
   <h1>
-    Add New Supplier
-    <small>Add New Supplier Page</small>
+    Supplier
+    <small>Add New Supplier</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> suppliers</a></li>
+    <li><a href="{{ URL::to('supplier') }}"><i class="fa fa-dashboard"></i> Supplier</a></li>
     <li class="active"><i></i> Create</li>
   </ol>
 @endsection
@@ -26,13 +26,13 @@
       <!--BOX Basic Informations-->
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Basic Informations</h3>
+          <h3 class="box-title">Basic Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
             {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the supplier', 'id'=>'code']) !!}
+              {!! Form::text('code',$code_fix,['class'=>'form-control', 'placeholder'=>'Code of the supplier', 'id'=>'code', 'readonly']) !!}
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
@@ -87,7 +87,7 @@
           <div class="form-group{{ $errors->has('pic_name') ? ' has-error' : '' }}">
             {!! Form::label('pic_name', 'PIC', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('pic_name',null,['class'=>'form-control', 'placeholder'=>'PIC name of the supplier', 'id'=>'pic_name']) !!}
+              {!! Form::text('pic_name',null,['class'=>'form-control', 'placeholder'=>'PIC of the supplier', 'id'=>'pic_name']) !!}
               @if ($errors->has('pic_name'))
                 <span class="help-block">
                   <strong>{{ $errors->first('pic_name') }}</strong>
@@ -98,7 +98,7 @@
           <div class="form-group{{ $errors->has('primary_email') ? ' has-error' : '' }}">
             {!! Form::label('primary_email', 'Email', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('primary_email',null,['class'=>'form-control', 'placeholder'=>'Primary email of the supplier', 'id'=>'primary_email']) !!}
+              {!! Form::text('primary_email',null,['class'=>'form-control', 'placeholder'=>'Email of the supplier', 'id'=>'primary_email']) !!}
               @if ($errors->has('primary_email'))
                 <span class="help-block">
                   <strong>{{ $errors->first('primary_email') }}</strong>
@@ -107,9 +107,9 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('primary_phone_number') ? ' has-error' : '' }}">
-            {!! Form::label('primary_phone_number', 'Phone Number', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('primary_phone_number', 'Phone', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::text('primary_phone_number',null,['class'=>'form-control', 'placeholder'=>'Primary phone of the supplier', 'id'=>'primary_phone_number']) !!}
+              {!! Form::text('primary_phone_number',null,['class'=>'form-control', 'placeholder'=>'Phone of the supplier', 'id'=>'primary_phone_number']) !!}
               @if ($errors->has('primary_phone_number'))
                 <span class="help-block">
                   <strong>{{ $errors->first('primary_phone_number') }}</strong>
@@ -127,9 +127,14 @@
 @endsection
 
 @section('additional_scripts')
+  {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#btn-submit-supplier').click(function(){
       $(this).attr('disable', 'disabled');
     })
+    // $('#primary_phone_number').autoNumeric('init',{
+    //     aSep:'',
+    //     aDec:'-',
+    // });
   </script>
 @endsection

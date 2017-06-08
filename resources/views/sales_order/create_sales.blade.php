@@ -7,7 +7,7 @@
 @section('page_header')
   <h1>
     Sales Order
-    <small>Create Sales Order</small>
+    <small>Create Sales Order DADA</small>
   </h1>
 @endsection
 
@@ -68,7 +68,7 @@
             <div class="form-group{{ $errors->has('do_number') ? ' has-error' : '' }}">
               {!! Form::label('do_number', 'D.O Number', ['class'=>'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
-                  <input type="hidden" class="form-control" id="do_number" value="{{$code_so}}" name="do_number">
+                  <input type="text" class="form-control" id="do_number" value="{{$code_so}}" name="do_number" readonly>
                   @if($errors->has('do_number'))
                       <span class="help-block">
                           <strong>{{ $errors->first('do_number') }}</strong>

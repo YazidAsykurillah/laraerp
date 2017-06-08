@@ -26,9 +26,7 @@ class StoreSupplierRequest extends Request
         return [
             'code'=>'required|unique:suppliers,code',
             'name'=>'required',
-            'pic_name'=>'required',
-            'primary_email'=>'email',
-            'primary_phone_number'=>'required',
+            'address'=>'required'
         ];
     }
 }

@@ -49,7 +49,7 @@ class SalesOrderController extends Controller
             $so = SalesOrder::all();
             $count_so = count($so)+1;
             $code_so = 'SO-0'.$count_so;
-            return view('sales_order.create')
+            return view('sales_order.create_sales')
                 ->with('customer_options', $customer_options)
                 ->with('driver_options',$driver_options)
                 ->with('vehicle_options',$vehicle_options)
@@ -294,6 +294,7 @@ class SalesOrderController extends Controller
      */
     public function destroy(Request $request)
     {
+
         $sales_order = SalesOrder::findOrFail($request->sales_order_id);
         $sales_order->delete();
 
@@ -321,7 +322,12 @@ class SalesOrderController extends Controller
         //sales invoice payment related
         \DB::table('sales_invoice_payments')->where('sales_order_invoice_id','=',$request->payment_id)->delete();
         //delete transaction chart account
-        \DB::table('trasaction_chart_accounts')->where('reference','=',$request->id_invoice_delete)->where('source','=',$request->code_invoice_delete)->delete();
+        if($request->id_invoice_delete == '' && $request->code_invoice_delete == '')
+        {
+
+        }else{
+            \DB::table('transaction_chart_accounts')->where('reference','=',$request->id_invoice_delete)->where('source','=',$request->code_invoice_delete)->delete();
+        }
         return redirect('sales-order')
             ->with('successMessage', "Sales order has been deleted");
     }

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  Create Invoice Term
+  Invoice Term
 @endsection
 
 @section('page_header')
   <h1>
-    Create Invoice Term
-    <small>Create new invoice-term</small>
+    Invoice Term
+    <small>Add New Invoice Term</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ URL::to('invoice-term') }}"><i class="fa fa-dashboard"></i> invoice-terms</a></li>
+    <li><a href="{{ URL::to('invoice-term') }}"><i class="fa fa-dashboard"></i> Invoice Term</a></li>
     <li class="active"><i></i>Create</li>
   </ol>
 @endsection
@@ -25,14 +25,14 @@
     <div class="col-lg-7">
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
-          <h3 class="box-title">Create new invoice-term</h3>
+          <h3 class="box-title">Basic Information</h3>
 
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            {!! Form::label('name', 'Period', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Period of the invoice term', 'id'=>'name']) !!}
+            {!! Form::label('name', 'Periode', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+              {!! Form::text('name',null,['class'=>'form-control', 'placeholder'=>'Periode of the invoice term', 'id'=>'name']) !!}
               @if ($errors->has('name'))
                 <span class="help-block">
                   <strong>{{ $errors->first('name') }}</strong>
@@ -41,9 +41,9 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('day_many') ? ' has-error' : '' }}">
-            {!! Form::label('day_many', 'Day Many', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {!! Form::text('day_many',null,['class'=>'form-control', 'placeholder'=>'The day many count in defined period', 'id'=>'day_many']) !!}
+            {!! Form::label('day_many', 'Day Many(s)', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+              {!! Form::text('day_many',null,['class'=>'form-control', 'placeholder'=>'The day many count in defined periode', 'id'=>'day_many']) !!}
               @if ($errors->has('day_many'))
                 <span class="help-block">
                   <strong>{{ $errors->first('day_many') }}</strong>
@@ -52,8 +52,8 @@
             </div>
           </div>
           <div class="form-group">
-              {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+              {!! Form::label('', '', ['class'=>'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
               <a href="{{ url('invoice-term') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;

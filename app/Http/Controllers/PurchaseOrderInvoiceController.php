@@ -86,7 +86,7 @@ class PurchaseOrderInvoiceController extends Controller
             // echo print_r($row_display);
             // echo '</pre>';
             // exit();
-            return view('purchase_order.create_invoice')
+            return view('purchase_order.create_invoice_new')
                 ->with('total_price', $this->count_total_price($purchase_order))
                 ->with('purchase_order', $purchase_order)
                 ->with('payment_methods', $payment_methods)

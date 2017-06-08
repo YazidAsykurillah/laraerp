@@ -120,10 +120,10 @@
                                           </td>
                                           <td>{{ $or['category'] }}</td>
                                           <td>
-                                            <input type="text" name="price_per_unit[]" class="price_per_unit" value="{{ number_format($or['price_per_unit'])}}">
+                                            <input type="text" name="price_per_unit[]" class="price_per_unit form-control" value="{{ number_format($or['price_per_unit'])}}">
                                           </td>
                                           <td>
-                                            <input type="text" name="price[]" class="price" value="{{ number_format($or['price'])}}" readonly>
+                                            <input type="text" name="price[]" class="price form-control" value="{{ number_format($or['price'])}}" readonly>
                                             <?php $sum += $or['price']; ?>
                                           </td>
                                         </tr>

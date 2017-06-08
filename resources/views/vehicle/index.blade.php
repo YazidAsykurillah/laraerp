@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Vehicles
+    Vehicle
 @endsection
 
 @section('page_header')
@@ -14,7 +14,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicles</a></li>
+        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicle</a></li>
         <li class="active"><i></i>Index</li>
     </ol>
 @endsection
@@ -24,7 +24,7 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Vehicles</h3>
+                    <h3 class="box-title">Vehicle</h3>
                     <a href="{{ URL::to('vehicle/create') }}" class="btn btn-primary pull-right" title="Create new vehicle">
                         <i class="fa fa-plus"></i>&nbsp;Add New
                     </a>
@@ -101,7 +101,7 @@
                 {data: 'code', name: 'code'},
                 {data: 'category', name: 'category'},
                 {data: 'number_of_vehicle' , name: 'number_of_vehicle'},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false},
+                {data: 'actions', name: 'actions', orderable: false, searchable: false, 'className':'dt-center'},
             ],
             "order" : [[1, "asc"]]
         });

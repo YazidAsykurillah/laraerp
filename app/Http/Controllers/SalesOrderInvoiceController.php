@@ -117,7 +117,7 @@ class SalesOrderInvoiceController extends Controller
                     'ordered_products'=>$this->get_product_lists($mp_id, $id)
                 ];
             }
-            return view('sales_order.create_invoice')
+            return view('sales_order.create_invoice_new')
                 ->with('total_price', $this->count_total_price($sales_order))
                 ->with('sales_order', $sales_order)
                 ->with('main_product',$main_product)
@@ -395,7 +395,7 @@ class SalesOrderInvoiceController extends Controller
                     'ordered_products'=>$this->get_product_lists($mp_id, $sales_order->id)
                 ];
             }
-            return view('sales_order.edit_invoice')
+            return view('sales_order.edit_invoice_new')
                     ->with('sales_order_invoice',$sales_order_invoice)
                     ->with('sales_order',$sales_order)
                     ->with('main_product',$main_product)

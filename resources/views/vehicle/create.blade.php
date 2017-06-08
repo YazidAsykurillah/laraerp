@@ -6,15 +6,15 @@
 
 @section('page_header')
     <h1>
-        Add New Vehicle
-        <small>Add New Vehicle Page</small>
+        Vehicle
+        <small>Add New Vehicle</small>
     </h1>
 @endsection
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicles</a></li>
+        <li><a href="{{ URL::to('vehicle') }}"><i class="fa fa-dashboard"></i> Vehicle</a></li>
         <li class="active"><i></i>Create</li>
     </ol>
 @endsection
@@ -31,7 +31,7 @@
                         <div class="form-group{{ $errors->has('code') ? ' has-errors' : '' }}">
                             {!! Form::label('code','Code',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-4">
-                                {!! Form::text('code',null,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code']) !!}
+                                {!! Form::text('code',$code_fix,['class'=>'form-control','placeholder'=>'Code of the vehicle','id'=>'code', 'readonly']) !!}
                                 @if ($errors->has('code'))
                                   <span class="help-block">
                                     <strong>{{ $errors->first('code') }}</strong>
@@ -50,7 +50,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('number_of_vehicle') ? ' has-errors' : '' }}">
+                        <div class="form-group{{ $errors->has('number_of_vehicle') ? ' has-error' : '' }}">
                             {!! Form::label('number_of_vehicle','Number of Vehicle',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-4">
                                 {!! Form::text('number_of_vehicle',null,['class'=>'form-control','placeholder'=>'Number of the vehicle','id'=>'number_of_vehicle']) !!}

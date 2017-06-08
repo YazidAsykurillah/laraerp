@@ -24,8 +24,8 @@ class UpdateVehicleRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|max:7|unique:vehicles,code',
-            'vehicle_category'=>'required',
+            'code'=>'required|unique:vehicles,code,'.$this->route('vehicle'),
+            'category'=>'required',
             'number_of_vehicle'=>'required',
         ];
     }

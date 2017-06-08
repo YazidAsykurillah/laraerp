@@ -105,10 +105,10 @@
                               </td>
                               <td>{{ $or['category'] }}</td>
                               <td>
-                                <input type="text" name="price_per_unit[]" value="{{ number_format($or['price_per_unit']) }}" class="price_per_unit">
+                                <input type="text" name="price_per_unit[]" value="{{ number_format($or['price_per_unit']) }}" class="price_per_unit form-control">
                               </td>
                               <td>
-                                <input type="text" name="price[]" value="{{ number_format($or['price']) }}" class="price">
+                                <input type="text" name="price[]" value="{{ number_format($or['price']) }}" class="price form-control" readonly>
                                 <?php $sum += $or['price']; ?>
                               </td>
                           </tr>
@@ -143,7 +143,7 @@
             <div class="form-group{{ $errors->has('bill_price') ? ' has-error' : '' }}">
               {!! Form::label('bill_price', 'Bill Price', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-6">
-                {!! Form::text('bill_price',null,['class'=>'form-control', 'placeholder'=>'Bill price of the invoice', 'id'=>'bill_price']) !!}
+                {!! Form::text('bill_price',null,['class'=>'form-control', 'placeholder'=>'Bill price of the invoice', 'id'=>'bill_price', 'readonly']) !!}
                 @if ($errors->has('bill_price'))
                   <span class="help-block">
                     <strong>{{ $errors->first('bill_price') }}</strong>
