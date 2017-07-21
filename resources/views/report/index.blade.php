@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -234,7 +234,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -295,7 +295,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -371,7 +371,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -433,7 +433,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -518,7 +518,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -578,7 +578,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -655,7 +655,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -717,7 +717,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">
@@ -795,7 +795,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        <div class="table responsive">
+                        <div class="table responsive" style="min-height:500px">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr style="background-color:#3c8dbc;color:white">

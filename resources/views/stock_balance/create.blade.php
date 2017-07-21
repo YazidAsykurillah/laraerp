@@ -63,7 +63,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <div class="table-responsive" style="max-height:500px">
+            <div class="table-responsive">
               <table class="table table-striped table-hover" id="table-product">
                 <thead>
                   <tr style="background-color:#3c8dbc;color:white">
@@ -159,18 +159,22 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
-    $('#btn-submit-driver').click(function(){
-      $(this).attr('disable', 'disabled');
+    $('#table-product').DataTable({
+
     });
 
-    // Delete button handler
-    tableProduct.on('click', '.btn-delete-product', function (e) {
-      var id = $(this).attr('data-id');
-      var name = $(this).attr('data-text');
-      $('#product_id').val(id);
-      $('#product-name-to-delete').text(name);
-      $('#modal-delete-product').modal('show');
-    });
+    // $('#btn-submit-driver').click(function(){
+    //   $(this).attr('disable', 'disabled');
+    // });
+
+    // // Delete button handler
+    // tableProduct.on('click', '.btn-delete-product', function (e) {
+    //   var id = $(this).attr('data-id');
+    //   var name = $(this).attr('data-text');
+    //   $('#product_id').val(id);
+    //   $('#product-name-to-delete').text(name);
+    //   $('#modal-delete-product').modal('show');
+    // });
 
 
 

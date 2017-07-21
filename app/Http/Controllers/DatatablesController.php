@@ -33,6 +33,8 @@ use App\MainProduct;
 use App\TransactionChartAccount;
 use App\Asset;
 use App\Adjustment;
+use App\GiroPurchaseInvoicePayment;
+use App\GiroSalesInvoicePayment;
 
 class DatatablesController extends Controller
 {
@@ -531,7 +533,7 @@ class DatatablesController extends Controller
             })
             ->editColumn('invoice', function($sales_orders){
                 if(count($sales_orders->sales_order_invoice) == 1){
-                    $btn_inv  = '<a href="'.url('sales-order-invoice/'.$sales_orders->sales_order_invoice->sales_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
+                    $btn_inv  = '<a href="'.url('sales-order-invoice/'.$sales_orders->sales_order_invoice->id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
                     $btn_inv .= $sales_orders->sales_order_invoice->code;
                     $btn_inv .= '</a>&nbsp;';
                     return 'Available'.' '.$btn_inv;
@@ -1243,6 +1245,86 @@ class DatatablesController extends Controller
         }
 
         return $data_adjustments->make(true);
+
+    }
+
+    public function getPurchaseGiros(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        //\DB::table('suppliers')->orderBy('code','asc')->get();
+        $giro = GiroPurchaseInvoicePayment::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'no_giro',
+            'bank',
+            'tanggal_cair',
+            'amount',
+            'status',
+            'created_at',
+        ]);
+
+        $data_giros = Datatables::of($giro)
+            ->editColumn('status',function($giro){
+                if($giro->status == 'pos'){
+                    $label = '<span class="label label-warning">'.strtoupper($giro->status).'</span>';
+                    return $label;
+                }else{
+                    $label = '<span class="label label-success">'.strtoupper($giro->status).'</span>';
+                    return $label;
+                }
+
+            })
+            ->addColumn('actions', function($giro){
+                $actions_html ='<button type="button" class="btn btn-primary btn-xs btn-approve-giro" data-id="'.$giro->id.'" data-status="'.$giro->status.'" data-text="'.$giro->no_giro.'" title="Click to approve this giro">';
+                $actions_html .=    '<i class="fa fa-check"></i> Approve';
+                $actions_html .='</button>';
+                return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_giros->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_giros->make(true);
+
+    }
+
+    public function getSalesGiros(Request $request){
+        \DB::statement(\DB::raw('set @rownum=0'));
+        //\DB::table('suppliers')->orderBy('code','asc')->get();
+        $giro = GiroSalesInvoicePayment::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'no_giro',
+            'bank',
+            'tanggal_cair',
+            'amount',
+            'status',
+            'created_at',
+        ]);
+
+        $data_giros = Datatables::of($giro)
+            ->editColumn('status',function($giro){
+                if($giro->status == 'pos'){
+                    $label = '<span class="label label-warning">'.strtoupper($giro->status).'</span>';
+                    return $label;
+                }else{
+                    $label = '<span class="label label-success">'.strtoupper($giro->status).'</span>';
+                    return $label;
+                }
+
+            })
+            ->addColumn('actions', function($giro){
+                    $actions_html ='<button type="button" class="btn btn-primary btn-xs btn-approve-giro" data-id="'.$giro->id.'" data-status="'.$giro->status.'" data-text="'.$giro->no_giro.'" title="Click to approve this giro">';
+                    $actions_html .=    '<i class="fa fa-check"></i> Approve';
+                    $actions_html .='</button>';
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_giros->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_giros->make(true);
 
     }
 }

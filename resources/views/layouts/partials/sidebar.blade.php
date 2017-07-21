@@ -33,6 +33,7 @@
           <li><a href="{{ url('purchase-order') }}"><i class="fa fa-circle-o"></i> Purchase Order</a></li>
           <li><a href="{{ url('purchase-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="{{ url('purchase-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
+          <li><a href="{{ url('purchase-giro') }}"><i class="fa fa-circle-o"></i> List Giro</a></li>
         </ul>
       </li>
       <li class="treeview">
@@ -44,6 +45,7 @@
           <li><a href="{{ url('sales-order') }}"><i class="fa fa-circle-o"></i> Sales Order</a></li>
           <li><a href="{{ url('sales-order-invoice') }}"><i class="fa fa-circle-o"></i> Invoice</a></li>
           <li><a href="{{ url('sales-return') }}"><i class="fa fa-circle-o"></i> Return</a></li>
+          <li><a href="{{ url('sales-giro') }}"><i class="fa fa-circle-o"></i> List Giro</a></li>
         </ul>
       </li>
       <li class="treeview">

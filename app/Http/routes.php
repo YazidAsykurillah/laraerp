@@ -23,6 +23,14 @@ Route::resource('restore','RestoreController');
 //backup
 Route::resource('backup','BackUpController');
 
+//purchase-giro
+Route::post('approvePurchaseGiro','PurchaseGiroController@approvePurchaseGiro');
+Route::resource('purchase-giro','PurchaseGiroController');
+
+//sales-giro
+Route::post('approveSalesGiro','GiroController@approveSalesGiro');
+Route::resource('sales-giro','GiroController');
+
 //adjustment
 Route::post('callFieldProduct','ProductAdjusmentController@callSubProduct');
 Route::post('deleteAdjustment','ProductAdjusmentController@destroy');
@@ -276,4 +284,6 @@ Route::controller('datatables', 'DatatablesController',[
     'getTransactionChartAccounts' =>'datatables.getTransactionChartAccounts',
     'getAssets'=>'datatables.getAssets',
     'getAdjustments'=>'datatables.getAdjustments',
+    'getPurchaseGiros'=>'datatables.getPurchaseGiros',
+    'getSalesGiros'=>'datatables.getSalesGiros'
 ]);
