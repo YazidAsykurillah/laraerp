@@ -117,18 +117,21 @@
             <div class="box-header with-border">
                 {!! Form::open(['url'=>'neraca.neraca_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca','files'=>true]) !!}
                 <center>
-                    <h3 class="box-title">CATRA<small>TEXTILE</small></h3>
-                    <h4>NERACA</h4>
-                    <h4 id="sort_target">
-                        @if(isset($year_in))
-                            Tahun&nbsp;{{ $year }}
-                        @elseif(isset($month_in))
-                            Bulan&nbsp;{{ $conv_month_start }}&nbsp;Tahun&nbsp;{{ $year_start }}&nbsp;sampai&nbsp;Bulan&nbsp;{{ $conv_month_end }}&nbsp;Tahun&nbsp;{{ $year_end}}
-                        @else
-                            Tahun&nbsp;{{ date('Y') }}
-                        @endif
-                    </h4>
+                      <h2>PT.CATRA TEXTILE RAYA</h2>
+                      <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                      <h5>Telp. 021-22522283, 021-22522334</h5>
                 </center>
+                <hr>
+                <label class="label label-info">NERACA</label>
+                <label class="label label-info" id="sort_target">
+                    @if(isset($year_in))
+                        {{ $year }}
+                    @elseif(isset($month_in))
+                        {{ $conv_month_start }}&nbsp;{{ $year_start }}&nbsp;s/d&nbsp;{{ $conv_month_end }}&nbsp;{{ $year_end}}
+                    @else
+                        Tahun&nbsp;{{ date('Y') }}
+                    @endif
+                </label>
                 @if(isset($year_in))
                 <div class="form-group pull-right">
                     {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}

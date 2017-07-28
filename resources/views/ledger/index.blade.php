@@ -77,17 +77,22 @@
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
                     <center>
-                        <h4>CATRA<small>TEXTTILE</small></h4>
-                        <h4>LEDGER</h4>
-                        <h4>{{ $query_select->name }}<h4>
+                          <h2>PT.CATRA TEXTILE RAYA</h2>
+                          <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                          <h5>Telp. 021-22522283, 021-22522334</h5>
+                    </center>
+                    <hr>
+                        <label class="label label-info">LEDGER</label>
+                        <label class="label label-info">{{ $query_select->name }}</label>
+                        <label class="label label-info">
                         @if(isset($date_start) and isset($date_end))
                           <?php
                             $date_start_f = date_create($date_start);
                             $date_end_f = date_create($date_end);
                           ?>
-                          <h4>Tanggal&nbsp;{{ date_format($date_start_f,'d-m-Y') }}&nbsp;Sampai Tanggal&nbsp;{{ date_format($date_end_f,'d-m-Y') }}</h4>
+                          {{ date_format($date_start_f,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($date_end_f,'d-m-Y') }}
                         @endif
-                      </center>
+                        </label>
                     {!! Form::open(['url'=>'ledger.ledger_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-ledger','files'=>true]) !!}
                     <div class="form-group pull-right">
                         {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
@@ -121,7 +126,10 @@
                                 @foreach($query_trans as $qt)
                                     <tr>
                                             <td>TS{{ $qt->id}}</td>
-                                            <td>{{ $qt->created_at }}</td>
+                                            <td>
+                                                <?php $date_qt = date_create($qt->created_at); ?>
+                                                {{ date_format($date_qt,'d/m/Y') }}
+                                            </td>
                                             @if(is_numeric($qt->description))
                                             <td></td>
                                             @else
@@ -153,7 +161,7 @@
                                                     <?php $sum_debit += $qt->amount*$diff; ?>
                                                   </td>
                                                   <td>0.00</td>
-                                                
+
                                                 @endif
                                     </tr>
                                 @endforeach

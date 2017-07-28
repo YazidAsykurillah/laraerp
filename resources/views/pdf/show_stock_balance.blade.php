@@ -25,6 +25,10 @@
       font-size:9pt;
       padding-left:3px;
   }
+  hr{
+    margin-top:5px;
+    border:1px solid black;
+  }
 </style>
 </head>
 
@@ -34,34 +38,46 @@
             <div class="col-lg-12">
               <div class="box">
                 <div class="box-header with-border">
-                  <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                  <h4>Stock Balance</h4>
-                  <h4 style="line-height:1.7">
-                    <?php
-                      $date = date_create($stock_balance->created_at);
-                    ?>
-                    Tanggal&nbsp;{{date_format($date,'d-m-Y')}}
-                  </h4>
+                    <center>
+                      <h2>PT.CATRA TEXTILE RAYA</h2>
+                      <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                      <h5>Telp. 021-22522283, 021-22522334</h5>
+                    </center>
+                    <hr>
+                    <br>
+                    <table style="width:100%" border="0">
+                        <tr>
+                            <td style="width:70%">Stock Balance</td>
+                            <td style="width:10%">Code</td>
+                            <td style="width:1%">:</td>
+                            <td style="width:19%">{{ $stock_balance->code}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php
+                                  $date = date_create($stock_balance->created_at);
+                                ?>
+                                Tanggal {{date_format($date,'d-m-Y')}}
+                            </td>
+                            <td>Created By</td>
+                            <td>:</td>
+                            <td>{{ $stock_balance->creator->name}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Created At</td>
+                            <td>:</td>
+                            <td>
+                                <?php
+                                    $date_stock_balance = date_create($stock_balance->created_at);
+                                ?>
+                                {{ date_format($date_stock_balance,'d-m-Y')}}
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
                 </div>
                 <div class="box-body">
-                  <table style="width:50%" border="0">
-                      <tr>
-                        <td style="width:30%;vertical-align:top">Code</td>
-                        <td style="width:5%">:</td>
-                        <td style="width:65%">{{ $stock_balance->code}}</td>
-                      </tr>
-                      <tr>
-                          <td style="width:30%;vertical-align:top">Created By</td>
-                          <td style="width:5%">:</td>
-                          <td style="width:65%">{{ $stock_balance->creator->name}}</td>
-                      </tr>
-                      <tr>
-                          <td style="width:30%;vertical-align:top">Created At</td>
-                          <td style="width:5%">:</td>
-                          <td style="width:65%">{{ $stock_balance->created_at}}</td>
-                      </tr>
-                  </table>
-                  <br>
                   <table style="width:100%" border="1" id="data-sales-order">
                       <thead>
                           <tr>

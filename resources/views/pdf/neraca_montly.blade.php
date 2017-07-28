@@ -33,6 +33,10 @@
             color: navy;
             padding-left: 40px;
         }
+        hr{
+          margin-top:5px;
+          border:1px solid black;
+        }
     </style>
 </head>
 <body>
@@ -41,68 +45,80 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                        <h4>NERACA</h4>
-                        <h4 style="line-height:1.7">
-                            @if(isset($sort_target_y))
-                                Tahun&nbsp;{{ $sort_target_year }}
-                            @elseif(isset($sort_target_m))
-                                <?php $month = ''; ?>
-                                <?php $months = ''; ?>
-                                @if($month_start == 01)
-                                  <?php $month = 'January'; ?>
-                                @elseif($month_start == 02)
-                                  <?php $month = 'February'; ?>
-                                @elseif($month_start == 03)
-                                  <?php $month = 'March'; ?>
-                                @elseif($month_start == 04)
-                                  <?php $month = 'April'; ?>
-                                @elseif($month_start == 05)
-                                  <?php $month = 'May'; ?>
-                                @elseif($month_start == 06)
-                                  <?php $month = 'June'; ?>
-                                @elseif($month_start == 07)
-                                  <?php $month = 'July'; ?>
-                                @elseif($month_start == 08)
-                                  <?php $month = 'August'; ?>
-                                @elseif($month_start == 09)
-                                  <?php $month = 'September'; ?>
-                                @elseif($month_start == 10)
-                                  <?php $month = 'October'; ?>
-                                @elseif($month_start == 11)
-                                  <?php $month = 'November'; ?>
-                                @elseif($month_start == 12)
-                                  <?php $month = 'December'; ?>
-                                @endif
+                        <center>
+                          <h2>PT.CATRA TEXTILE RAYA</h2>
+                          <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                          <h5>Telp. 021-22522283, 021-22522334</h5>
+                        </center>
+                        <hr>
+                        <br>
+                        <table>
+                            <tr>
+                                <td>NERACA</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @if(isset($sort_target_y))
+                                        Tahun&nbsp;{{ $sort_target_year }}
+                                    @elseif(isset($sort_target_m))
+                                        <?php $month = ''; ?>
+                                        <?php $months = ''; ?>
+                                        @if($month_start == 01)
+                                          <?php $month = 'January'; ?>
+                                        @elseif($month_start == 02)
+                                          <?php $month = 'February'; ?>
+                                        @elseif($month_start == 03)
+                                          <?php $month = 'March'; ?>
+                                        @elseif($month_start == 04)
+                                          <?php $month = 'April'; ?>
+                                        @elseif($month_start == 05)
+                                          <?php $month = 'May'; ?>
+                                        @elseif($month_start == 06)
+                                          <?php $month = 'June'; ?>
+                                        @elseif($month_start == 07)
+                                          <?php $month = 'July'; ?>
+                                        @elseif($month_start == 08)
+                                          <?php $month = 'August'; ?>
+                                        @elseif($month_start == 09)
+                                          <?php $month = 'September'; ?>
+                                        @elseif($month_start == 10)
+                                          <?php $month = 'October'; ?>
+                                        @elseif($month_start == 11)
+                                          <?php $month = 'November'; ?>
+                                        @elseif($month_start == 12)
+                                          <?php $month = 'December'; ?>
+                                        @endif
 
-                                @if($month_end == 01)
-                                  <?php $months = 'January'; ?>
-                                @elseif($month_end == 02)
-                                  <?php $months = 'February'; ?>
-                                @elseif($month_end == 03)
-                                  <?php $months = 'March'; ?>
-                                @elseif($month_end == 04)
-                                  <?php $months = 'April'; ?>
-                                @elseif($month_end == 05)
-                                  <?php $months = 'May'; ?>
-                                @elseif($month_end == 06)
-                                  <?php $months = 'June'; ?>
-                                @elseif($month_end == 07)
-                                  <?php $months = 'July'; ?>
-                                @elseif($month_end == 08)
-                                  <?php $months = 'August'; ?>
-                                @elseif($month_end == 09)
-                                  <?php $months = 'September'; ?>
-                                @elseif($month_end == 10)
-                                  <?php $months = 'October'; ?>
-                                @elseif($month_end == 11)
-                                  <?php $months = 'November'; ?>
-                                @elseif($month_end == 12)
-                                  <?php $months = 'December'; ?>
-                                @endif
-                                Bulan&nbsp;{{ $month }}&nbsp;Tahun&nbsp;{{ $year_start}}&nbsp;sampai&nbsp;Bulan&nbsp;{{ $months}}&nbsp;Tahun&nbsp;{{ $year_end}}
-                            @endif
-                        </h4>
+                                        @if($month_end == 01)
+                                          <?php $months = 'January'; ?>
+                                        @elseif($month_end == 02)
+                                          <?php $months = 'February'; ?>
+                                        @elseif($month_end == 03)
+                                          <?php $months = 'March'; ?>
+                                        @elseif($month_end == 04)
+                                          <?php $months = 'April'; ?>
+                                        @elseif($month_end == 05)
+                                          <?php $months = 'May'; ?>
+                                        @elseif($month_end == 06)
+                                          <?php $months = 'June'; ?>
+                                        @elseif($month_end == 07)
+                                          <?php $months = 'July'; ?>
+                                        @elseif($month_end == 08)
+                                          <?php $months = 'August'; ?>
+                                        @elseif($month_end == 09)
+                                          <?php $months = 'September'; ?>
+                                        @elseif($month_end == 10)
+                                          <?php $months = 'October'; ?>
+                                        @elseif($month_end == 11)
+                                          <?php $months = 'November'; ?>
+                                        @elseif($month_end == 12)
+                                          <?php $months = 'December'; ?>
+                                        @endif
+                                        Bulan&nbsp;{{ $month }}&nbsp;{{ $year_start}}&nbsp;s/d&nbsp;{{ $months}}&nbsp;{{ $year_end}}
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <br/>
                     <div class="box-body">
@@ -646,11 +662,11 @@
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
                                                 <td align="right">
-                                                @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_by_year,'y','') == '')
+                                                @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
                                                   0.00
                                                 @else
-                                                  {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_by_year,'y','')) }}.00
-                                                  <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_by_year,'y',''); ?>
+                                                  {{ number_format(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','')) }}.00
+                                                  <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 @endif
                                                 </td>
                                             @elseif(isset($sort_target_m))

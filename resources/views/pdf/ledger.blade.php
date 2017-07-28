@@ -25,6 +25,10 @@
       font-size:9pt;
       padding-left:3px;
   }
+  hr{
+    margin-top:5px;
+    border:1px solid black;
+  }
 </style>
 </head>
 <body>
@@ -33,22 +37,36 @@
       <div class="col-lg-12">
         <div class="box">
           <div class="box-header with-border">
-              <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-              <h4>LEDGER</h4>
-              <h4>{{ $sub_account_name->account_number.' '.$sub_account_name->name }}</h4>
-              <h4>
-                  <?php
-                  $date_start_c = date_create($date_start);
-                  $date_end_c = date_create($date_end);
-                  ?>
-                  Tanggal&nbsp;{{  date_format($date_start_c,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($date_end_c,'d-m-Y') }}
-              </h4>
+              <center>
+                <h2>PT.CATRA TEXTILE RAYA</h2>
+                <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                <h5>Telp. 021-22522283, 021-22522334</h5>
+              </center>
+              <hr>
+              <br>
+              <table>
+                  <tr>
+                      <td>LEDGER</td>
+                  </tr>
+                  <tr>
+                      <td>{{ $sub_account_name->account_number.' '.$sub_account_name->name }}</td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <?php
+                          $date_start_c = date_create($date_start);
+                          $date_end_c = date_create($date_end);
+                          ?>
+                          Tanggal&nbsp;{{  date_format($date_start_c,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($date_end_c,'d-m-Y') }}
+                      </td>
+                  </tr>
+              </table>
           </div>
           <div class="box-body">
             <div class="table-responsive">
               @if(count($query_trans) > 0)
                 <br>
-                <table border="1" style="width:100%">
+                <table border="0" style="width:100%" class="table">
                     <thead>
                         <tr>
                             <th style="width:15%">No.Transaction</th>
@@ -66,7 +84,7 @@
                                     <td>TS{{ $qt->id}}</td>
                                     <td>
                                       <?php $date_f = date_create($qt->created_at); ?>
-                                      {{ date_format($date_f,'d-m-Y') }}
+                                      {{ date_format($date_f,'d/m/Y') }}
                                     </td>
                                     @if(is_numeric($qt->description))
                                     <td></td>

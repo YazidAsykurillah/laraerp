@@ -112,33 +112,18 @@
         <div class="col-lg-12">
             <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
                 <div class="box-header with-border">
-                    <h3 class="box-title">
-                        @if($report_type == 0)
-                            Ringkasan Penjualan
-                        @elseif($report_type == 1)
-                            Detail Penjualan
-                        @elseif($report_type == 2)
-                            Ringkasan Return Penjualan
-                        @elseif($report_type == 3)
-                            Detail Return Penjualan
-                        @elseif($report_type == 4)
-                            Ringkasan Pembelian
-                        @elseif($report_type == 5)
-                            Detail Pembelian
-                        @elseif($report_type == 6)
-                            Ringkasan Return Pembelian
-                        @elseif($report_type == 7)
-                            Detail Return Pembelian
-                        @elseif($report_type == 8)
-                            Rincian Penjualan per Pelanggan
-                        @elseif($report_type == 9)
-                            Penjualan per Pelanggan
-                        @endif
-                    </h3>
+                    <center>
+                      <h2>PT.CATRA TEXTILE RAYA</h2>
+                      <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                      <h5>Telp. 021-22522283, 021-22522334</h5>
+                    </center>
+                    <hr>
                 </div>
                 <div class="box-body">
                         @if($report_type == 0)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Ringkasan Penjualan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -160,7 +145,7 @@
                                     <th style="width:20%;">Customer</th>
                                     <th style="width:10%;">Sub Total</th>
                                     <th style="width:10%;">Disc(%)</th>
-                                    <th style="width:10%;">Tax(%)</th>
+                                    <th style="width:10%;">Tax(10%)</th>
                                     <th style="width:10%;">Nilai Faktur</th>
                                     <th style="width:10%;">Retur</th>
                                     <th style="width:10%;">Net</th>
@@ -175,12 +160,12 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
                                         <td>{{ number_format($d_i['sub_total']) }}</td>
                                         <td>{{ $d_i['disc'] }}</td>
-                                        <td>{{ $d_i['tax'].'%' }}</td>
+                                        <td>{{ number_format($d_i['tax']) }}</td>
                                         <td>
                                             {{ number_format($d_i['bill_price']) }}
                                             <?php $sum_bill_price += $d_i['bill_price']; ?>
@@ -221,6 +206,8 @@
                         </div>
                         @elseif($report_type == 1)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Detail Penjualan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -258,7 +245,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
                                         <td>{{ $d_i['item'] }}</td>
@@ -283,6 +270,8 @@
                         </div>
                         @elseif($report_type == 2)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Ringkasan Return Penjualan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -319,7 +308,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
                                         <td>{{ $d_i['sub_total'] }}</td>
@@ -358,6 +347,8 @@
                         </div>
                         @elseif($report_type == 3)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Detail Return Penjualan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -395,7 +386,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['customer'] }}</td>
                                         <td>{{ $d_i['item'] }}</td>
@@ -420,6 +411,8 @@
                         </div>
                         @elseif($report_type == 4)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Ringkasan Pembelian</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -442,7 +435,7 @@
                                     <th style="width:20%;">Customer</th>
                                     <th style="width:10%;">Sub Total</th>
                                     <th style="width:10%;">Disc(%)</th>
-                                    <th style="width:10%;">Tax(%)</th>
+                                    <th style="width:10%;">Tax(10%)</th>
                                     <th style="width:10%;">Nilai Faktur</th>
                                     <th style="width:10%;">Retur</th>
                                     <th style="width:10%;">Net</th>
@@ -460,11 +453,11 @@
                                             {{ date_format($datenya,'d-m-Y') }}
                                         </td>
                                         <td>{{ $d_i['supplier'] }}</td>
-                                        <td>{{ $d_i['sub_total'] }}</td>
+                                        <td>{{ number_format($d_i['sub_total']) }}</td>
                                         <td>{{ $d_i['disc'] }}</td>
-                                        <td>{{ $d_i['tax'] }}</td>
+                                        <td>{{ number_format($d_i['tax']) }}</td>
                                         <td>
-                                            {{ number_format($d_i['bill_price']) }}
+                                            {{ number_format($d_i['bill_price']-$d_i['tax']) }}
                                             <?php $sum_bill_price += $d_i['bill_price']; ?>
                                         </td>
                                             <?php $x = []; $sum = 0;?>
@@ -504,6 +497,8 @@
                         </div>
                         @elseif($report_type == 5)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Detail Pembelian</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -541,7 +536,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['supplier'] }}</td>
                                         <td>{{ $d_i['item'] }}</td>
@@ -565,6 +560,8 @@
                         </div>
                         @elseif($report_type == 6)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Ringkasan Return Pembelian</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -587,7 +584,7 @@
                                     <th style="width:20%;">Supplier</th>
                                     <th style="width:10%;">Sub Total</th>
                                     <th style="width:10%;">Disc(%)</th>
-                                    <th style="width:10%;">Tax(%)</th>
+                                    <th style="width:10%;">Tax(10%)</th>
                                     <th style="width:10%;">Total</th>
                                     <th style="width:10%;">Retur</th>
                                     <th style="width:10%;">Net</th>
@@ -602,7 +599,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['supplier'] }}</td>
                                         <td>{{ $d_i['sub_total'] }}</td>
@@ -641,6 +638,8 @@
                         </div>
                         @elseif($report_type == 7)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Detail Return Pembelian</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -679,7 +678,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['supplier'] }}</td>
                                         <td>{{ $d_i['item'] }}</td>
@@ -704,6 +703,8 @@
                         </div>
                         @elseif($report_type == 8)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Rincian Penjualan per Pelanggan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">
@@ -739,7 +740,7 @@
                                             <?php
                                                 $datenya = date_create($d_i['tgl_faktur']);
                                             ?>
-                                            {{ date_format($datenya,'d-m-Y') }}
+                                            {{ date_format($datenya,'d/m/Y') }}
                                         </td>
                                         <td>{{ $d_i['keterangan'] }}</td>
                                         <td>
@@ -782,6 +783,8 @@
                         </div>
                         @elseif($report_type == 9)
                         {!! Form::open(['url'=>'report.report_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-report','files'=>true]) !!}
+                        <label class="label label-info">Penjualan per Pelanggan</label>
+                        <label class="label label-info">{{ $start_date }}&nbsp;s/d&nbsp;{{ $end_date }}</label>
                         <div class="form-group pull-right">
                             {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-3">

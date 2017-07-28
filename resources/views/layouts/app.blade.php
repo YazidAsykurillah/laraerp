@@ -46,7 +46,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
     <div class="wrapper">
       <!-- include the main header -->
       @include('layouts.partials.main_header')
@@ -121,6 +121,8 @@
     {!! Html::script('js/admin-lte/app.js') !!}
 
     {!! Html::script('js/alertify/alertify.js') !!}
+
+    {!! Html::script('js/goTop.js') !!}
 
     <!-- Additional javascript -->
     @yield('additional_scripts')

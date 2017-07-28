@@ -49,23 +49,7 @@
             <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
             <h5>Telp. 021-22522283, 021-22522334</h5>
           </center>
-          <hr>
-            <!-- <table style="width:100%">
-                <tr>
-                    <td style="width:30%;vertical-align:top;text-align:left">
-                        <h1>CATRA<small>TEXTILE</small></h1>
-                    </td>
-                    <td style="width:40%;text-align:left">
-                        <p>Green Sedayu Bizpark</p>
-                        <p>DMS No. 12 Jl. Daan Mogot KM 18</p>
-                        <p>Kalideres- Jakarta Barat</p>
-                        <p>Telp. 021-22522283, 021-22522334</p>
-                    </td>
-                    <td style="width:30%;vertical-align:top;text-align:left">
-                        <h2>SALES ORDER</h2>
-                    </td>
-                </tr>
-            </table> -->
+        <hr>
         </div>
         <br/>
         <div class="row">

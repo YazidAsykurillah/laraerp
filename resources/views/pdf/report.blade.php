@@ -25,6 +25,10 @@
         font-size:9pt;
         padding-left:3px;
     }
+    hr{
+      margin-top:5px;
+      border:1px solid black;
+    }
 </style>
 </head>
 <body>
@@ -33,15 +37,31 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                        <h4>{{ $sort_report_type }}</h4>
-                        <h4 style="line-height:1.7">
-                            <?php
-                            $start_datenya = date_create($sort_start_date);
-                            $end_datenya = date_create($sort_end_date);
-                            ?>
-                            Tanggal&nbsp;{{  date_format($start_datenya,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($end_datenya,'d-m-Y') }}
-                        </h4>
+                        <center>
+                          <h2>PT.CATRA TEXTILE RAYA</h2>
+                          <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                          <h5>Telp. 021-22522283, 021-22522334</h5>
+                        </center>
+                        <hr>
+                        <br>
+                        <table border="0">
+                            <tr>
+                                <td style="width:15%">Type</td>
+                                <td style="width:2%">:</td>
+                                <td style="width:25%">{{ $sort_report_type }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:15%">Date</td>
+                                <td style="width:2%">:</td>
+                                <td style="width:25%">
+                                    <?php
+                                    $start_datenya = date_create($sort_start_date);
+                                    $end_datenya = date_create($sort_end_date);
+                                    ?>
+                                    {{ date_format($start_datenya,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($end_datenya,'d-m-Y') }}
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="box-body">
                         @if($sort_report_type == 'Ringkasan Penjualan')
@@ -55,7 +75,7 @@
                                         <th style="">Customer</th>
                                         <th style="">Sub Total</th>
                                         <th style="">Disc(%)</th>
-                                        <th style="">Tax(%)</th>
+                                        <th style="">Tax(10%)</th>
                                         <th style="">Nilai</th>
                                         <th style="">Retur</th>
                                         <th style="">Net</th>
@@ -70,12 +90,12 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['customer'] }}</td>
-                                            <td>{{ number_format($d_i['sub_total']) }}</td>
-                                            <td>{{ $d_i['disc'] }}</td>
-                                            <td>{{ $d_i['tax'] }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['sub_total']) }}</td>
+                                            <td align="right" style="padding-right:3px">{{ $d_i['disc'] }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['tax']) }}</td>
                                             <td align="right" style="padding-right:3px">
                                                 {{ number_format($d_i['bill_price']) }}
                                                 <?php $sum_bill_price += $d_i['bill_price']; ?>
@@ -106,10 +126,10 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" align="right" style="padding-right:3px">Total</td>
-                                        <td style="padding-right:3px" align="right">{{ number_format($sum_bill_price) }}</td>
-                                        <td style="padding-right:3px" align="right">{{ number_format($sum_return_price) }}</td>
-                                        <td style="padding-right:3px" align="right">{{ number_format($sum_netto_price) }}</td>
+                                        <td colspan="6" align="right" style="padding-right:6px">Total</td>
+                                        <td style="padding-right:6px" align="right">{{ number_format($sum_bill_price) }}</td>
+                                        <td style="padding-right:6px" align="right">{{ number_format($sum_return_price) }}</td>
+                                        <td style="padding-right:6px" align="right">{{ number_format($sum_netto_price) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -140,7 +160,7 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['customer'] }}</td>
                                             <td>{{ $d_i['item'] }}</td>
@@ -174,7 +194,7 @@
                                         <th style="width:20%;">Customer</th>
                                         <th style="width:10%;">Sub Total</th>
                                         <th style="width:10%;">Disc(%)</th>
-                                        <th style="width:10%;">Tax(%)</th>
+                                        <th style="width:10%;">Tax(10%)</th>
                                         <th style="width:10%;">Total</th>
                                         <th style="width:10%;">Retur</th>
                                         <th style="width:10%;">Net</th>
@@ -189,7 +209,7 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['customer'] }}</td>
                                             <td>{{ $d_i['sub_total'] }}</td>
@@ -252,7 +272,7 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['customer'] }}</td>
                                             <td>{{ $d_i['item'] }}</td>
@@ -286,7 +306,7 @@
                                         <th>Customer</th>
                                         <th>Sub Total</th>
                                         <th>Disc(%)</th>
-                                        <th>Tax(%)</th>
+                                        <th>Tax(10%)</th>
                                         <th>Nilai Faktur</th>
                                         <th>Retur</th>
                                         <th>Net</th>
@@ -301,12 +321,12 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['supplier'] }}</td>
-                                            <td>{{ $d_i['sub_total'] }}</td>
-                                            <td>{{ $d_i['disc'] }}</td>
-                                            <td>{{ $d_i['tax'] }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['sub_total']) }}</td>
+                                            <td align="right" style="padding-right:3px">{{ $d_i['disc'] }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['tax']) }}</td>
                                             <td align="right" style="padding-right:3px">
                                                 {{ number_format($d_i['bill_price']) }}
                                                 <?php $sum_bill_price += $d_i['bill_price']; ?>
@@ -337,10 +357,10 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" align="right" style="padding-right:3px">Total</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_bill_price) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_return_price) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_netto_price) }}</td>
+                                        <td colspan="6" align="right" style="padding-right:6px">Total</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_bill_price) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_return_price) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_netto_price) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -370,11 +390,11 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['supplier'] }}</td>
                                             <td>{{ $d_i['item'] }}</td>
-                                            <td>{{ number_format($d_i['unit_price']) }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['unit_price']) }}</td>
                                             <td>{{ $d_i['quantity'] }}</td>
                                             <td>{{ $d_i['disc'] }}</td>
                                             <td align="right" style="padding-right:3px">
@@ -386,8 +406,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="7" align="right" style="padding-right:3px">Total</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_bill_price) }}</td>
+                                        <td colspan="7" align="right" style="padding-right:6px">Total</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_bill_price) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -403,7 +423,7 @@
                                         <th style="width:20%;">Supplier</th>
                                         <th style="width:10%;">Sub Total</th>
                                         <th style="width:10%;">Disc(%)</th>
-                                        <th style="width:10%;">Tax(%)</th>
+                                        <th style="width:10%;">Tax(10%)</th>
                                         <th style="width:10%;">Total</th>
                                         <th style="width:10%;">Retur</th>
                                         <th style="width:10%;">Net</th>
@@ -418,7 +438,7 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['supplier'] }}</td>
                                             <td>{{ $d_i['sub_total'] }}</td>
@@ -481,11 +501,11 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['supplier'] }}</td>
                                             <td>{{ $d_i['item'] }}</td>
-                                            <td>{{ number_format($d_i['unit_price']) }}</td>
+                                            <td align="right" style="padding-right:3px">{{ number_format($d_i['unit_price']) }}</td>
                                             <td>{{ $d_i['quantity'] }}</td>
                                             <td>{{ $d_i['disc'] }}</td>
                                             <td>{{ $d_i['disc_amt'] }}</td>
@@ -498,8 +518,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="8" align="right" style="padding-right:3px">Total</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_bill_price) }}</td>
+                                        <td colspan="8" align="right" style="padding-right:6px">Total</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_bill_price) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -528,7 +548,7 @@
                                                 <?php
                                                     $datenya = date_create($d_i['tgl_faktur']);
                                                 ?>
-                                                {{ date_format($datenya,'d-m-Y') }}
+                                                {{ date_format($datenya,'d/m/Y') }}
                                             </td>
                                             <td>{{ $d_i['keterangan'] }}</td>
                                             <td align="right" style="padding-right:3px">
@@ -561,10 +581,10 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3" align="right" style="padding-right:3px">Total</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_bill_price) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_return) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_netto_price) }}</td>
+                                        <td colspan="3" align="right" style="padding-right:6px">Total</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_bill_price) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_return) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_netto_price) }}</td>
                                         <td></td>
                                     </tr>
                                 </tfoot>
@@ -620,10 +640,10 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td align="right" style="padding-right:3px">Total</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_bill_price) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_return_price) }}</td>
-                                        <td align="right" style="padding-right:3px">{{ number_format($sum_netto_price) }}</td>
+                                        <td align="right" style="padding-right:6px">Total</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_bill_price) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_return_price) }}</td>
+                                        <td align="right" style="padding-right:6px">{{ number_format($sum_netto_price) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>

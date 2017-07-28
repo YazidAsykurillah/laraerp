@@ -188,8 +188,8 @@
                             <p>*Pembayaran dengan Cek/Giro akan dianggap lunas,</p>
                             <p>jika sudah cair dalam rekening kami</p>
                             <p>BCA KCP Taman Palem Lestari</p>
-                            <p>A/C: 757 054 5455</p>
-                            <p>A/N: CATUR PUTRA NG</p>
+                            <p>A/C: 865 025 0789</p>
+                            <p>A/N: PT.CATRA TEXTILE RAYA</p>
                             </div>
                         </td>
                     </tr>

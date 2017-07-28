@@ -24,6 +24,10 @@
     h1,h4{
       text-align: center;
     }
+    hr{
+      margin-top:5px;
+      border:1px solid black;
+    }
 </style>
 </head>
 
@@ -33,14 +37,26 @@
           <div class="col-lg-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                <h4>Product Stock</h4>
-                <h4 style="line-height:1.7">
-                  <?php
-                    $date = date_create($tgl);
-                  ?>
-                  Tanggal&nbsp;{{date_format($date,'d-m-Y')}}
-                </h4>
+                  <center>
+                    <h2>PT.CATRA TEXTILE RAYA</h2>
+                    <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                    <h5>Telp. 021-22522283, 021-22522334</h5>
+                  </center>
+                  <hr>
+                  <br>
+                  <table style="width:100%">
+                      <tr>
+                          <td>Product Stock</td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <?php
+                                $date = date_create($tgl);
+                              ?>
+                              Tanggal&nbsp;{{date_format($date,'d-m-Y')}}
+                          </td>
+                      </tr>
+                  </table>
               </div>
               <div class="box-body">
                 <br>

@@ -71,16 +71,19 @@
                 <div class="box-header with-border">
                     {!! Form::open(['url'=>'cash-flow.cash_flow_print','role'=>'form','class'=>'form-horizontal','id'=>'form-search-neraca','files'=>true]) !!}
                     <center>
-                        <h3 class="box-title">CATRA<small>TEXTILE</small></h3>
-                        <h4>ARUS KAS</h4>
-                        <h4>
+                          <h2>PT.CATRA TEXTILE RAYA</h2>
+                          <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                          <h5>Telp. 021-22522283, 021-22522334</h5>
+                    </center>
+                    <hr>
+                        <label class="label label-info">ARUS KAS</label>
+                        <label class="label label-info">
                             <?php
                               $date_start_f = date_create($date_start);
                               $date_end_f = date_create($date_end);
                             ?>
                             DARI TANGGAL&nbsp;{{ date_format($date_start_f,'d-m-Y') }}&nbsp;SAMPAI&nbsp;TANGGAL&nbsp;{{ date_format($date_end_f,'d-m-Y') }}
-                        </h4>
-                    </center>
+                        </label>
                     <div class="form-group pull-right">
                         {!! Form::label('','',['class'=>'col-sm-2 control-label']) !!}
                         <div class="col-sm-3">

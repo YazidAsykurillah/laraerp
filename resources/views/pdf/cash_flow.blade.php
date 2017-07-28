@@ -27,6 +27,10 @@
         th{
             text-align: center;
         }
+        hr{
+          margin-top:5px;
+          border:1px solid black;
+        }
     </style>
 </head>
 <body>
@@ -35,15 +39,27 @@
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h1 class="box-title">CATRA<small>TEXTILE</small></h1>
-                        <h4>ARUS KAS</h4>
-                        <h4 style="line-height:1.7">
-                            <?php
-                            $date_start_nya = date_create($date_start);
-                            $date_end_nya = date_create($date_end);
-                            ?>
-                            TANGGAL&nbsp;{{ date_format($date_start_nya,'d-m-Y') }}&nbsp;SAMPAI TANGGAL&nbsp;{{ date_format($date_end_nya,'d-m-Y')}}
-                        </h4>
+                        <center>
+                          <h2>PT.CATRA TEXTILE RAYA</h2>
+                          <h5>Green Sedayu Bizpark DM 5 No.12 Jl.Daan Mogot KM 18 Kalideres - Jakarta Barat</h5>
+                          <h5>Telp. 021-22522283, 021-22522334</h5>
+                        </center>
+                        <hr>
+                        <br>
+                        <table>
+                            <tr>
+                                <td>ARUS KAS</td>
+                            </tr>
+                            <tr>
+                                <?php
+                                $date_start_nya = date_create($date_start);
+                                $date_end_nya = date_create($date_end);
+                                ?>
+                                <td>
+                                    Tanggal&nbsp;{{ date_format($date_start_nya,'d-m-Y') }}&nbsp;s/d&nbsp;{{ date_format($date_end_nya,'d-m-Y')}}
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <br/>
                     <div class="box-body">
