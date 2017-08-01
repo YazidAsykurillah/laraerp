@@ -24,8 +24,7 @@ class StorePaymentInvoiceSalesTransferRequest extends Request
     public function rules()
     {
         return [
-            'bank_id'=>'required',
-            'sum_amount'=>'required',
+            'sum_amount_bank'=>'required',
             'transfer_account'=>'required'
         ];
     }

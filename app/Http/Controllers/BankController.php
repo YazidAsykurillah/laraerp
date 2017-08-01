@@ -9,7 +9,8 @@ use App\Http\Requests\StoreBankRequest;
 use App\Http\Requests\UpdateBankRequest;
 
 use App\Bank;
-
+use App\ChartAccount;
+use App\SubChartAccount;
 class BankController extends Controller
 {
     /**
@@ -21,7 +22,10 @@ class BankController extends Controller
     {
         if(\Auth::user()->can('bank-module'))
         {
-            return view('bank.index');
+            $chart_account = ChartAccount::findOrFail(51);
+            $sub_chart_account = $chart_account->sub_chart_account;
+            return view('bank.index')
+              ->with('sub_chart_account',$sub_chart_account);
         }else{
             return view('403');
         }
@@ -84,7 +88,7 @@ class BankController extends Controller
      */
     public function show($id)
     {
-        $bank = Bank::findOrFail($id);
+        $bank = SubChartAccount::findOrFail($id);
         return view('bank.show')->with('bank', $bank);
     }
 

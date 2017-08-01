@@ -24,7 +24,6 @@ class StoreSalesPaymentCash extends Request
     public function rules()
     {
         return [
-            'cash_id'=>'required',
             'amount'=>'required',
             'select_account'=>'required',
         ];

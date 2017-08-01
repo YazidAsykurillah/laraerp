@@ -25,7 +25,6 @@ class StoreSalesPaymentTransfer extends Request
     {
         return [
             'amount'=>'required',
-            'bank_id'=>'required',
             'select_account'=>'required',
         ];
     }

@@ -19,4 +19,5 @@ class SubChartAccount extends Model
         return $this->hasMany('App\TransactionChartAccount');
     }
 
+
 }

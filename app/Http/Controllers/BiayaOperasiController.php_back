@@ -40,7 +40,11 @@ class BiayaOperasiController extends Controller
         if(\Auth::user()->can('create-jurnal-umum-module'))
         {
             $sub_account = SubChartAccount::all();
+            $banks = Bank::lists('name', 'id');
+            $cashs = Cash::lists('name','id');
             return view('biaya_operasi.create')
+                ->with('cashs',$cashs)
+                ->with('banks',$banks)
                 ->with('sub_account',$sub_account);
         }else{
             return view('403');
@@ -56,6 +60,37 @@ class BiayaOperasiController extends Controller
     public function store(StoreBiayaOperasiRequest $request)
     {
         $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->beban_operasi_account)->value('chart_account_id');
+
+        //save to cash or bank master
+        if($request->pay_method == 2)
+        {
+          if($sub_account_id == 62)
+          {
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first-floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
+        }elseif ($request->pay_method == 1)
+        {
+          if($sub_account_id == 62)
+          {
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first-floatval(preg_replace('#[^0-9.]#', '', $request->debit));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
+        }else
+        {
+
+        }
+
         //$id_sub_account = \DB::table('sub_chart_accounts')->select('id')->where('name',$request->beban_operasi_account)->value('id');
         // now save beban operasi account
         $trans_chart_account = New TransactionChartAccount;
@@ -80,7 +115,7 @@ class BiayaOperasiController extends Controller
           $trans_chart_account_cb->created_at = date('Y-m-d h:i:s');
           $trans_chart_account_cb->updated_at = date('Y-m-d h:i:s');
           $trans_chart_account_cb->reference = $id_first_row;
-          $trans_chart_account_cb->source = $request->cash_bank_account;
+          $trans_chart_account_cb->source = $request->cash_or_bank;
           $trans_chart_account_cb->type = 'masuk';
           $trans_chart_account_cb->description = $request->pay_method;
           $trans_chart_account_cb->memo = $request->memo;
@@ -92,7 +127,7 @@ class BiayaOperasiController extends Controller
           $trans_chart_account_cb->created_at = date('Y-m-d h:i:s');
           $trans_chart_account_cb->updated_at = date('Y-m-d h:i:s');
           $trans_chart_account_cb->reference = $id_first_row;
-          $trans_chart_account_cb->source = $request->cash_bank_account;
+          $trans_chart_account_cb->source = $request->cash_or_bank;
           $trans_chart_account_cb->type = 'keluar';
           $trans_chart_account_cb->description = $request->pay_method;
           $trans_chart_account_cb->memo = $request->memo;
@@ -132,6 +167,8 @@ class BiayaOperasiController extends Controller
             $source = TransactionChartAccount::select('source')->where('reference',$id)->value('source');
             $sub = '';
             $sub_account = SubChartAccount::all();
+            $banks = Bank::all();
+            $cashs = Cash::all();
             foreach ($cash_bank_account as $key) {
                 $sub = $key->sub_chart_account_id;
             }
@@ -139,6 +176,8 @@ class BiayaOperasiController extends Controller
             return view('biaya_operasi.edit_new')
                 ->with('trans_chart_account',$trans_chart_account)
                 ->with('cash_bank_account',$sub)
+                ->with('cash',$cashs)
+                ->with('bank',$banks)
                 ->with('sub_account',$sub_account)
                 ->with('description',$description)
                 ->with('source',$source);
@@ -156,9 +195,68 @@ class BiayaOperasiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->id_sub_account_first)->value('chart_account_id');
+      $sub_account_id = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->id_sub_account_first)->value('chart_account_id');
+        if($request->cash_bank == 2)
+        {
+          if ($sub_account_id == 62)
+          {
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('cashs')->where('id',$request->source)->update(['value'=>$back_value]);
+          }else{
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('cashs')->where('id',$request->source)->update(['value'=>$back_value]);
+          }
+        }elseif ($request->cash_bank == 1)
+        {
+          if($sub_account_id == 62)
+          {
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('banks')->where('id',$request->source)->update(['value'=>$back_value]);
+          }else{
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->source)->value('value');
+            $back_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount_first));
+            \DB::table('banks')->where('id',$request->source)->update(['value'=>$back_value]);
+          }
+        }else
+        {
+
+        }
+
         $sub_account_id_pay = \DB::table('sub_chart_accounts')->select('chart_account_id')->where('id',$request->beban_operasi_account)->value('chart_account_id');
-        //now save beban operasi account
+
+        if($request->pay_method == 2)
+        {
+          if($sub_account_id_pay == 62)
+          {
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first+floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('cashs')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $value_first-floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('cashs')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
+        }elseif ($request->pay_method == 1)
+        {
+          if($sub_account_id_pay == 62)
+          {
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $back_value+floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }else{
+            $value_first = \DB::table('banks')->select('value')->where('id',$request->cash_or_bank)->value('value');
+            $new_value = $back_value-floatval(preg_replace('#[^0-9.]#','',$request->amount));
+            \DB::table('banks')->where('id',$request->cash_or_bank)->update(['value'=>$new_value]);
+          }
+        }else
+        {
+
+        }
+
+        // now save beban operasi account
         $trans_chart_account = TransactionChartAccount::findOrFail($id);
         $trans_chart_account->amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
         $trans_chart_account->sub_chart_account_id = $request->beban_operasi_account;
@@ -180,7 +278,7 @@ class BiayaOperasiController extends Controller
                   'created_at'=>date('Y-m-d h:i:s'),
                   'updated_at'=>date('Y-m-d h:i:s'),
                   'reference'=>$id,
-                  'source'=>$request->cash_bank_account,
+                  'source'=>$request->cash_or_bank,
                   'type'=>'masuk',
                   'description'=>$request->pay_method,
                   'memo'=>$request->memo
@@ -193,7 +291,7 @@ class BiayaOperasiController extends Controller
                   'created_at'=>date('Y-m-d h:i:s'),
                   'updated_at'=>date('Y-m-d h:i:s'),
                   'reference'=>$id,
-                  'source'=>$request->cash_bank_account,
+                  'source'=>$request->cash_or_bank,
                   'type'=>'keluar',
                   'description'=>$request->pay_method,
                   'memo'=>$request->memo

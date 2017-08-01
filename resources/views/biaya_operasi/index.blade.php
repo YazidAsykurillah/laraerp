@@ -44,7 +44,7 @@
                         <thead id="searchid">
                             <tr>
                                 <th></th>
-                                <th>Account Number</th>
+                                <th>No.Transaction</th>
                                 <th>Name</th>
                                 <th>Amount</th>
                                 <th>Created At</th>

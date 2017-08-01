@@ -9,6 +9,8 @@ use App\Http\Requests\StoreCashRequest;
 use App\Http\Requests\UpdateCashRequest;
 
 use App\Cash;
+use App\ChartAccount;
+use App\SubChartAccount;
 
 class CashController extends Controller
 {
@@ -21,7 +23,10 @@ class CashController extends Controller
     {
         if(\Auth::user()->can('cash-module'))
         {
-            return view('cash.index');
+            $chart_account = ChartAccount::findOrFail(51);
+            $sub_chart_account = $chart_account->sub_chart_account;
+            return view('cash.index')
+              ->with('sub_chart_account',$sub_chart_account);
         }else{
             return view('403');
         }
@@ -81,7 +86,7 @@ class CashController extends Controller
      */
     public function show($id)
     {
-        $cash = Cash::findOrFail($id);
+        $cash = SubChartAccount::findOrFail($id);
         return view('cash.show')->with('cash',$cash);
     }
 

@@ -30,24 +30,20 @@
         <div class="box-body">
           <table class="table">
             <tr>
-              <td><b>Bank Code</b></td>
-              <td>{{ $bank->code }}</td>
-            </tr>
-            <tr>
               <td><b>Bank Name</b></td>
-              <td>{{ $bank->name }}</td>
+              <td>{{ $bank->name }}&nbsp;{{ $bank->account_number }}</td>
             </tr>
             <tr>
               <td><b>Account Name</b></td>
-              <td>{{ $bank->account_name }}</td>
+              <td>{{ \DB::table('banks')->select('account_name')->where('sub_chart_account_id',$bank->id)->value('account_name') }}</td>
             </tr>
             <tr>
               <td><b>Account Number</b></td>
-              <td>{{ $bank->account_number }}</td>
+              <td>{{ \DB::table('banks')->select('account_number')->where('sub_chart_account_id',$bank->id)->value('account_number') }}</td>
             </tr>
             <tr>
               <td><b>Value</b></td>
-              <td>{{ number_format($bank->value) }}</td>
+              <td>{{ number_format(\DB::table('transaction_chart_accounts')->select('amount')->where('sub_chart_account_id',$bank->id)->where('type','masuk')->sum('amount')) }}</td>
             </tr>
 
           </table>

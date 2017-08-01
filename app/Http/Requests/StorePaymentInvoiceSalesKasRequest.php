@@ -24,7 +24,6 @@ class StorePaymentInvoiceSalesKasRequest extends Request
     public function rules()
     {
         return [
-            'cash_id'=>'required',
             'sum_amount'=>'required',
             'cash_account'=>'required',
         ];

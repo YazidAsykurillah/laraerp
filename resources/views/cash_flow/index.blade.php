@@ -508,6 +508,16 @@
                                             <tr>
                                                 <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                                 <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                                  @if($sub->name == "PPN MASUKAN")
+                                                    @if(list_transaction_aktiva_lancar_lainnya(34,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
+                                                    <td>0,00</td>
+                                                    @else
+                                                    <td>
+                                                        {{ number_format(list_transaction_aktiva_lancar_lainnya(34,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*10/100) }}
+                                                        <?php $sum += list_transaction_aktiva_lancar_lainnya(34,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*10/100; ?>
+                                                    </td>
+                                                    @endif
+                                                  @else
                                                     @if(list_transaction_aktiva_lancar_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
                                                     <td>0,00</td>
                                                     @else
@@ -516,13 +526,14 @@
                                                         <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
                                                     </td>
                                                     @endif
+                                                  @endif
                                             </tr>
                                             @endforeach
                                         @endforeach
                                         <tr>
                                             <td></td>
                                             <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}<?php $sum_aktiva_lancar_lainnya = $sum; ?></td>
-                                            <td style="border-top:1px solid black">0,00</td>
+                                            <td style="border-top:1px solid black">{{ number_format($sum_aktiva_lancar_lainnya) }}</td>
                                         </tr>
                                         @endif
                                     @endforeach
@@ -706,6 +717,16 @@
                                             <tr>
                                                 <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                                 <td style="padding-left:40px;">{{ $sub->name}}</td>
+                                                  @if($sub->name == "PPN KELUARAN")
+                                                    @if(list_transaction_kewajiban_lancar_lainnya(79,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
+                                                    <td>0,00</td>
+                                                    @else
+                                                    <td>
+                                                        {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*10/100) }}
+                                                        <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,$date_start.' 00:00:00','m',$date_end.' 23:59:59')*10/100; ?>
+                                                    </td>
+                                                    @endif
+                                                  @else
                                                     @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59') == '')
                                                     <td>0,00</td>
                                                     @else
@@ -714,6 +735,7 @@
                                                         <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$date_start.' 00:00:00','m',$date_end.' 23:59:59'); ?>
                                                     </td>
                                                     @endif
+                                                  @endif
                                             </tr>
                                             @endforeach
                                         @endforeach

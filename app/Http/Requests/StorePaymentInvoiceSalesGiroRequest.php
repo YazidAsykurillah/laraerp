@@ -24,7 +24,7 @@ class StorePaymentInvoiceSalesGiroRequest extends Request
     public function rules()
     {
         return [
-            'sum_amount'=>'required',
+            'sum_amount_giro'=>'required',
             'gir_account'=>'required',
         ];
     }

@@ -29,16 +29,12 @@
                 <div class="box-body">
                     <table class="table">
                         <tr>
-                            <td><b>Cash Code</b></td>
-                            <td>{{ $cash->code }}</td>
-                        </tr>
-                        <tr>
                             <td><b>Cash Name</b></td>
-                            <td>{{ $cash->name }}</td>
+                            <td>{{ $cash->name }}&nbsp;{{ $cash->account_number}}</td>
                         </tr>
                         <tr>
                             <td><b>Value</b></td>
-                            <td>{{ number_format($cash->value) }}</td>
+                            <td>{{ number_format(\DB::table('transaction_chart_accounts')->select('amount')->where('sub_chart_account_id',$cash->id)->where('type','masuk')->sum('amount')) }}</td>
                         </tr>
                     </table>
                 </div><!-- /.box-body -->

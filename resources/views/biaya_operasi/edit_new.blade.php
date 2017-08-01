@@ -40,40 +40,6 @@
                               </span>
                           @endif
                         </div id="append_here">
-                        <div class="form-group{{ $errors->has('cash_id') ? ' has-error' : '' }}" style="display:none" id="cash_form">
-                          {!! Form::label('cash_id', 'Cash', ['class'=>'col-sm-3 control-label']) !!}
-                          <div class="col-sm-6">
-                              <select id="cash_id" class="form-control">
-                                  @foreach($cash as $cas)
-                                    @if($cas->id == $source)
-                                    <option value="{{ $cas->id }}" selected="">{{ $cas->name }}</option>
-                                    @else
-                                    <option value="{{ $cas->id }}">{{ $cas->name }}</option>
-                                    @endif
-                                  @endforeach
-                              </select>
-                              @if($errors->has('cash_id'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('cash_id') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('bank_id') ? ' has-error' : '' }}" style="display:none" id="bank_form">
-                          {!! Form::label('bank_id', 'Bank', ['class'=>'col-sm-3 control-label']) !!}
-                          <div class="col-sm-6">
-                              <select id="bank_id" class="form-control">
-                                  @foreach($bank as $banks)
-                                    <<option value="{{ $banks->id }}">{{ $banks->name }}</option>
-                                  @endforeach
-                              </select>
-                              @if($errors->has('bank_id'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('bank_id') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
                         <div class="form-group{{ $errors->has('memo') ? ' has-error' : '' }}">
                           {!! Form::label('memo', 'Memo', ['class'=>'col-sm-3 control-label']) !!}
                           <div class="col-sm-6">

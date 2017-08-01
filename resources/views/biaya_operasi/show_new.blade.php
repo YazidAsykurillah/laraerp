@@ -43,17 +43,6 @@
                 @endif
               </td>
             </tr>
-            @if($pay_method == 2)
-            <tr>
-              <td><b>Cash</b></td>
-              <td>{{ $cash }}</td>
-            </tr>
-            @else
-            <tr>
-              <td><b>Bank</b></td>
-              <td>{{ $bank }}</td>
-            </tr>
-            @endif
             <tr>
               <td><b>Memo</b></td>
               <td>{{ $trans_chart_account->description }}</td>

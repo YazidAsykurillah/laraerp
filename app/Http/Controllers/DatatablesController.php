@@ -301,6 +301,7 @@ class DatatablesController extends Controller
                 if(count($purchase_orders->purchase_order_invoice) == 1){
                     $btn_inv  = '<a href="'.url('purchase-order-invoice/'.$purchase_orders->purchase_order_invoice->id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
                     $btn_inv .= $purchase_orders->purchase_order_invoice->code;
+                    $btn_inv .= '</br>'.$purchase_orders->purchase_order_invoice->status;
                     $btn_inv .= '</a>&nbsp;';
                     return 'Available'.' '.$btn_inv;
                 }else{
@@ -359,6 +360,7 @@ class DatatablesController extends Controller
             ->editColumn('code', function($purchase_order_invoices){
                 $btn_pur  = '<a href="'.url('purchase-order/'.$purchase_order_invoices->purchase_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the purchase order detail">';
                 $btn_pur .= $purchase_order_invoices->purchase_order->code;
+                $btn_pur .= '</br>'.$purchase_order_invoices->purchase_order->status;
                 $btn_pur .= '</a>&nbsp;';
                 return $purchase_order_invoices->code.'<br>'.$btn_pur;
             })
@@ -535,6 +537,7 @@ class DatatablesController extends Controller
                 if(count($sales_orders->sales_order_invoice) == 1){
                     $btn_inv  = '<a href="'.url('sales-order-invoice/'.$sales_orders->sales_order_invoice->id.'').'" class="btn btn-info btn-xs" title="Click to view the invoice detail">';
                     $btn_inv .= $sales_orders->sales_order_invoice->code;
+                    $btn_inv .= '</br>'.$sales_orders->sales_order_invoice->status;
                     $btn_inv .= '</a>&nbsp;';
                     return 'Available'.' '.$btn_inv;
                 }else{
@@ -592,6 +595,7 @@ class DatatablesController extends Controller
             ->editColumn('code', function($sales_order_invoices){
                 $btn_inv  = '<a href="'.url('sales-order/'.$sales_order_invoices->sales_order_id.'').'" class="btn btn-info btn-xs" title="Click to view the sales order detail">';
                 $btn_inv .= $sales_order_invoices->sales_order->code;
+                $btn_inv .= '<br>'.$sales_order_invoices->sales_order->status;
                 $btn_inv .= '</a>&nbsp;';
                 return $sales_order_invoices->code.' '.$btn_inv;
             })

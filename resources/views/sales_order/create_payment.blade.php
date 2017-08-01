@@ -27,7 +27,7 @@
             <a data-toggle="tab" href="#section-payment-method-cash" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Cash</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#section-payment-method-bank" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Bank Transfer</a>
+            <a data-toggle="tab" href="#section-payment-method-bank" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Bank</a>
         </li>
         <li>
             <a data-toggle="tab" href="#section-payment-method-giro" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none"><i class="fa fa-desktop"></i>&nbsp;Giro</a>
@@ -45,9 +45,9 @@
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentCash','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
                                 <div class="form-group{{ $errors->has('cash_id') ? ' has-error' : '' }}">
-                                    {!! Form::label('cash_id','Cash',['class'=>'col-sm-3 control-label']) !!}
+                                    {!! Form::label('cash_id','Payment Method',['class'=>'col-sm-3 control-label']) !!}
                                     <div class="col-sm-6">
-                                        {{ Form::select('cash_id',$cashs,null,['class'=>'form-control','placeholder'=>'Select Cash','id'=>'cash_id']) }}
+                                        {{ Form::text('cash_id','CASH',['class'=>'form-control','id'=>'cash_id','autocomplete'=>'off', 'disabled']) }}
                                         @if($errors->has('cash_id'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('cash_id') }}</strong>
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}">
-                                    {!! Form::label('select_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
+                                    {!! Form::label('select_account','Cash Account',['class'=>'col-sm-3 control-label']) !!}
                                     <div class="col-sm-6">
                                     <select name="select_account" class="form-control">
                                         <option value="">Select Account</option>
@@ -153,9 +153,9 @@
                         <div class="box-body">
                             {!! Form::open(['url'=>'storeSalesPaymentTransfer','role'=>'form','class'=>'form-horizontal','id'=>'form-store-invoice-payment']) !!}
                                 <div class="form-group{{ $errors->has('bank_id') ? ' has-error' : '' }}">
-                                    {!! Form::label('bank_id','Bank',['class'=>'col-sm-3 control-label']) !!}
+                                    {!! Form::label('bank_id','Payment Method',['class'=>'col-sm-3 control-label']) !!}
                                     <div class="col-sm-6">
-                                        {{ Form::select('bank_id',$banks,null,['class'=>'form-control','placeholder'=>'Select Bank','id'=>'bank_id']) }}
+                                        {{ Form::text('bank_id','BANK',['class'=>'form-control','id'=>'bank_id','autocomplete'=>'off', 'disabled']) }}
                                         @if($errors->has('bank_id'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('bank_id') }}</strong>
@@ -175,7 +175,7 @@
                                   </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('select_account') ? ' has-error' : '' }}">
-                                    {!! Form::label('select_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
+                                    {!! Form::label('select_account','Bank Account',['class'=>'col-sm-3 control-label']) !!}
                                     <div class="col-sm-6">
                                     <select name="select_account" class="form-control">
                                         <option value="">Select Account</option>
@@ -297,7 +297,7 @@
                                   </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('gir_account') ? ' has-error' : '' }}">
-                                    {!! Form::label('gir_account','Cash/Bank Account',['class'=>'col-sm-3 control-label']) !!}
+                                    {!! Form::label('gir_account','Bank Account',['class'=>'col-sm-3 control-label']) !!}
                                     <div class="col-sm-6">
                                     <select name="gir_account" class="form-control">
                                         <option value="">Select Account</option>

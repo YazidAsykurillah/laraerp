@@ -8,6 +8,6 @@ class Bank extends Model
 {
     protected $table = 'banks';
 
-    protected $fillable = ['code', 'name', 'account_name', 'account_number'];
-    
+    protected $fillable = ['account_name', 'account_number', 'sub_chart_account_id'];
+
 }

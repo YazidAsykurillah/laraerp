@@ -635,7 +635,7 @@ class SalesOrderInvoiceController extends Controller
     {
         $invoice_id = $request->sales_order_invoice_id;
         $invoice_code = $request->sales_order_invoice_code;
-        $cash_id = $request->select_account;
+        $cash_id = $request->cash_id;
         $amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
 
         $sales_order_invoice = SalesOrderInvoice::findOrFail($invoice_id);
@@ -660,9 +660,9 @@ class SalesOrderInvoiceController extends Controller
         $cash_sales_invoice_payment->sales_invoice_payment_id = $sales_invoice_payment->id;
         $cash_sales_invoice_payment->save();
 
-        //$cash_value = Cash::findOrFail($cash_id);
-        //$current_cash_value = $cash_value->value;
-        //$new_cash_value = $current_cash_value+$amount;
+        $cash_value = Cash::findOrFail($cash_id);
+        $current_cash_value = $cash_value->value;
+        $new_cash_value = $current_cash_value+$amount;
 
         $transaction_sub_chart_account = New TransactionChartAccount;
         $transaction_sub_chart_account->amount = $amount;
@@ -686,9 +686,9 @@ class SalesOrderInvoiceController extends Controller
         if($save){
             //update invoice's paid_price
             $sales_order_invoice->paid_price = $new_paid_price;
-            //$cash_value->value = $new_cash_value;
+            $cash_value->value = $new_cash_value;
             $update_paid_price = $sales_order_invoice->save();
-            //$update_cash_value = $cash_value->save();
+            $update_cash_value = $cash_value->save();
 
             return redirect('sales-order/'.$sales_order_id)
             ->with('successMessage', 'Payment has been added');
@@ -703,7 +703,7 @@ class SalesOrderInvoiceController extends Controller
     {
         $invoice_id = $request->sales_order_invoice_id;
         $invoice_code = $request->sales_order_invoice_code;
-        $bank_id = $request->select_account;
+        $bank_id = $request->bank_id;
         $amount = floatval(preg_replace('#[^0-9.]#','',$request->amount));
 
         $sales_order_invoice = SalesOrderInvoice::findOrFail($invoice_id);
@@ -726,9 +726,9 @@ class SalesOrderInvoiceController extends Controller
         $bank_sales_invoice_payment->sales_invoice_payment_id = $sales_invoice_payment->id;
         $bank_sales_invoice_payment->save();
 
-        //$bank_value = Bank::findOrFail($bank_id);
-        //$current_bank_value = $bank_value->value;
-        //$new_bank_value = $current_bank_value+$amount;
+        $bank_value = Bank::findOrFail($bank_id);
+        $current_bank_value = $bank_value->value;
+        $new_bank_value = $current_bank_value+$amount;
 
         $transaction_sub_chart_account = New TransactionChartAccount;
         $transaction_sub_chart_account->amount = $amount;
@@ -752,9 +752,9 @@ class SalesOrderInvoiceController extends Controller
         if($save){
             //update invoice's paid price
             $sales_order_invoice->paid_price = $new_paid_price;
-            //$bank_value->value =$new_bank_value;
+            $bank_value->value =$new_bank_value;
             $update_paid_price = $sales_order_invoice->save();
-            //$update_bank_value = $bank_value->save();
+            $update_bank_value = $bank_value->save();
             return redirect('sales-order/'.$sales_order_id)
                             ->with('successMessage','Payment has been added');
         }else{

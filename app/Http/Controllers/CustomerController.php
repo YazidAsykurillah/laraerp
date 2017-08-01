@@ -231,8 +231,10 @@ class CustomerController extends Controller
         foreach ($request->invoice_id as $key => $value) {
             //update to table purchase order invoices
             array_push($data_cash_invoice_payment,[
-                'cash_id'=>$request->cash_id,
+                'cash_id'=>$request->cash_account,
                 'sales_invoice_payment_id'=>\DB::table('sales_invoice_payments')->select('id')->where('sales_order_invoice_id',$request->invoice_id[$key])->latest()->first()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
             ]);
         }
         //insert to table cash purchase invoice payments
@@ -243,9 +245,9 @@ class CustomerController extends Controller
         // }
         // print_r($data_cash_invoice_payment);
         // exit();
-        $cash_value = Cash::findOrFail($request->cash_id);
-        $cash_value->value = $cash_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
-        $cash_value->save();
+        //$cash_value = Cash::findOrFail($request->cash_id);
+        //$cash_value->value = $cash_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
+        //$cash_value->save();
 
         return redirect('customer')
             ->with('successMessage','payment customer invoice has been added');
@@ -271,7 +273,7 @@ class CustomerController extends Controller
             ]);
             array_push($data_transaction_invoice_payment,[
                 'amount'=>floatval(preg_replace('#[^0-9.]#', '', $request->amount[$key])),
-                'sub_chart_account_id'=>$request->cash_account,
+                'sub_chart_account_id'=>$request->transfer_account,
                 'created_at'=>date('Y-m-d h:i:s'),
                 'updated_at'=>date('Y-m-d h:i:s'),
                 'reference'=>$request->invoice_id[$key],
@@ -303,8 +305,10 @@ class CustomerController extends Controller
         foreach ($request->invoice_id as $key => $value) {
             //update to table purchase order invoices
             array_push($data_transfer_invoice_payment,[
-                'bank_id'=>$request->bank_id,
+                'bank_id'=>$request->transfer_account,
                 'sales_invoice_payment_id'=>\DB::table('sales_invoice_payments')->select('id')->where('sales_order_invoice_id',$request->invoice_id[$key])->latest()->first()->id,
+                'created_at'=>date('Y-m-d h:i:s'),
+                'updated_at'=>date('Y-m-d h:i:s'),
             ]);
         }
         //insert to table cash purchase invoice payments
@@ -315,9 +319,9 @@ class CustomerController extends Controller
         // }
         // print_r($data_cash_invoice_payment);
         // exit();
-        $bank_value = Bank::findOrFail($request->bank_id);
-        $bank_value->value = $bank_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
-        $bank_value->save();
+        //$bank_value = Bank::findOrFail($request->bank_id);
+        //$bank_value->value = $bank_value->value+floatval(preg_replace('#[^0-9.]#', '', $request->sum_amount));
+        //$bank_value->save();
 
         return redirect('customer')
             ->with('successMessage','payment customer invoice has been added');

@@ -371,6 +371,16 @@
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
+                                              @if($sub->name == "PPN MASUKAN")
+                                                <td align="right">
+                                                @if(list_transaction_aktiva_lancar_lainnya(34,$sort_target_year,'y','') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_aktiva_lancar_lainnya(34,$sort_target_year,'y','')*10/100) }}.00
+                                                  <?php $sum+= list_transaction_aktiva_lancar_lainnya(34,$sort_target_year,'y','')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
                                                   0.00
@@ -379,7 +389,18 @@
                                                   <?php $sum+= list_transaction_aktiva_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @elseif(isset($sort_target_m))
+                                              @if($sub->name == "PPN MASUKAN")
+                                                <td align="right">
+                                                @if(list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','y','') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','y','')*10/100) }}.00
+                                                  <?php $sum += list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','y','')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','y','') == '')
                                                   0.00
@@ -388,7 +409,18 @@
                                                   <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59','y',''); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @else
+                                              @if($sub->name == "PPN MASUKAN")
+                                                <td align="right">
+                                                @if(list_transaction_aktiva_lancar_lainnya(34,date('Y'),'y','') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_aktiva_lancar_lainnya(34,date('Y'),'y','')*10/100) }}.00
+                                                  <?php $sum += list_transaction_aktiva_lancar_lainnya(34,date('Y'),'y','')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_aktiva_lancar_lainnya($sub->id,date('Y'),'y','') == '')
                                                   0.00
@@ -397,6 +429,7 @@
                                                   <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,date('Y'),'y',''); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @endif
                                         </tr>
                                         @endforeach
@@ -409,7 +442,7 @@
                                     <tr>
                                         <td></td>
                                         <td style="border-top:1px solid black">Total {{ $aktiva_lancar_lainnya->name }}<?php $sum_aktiva_lancar_lainnya = $sum; ?></td>
-                                        <td align="right" style="border-top:1px solid black;">0.00</td>
+                                        <td align="right" style="border-top:1px solid black;">{{ number_format($sum_aktiva_lancar_lainnya) }}</td>
                                     </tr>
                                     @endif
                                 @endforeach
@@ -661,6 +694,16 @@
                                             <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                             <td style="padding-left:40px;">{{ $sub->name}}</td>
                                             @if(isset($sort_target_y))
+                                              @if($sub->name == "PPN KELUARAN")
+                                                <td align="right">
+                                                @if(list_transaction_kewajiban_lancar_lainnya(79,$sort_target_year,'y','') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,$sort_target_year,'y','')*10/100) }}.00
+                                                  <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,$sort_target_year,'y','')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y','') == '')
                                                   0.00
@@ -669,7 +712,18 @@
                                                   <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$sort_target_year,'y',''); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @elseif(isset($sort_target_m))
+                                              @if($sub->name == "PPN KELUARAN")
+                                                <td align="right">
+                                                @if(list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100) }}.00
+                                                  <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
                                                   0.00
@@ -678,7 +732,18 @@
                                                   <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @else
+                                              @if($sub->name == "PPN KELUARAN")
+                                                <td align="right">
+                                                @if(list_transaction_kewajiban_lancar_lainnya(79,date('Y'),'y','') == '')
+                                                  0.00
+                                                @else
+                                                  {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,date('Y'),'y','')*10/100) }}.00
+                                                  <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,date('Y'),'y','')*10/100; ?>
+                                                @endif
+                                                </td>
+                                              @else
                                                 <td align="right">
                                                 @if(list_transaction_kewajiban_lancar_lainnya($sub->id,date('Y'),'y','') == '')
                                                   0.00
@@ -687,6 +752,7 @@
                                                   <?php $sum += list_transaction_kewajiban_lancar_lainnya($sub->id,date('Y'),'y',''); ?>
                                                 @endif
                                                 </td>
+                                              @endif
                                             @endif
                                         </tr>
                                         @endforeach

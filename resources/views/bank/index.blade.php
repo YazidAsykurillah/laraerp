@@ -25,16 +25,15 @@
       <div class="box" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-top:none">
         <div class="box-header with-border">
           <h3 class="box-title">Banks</h3>
-          <a href="{{ URL::to('bank/create')}}" class="btn btn-primary pull-right" title="Create new bank">
+          <!-- <a href="{{ URL::to('bank/create')}}" class="btn btn-primary pull-right" title="Create new bank">
             <i class="fa fa-plus"></i>&nbsp;Add New
-          </a>
+          </a> -->
         </div><!-- /.box-header -->
         <div class="box-body table-responsive">
           <table class="table table-striped table-hover" id="table-bank">
             <thead>
               <tr style="background-color:#3c8dbc;color:white">
                 <th style="width:5%;">#</th>
-                <th style="width:15%;">Code</th>
                 <th style="width:20%;">Name</th>
                 <th style="width:25%;">Account Name</th>
                 <th style="width:20%;">Account Number</th>
@@ -44,7 +43,6 @@
             <thead id="searchid">
               <tr>
                 <th style="width:5%;"></th>
-                <th style="width:15%;">Code</th>
                 <th style="width:20%;">Name</th>
                 <th style="width:25%;">Account Name</th>
                 <th style="width:20%;">Account Number</th>
@@ -52,7 +50,28 @@
               </tr>
             </thead>
             <tbody>
+              <?php $no = 1; ?>
+              @foreach($sub_chart_account as $sub_chart_accounts)
+                @if($sub_chart_accounts->parent_id != 0 AND substr_count($sub_chart_accounts->name,'BANK'))
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $sub_chart_accounts->name }}</td>
+                  <td>{{ \DB::table('banks')->select('account_name')->where('sub_chart_account_id',$sub_chart_accounts->id)->value('account_name') }}</td>
+                  <td>{{ \DB::table('banks')->select('account_number')->where('sub_chart_account_id',$sub_chart_accounts->id)->value('account_number') }}</td>
+                  <td style="text-align:center">
+                    <a href="{{ url('bank/'.$sub_chart_accounts->id.'') }}" class="btn btn-info btn-xs" title="Click to view the detail">
+                      <i class="fa fa-external-link-square"></i>
+                    </a>&nbsp;
+                    <?php
+                    if(\Auth::user()->can('delete-bank-module'))
+                    {
 
+                    }
+                    ?>
+                  </td>
+                </tr>
+                @endif
+              @endforeach
             </tbody>
           </table>
         </div><!-- /.box-body -->
@@ -94,22 +113,7 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
-    var tableBank =  $('#table-bank').DataTable({
-      processing :true,
-      serverSide : true,
-      ajax : '{!! route('datatables.getBanks') !!}',
-      columns :[
-        {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'code', name: 'code' },
-        { data: 'name', name: 'name' },
-        { data: 'account_name', name: 'account_name' },
-        { data: 'account_number', name: 'account_number' },
-        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-center'},
-      ],
-      "order" : [[1, "asc"]]
-
-
-    });
+    var tableBank =  $('#table-bank').DataTable({});
 
     // Delete button handler
     tableBank.on('click', '.btn-delete-bank', function (e) {
