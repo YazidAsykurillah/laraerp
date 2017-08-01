@@ -294,6 +294,9 @@
   {!! Html::script('js/autoNumeric.js') !!}
   {!! Html::style('css/datepicker/jquery-ui.css') !!}
   {!! Html::script('js/jquery-ui.js') !!}
+  {!! Html::script('js/select2/select2.js') !!}
+  {!! Html::script('js/select2/select2.min.js') !!}
+  {!! Html::style('css/select2/select2.css') !!}
   <script>
       $( function() {
         $( "#ship_date" ).datepicker({
@@ -489,5 +492,9 @@
           $('#btn-submit-product').prop('disabled', false);
         }
       });
+  </script>
+
+  <script>
+    $("#customer_id").select2();
   </script>
 @endSection

@@ -170,6 +170,9 @@
 @section('additional_scripts')
 
   {!! Html::script('js/autoNumeric.js') !!}
+  {!! Html::script('js/select2/select2.js') !!}
+  {!! Html::script('js/select2/select2.min.js') !!}
+  {!! Html::style('css/select2/select2.css') !!}
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
       event.preventDefault();
@@ -344,5 +347,9 @@
       });
     });
   //ENDBlock handle form create purchase order submission
+  </script>
+
+  <script>
+    $("#supplier_id").select2();
   </script>
 @endSection

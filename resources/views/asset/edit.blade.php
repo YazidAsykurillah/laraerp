@@ -211,6 +211,9 @@
 
 @section('additional_scripts')
 {!! Html::script('js/autoNumeric.js') !!}
+{!! Html::script('js/select2/select2.js') !!}
+{!! Html::script('js/select2/select2.min.js') !!}
+{!! Html::style('css/select2/select2.css') !!}
 <script type="text/javascript">
     $('#amount').autoNumeric('init',{
         aSep:',',
@@ -220,5 +223,8 @@
         aSep:',',
         aDec:'.'
     });
+    $("#asset_account").select2();
+    $("#biaya_penyusutan_account").select2();
+    $("#akumulasi_penyusutan_account").select2();
 </script>
 @endsection

@@ -173,6 +173,9 @@
 @endsection
 
 @section('additional_scripts')
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
     <script type="text/javascript">
         $(document).ready(function(){
             $('#family_id').change(function(){
@@ -192,5 +195,10 @@
                 });
             })
         });
+    </script>
+    <script>
+        $("#unit_id").select2();
+        $("#family_id").select2();
+        $("#category_id").select2();
     </script>
 @endsection

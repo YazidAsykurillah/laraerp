@@ -268,6 +268,9 @@
   <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
   {!! Html::style('css/datepicker/jquery-ui.css') !!}
   {!! Html::script('js/jquery-ui.js') !!}
+  {!! Html::script('js/select2/select2.js') !!}
+  {!! Html::script('js/select2/select2.min.js') !!}
+  {!! Html::style('css/select2/select2.css') !!}
   <!-- <script>
       $( function() {
         $( "#ship_date" ).datepicker({
@@ -491,15 +494,9 @@
   </script>
 
   <script type="text/javascript">
-    // $('.quantity').on('keyup', function(){
-    //   // var quantity = parseInt($(this).val());
-    //   // //var stock = parseInt($(this).parent().parent().find('.stock_product').html());
-    //   // if(quantity > 2){
-    //   //   alertify.error('Sales quantity can not be greater than stock product');
-    //   // }
-    //   // return false;
-    //   alert('hai');
-    // });
+    $("#customer_id").select2();
+    $("#driver_id").select2();
+    $("#vehicle_id").select2();
   </script>
 
 @endSection

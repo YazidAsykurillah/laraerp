@@ -152,7 +152,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $sum_bill_price = 0; $sum_return_price = 0; $sum_netto_price = 0; ?>
+                                <?php $sum_bill_price = 0; $sum_return_price = 0; $sum_netto_price = 0; $sum_tax = 0;?>
                                 @foreach($data_invoice as $d_i)
                                     <tr>
                                         <td>{{ $d_i['no_faktur'] }}</td>
@@ -165,7 +165,10 @@
                                         <td>{{ $d_i['customer'] }}</td>
                                         <td>{{ number_format($d_i['sub_total']) }}</td>
                                         <td>{{ $d_i['disc'] }}</td>
-                                        <td>{{ number_format($d_i['tax']) }}</td>
+                                        <td>
+                                            {{ number_format($d_i['tax']) }}
+                                            <?php $sum_tax += $d_i['tax']; ?>
+                                        </td>
                                         <td>
                                             {{ number_format($d_i['bill_price']) }}
                                             <?php $sum_bill_price += $d_i['bill_price']; ?>
@@ -196,7 +199,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="6" align="right">Total</td>
+                                    <td colspan="5" align="right">Total</td>
+                                    <td style="background-color:red;color:white">{{ number_format($sum_tax) }}</td>
                                     <td style="background-color:red;color:white">{{ number_format($sum_bill_price) }}</td>
                                     <td style="background-color:red;color:white">{{ number_format($sum_return_price) }}</td>
                                     <td style="background-color:red;color:white">{{ number_format($sum_netto_price) }}</td>
@@ -724,51 +728,97 @@
                                 <tr style="background-color:#3c8dbc;color:white">
                                     <th>No.Faktur</th>
                                     <th>Tgl Faktur</th>
-                                    <th>Keterangan</th>
+                                    <th>Customer</th>
                                     <th>Nilai Faktur</th>
                                     <th>Retur</th>
                                     <th>Netto</th>
-                                    <th>Customer</th>
+                                    <th>Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $sum_bill_price = 0; $sum_return_price = 0; $sum_netto_price = 0; ?>
                                 @foreach($data_invoice as $d_i)
+                                @if(isset($d_i['name']))
+                                <?php $sum_bill_temp = 0 ; $sum_retur_temp = 0; $sum_netto_temp = 0;?>
                                     <tr>
-                                        <td>{{ $d_i['no_faktur'] }}</td>
-                                        <td>
-                                            <?php
-                                                $datenya = date_create($d_i['tgl_faktur']);
-                                            ?>
-                                            {{ date_format($datenya,'d/m/Y') }}
-                                        </td>
-                                        <td>{{ $d_i['keterangan'] }}</td>
-                                        <td>
-                                            {{ number_format($d_i['bill_price']) }}
-                                            <?php $sum_bill_price += $d_i['bill_price']; ?>
-                                        </td>
-                                        <?php $re = []; $sum = 0; ?>
-                                        @foreach($d_i['return'] as $r)
-                                            <?php
-                                                array_push($re,[
-                                                    'quantity'=>$r->quantity,
-                                                    'price_per_unit'=>\DB::table('product_sales_order')->select('price_per_unit')->where('sales_order_id',$r->sales_order_id)->where('product_id',$r->product_id)->get()[0]->price_per_unit,
-                                                ]);
-                                            ?>
-                                        @endforeach
-                                        @foreach($re as $xx)
-                                            <?php $sum += $xx['price_per_unit']*$xx['quantity']; ?>
-                                        @endforeach
-                                        <td>
-                                            {{ number_format($sum) }}
-                                            <?php $sum_return_price += $sum; ?>
-                                        </td>
-                                        <td>
-                                            {{ number_format($d_i['netto']-$sum) }}
-                                            <?php $sum_netto_price += $d_i['netto']-$sum; ?>
-                                        </td>
-                                        <td>{{ $d_i['customer'] }}</td>
+                                        <td align="center">{{ $d_i['name'] }}</td>
+                                        <td colspan="6"></td>
                                     </tr>
+                                    @foreach($d_i['sales'] as $s_i)
+
+                                        <tr>
+                                            <td>{{ $s_i['no_faktur'] }}</td>
+                                            <td>{{ $s_i['tgl_faktur'] }}</td>
+                                            <td>{{ $s_i['customer'] }}</td>
+                                            <td>
+                                                {{ number_format($s_i['bill_price']) }}
+                                                <?php $sum_bill_price += $s_i['bill_price']; ?>
+                                                <?php $sum_bill_temp += $s_i['bill_price']; ?>
+                                            </td>
+                                            <?php $re = []; $sum = 0; ?>
+                                            @foreach($s_i['return'] as $r)
+                                                <?php
+                                                    array_push($re,[
+                                                        'quantity'=>$r->quantity,
+                                                        'price_per_unit'=>\DB::table('product_sales_order')->select('price_per_unit')->where('sales_order_id',$r->sales_order_id)->where('product_id',$r->product_id)->get()[0]->price_per_unit,
+                                                    ]);
+                                                ?>
+                                            @endforeach
+                                            @foreach($re as $xx)
+                                                <?php $sum += $xx['price_per_unit']*$xx['quantity']; ?>
+                                            @endforeach
+                                            <td>
+                                                {{ number_format($sum) }}
+                                                <?php $sum_return_price += $sum; ?>
+                                                <?php $sum_retur_temp += $sum; ?>
+                                            </td>
+                                            <td>
+                                                {{ number_format($s_i['netto']) }}
+                                                <?php $sum_netto_price += $s_i['netto']; ?>
+                                                <?php $sum_netto_temp += $s_i['netto']; ?>
+                                            </td>
+                                            <td>{{ $s_i['notes'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="3">Total</td>
+                                        <td>{{ number_format($sum_bill_temp) }}</td>
+                                        <td>{{ number_format($sum_retur_temp) }}</tokd>
+                                        <td>{{ number_format($sum_netto_temp) }}</td>
+                                        <td></td>
+                                    </tr>
+                                    @else
+                                        <tr>
+                                            <td>{{ $d_i['no_faktur'] }}</td>
+                                            <td>{{ $d_i['tgl_faktur'] }}</td>
+                                            <td>{{ $d_i['customer'] }}</td>
+                                            <td>
+                                                {{ number_format($d_i['bill_price']) }}
+                                                <?php $sum_bill_price += $d_i['bill_price']; ?>
+                                            </td>
+                                            <?php $re = []; $sum = 0; $sum_return_price = 0; ?>
+                                            @foreach($d_i['return'] as $r)
+                                                <?php
+                                                    array_push($re,[
+                                                        'quantity'=>$r->quantity,
+                                                        'price_per_unit'=>\DB::table('product_sales_order')->select('price_per_unit')->where('sales_order_id',$r->sales_order_id)->where('product_id',$r->product_id)->get()[0]->price_per_unit,
+                                                    ]);
+                                                ?>
+                                            @endforeach
+                                            @foreach($re as $xx)
+                                                <?php $sum += $xx['price_per_unit']*$xx['quantity']; ?>
+                                            @endforeach
+                                            <td>
+                                                {{ number_format($sum) }}
+                                                <?php $sum_return_price += $sum; ?>
+                                            </td>
+                                            <td>
+                                                {{ number_format($d_i['netto']) }}
+                                                <?php $sum_netto_price += $d_i['netto']; ?>
+                                            </td>
+                                            <td>{{ $d_i['keterangan']}}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -868,6 +918,9 @@
 @endsection
 
 @section('additional_scripts')
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
     <script type="text/javascript">
         $('#type_report').on('click',function(){
             var reportType = $('#type_report').val();
@@ -890,17 +943,17 @@
                 $('#text-supplier').attr('name','');
                 $('#text-customer').attr('name','');
             }else if (reportType == 2) {
-                $('#customer').hide();
+                $('#customer').show();
                 $('#supplier').hide();
                 $('#product').hide();
                 $('#text-supplier').attr('name','');
-                $('#text-customer').attr('name','');
+                $('#text-customer').attr('name','keyword');
             }else if (reportType == 3) {
-                $('#customer').hide();
+                $('#customer').show();
                 $('#supplier').hide();
                 $('#product').hide();
                 $('#text-supplier').attr('name','');
-                $('#text-customer').attr('name','');
+                $('#text-customer').attr('name','keyword');
             }else if (reportType == 4) {
                 $('#customer').hide();
                 $('#supplier').hide();
@@ -915,13 +968,13 @@
                 $('#text-customer').attr('name','');
             }else if (reportType == 6) {
                 $('#customer').hide();
-                $('#supplier').hide();
+                $('#supplier').show();
                 $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');
             }else if (reportType == 7) {
                 $('#customer').hide();
-                $('#supplier').hide();
+                $('#supplier').show();
                 $('#product').hide();
                 $('#text-supplier').attr('name','keyword');
                 $('#text-customer').attr('name','');

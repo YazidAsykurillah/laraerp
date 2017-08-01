@@ -222,6 +222,9 @@
 @section('additional_scripts')
   <!--Auto numeric plugin-->
   {!! Html::script('js/autoNumeric.js') !!}
+  {!! Html::script('js/select2/select2.js') !!}
+  {!! Html::script('js/select2/select2.min.js') !!}
+  {!! Html::style('css/select2/select2.css') !!}
 
   <script type="text/javascript">
     $('#btn-display-product-datatables').on('click', function(event){
@@ -428,5 +431,9 @@
           document.getElementsByClassName('target_qty')[a].value = document.getElementsByClassName('sum_qty')[a].innerHTML;
       }
 
+  </script>
+
+  <script>
+    $("#supplier_id").select2();
   </script>
 @endsection

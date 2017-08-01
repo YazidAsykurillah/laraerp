@@ -71,7 +71,7 @@
                         <div class="form-group{{ $errors->has('beban_operasi_account') ? ' has-error' : '' }}">
                             {!! Form::label('expenses_account', 'Expenses Account', ['class'=>'col-sm-4 control-label']) !!}
                             <div class="col-sm-6">
-                                <select name="beban_operasi_account" class="form-control">
+                                <select name="beban_operasi_account" class="form-control" id="expenses-account">
                                   @foreach($sub_account as $sub)
                                     <option value="{{ $sub->id}}">{{ $sub->account_number}}&nbsp;&nbsp;{{ $sub->name}}</option>
                                   @endforeach
@@ -152,6 +152,9 @@
 
 @section('additional_scripts')
     {!! Html::script('js/autoNumeric.js') !!}
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
     <script type="text/javascript">
         $('#amount').autoNumeric('init',{
             aSep:',',
@@ -203,4 +206,7 @@
 
     </script>
     <!--ENDBlock Compare control returned quantity to sales quantity-->
+    <script>
+        $("#expenses-account").select2();
+    </script>
 @endsection

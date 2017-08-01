@@ -220,6 +220,9 @@
 
 @section('additional_scripts')
     {!! Html::script('js/autoNumeric.js') !!}
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
     <script type="text/javascript">
       $('.stock').autoNumeric('init',{
         aSep:'',
@@ -246,5 +249,11 @@
         $('#minimum_stock_parent').val(3);
         $('#description').val($('#child_description').text());
         $('#parent_description').text($('#child_description').text());
+    </script>
+
+    <script>
+        $("#unit_id").select2();
+        $("#family_id").select2();
+        $("#category_id").select2();
     </script>
 @endsection

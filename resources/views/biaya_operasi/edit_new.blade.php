@@ -172,6 +172,9 @@
 
 @section('additional_scripts')
     {!! Html::script('js/autoNumeric.js') !!}
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
     <script type="text/javascript">
         $('#amount').autoNumeric('init',{
             aSep:',',
@@ -237,5 +240,8 @@
           }
           return false;
       });
+    </script>
+    <script>
+        $("#beban_operasi_account").select2();
     </script>
 @endsection

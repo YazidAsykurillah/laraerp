@@ -32,9 +32,9 @@
                     <div class="form-group">
                         {!! Form::label('account','Account',['class'=>'col-sm-2 control-label']) !!}
                             <div class="col-sm-6">
-                                <select name="account" class="form-control" id="account">
+                                <select name="account" class="form-control" id="account" style="width:300px">
                                     @foreach($account as $acc)
-                                        <option value="{{ $acc->id }}">{{ $acc->name}}</option>
+                                        <option value="{{ $acc->id }}">{{ $acc->account_number }}&nbsp;{{ $acc->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -185,4 +185,13 @@
         </div>
     </div>
     @endif
+@endsection
+
+@section('additional_scripts')
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
+    <script>
+        $("#account").select2();
+    </script>
 @endsection

@@ -45,6 +45,13 @@
                         <hr>
                         <br>
                         <table border="0">
+                            @if(isset($customer) AND isset($sort_keyword))
+                            <tr>
+                                <td style="width:15%">{{ $customer }}</td>
+                                <td style="width:2%">:</td>
+                                <td style="width:25%">{{ $sort_keyword }}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <td style="width:15%">Type</td>
                                 <td style="width:2%">:</td>

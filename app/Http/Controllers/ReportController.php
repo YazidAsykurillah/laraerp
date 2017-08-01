@@ -198,49 +198,99 @@ class ReportController extends Controller
                 }
                 break;
             case 2:
-                $sales_invoice = \DB::table('sales_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                // foreach ($sales_invoice as $key) {
-                //     $return = SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns;
-                //     //$price_per_unit = \DB::table('product_sales_order')->where('product_id',$)
-                //     // print_r(count($return) );
-                //     // exit();
-                // }
-                // $data_return = '';
-                // foreach ($return as $key) {
-                //     $data_return += $key->quantity*\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit;
-                // }
-                $return_data = [];
-                foreach ($sales_invoice as $key) {
+                if($keyword == ''){
+                    $sales_invoice = \DB::table('sales_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    // foreach ($sales_invoice as $key) {
+                    //     $return = SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns;
+                    //     //$price_per_unit = \DB::table('product_sales_order')->where('product_id',$)
+                    //     // print_r(count($return) );
+                    //     // exit();
+                    // }
+                    // $data_return = '';
+                    // foreach ($return as $key) {
+                    //     $data_return += $key->quantity*\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit;
+                    // }
+                    $return_data = [];
+                    foreach ($sales_invoice as $key) {
 
-                    array_push($data_invoice,[
-                        'no_faktur'=>$key->code,
-                        'tgl_faktur'=>$key->created_at,
-                        'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
-                        'sub_total'=>'',
-                        'disc'=>'',
-                        'tax'=>'',
-                        'total'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
-                        'return'=>'',
-                        'net'=>$key->bill_price-0,
-                    ]);
+                        array_push($data_invoice,[
+                            'no_faktur'=>$key->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                            'sub_total'=>'',
+                            'disc'=>'',
+                            'tax'=>'',
+                            'total'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                            'return'=>'',
+                            'net'=>$key->bill_price-0,
+                        ]);
+                    }
+                }else{
+                    $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
+                    $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
+                    $sales_join = \DB::table('sales_orders')
+                                    ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                                    ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                                    ->where('sales_orders.customer_id','=',$customer_id[0]->id)
+                                    ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($sales_join as $key) {
+                        array_push($data_invoice,[
+                                'no_faktur'=>$key->code,
+                                'tgl_faktur'=>$key->created_at,
+                                'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                                'sub_total'=>'',
+                                'disc'=>'',
+                                'tax'=>'',
+                                'total'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                                'return'=>'',
+                                'net'=>$key->bill_price-0,
+                            ]);
+                    }
                 }
                 break;
             case 3:
-                //date between from date sales return
-                $sales_return = \DB::table('sales_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                foreach ($sales_return as $key) {
-                    array_push($data_invoice,[
-                        'no_faktur'=>SalesOrder::findOrfail($key->sales_order_id)->sales_order_invoice->code,
-                        'tgl_faktur'=>$key->created_at,
-                        'customer'=>SalesOrder::findOrfail($key->sales_order_id)->customer->name,
-                        'item'=>Product::findOrfail($key->product_id)->name,
-                        'unit_price'=>\DB::table('product_sales_order')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit,
-                        'quantity'=>$key->quantity,
-                        'disc'=>'',
-                        'disc_amt'=>'',
-                        'price'=>'',
-                    ]);
+                if($keyword == ''){
+                    //date between from date sales return
+                    $sales_return = \DB::table('sales_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($sales_return as $key) {
+                        array_push($data_invoice,[
+                            'no_faktur'=>SalesOrder::findOrfail($key->sales_order_id)->sales_order_invoice->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'customer'=>SalesOrder::findOrfail($key->sales_order_id)->customer->name,
+                            'item'=>Product::findOrfail($key->product_id)->name,
+                            'unit_price'=>\DB::table('product_sales_order')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit,
+                            'quantity'=>$key->quantity,
+                            'disc'=>'',
+                            'disc_amt'=>'',
+                            'price'=>'',
+                        ]);
+                    }
+                }else{
+                    //date between from date sales return
+                    $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
+                    $sales_returns = \DB::table('sales_returns')
+                                        ->join('sales_orders','sales_returns.sales_order_id','=','sales_orders.id')
+                                        ->select('sales_returns.*','sales_orders.*')
+                                        ->where('sales_orders.customer_id','=',$customer_id[0]->id)
+                                        ->whereBetween('sales_returns.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    //$sales_return = \DB::table('sales_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($sales_returns as $key) {
+                        array_push($data_invoice,[
+                            'no_faktur'=>SalesOrder::findOrfail($key->sales_order_id)->sales_order_invoice->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'customer'=>SalesOrder::findOrfail($key->sales_order_id)->customer->name,
+                            'item'=>Product::findOrfail($key->product_id)->name,
+                            'unit_price'=>\DB::table('product_sales_order')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit,
+                            'quantity'=>$key->quantity,
+                            'disc'=>'',
+                            'disc_amt'=>'',
+                            'price'=>'',
+                        ]);
+                    }
+                    // print_r($data_invoice);
+                    // exit;
                 }
+
                 break;
             case 4:
                 $purchase_invoice = \DB::table('purchase_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
@@ -280,69 +330,131 @@ class ReportController extends Controller
                 }
                 break;
             case 6:
-                $purchase_invoice = \DB::table('purchase_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                // foreach ($sales_invoice as $key) {
-                //     $return = SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns;
-                //     //$price_per_unit = \DB::table('product_sales_order')->where('product_id',$)
-                //     // print_r(count($return) );
-                //     // exit();
-                // }
-                // $data_return = '';
-                // foreach ($return as $key) {
-                //     $data_return += $key->quantity*\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit;
-                // }
-                $return_data = [];
-                foreach ($purchase_invoice as $key) {
+                if($keyword == ''){
+                    $purchase_invoice = \DB::table('purchase_order_invoices')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    // foreach ($sales_invoice as $key) {
+                    //     $return = SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns;
+                    //     //$price_per_unit = \DB::table('product_sales_order')->where('product_id',$)
+                    //     // print_r(count($return) );
+                    //     // exit();
+                    // }
+                    // $data_return = '';
+                    // foreach ($return as $key) {
+                    //     $data_return += $key->quantity*\DB::table('product_sales_order')->select('price_per_unit')->where('product_id',$key->product_id)->where('sales_order_id',$key->sales_order_id)->get()[0]->price_per_unit;
+                    // }
+                    $return_data = [];
+                    foreach ($purchase_invoice as $key) {
 
-                    array_push($data_invoice,[
-                        'no_faktur'=>$key->code,
-                        'tgl_faktur'=>$key->created_at,
-                        'supplier'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->supplier->name,
-                        'sub_total'=>'',
-                        'disc'=>'',
-                        'tax'=>'',
-                        'total'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->purchase_returns,
-                        'return'=>'',
-                        'net'=>$key->bill_price-0,
-                    ]);
+                        array_push($data_invoice,[
+                            'no_faktur'=>$key->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'supplier'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->supplier->name,
+                            'sub_total'=>'',
+                            'disc'=>'',
+                            'tax'=>'',
+                            'total'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->purchase_returns,
+                            'return'=>'',
+                            'net'=>$key->bill_price-0,
+                        ]);
+                    }
+                }else{
+                    $supplier_id = \DB::table('suppliers')->select('id')->where('name',$keyword)->get();
+                    $purchase = \DB::table('purchase_orders')->where('supplier_id',$supplier_id[0]->id)->get();
+                    $purchase_join = \DB::table('purchase_orders')
+                                    ->join('purchase_order_invoices','purchase_orders.id','=','purchase_order_invoices.purchase_order_id')
+                                    ->select('purchase_order_invoices.id','purchase_order_invoices.code','purchase_order_invoices.created_at','purchase_order_invoices.notes','purchase_order_invoices.bill_price')
+                                    ->where('purchase_orders.supplier_id','=',$supplier_id[0]->id)
+                                    ->whereBetween('purchase_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($purchase_join as $key) {
+                        array_push($data_invoice,[
+                                'no_faktur'=>$key->code,
+                                'tgl_faktur'=>$key->created_at,
+                                'supplier'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->supplier->name,
+                                'sub_total'=>'',
+                                'disc'=>'',
+                                'tax'=>'',
+                                'total'=>PurchaseOrderInvoice::findOrfail($key->id)->purchase_order->purchase_returns,
+                                'return'=>'',
+                                'net'=>$key->bill_price-0,
+                            ]);
+                    }
                 }
+
                 break;
             case 7:
-                //date between from date purchase return
-                $purchase_return = \DB::table('purchase_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                foreach ($purchase_return as $key) {
-                    array_push($data_invoice,[
-                        'no_faktur'=>PurchaseOrder::findOrfail($key->purchase_order_id)->purchase_order_invoice->code,
-                        'tgl_faktur'=>$key->created_at,
-                        'supplier'=>PurchaseOrder::findOrfail($key->purchase_order_id)->supplier->name,
-                        'item'=>Product::findOrfail($key->product_id)->name,
-                        'unit_price'=>(\DB::table('product_purchase_order')->where('product_id',$key->product_id)->where('purchase_order_id',$key->purchase_order_id)->get()[0]->price)/(\DB::table('product_purchase_order')->where('product_id',$key->product_id)->where('purchase_order_id',$key->purchase_order_id)->get()[0]->quantity),
-                        'quantity'=>$key->quantity,
-                        'disc'=>'',
-                        'disc_amt'=>'',
-                        'price'=>Product::findOrfail($key->product_id)->price,
-                    ]);
+                if($keyword == ''){
+                    //date between from date purchase return
+                    $purchase_return = \DB::table('purchase_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($purchase_return as $key) {
+                        array_push($data_invoice,[
+                            'no_faktur'=>PurchaseOrder::findOrfail($key->purchase_order_id)->purchase_order_invoice->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'supplier'=>PurchaseOrder::findOrfail($key->purchase_order_id)->supplier->name,
+                            'item'=>Product::findOrfail($key->product_id)->name,
+                            'unit_price'=>(\DB::table('product_purchase_order')->where('product_id',$key->product_id)->where('purchase_order_id',$key->purchase_order_id)->get()[0]->price)/(\DB::table('product_purchase_order')->where('product_id',$key->product_id)->where('purchase_order_id',$key->purchase_order_id)->get()[0]->quantity),
+                            'quantity'=>$key->quantity,
+                            'disc'=>'',
+                            'disc_amt'=>'',
+                            'price'=>Product::findOrfail($key->product_id)->price,
+                        ]);
+                    }
+                }else{
+                    //date between from date sales return
+                    $supplier_id = \DB::table('suppliers')->select('id')->where('name',$keyword)->get();
+                    $purchase_returns = \DB::table('purchase_returns')
+                                        ->join('purchase_orders','purchase_returns.purchase_order_id','=','purchase_orders.id')
+                                        ->select('purchase_returns.*','purchase_orders.*')
+                                        ->where('purchase_orders.supplier_id','=',$supplier_id[0]->id)
+                                        ->whereBetween('purchase_returns.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    //$purchase_return = \DB::table('sales_returns')->whereBetween('created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                    foreach ($purchase_returns as $key) {
+                        array_push($data_invoice,[
+                            'no_faktur'=>PurchaseOrder::findOrfail($key->purchase_order_id)->purchase_order_invoice->code,
+                            'tgl_faktur'=>$key->created_at,
+                            'supplier'=>PurchaseOrder::findOrfail($key->purchase_order_id)->supplier->name,
+                            'item'=>Product::findOrfail($key->product_id)->name,
+                            'unit_price'=>\DB::table('product_purchase_order')->where('product_id',$key->product_id)->where('purchase_order_id',$key->purchase_order_id)->get()[0]->price_per_unit,
+                            'quantity'=>$key->quantity,
+                            'disc'=>'',
+                            'disc_amt'=>'',
+                            'price'=>'',
+                        ]);
+                    }
+                    // print_r($data_invoice);
+                    // exit;
                 }
+
                 break;
             // search rincian penjualan per pelanggan
             case 8:
                 if($keyword == '')
                 {
-                  $sales_join = \DB::table('sales_orders')
-                                  ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
-                                  ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
-                                  ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
-                  foreach ($sales_join as $key) {
-                      array_push($data_invoice,[
-                              'no_faktur'=>$key->code,
-                              'tgl_faktur'=>$key->created_at,
-                              'keterangan'=>$key->notes,
-                              'bill_price'=>$key->bill_price,
-                              'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
-                              'netto'=>$key->bill_price-0,
-                              'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
-                          ]);
-                  }
+
+                //   $sales_join = \DB::table('sales_orders')
+                //                   ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                //                   ->select('sales_order_invoices.id','sales_order_invoices.code','sales_order_invoices.created_at','sales_order_invoices.notes','sales_order_invoices.bill_price')
+                //                   ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])->get();
+                //   foreach ($sales_join as $key) {
+                //       array_push($data_invoice,[
+                //               'no_faktur'=>$key->code,
+                //               'tgl_faktur'=>$key->created_at,
+                //               'keterangan'=>$key->notes,
+                //               'bill_price'=>$key->bill_price,
+                //               'return'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->sales_returns,
+                //               'netto'=>$key->bill_price-0,
+                //               'customer'=>SalesOrderInvoice::findOrfail($key->id)->sales_order->customer->name,
+                //           ]);
+                //   }
+                    $customer = Customer::get();
+                    $data_piutang = [];
+                    foreach ($customer as $cus) {
+                        $data_invoice [] = [
+                            'id'=>$cus->id,
+                            'code'=>$cus->code,
+                            'name'=>$cus->name,
+                            'sales'=>$this->list_sales($cus->id,$start_date,$end_date)
+                        ];
+                    }
                 }else{
                   $customer_id = \DB::table('customers')->select('id')->where('name',$keyword)->get();
                   $sales = \DB::table('sales_orders')->where('customer_id',$customer_id[0]->id)->get();
@@ -444,6 +556,37 @@ class ReportController extends Controller
             ->with('data_supplier',$data_supplier)
             ->with('data_customer',$data_customer)
             ->with('data_invoice',$data_invoice);
+    }
+
+    protected function list_sales($customer_id,$start_date,$end_date)
+    {
+        $sales = \DB::table('sales_orders')
+                    ->join('sales_order_invoices','sales_orders.id','=','sales_order_invoices.sales_order_id')
+                    ->select('sales_orders.*')
+                    ->where('sales_orders.customer_id',$customer_id)
+                    ->whereBetween('sales_order_invoices.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])
+                    ->get();
+        $data_sales = [];
+        foreach ($sales as $key) {
+            if(count(SalesOrder::findOrFail($key->id)->sales_order_invoice) == 0)
+            {
+
+            }else
+            {
+                $data_sales [] = [
+                    'id'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->id,
+                    'no_faktur'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->code,
+                    'tgl_faktur'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->created_at,
+                    'bill_price'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->bill_price,
+                    'return'=>SalesOrder::findOrFail($key->id)->sales_returns,
+                    'netto'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->bill_price-0,
+                    'customer'=>SalesOrder::findOrfail($key->id)->customer->name,
+                    'notes'=>SalesOrder::findOrFail($key->id)->sales_order_invoice->notes
+                ];
+            }
+        }
+
+        return $data_sales;
     }
 
     // protected function display_table_product_sales_order($pro_id,$sales_order_id)
@@ -751,6 +894,7 @@ class ReportController extends Controller
                       $data['sort_end_date'] = $sort_end_date;
                       $data['sort_report_type'] = $sort_report_type;
                       $data['sort_keyword'] = $sort_keyword;
+                      $data['customer'] = 'Customer';
                       $pdf = \PDF::loadView('pdf.report',$data);
                       return $pdf->stream('report.pdf');
                     }

@@ -81,3 +81,12 @@
     {!! Form::close() !!}
   </div>
 @endsection
+
+@section('additional_scripts')
+    {!! Html::script('js/select2/select2.js') !!}
+    {!! Html::script('js/select2/select2.min.js') !!}
+    {!! Html::style('css/select2/select2.css') !!}
+    <script>
+        $("#family_id").select2();
+    </script>
+@endsection
