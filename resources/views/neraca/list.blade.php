@@ -213,36 +213,39 @@
                                         <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                         <td style="padding-left:40px;">{{ $sub->name}}</td>
                                         @if(isset($year_in))
-                                            @if(list_transaction_cash_bank($sub->id,$year,'y','') == '')
+                                            @if(list_transaction_cash_bank($sub->id,$year,'y','') == '' AND list_transaction_modal($sub->id,$year,'m','','SALDO AWAL') == '')
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_cash_bank($sub->id,$year,'y','')) }}.00
-                                                <?php $sum += list_transaction_cash_bank($sub->id,$year,'y','');?>
-                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,'','y','','SALDO AWAL');?>
+                                                {{ number_format(list_transaction_modal($sub->id,$year,'y','','SALDO AWAL')+list_transaction_cash_bank($sub->id,$year,'y','')) }}.00
+                                                <?php $sum += list_transaction_modal($sub->id,$year,'y','','SALDO AWAL')+list_transaction_cash_bank($sub->id,$year,'y','');?>
+                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,$year,'y','','SALDO AWAL');?>
                                             </td>
                                             @endif
                                         @elseif(isset($month_in))
-                                            @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                            @if(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '' AND list_transaction_modal($sub->id,'','m','','SALDO AWAL') == '')
                                             <td align="right" style="padding-right:3px">
                                               0.00
-                                              <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,'','m','','SALDO AWAL');?>
+                                              <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,$year_start,'y','','SALDO AWAL');?>
                                             </td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_cash_bank($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59');?>
-                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,'','m','','SALDO AWAL');?>
+                                                {{ number_format(list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL')+list_transaction_cash_bank($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL')+list_transaction_cash_bank($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59');?>
+                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL');?>
                                             </td>
                                             @endif
                                         @else
-                                            @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '')
-                                            <td align="right" style="padding-right:3px">0.00</td>
+                                            @if(list_transaction_cash_bank($sub->id,date('Y'),'y','') == '' AND list_transaction_modal($sub->id,'','y','','SALDO AWAL') == '')
+                                            <td align="right" style="padding-right:3px">
+                                                0.00
+                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,date('Y'),'m','','SALDO AWAL');?>
+                                            </td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}.00
-                                                <?php $sum += list_transaction_cash_bank($sub->id,date('Y'),'y','');?>
-                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,'','y','','SALDO AWAL');?>
+                                                {{ number_format(list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL')+list_transaction_cash_bank($sub->id,date('Y'),'y','')) }}.00
+                                                <?php $sum += list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL')+list_transaction_cash_bank($sub->id,date('Y'),'y','');?>
+                                                <?php $sum_cash_bank_saldo_awal += list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL');?>
                                             </td>
                                             @endif
                                         @endif
@@ -292,8 +295,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_piutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                {{ number_format(list_transaction_piutang($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_piutang($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                             </td>
                                             @endif
                                         @else
@@ -343,42 +346,42 @@
                                         <td style="padding-left:40px;">{{ $sub->account_number}}</td>
                                         <td style="padding-left:40px;">{{ $sub->name}}</td>
                                         @if(isset($year_in))
-                                            @if(list_transaction_inventory($sub->id,$year,'y','') == '')
+                                            @if(list_transaction_inventory($sub->id,$year,'y','') == '' AND list_transaction_modal($sub->id,$year,'y','','SALDO AWAL') == '')
                                             <td align="right" style="padding-right:3px">
                                               0.00
-                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','y','','SALDO AWAL'); ?>
+                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,$year,'y','','SALDO AWAL'); ?>
                                             </td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_inventory($sub->id,$year,'y','')) }}.00
-                                                <?php $sum+= list_transaction_inventory($sub->id,$year,'y',''); ?>
+                                                {{ number_format(list_transaction_modal($sub->id,$year,'y','','SALDO AWAL')+list_transaction_inventory($sub->id,$year,'y','')) }}.00
+                                                <?php $sum+= list_transaction_modal($sub->id,$year,'y','','SALDO AWAL')+list_transaction_inventory($sub->id,$year,'y',''); ?>
                                                 <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','y','','SALDO AWAL'); ?>
                                             </td>
                                             @endif
                                         @elseif(isset($month_in))
-                                            @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '')
+                                            @if(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59') == '' AND list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL') == '')
                                             <td align="right" style="padding-right:3px">
                                               0.00
-                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','m','','SALDO AWAL'); ?>
+                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL'); ?>
                                             </td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_inventory($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
-                                                <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','m','','SALDO AWAL'); ?>
+                                                {{ number_format(list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL')+list_transaction_inventory($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL')+list_transaction_inventory($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,$year_start,'m','','SALDO AWAL'); ?>
                                             </td>
                                             @endif
                                         @else
-                                            @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '')
+                                            @if(list_transaction_inventory($sub->id,date('Y'),'y','') == '' AND list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL') == '')
                                             <td align="right" style="padding-right:3px">
                                               0.00
-                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','y','','SALDO AWAL'); ?>
+                                              <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL'); ?>
                                             </td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_inventory($sub->id,date('Y'),'y','')) }}.00
-                                                <?php $sum += list_transaction_inventory($sub->id,date('Y'),'y',''); ?>
-                                                <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,'','y','','SALDO AWAL'); ?>
+                                                {{ number_format(list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL')+list_transaction_inventory($sub->id,date('Y'),'y','')) }}.00
+                                                <?php $sum += list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL')+list_transaction_inventory($sub->id,date('Y'),'y',''); ?>
+                                                <?php $sum_inventory_saldo_awal+= list_transaction_modal($sub->id,date('Y'),'y','','SALDO AWAL'); ?>
                                             </td>
                                             @endif
                                         @endif
@@ -444,8 +447,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100) }}.00
-                                                <?php $sum += list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100; ?>
+                                                {{ number_format(list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100) }}.00
+                                                <?php $sum += list_transaction_aktiva_lancar_lainnya(34,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100; ?>
                                             </td>
                                             @endif
                                           @else
@@ -453,8 +456,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                {{ number_format(list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_aktiva_lancar_lainnya($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                             </td>
                                             @endif
                                           @endif
@@ -523,8 +526,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_nilai_history($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                {{ number_format(list_transaction_nilai_history($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_nilai_history($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                             </td>
                                             @endif
                                         @else
@@ -767,8 +770,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_hutang($sub->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                {{ number_format(list_transaction_hutang($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_hutang($sub->id,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                             </td>
                                             @endif
                                         @else
@@ -843,8 +846,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100) }}.00
-                                                <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100; ?>
+                                                {{ number_format(list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100) }}.00
+                                                <?php $sum += list_transaction_kewajiban_lancar_lainnya(79,$year_start.'-'.'01'.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')*10/100; ?>
                                             </td>
                                             @endif
                                           @else
@@ -921,8 +924,8 @@
                                             <td align="right" style="padding-right:3px">0.00</td>
                                             @else
                                             <td align="right" style="padding-right:3px">
-                                                {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
-                                                <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,$year_start.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
+                                                {{ number_format(list_transaction_kewajiban_jangka_panjang($as->id,'01'.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59')) }}.00
+                                                <?php $sum += list_transaction_kewajiban_jangka_panjang($as->id,'01'.'-'.$month_start.'-01 00:00:00','m',$year_end.'-'.$month_end.'-31 23:59:59'); ?>
                                             </td>
                                             @endif
                                         @else

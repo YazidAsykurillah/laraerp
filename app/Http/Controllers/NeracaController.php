@@ -162,7 +162,9 @@ class NeracaController extends Controller
                     $conv_month_start = 'December';
                     break;
                 default:
-                    # code...
+                    $chart_account = \DB::table('chart_accounts')->get();
+                    return view('neraca.list')
+                        ->with('chart_account',$chart_account);
                     break;
             }
             switch ($month_end) {
@@ -203,7 +205,9 @@ class NeracaController extends Controller
                     $conv_month_end = 'December';
                     break;
                 default:
-                    # code...
+                    $chart_account = \DB::table('chart_accounts')->get();
+                    return view('neraca.list')
+                        ->with('chart_account',$chart_account);
                     break;
             }
             if(true){
